@@ -36,7 +36,15 @@ class SimplifiedCodingEMV:
         self.llm = llm
         self.code_execution_env = code_exec_env
         self._exec_hist = ExecutionHistory()
-        self._tokenizer = tiktoken.encoding_for_model(llm.model_name) if isinstance(llm, ChatOpenAI) else None
+        # 尝试获取 tokenizer，如果模型不被 tiktoken 支持（如 qwen-plus），则设置为 None
+        if isinstance(llm, ChatOpenAI):
+            try:
+                self._tokenizer = tiktoken.encoding_for_model(llm.model_name)
+            except KeyError:
+                # 模型名称不被 tiktoken 识别（可能是非 OpenAI 模型通过代理使用）
+                self._tokenizer = None
+        else:
+            self._tokenizer = None
 
         self._retriever = SimpleFewShotRetriever(prompt_db=prompt_cfg.pop('prompt_db', []),
                                                  **prompt_cfg.get('retrieval', {}))

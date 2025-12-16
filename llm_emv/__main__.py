@@ -1,3 +1,4 @@
+import argparse
 import pickle
 import sys
 import traceback
@@ -14,7 +15,8 @@ def _safe_run(lmp, command):
             raise
         print('Error. Waiting for next command.')
         traceback.print_exc()
-        lmp.code_execution_env.namespace.api.say('Sorry, an error occurred. Please try again.')
+        # 直接打印错误信息，而不是调用 api.say()，因为 _exit_lmp_tts 会抛出 StopIteration
+        print('Sorry, an error occurred. Please try again.')
         lmp.reset()
 
 
@@ -47,4 +49,16 @@ def main(config: str):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1])
+    parser = argparse.ArgumentParser(description='Run LLM EMV')
+    parser.add_argument('--config', type=str, help='Configuration path (e.g., armarx_lt_mem/full)')
+    parser.add_argument('config_positional', nargs='?', type=str, help='Configuration path (positional argument)')
+    
+    args = parser.parse_args()
+    
+    # 优先使用 --config 参数，如果没有则使用位置参数
+    config = args.config or args.config_positional
+    
+    if config is None:
+        parser.error('必须提供配置路径，使用 --config <path> 或直接提供位置参数')
+    
+    main(config)
