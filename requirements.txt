@@ -1,0 +1,35 @@
+pillow~=10.2.0
+numpy~=1.26.3
+opencv-python>=4.8.0,<4.10.0  
+matplotlib>=3.7.0  
+seaborn>=0.12.0  
+langchain~=0.2.1
+langchain-openai~=0.1.17
+langchain-experimental~=0.0.59
+PyYAML~=6.0.1
+torch
+sentence-transformers>=5.1.0  # 需要与huggingface-hub 0.36+兼容
+sacrebleu~=2.4.3
+rouge_score~=0.1.2
+astunparse~=1.6.3
+openai>=1.32.0,<2.0.0
+zarr
+
+# AgentScope Framework
+agentscope>=0.0.5
+
+# 数据库支持 (用于企业级存储)
+pymilvus>=2.3.0  # 向量数据库
+chromadb>=0.4.0  # 备选向量数据库
+neo4j>=5.14.0  # 图数据库
+minio>=7.2.0  # 对象存储
+
+# 并发与异步支持
+redis>=5.0.0  # 消息队列
+celery>=5.3.0  # 分布式任务队列
+
+# 监控与日志
+loguru>=0.7.0  # 增强日志
+prometheus-client>=0.19.0  # 指标监控
+
+# git+https://git.h2t.iar.kit.edu/sw/armarx/python3-armarx.git  # 暂时注释，因为 zeroc-ice 3.7.0 编译失败
