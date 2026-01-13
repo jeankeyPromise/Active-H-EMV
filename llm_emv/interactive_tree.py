@@ -39,12 +39,12 @@ def _overlaps_datetime(query: datetime, date_range: Tuple[datetime, datetime]):
 
 def _overlaps_date_range(query_start: date, query_end: date, date_range: Tuple[datetime, datetime]):
     start, end = date_range
-    return query_start <= start.date() <= query_end or query_start <= end.date() <= query_end
+    return query_start <= end.date() and start.date() <= query_end
 
 
 def _overlaps_datetime_range(query_start: datetime, query_end: datetime, date_range: Tuple[datetime, datetime]):
     start, end = date_range
-    return query_start <= start <= query_end or query_start <= end <= query_end
+    return query_start <= end and start <= query_end
 
 
 def create_index_only_filter_fn(length, args):
