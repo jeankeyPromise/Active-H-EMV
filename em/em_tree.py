@@ -7,7 +7,7 @@ from typing import List, Tuple, Optional, Union
 import numpy as np
 from PIL.Image import Image
 
-from lmp.repl.semantic_hint_errror import SemanticHintError
+from lmp.repl.semantic_hint_error import SemanticHintError
 
 
 @dataclass

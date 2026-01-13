@@ -5,7 +5,7 @@ from typing import Any, Callable, List, Tuple
 
 import torch
 
-from lmp.repl.semantic_hint_errror import SemanticHintError
+from lmp.repl.semantic_hint_error import SemanticHintError
 
 PRETTY_PRINT = False
 USE_DASH_IN_SIMPLIFIED_REPR = False
