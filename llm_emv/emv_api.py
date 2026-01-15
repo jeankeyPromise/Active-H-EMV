@@ -10,7 +10,7 @@ from sentence_transformers import util
 from em.em_tree import HigherLevelSummary, type_to_children_property_map, HighestPredefinedSummaryLevel, AnyTreeNode
 from lmp.api_visibility_wrapper import group
 from lmp.namespace import comment
-from lmp.repl.semantic_hint_errror import SemanticHintError
+from lmp.repl.semantic_hint_error import SemanticHintError
 from .interactive_tree import ExpandableTreeNode, ExpandableList, create_expandable_tree_node_filter_fn
 from .vlm import VLM
 

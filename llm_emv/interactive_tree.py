@@ -52,7 +52,7 @@ def create_index_only_filter_fn(length, args):
         a = args[0]
         if isinstance(a, int):
             if a < 0:
-                a = length - a
+                a = length - a # 负索引转正，例如 -1 → 9（当 length=10）
             return lambda c, i: i == a
         elif isinstance(a, range):
             return lambda c, i: i in a
@@ -99,6 +99,8 @@ def create_expandable_tree_node_filter_fn(length, args):
         raise NotImplementedError
 
 
+
+# 人性化时间跨度显示策略
 def format_datetime_range(start: datetime, end: datetime):
     if (end - start).days > 0:
         # Date-only formatting
@@ -115,11 +117,12 @@ def format_datetime_range(start: datetime, end: datetime):
             end_str = '%Y/%m/%d ' + end_str
     return start.strftime(start_str) + ' - ' + end.strftime(end_str)
 
-
+# 把字符串中除了第一行以外的所有行前面都加上指定数量的空格。
+# 常用于让 repr() 的多行输出看起来像缩进的子树。
 def indent_following_lines(s: str, num_spaces: int):
     return s.replace('\n', '\n' + ' ' * num_spaces)
 
-
+# 核心类
 class ExpandableList:
     def __init__(self,
                  children: List[Any],
@@ -135,40 +138,45 @@ class ExpandableList:
                  ) -> None:
         super().__init__()
         self.children = children
-        self._children_states = [False] * len(self.children)
+        self._children_states = [False] * len(self.children)  # 每个子项的展开状态：默认全折叠
         self._filter_fn_generator = filter_fn_generator
         self._search_filter_fn = search_filter_fn
         self._simplified_repr = False
 
     def expand(self, *args):
-        self._set_expanded(True, *args)
-        return self
+        self._set_expanded(True, *args)             # 设置指定子项的展开状态为 True
+        return self                                 # 返回自身，方便链式调用
 
-    def collapse(self, *args):
-        self._set_expanded(False, *args)
+    def collapse(self, *args):                      # 设置指定子项的展开状态为 False
+        self._set_expanded(False, *args)            # 设置指定子项的展开状态为 False
+        return self                                 # 返回自身，方便链式调用
 
     def collapse_all_but(self, *args):
-        self.collapse()
-        self.expand(*args)
+        self.collapse()                             # 折叠所有子节点
+        self.expand(*args)                          # 展开指定子项
+        return self                                 # 返回自身，方便链式调用
 
-    def collapse_deep(self):
-        self._set_expanded(False, recursive=True)
+    def collapse_deep(self):                        
+        self._set_expanded(False, recursive=True)   # 递归全部收起（包括子 ExpandableList）
 
     def search(self, query, **kwargs):
-        self.collapse()
-        indices = self._search_filter_fn(query, list(self.children), **kwargs)
-        if len(indices) == 0:
+        self.collapse()              
+        indices = self._search_filter_fn(query, list(self.children), **kwargs) # 调用外部传入的搜索函数
+        if len(indices) == 0:                    # 如果没有匹配的子节点
             if kwargs.get('close_match', False):
-                return 'No close matches found.'
+                return 'No close matches found.' # 没有找到近似匹配
             else:
-                self.expand()
-                raise SemanticHintError(
+                self.expand()                    # 展开所有子节点
+                raise SemanticHintError(         # 抛出语义提示错误
                     'No children matching search query. Expanded all nodes so you can check manually.',
                     critical=False)
+        # 只展开匹配的            
         for i in indices:
-            self._children_states[i] = True
+            self._children_states[i] = True     
         return self
 
+    # 根据用户给的参数（args），生成一个裁判 → 遍历所有子项 → 让裁判决定哪些子项要改状态 → 
+    # 如果子项自己也是可展开的，就递归下去
     def _set_expanded(self, state, *args, recursive=False):
         filter_fn = self._filter_fn_generator(len(self.children), args)
         for i, c in enumerate(self.children):
@@ -227,6 +235,7 @@ class ExpandableTreeNode(ExpandableList):
         search_filter_kwargs = search_filter_kwargs or {}
         children = children_extractor(wrapped) or []
 
+        # 如果这是一个非叶子节点（有孩子），那么它包装的对象（wrapped）必须满足以下所有条件，否则就是程序 bug，应该立刻报错
         if len(children) > 0:  # non-leaf node must have attributes for rendering. leaf nodes just use __repr__
             assert hasattr(wrapped, 'range'), str(wrapped)
             assert isinstance(wrapped.range, Tuple), str(wrapped)
@@ -301,6 +310,12 @@ def recursive_apply(node, fn):
         for c in node.children:
             recursive_apply(c, fn)
 
+
+# 计算所有节点的相似度
+# 用 softmax 归一化成概率
+# 用 top-p 动态决定要考虑多少个最高分的候选（避免固定 k 的生硬）
+# 在这些候选中，再用 min_cos_sim 硬阈值过滤
+# close_match 模式下阈值更严格（top_p 更小，min_cos_sim 更高）
 
 def search_similarity_to_filter_fn(
         search_similarity_fn: Callable[[str, Any], float],
