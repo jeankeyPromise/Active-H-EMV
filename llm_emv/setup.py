@@ -54,18 +54,38 @@ def setup_llm_emv(cfg_path='teach/simplified/full',
     cfg = load_config(full_cfg_path, ((None, ('base', 'loop_prevention', 'suffix')),
                                       ('simplified_coding',
                                        ('system', 'usage', 'user_question', 'history', 'final_try'))))
+
+    # 直接用一个 LLM 做一次性的 semi-flat QA（可能是把历史压平后问大模型）
+    # 返回的是已经绑定了 history 的偏函数 → 调用时只需要给问题即可                                
     if cfg.get('type') == 'zs_one_pass':
-        model = ZeroShotOnePassSemiFlatQA(instantiate_llm(cfg.pop('llm')), now_time=now_time, **cfg)
+        model = ZeroShotOnePassSemiFlatQA(
+            instantiate_llm(cfg.pop('llm')), 
+            now_time=now_time, 
+            **cfg)
         return partial(model, history)
 
     vlm = _instantiate_vlm(cfg.pop('question_vlm', None))
     search_emb, filter_kwargs = create_search_embedding_and_cfg(cfg.pop('search', None))
     # noinspection PyTypeChecker
-    api = EMVerbalizationAPI(wait_for_trigger=wait_for_trigger_callback, tts=tts, history=history,
-                             now_time=now_time, hierarchy_level=cfg.pop('hierarchy_level', 'deep'),
-                             vlm=vlm, search_embedding_fn=search_emb, search_filter_kwargs=filter_kwargs)
+    api = EMVerbalizationAPI(
+        wait_for_trigger=wait_for_trigger_callback, 
+        tts=tts, 
+        history=history,
+        now_time=now_time, 
+        hierarchy_level=cfg.pop('hierarchy_level', 'deep'),
+        vlm=vlm, 
+        search_embedding_fn=search_emb, 
+        search_filter_kwargs=filter_kwargs)
+
+    # 用来控制哪些方法/属性暴露给 LLM（防止 prompt 里误调用危险函数）
     api = ApiVisibilityWrapper(api, **cfg.pop('api'))
+
+    # 把 api 里允许暴露的方法包装成工具函数，放到一个 dict 里，供后续的代码执行环境或 ReAct/tools 使用。
     namespace = setup_namespace(api)
+
+
+    # 如果没有视觉模型，就在后续的 prompt / 工具列表里排除掉 vqa 相关的工具
+    # 避免 LLM 以为自己会看图而产生幻觉。
     if vlm is None:
         cfg.setdefault('exclude_imports', []).append('vqa')
 
