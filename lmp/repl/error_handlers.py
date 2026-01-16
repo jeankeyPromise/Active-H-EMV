@@ -1,7 +1,7 @@
 import traceback
 from typing import List
 
-from .semantic_hint_errror import SemanticHintError
+from .semantic_hint_error import SemanticHintError
 
 
 class ErrorHandler:

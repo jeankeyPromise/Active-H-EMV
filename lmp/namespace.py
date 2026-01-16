@@ -1,6 +1,7 @@
 import inspect
 
-
+# 把一段自然语言说明（comment字符串）附加到被装饰的函数上
+# 供后续的代码生成 / API文档生成 / prompt生成工具读取，并以 # 注释 的形式附加到函数签名后面。
 def comment(c: str):
     """
     Use this as a decorator on a function of an API object to include the given comment as part of the import statement.

@@ -10,7 +10,7 @@ from .error_handlers import ErrorHandler
 from .fgen_handler import ReplFunctionGenerationHandler
 from .learn_from_interaction import LearnFromInteractionModule
 from .llm_to_python_console import LlmToPythonConsoleHelper
-from .semantic_hint_errror import SemanticHintError
+from .semantic_hint_error import SemanticHintError
 from .util import ExecutionHistory
 from ..lmp import LMPBase
 
