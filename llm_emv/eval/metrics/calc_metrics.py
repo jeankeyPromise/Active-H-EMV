@@ -88,7 +88,14 @@ def _category_eval(results):
 
 
 def _surface_eval(results):
-    hypotheses = [r['hyp'] for r in results]
+    hypotheses = []
+    for r in results:
+        hyp = r['hyp']
+        # 如果hyp是列表,将其转换为字符串(用句号连接)
+        if isinstance(hyp, list):
+            hyp = '. '.join(hyp)
+        hypotheses.append(hyp)
+    
     ground_truths = [[r['gt']] for r in results]
 
     correct = 0

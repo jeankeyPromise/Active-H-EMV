@@ -1,4 +1,4 @@
-+include: full
++include: full_qwen
 prompt_cfg:
   system: system_zero_shot
   db: [ ]

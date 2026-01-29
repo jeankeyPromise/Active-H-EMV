@@ -1,0 +1,54 @@
+{
+  "config": {
+    "cfg": "teach/simplified/full_qwen",
+    "output": "experiments\\results\\teach\\h_emv_full_qwen_5.json",
+    "dataset": "teach-dechant",
+    "only_iter_dataset": "False",
+    "n_samples": "5",
+    "qa_file": "data\\teach\\test_set_5.pkl",
+    "max_samples_per_episode": "None",
+    "use_only_question_types": "None",
+    "skip_first_n_episodes": "0",
+    "teach_base": "C:\\tmp\\teach-dataset",
+    "llm_summarizer_cfg": "None",
+    "pure_img_approach": "None"
+  },
+  "code_commit": "b8066da235fdd8cbed674e7fd0ea9b470d9b6a25",
+  "results": {
+    "03379f213dfbda39_79a2-724c11f87d95f819_a970-38d01f55a8e1ff9b_ca2f-2513b9a8d8ae5129_ab38-2bb159500f5ee79b_77a4-0-sequence_of_task_descs": {
+      "q_time": "2023/07/24 19:43:07",
+      "q": "List the tasks you performed.",
+      "gt": "prepare coffee in a clean mug. make a salad. boil potato. water the plant. make a plate of toast.",
+      "hyp": "Prepare coffee, Make a salad, Boil potato, Water the plant, Make a plate of toast"
+    },
+    "03379f213dfbda39_79a2-724c11f87d95f819_a970-38d01f55a8e1ff9b_ca2f-2513b9a8d8ae5129_ab38-2bb159500f5ee79b_77a4-0-seq_specific_shortened_low_actions": {
+      "q_time": "2023/07/24 19:43:07",
+      "q": "describe what you did when you make a salad.",
+      "gt": "pick up the tomato, place the tomato on the countertop, pick up the butter knife, slice tomato, place the butter knife on the countertop, toggle off the faucet, pick up the potato, toggle off the microwave, open the microwave, place the potato in the microwave, pick up the fork, place the fork on the countertop, pick up the apple, place the apple on the countertop, close the microwave, toggle on the microwave, toggle off the microwave, open the microwave, pick up the potato, close the microwave, place the potato on the countertop, pick up the fork, place the fork on the countertop, pick up the knife, slice potato, place the knife on the countertop, pick up the plate, place the plate on the countertop, pick up the potato, place the potato on the plate, pick up the tomato, place the tomato on the plate, pick up the potato, place the potato on the plate",
+      "hyp": "###ERROR### "
+    },
+    "03379f213dfbda39_79a2-724c11f87d95f819_a970-38d01f55a8e1ff9b_ca2f-2513b9a8d8ae5129_ab38-2bb159500f5ee79b_77a4-0-seq_right_after_questions": {
+      "q_time": "2023/07/24 19:43:07",
+      "q": "What task did you do just after make a salad?",
+      "gt": "boil potato.",
+      "hyp": "Make a plate of toast."
+    },
+    "03379f213dfbda39_79a2-724c11f87d95f819_a970-38d01f55a8e1ff9b_ca2f-2513b9a8d8ae5129_ab38-2bb159500f5ee79b_77a4-0-seq_right_before_questions": {
+      "q_time": "2023/07/24 19:43:07",
+      "q": "What task did you do just before boil potato?",
+      "gt": "make a salad.",
+      "hyp": "Place(CounterTop_0)"
+    },
+    "03379f213dfbda39_79a2-724c11f87d95f819_a970-38d01f55a8e1ff9b_ca2f-2513b9a8d8ae5129_ab38-2bb159500f5ee79b_77a4-0-seq_simple_object_yes_no": {
+      "q_time": "2023/07/24 19:43:07",
+      "q": "Was there a dresser ?",
+      "gt": "no",
+      "hyp": "No"
+    }
+  },
+  "openai_costs": {
+    "cost": 0.0,
+    "prompt_tokens": 408061,
+    "completion_tokens": 6104
+  }
+}

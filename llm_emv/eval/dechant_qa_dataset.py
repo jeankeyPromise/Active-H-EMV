@@ -230,6 +230,10 @@ class TeachDeChantDataset(DeChantQaDataset):
             elif len(episode_ids) >= 50:
                 episode_id_str = (''.join(x[:3] for x in episode_ids)
                                   + '-' + md5(''.join(episode_ids).encode()).hexdigest())
+            elif len(episode_ids) >= 15:
+                # Use hash for 15+ episodes to avoid Windows path length limit
+                episode_id_str = (''.join(x[:4] for x in episode_ids[:10])
+                                  + '-' + md5(''.join(episode_ids).encode()).hexdigest())
             else:
                 episode_id_str = '-'.join(x[:6] for x in episode_ids)
             preprocessed_history_file = (self.teach_base_path / 'preprocessed_histories'
