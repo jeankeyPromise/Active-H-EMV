@@ -221,19 +221,16 @@ class TeachDeChantDataset(DeChantQaDataset):
         else:
             episode_ids: Tuple[str, ...] = history_id
             # Don't want to run into "too long file name" errors, but still want unique file names
+            # Use shorter hash to avoid Windows 260 character path limit
             if len(episode_ids) >= 100:
-                md5()
-                quarter_size = len(episode_ids) // 4 + 1
-                episode_id_str = ''.join(md5(''.join(episode_ids[i * quarter_size:(i + 1) * quarter_size]
-                                                     ).encode()).hexdigest()
-                                         for i in range(4))
+                # For very large batches, use pure hash
+                episode_id_str = md5(''.join(episode_ids).encode()).hexdigest()
             elif len(episode_ids) >= 50:
-                episode_id_str = (''.join(x[:3] for x in episode_ids)
-                                  + '-' + md5(''.join(episode_ids).encode()).hexdigest())
-            elif len(episode_ids) >= 15:
-                # Use hash for 15+ episodes to avoid Windows path length limit
-                episode_id_str = (''.join(x[:4] for x in episode_ids[:10])
-                                  + '-' + md5(''.join(episode_ids).encode()).hexdigest())
+                # For large batches, use short prefix + hash
+                episode_id_str = f"{len(episode_ids)}ep-{md5(''.join(episode_ids).encode()).hexdigest()[:32]}"
+            elif len(episode_ids) >= 10:
+                # Use hash for 10+ episodes to avoid Windows path length limit
+                episode_id_str = f"{len(episode_ids)}ep-{md5(''.join(episode_ids).encode()).hexdigest()[:24]}"
             else:
                 episode_id_str = '-'.join(x[:6] for x in episode_ids)
             preprocessed_history_file = (self.teach_base_path / 'preprocessed_histories'

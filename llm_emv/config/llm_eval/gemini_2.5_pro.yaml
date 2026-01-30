@@ -1,7 +1,7 @@
 llm:
   type: ChatOpenAI
-  model_name: qwen-plus
-  max_tokens: 128
+  model_name: google/gemini-2.5-pro
+  max_tokens: 256
   temperature: 0.1
   request_timeout: 40
   max_retries: 2
