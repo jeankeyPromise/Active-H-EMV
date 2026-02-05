@@ -127,6 +127,10 @@ class SyntaxErrorHandler(SimpleCountingErrorHandler):
 
     def format_exception_for_llm(self, e: BaseException):
         s = str(e).replace('<unknown>, ', '').replace('<string>, ', '')  # Useless "unknown" file name
+        # 检测是否是输出被截断导致的括号不匹配
+        if "was never closed" in s or "unexpected EOF" in s.lower():
+            return (f'SyntaxError: {s}. Your output was likely truncated. '
+                    f'Please provide a SHORTER and more concise answer/reasoning to avoid truncation.')
         return f'SyntaxError: {s}. Revise the code carefully to avoid this error.'
 
 

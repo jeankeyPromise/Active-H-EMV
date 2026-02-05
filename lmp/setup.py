@@ -170,7 +170,9 @@ def instantiate_llm(llm_cfg: Dict) -> BaseLanguageModel:
         llm_cfg['openai_api_key'] = my_api_key
         my_base_url = os.getenv('KAIHONG_API_URL') 
         llm_cfg['base_url'] = my_base_url
-        llm_cfg.setdefault('request_timeout', 15)
+        # 增加默认超时时间和重试次数，避免504 Gateway Timeout
+        llm_cfg.setdefault('request_timeout', 120)
+        llm_cfg.setdefault('max_retries', 3)
     if 'llm' in llm_cfg:  # This seems to be a wrapper
         llm_cfg['llm'] = instantiate_llm(llm_cfg['llm'])
 

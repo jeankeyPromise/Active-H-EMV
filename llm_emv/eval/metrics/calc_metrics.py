@@ -65,7 +65,11 @@ def _category_eval(results):
     categories = Counter()
     for result in results:
         if 'cat' in result:
-            categories.update([result['cat']])
+            cat = result['cat']
+            # 处理空字符串或无效类别，归类为 'unknown'
+            if not cat or cat not in FineEmvOutputCategory.all_names() + BroadEmvOutputCategory.all_names():
+                cat = 'unknown'
+            categories.update([cat])
 
     def _print_categories():
         max_key_len = max(len(k) for k in categories.keys())
@@ -78,7 +82,11 @@ def _category_eval(results):
             _print_categories()
             broad_categories = Counter()
             for k, v in categories.items():
-                broad_categories.update({FineEmvOutputCategory(k).broad.name: v})
+                # 将 'unknown' 归类为 'wrong'
+                if k == 'unknown':
+                    broad_categories.update({'wrong': v})
+                else:
+                    broad_categories.update({FineEmvOutputCategory(k).broad.name: v})
             categories = broad_categories
         print('\nBroad Categories:')
         _print_categories()

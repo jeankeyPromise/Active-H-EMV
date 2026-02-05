@@ -1,5 +1,6 @@
 import json
 import re
+import time
 from pathlib import Path
 from typing import Union, List, Tuple, Optional
 
@@ -11,6 +12,28 @@ from langchain_core.language_models import BaseChatModel
 from langchain_core.output_parsers import JsonOutputParser, StrOutputParser
 from langchain_core.prompts import FewShotChatMessagePromptTemplate, HumanMessagePromptTemplate, \
     AIMessagePromptTemplate, SystemMessagePromptTemplate, PromptTemplate
+
+
+def _invoke_with_retry(chain, inputs: dict, max_retries: int = 3, base_delay: float = 5.0):
+    """带重试机制的 chain invoke，处理网络超时等临时性错误"""
+    last_error = None
+    for attempt in range(max_retries):
+        try:
+            return chain.invoke(inputs)
+        except Exception as e:
+            error_str = str(e).lower()
+            # 检测是否是可重试的网络错误（504, 502, 503, timeout 等）
+            is_retryable = any(x in error_str for x in [
+                '504', '502', '503', 'timeout', 'gateway', 'connection', 'reset'
+            ])
+            if is_retryable and attempt < max_retries - 1:
+                delay = base_delay * (2 ** attempt)  # 指数退避：5s, 10s, 20s
+                print(f'[LLM调用失败] {e.__class__.__name__}: 第{attempt + 1}次重试，等待{delay}秒...')
+                time.sleep(delay)
+                last_error = e
+            else:
+                raise
+    raise last_error
 
 from em.em_tree import HigherLevelSummary, HighestPredefinedSummaryLevel
 
@@ -182,9 +205,9 @@ class LLMBasedSummarizer:
         context = self.format_context(items)
         higher_lvl_mode = isinstance(items[0], HigherLevelSummary)
         if higher_lvl_mode:
-            result = self._group_and_summarize_chain_higher_level.invoke({'input': context})
+            result = _invoke_with_retry(self._group_and_summarize_chain_higher_level, {'input': context})
         else:
-            result = self._group_and_summarize_chain_first_summary.invoke({'input': context})
+            result = _invoke_with_retry(self._group_and_summarize_chain_first_summary, {'input': context})
         print(self, 'group and summarize (higher level:', higher_lvl_mode, ') output:', result)
 
         parsed_result, errors = self._parse_group_and_summarize_output(result, len(items))
@@ -195,7 +218,7 @@ class LLMBasedSummarizer:
                 chain = self._retry_higher_level_chain
             else:
                 chain = self._retry_first_level_chain
-            result = chain.invoke({'input': context,
+            result = _invoke_with_retry(chain, {'input': context,
                                    'errors': '\n'.join(f' - {e}' for e in errors),
                                    'wrong_output': json.dumps(result)})
             print(self, 'retry group and summarize (higher level:', higher_lvl_mode, ') output:', result)
@@ -218,7 +241,7 @@ class LLMBasedSummarizer:
 
     def simple_summarize(self, items: List[ItemsToSummarize]):
         context = self.format_context(items)
-        summary = self._simple_summarize_chain.invoke({'input': context})
+        summary = _invoke_with_retry(self._simple_summarize_chain, {'input': context})
         print(self, 'simple summary output', summary)
         return HigherLevelSummary(
             summary, items
