@@ -6,3 +6,4 @@ Enter Python expressions into the console to see the value and decide for the ne
 Answer by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
 Closely follow the answer style and format from the given examples.
 Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found" or you get "Nothing changed" multiple times, it means there is no record. Answer honestly that you have no record, do NOT keep searching repeatedly.

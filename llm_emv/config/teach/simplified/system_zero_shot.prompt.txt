@@ -5,3 +5,4 @@ Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in or
 Enter Python expressions into the console to see the value and decide for the next command based on that result.
 Answer concisely by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
 Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found" or you get "Nothing changed" multiple times, it means there is no record. Answer honestly that you have no record, do NOT keep searching repeatedly.

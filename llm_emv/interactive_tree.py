@@ -77,6 +77,10 @@ def create_expandable_tree_node_filter_fn(length, args):
             if a < 0:
                 a = length - a
             return lambda c, i: i == a
+        elif isinstance(a, (list, tuple)):
+            # 支持列表/元组参数，如 expand([1, 3, 5]) 或 collapse_all_but([2, 4])
+            indices = [idx if idx >= 0 else length + idx for idx in a]
+            return lambda c, i: i in indices
         else:
             raise TypeError('expand function cannot handle', type(a))
     elif len(args) == 2:
@@ -162,17 +166,33 @@ class ExpandableList:
     def search(self, query, **kwargs):
         self.collapse()              
         indices = self._search_filter_fn(query, list(self.children), **kwargs) # 调用外部传入的搜索函数
+        
+        # 获取最高相似度
+        max_sim = getattr(self._search_filter_fn, '_last_max_similarity', 0.0)
+        
         if len(indices) == 0:                    # 如果没有匹配的子节点
             if kwargs.get('close_match', False):
                 return 'No close matches found.' # 没有找到近似匹配
             else:
                 self.expand()                    # 展开所有子节点
                 raise SemanticHintError(         # 抛出语义提示错误
-                    'No children matching search query. Expanded all nodes so you can check manually.',
+                    f'No relevant records found for "{query}" (max similarity: {max_sim:.2f}). '
+                    f'This likely means you have no record of this activity. '
+                    f'Consider answering that you have no record, or try a different search term.',
                     critical=False)
+        
         # 只展开匹配的            
         for i in indices:
-            self._children_states[i] = True     
+            self._children_states[i] = True
+        
+        # 如果相似度较低，给出警告
+        if max_sim < 0.5:
+            raise SemanticHintError(
+                f'Found {len(indices)} node(s) for "{query}", but similarity is low ({max_sim:.2f}). '
+                f'These may not be directly relevant. If you cannot find the specific activity after exploring, '
+                f'consider answering that you have no record.',
+                critical=False)
+        
         return self
 
     # 根据用户给的参数（args），生成一个裁判 → 遍历所有子项 → 让裁判决定哪些子项要改状态 → 
@@ -336,6 +356,16 @@ def search_similarity_to_filter_fn(
         top_k = torch.count_nonzero(cum_scores < _top_p) + 1
         top_indices = indices[:top_k]
         top_raw_scores = similarities[top_indices]
-        return top_indices[top_raw_scores > _min_cos_sim].tolist()
+        result_indices = top_indices[top_raw_scores > _min_cos_sim].tolist()
+        
+        # 记录最高相似度，用于在搜索结果中显示匹配质量
+        if len(result_indices) > 0:
+            max_sim = similarities[result_indices[0]].item()
+            search._last_max_similarity = max_sim
+        else:
+            search._last_max_similarity = similarities.max().item() if len(similarities) > 0 else 0.0
+        
+        return result_indices
 
+    search._last_max_similarity = 0.0
     return search

@@ -7,3 +7,4 @@ If the question asks for details that are not contained in the history tree, inv
 Answer by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
 Generate syntactically correct python console statements only, no explanations or other natural language statements.
 Make sure not to repeat your commands.
+IMPORTANT: If search() returns "No relevant records found" or you get "Nothing changed" multiple times for the same query, it means there is no record of that activity. In this case, answer honestly that you have no record of doing that task, do NOT keep searching repeatedly.

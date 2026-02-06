@@ -134,17 +134,18 @@ class SimplifiedCodingEMV:
                     no_change_counter += 1
                     if no_change_counter > 2:
                         results = [
-                            'Loop detected. history was reset to expanded state. '
-                            'Find the information the user is looking for, and then answer the question.'
+                            'Loop detected. You have searched multiple times without finding relevant information. '
+                            'This strongly suggests there is NO RECORD of this activity in your history. '
+                            'Please answer honestly that you have no record of doing this task.'
                         ]
                         self._history.collapse_deep()
                         self._history.expand()
                     else:
                         results = [
-                            'Nothing changed. Ensure the node you are accessing itself is expanded,'
-                            ' try a different selector, or expand() without'
-                            ' arguments to see all children. Find the information the user is'
-                            ' looking for and then answer the question.'
+                            'Nothing changed. If you are searching for something specific and getting no results, '
+                            'it may mean there is no record of that activity. '
+                            'Try a different search term, expand() to see all children, '
+                            'or answer that you have no record if appropriate.'
                         ]
                 else:
                     no_change_counter = 0
@@ -173,3 +174,10 @@ class SimplifiedCodingEMV:
                 if r is None:
                     continue
                 self._exec_hist.items.append(ExecutionHistory.ExecutionResult(r))
+
+    def reset(self):
+        """重置内部状态，以便可以处理下一个问题"""
+        self._history.collapse_deep()
+        self._exec_hist.items.clear()
+        for handler in self._error_handlers:
+            handler.reset()
