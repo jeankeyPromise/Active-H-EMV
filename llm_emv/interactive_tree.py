@@ -343,7 +343,44 @@ def search_similarity_to_filter_fn(
         min_cos_sim=0.2,
         close_match_top_p=0.4,
         close_match_min_cos_sim=0.7,
+        _use_faiss=False,
+        _faiss_index_type='flat',
+        _embedding_fn=None,
+        _embedding_dim=768,
 ) -> Callable[[str, List[Any], ...], List[int]]:
+    """
+    创建搜索过滤函数
+    
+    Args:
+        search_similarity_fn: 计算相似度的函数
+        top_p: 累积概率阈值
+        min_cos_sim: 最小余弦相似度阈值
+        close_match_top_p: 近似匹配的累积概率阈值
+        close_match_min_cos_sim: 近似匹配的最小余弦相似度阈值
+        _use_faiss: 是否使用 FAISS 加速（通过配置启用）
+        _faiss_index_type: FAISS 索引类型 ("flat", "ivf", "hnsw")
+        _embedding_fn: 嵌入函数（FAISS 模式需要）
+        _embedding_dim: 嵌入维度（FAISS 模式需要）
+    """
+    
+    # 如果启用 FAISS，使用 FAISS 搜索
+    if _use_faiss and _embedding_fn is not None:
+        try:
+            from .faiss_search import create_faiss_search_filter_fn
+            print(f'[FAISS] 使用 FAISS 加速搜索，索引类型: {_faiss_index_type}')
+            return create_faiss_search_filter_fn(
+                embedding_fn=_embedding_fn,
+                dim=_embedding_dim,
+                index_type=_faiss_index_type,
+                top_p=top_p,
+                min_cos_sim=min_cos_sim,
+                close_match_top_p=close_match_top_p,
+                close_match_min_cos_sim=close_match_min_cos_sim,
+            )
+        except ImportError as e:
+            print(f'[FAISS] 导入失败，回退到暴力搜索: {e}')
+    
+    # 默认：暴力搜索
     def search(query: str, items: List[Any], close_match=False):
         _top_p = close_match_top_p if close_match else top_p
         _min_cos_sim = close_match_min_cos_sim if close_match else min_cos_sim

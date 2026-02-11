@@ -164,4 +164,17 @@ def create_search_embedding_and_cfg(search_cfg: Optional[dict]):
         embeddings = _embed_cached(tuple(unique_entries))
         return torch.index_select(embeddings, 0, torch.tensor(original_to_unique_indices))
 
-    return _embed, search_cfg.pop('filter_kwargs', {})
+    filter_kwargs = search_cfg.pop('filter_kwargs', {})
+    
+    # FAISS 加速配置
+    use_faiss = search_cfg.pop('use_faiss', False)
+    faiss_index_type = search_cfg.pop('faiss_index_type', 'flat')
+    
+    if use_faiss:
+        filter_kwargs['_use_faiss'] = True
+        filter_kwargs['_faiss_index_type'] = faiss_index_type
+        filter_kwargs['_embedding_fn'] = _embed
+        filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+        print(f'[配置] 启用 FAISS 加速，索引类型: {faiss_index_type}')
+    
+    return _embed, filter_kwargs

@@ -1,3 +1,4 @@
+import re
 import traceback
 from typing import List
 
@@ -13,6 +14,46 @@ from lmp.repl.code_execution import ReplExecutionEnvironment
 from lmp.repl.error_handlers import ErrorHandler
 from lmp.repl.llm_to_python_console import LlmToPythonConsoleHelper
 from lmp.repl.util import ExecutionHistory
+
+
+def _clean_markdown_code(code: str) -> str:
+    """
+    清理 LLM 可能添加的 Markdown 格式标记
+    
+    常见问题：
+    1. 代码被反引号包裹：`history.expand()` → history.expand()
+    2. 代码块标记：```python\ncode\n``` → code
+    3. 多余的空白行
+    """
+    if not code:
+        return code
+    
+    original_code = code
+    
+    # 1. 移除代码块标记 ```python ... ``` 或 ``` ... ```
+    code = re.sub(r'^```(?:python|py)?\s*\n?', '', code, flags=re.MULTILINE)
+    code = re.sub(r'\n?```\s*$', '', code, flags=re.MULTILINE)
+    
+    # 2. 移除单行反引号包裹：`code` → code
+    # 注意：只处理整行被反引号包裹的情况
+    lines = code.split('\n')
+    cleaned_lines = []
+    for line in lines:
+        stripped = line.strip()
+        # 检查是否整行被反引号包裹
+        if stripped.startswith('`') and stripped.endswith('`') and stripped.count('`') == 2:
+            line = stripped[1:-1]
+        cleaned_lines.append(line)
+    code = '\n'.join(cleaned_lines)
+    
+    # 3. 去除首尾空白
+    code = code.strip()
+    
+    # 如果清理后代码有变化，打印日志
+    if code != original_code.strip():
+        print(f'[代码清理] 移除了 Markdown 格式标记')
+    
+    return code
 
 
 class SimplifiedCodingEMV:
@@ -125,6 +166,10 @@ class SimplifiedCodingEMV:
             try:
                 self._exec_hist.items.append(ExecutionHistory.InputPrompt())
                 code, _ = self._llm_to_python_console_helper(loop_detected_flag=steps == self._max_rounds)
+                
+                # 清理 LLM 可能添加的 Markdown 格式
+                code = _clean_markdown_code(code)
+                
                 self._exec_hist.items.append(ExecutionHistory.Command(code))
 
                 previous_history = repr(self._history)

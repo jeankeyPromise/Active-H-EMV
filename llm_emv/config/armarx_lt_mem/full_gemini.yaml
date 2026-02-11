@@ -26,6 +26,8 @@ prompt_cfg:
   final_try: final
 search:
   embedding: all-mpnet-base-v2
+  use_faiss: true              # 启用 FAISS 向量索引加速
+  faiss_index_type: flat       # flat/ivf/hnsw，小数据集用 flat 即可
   filter_kwargs:
     top_p: 0.3
     min_cos_sim: 0.4  # 进一步提高阈值
