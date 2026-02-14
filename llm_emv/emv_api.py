@@ -193,7 +193,13 @@ def history_search_similarity(embedding_fn: Callable[[List[str]], torch.Tensor],
     if hasattr(node, '_embedding_cache'): # 如果节点已经缓存了嵌入向量，直接使用缓存
         embedding = getattr(node, '_embedding_cache')
     else: # 首次计算节点的 embedding 并缓存
-        embedding = embedding_fn([s for s in node.index_content if s])
+        # 获取索引内容，如果底层节点有修正覆盖则包含修正文本
+        texts = [s for s in node.index_content if s]
+        wrapped = getattr(node, '_wrapped', node)
+        override = getattr(wrapped, '_summary_override', None)
+        if override is not None:
+            texts.append(override)
+        embedding = embedding_fn(texts)
         setattr(node, '_embedding_cache', embedding)
 
     query_emb = embedding_fn([query])

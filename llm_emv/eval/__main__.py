@@ -13,10 +13,55 @@ from llm_emv.eval.simple_qa_data import SimpleHistoryQADataset
 from llm_emv.eval.util import determine_git_commit
 from lmp.repl.code_execution import ReplExecutionEnvironment
 from .dechant_qa_dataset import TeachDeChantDataset
-from .qa_eval import run_evaluation, EpisodicQADataset
+from .qa_eval import run_evaluation, run_evaluation_with_correction, EpisodicQADataset
 from ..setup import setup_llm_emv
 
 total_prompt_tokens, total_completion_tokens, total_cost = 0, 0, 0
+
+
+def _create_correction_fn(cfg_path: str):
+    """
+    从 YAML 配置中创建修正函数。
+
+    读取配置文件的 correction 块，实例化嵌入模型和修正 LLM，
+    返回修正管线的 callable。
+
+    Args:
+        cfg_path: 配置路径（相对于 llm_emv/config/）
+
+    Returns:
+        修正函数，或 None（如果未配置）
+    """
+    import yaml
+    from sentence_transformers import SentenceTransformer
+    from lmp.setup import instantiate_llm
+    from llm_emv.memory_correction import create_correction_fn
+
+    full_cfg_path = Path(__file__).parent.parent / 'config' / f'{cfg_path}.yaml'
+    with open(full_cfg_path, encoding='utf-8') as f:
+        raw_cfg = yaml.safe_load(f)
+
+    correction_cfg = raw_cfg.get('correction', {})
+    if not correction_cfg.get('enabled', False):
+        return None
+
+    # 创建嵌入模型（复用 search 配置的模型）
+    search_cfg = raw_cfg.get('search', {})
+    embedding_model_name = search_cfg.get('embedding', 'all-MiniLM-L6-v2')
+    print(f'[Correction] 加载嵌入模型: {embedding_model_name}')
+    embedding_model = SentenceTransformer(embedding_model_name)
+
+    def embedding_fn(texts):
+        return embedding_model.encode(texts, convert_to_tensor=True)
+
+    # 创建修正 LLM（优先使用 correction_llm，否则复用主 LLM 配置）
+    correction_llm = None
+    llm_cfg = correction_cfg.get('correction_llm', raw_cfg.get('llm', {}))
+    if llm_cfg:
+        print(f'[Correction] 创建修正 LLM: {llm_cfg.get("model_name", "unknown")}')
+        correction_llm = instantiate_llm(llm_cfg)
+
+    return create_correction_fn(correction_cfg, embedding_fn, correction_llm)
 
 
 def run_model(cfg: str, question: str, question_time: datetime, history: HigherLevelSummary) -> str:
@@ -63,6 +108,10 @@ def main():
                              'some preprocessing and caching.')
     parser.add_argument('--n-samples', type=int, default=None,
                         help='Use only the first n samples from the dataset')
+    parser.add_argument('--enable-correction', action='store_true', default=False,
+                        help='Enable simulated feedback correction protocol. '
+                             'Questions within the same episode share history, '
+                             'and corrections are applied after wrong answers.')
     args, _ = parser.parse_known_args()
     dataset_cls = _dataset_classes[args.dataset]
     dataset_cls.add_argparse_args(parser)
@@ -79,7 +128,18 @@ def main():
             print('\n\nLoaded sample', i, sample.sample_id)
         return
 
-    result = run_evaluation(partial(run_model, args.cfg), dataset)
+    if args.enable_correction:
+        correction_fn = _create_correction_fn(args.cfg)
+        if correction_fn:
+            print('\n[Correction] 启用模拟反馈修正协议\n')
+            result = run_evaluation_with_correction(
+                partial(run_model, args.cfg), dataset, correction_fn)
+        else:
+            print('\n[Correction] 配置中未找到 correction 块，回退到标准评测\n')
+            result = run_evaluation(partial(run_model, args.cfg), dataset)
+    else:
+        result = run_evaluation(partial(run_model, args.cfg), dataset)
+
     args.output.write_text(json.dumps({
         'config': {k: str(v) for k, v in args.__dict__.items()},
         'code_commit': determine_git_commit(),

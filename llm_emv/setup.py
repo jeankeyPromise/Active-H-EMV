@@ -105,6 +105,9 @@ def setup_llm_emv(cfg_path='teach/simplified/full',
     namespace = setup_namespace(api)
 
 
+    # 弹出 correction 配置块（修正功能在评测管线层面处理，不在 setup 内消费）
+    cfg.pop('correction', None)
+
     # 如果没有视觉模型，就在后续的 prompt / 工具列表里排除掉 vqa 相关的工具
     # 避免 LLM 以为自己会看图而产生幻觉。
     if vlm is None:
