@@ -41,6 +41,41 @@ search:
     top_p: 0.3
     min_cos_sim: 0.4
 
+# ============================================
+# 记忆巩固（遗忘机制）配置
+# ============================================
+forgetting:
+  enabled: true
+  # 效用函数权重 (α + β + γ = 1.0)
+  alpha: 0.3      # recency: 时间衰减权重
+  beta: 0.3       # uniqueness: 语义独特性权重
+  gamma: 0.4      # importance: 结构重要性权重
+  # 遗忘阈值
+  theta_1: 0.5    # U ≥ θ₁ → 完整保留 (Level 0)
+  theta_2: 0.2    # U < θ₂ → 摘要保留 (Level 2)
+  # 时间衰减参数
+  half_life: 3600  # 半衰期（秒），1h 前的事件衰减到 0.5
+  # 安全参数
+  min_retain_ratio: 0.3  # 至少保留 30% 完整节点
+  # 图度中心性
+  use_graph_centrality: true
+
+# ============================================
+# 图增强检索配置
+# ============================================
+graph_augment:
+  enable_temporal: true
+  enable_co_object: true
+  enable_co_location: true
+  enable_similar_action: true
+  similar_action_threshold: 0.85
+  enable_causal: false
+  alpha: 0.7
+  beta: 0.25
+  gamma: 0.05
+  max_neighbors: 10
+  adaptive_edge_selection: true
+
 api:
   include_groups:
     - dialog

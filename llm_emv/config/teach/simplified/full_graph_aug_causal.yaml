@@ -41,6 +41,26 @@ search:
     top_p: 0.3
     min_cos_sim: 0.4
 
+graph_augment:
+  enable_temporal: true
+  enable_co_object: true
+  enable_co_location: true
+  enable_similar_action: true
+  similar_action_threshold: 0.85
+  enable_causal: true
+  causal_llm:
+    type: ChatOpenAI
+    model_name: google/gemini-2.5-pro
+    max_tokens: 16
+    temperature: 0
+    request_timeout: 15
+    max_retries: 1
+  alpha: 0.7
+  beta: 0.25
+  gamma: 0.05
+  max_neighbors: 10
+  adaptive_edge_selection: true
+
 api:
   include_groups:
     - dialog

@@ -41,6 +41,22 @@ search:
     top_p: 0.3
     min_cos_sim: 0.4
 
+# ============================================
+# 图增强检索配置
+# ============================================
+graph_augment:
+  enable_temporal: true
+  enable_co_object: true
+  enable_co_location: true
+  enable_similar_action: true
+  similar_action_threshold: 0.85
+  enable_causal: false
+  alpha: 0.7
+  beta: 0.25
+  gamma: 0.05
+  max_neighbors: 10
+  adaptive_edge_selection: true
+
 api:
   include_groups:
     - dialog

@@ -41,6 +41,23 @@ search:
     top_p: 0.3
     min_cos_sim: 0.4
 
+# ============================================
+# 记忆巩固（遗忘机制）配置 — 仅遗忘，无图增强
+# 用于消融实验：验证遗忘机制的独立效果
+# ============================================
+forgetting:
+  enabled: true
+  alpha: 0.3
+  beta: 0.3
+  gamma: 0.4
+  theta_1: 0.5
+  theta_2: 0.2
+  half_life: 3600
+  min_retain_ratio: 0.3
+  use_graph_centrality: true
+
+# 注意：此配置不包含 graph_augment 块，仅使用 FAISS 向量检索
+
 api:
   include_groups:
     - dialog

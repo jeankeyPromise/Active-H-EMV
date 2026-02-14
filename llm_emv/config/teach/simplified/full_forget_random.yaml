@@ -41,6 +41,17 @@ search:
     top_p: 0.3
     min_cos_sim: 0.4
 
+# ============================================
+# 随机遗忘基线配置
+# 用于对比实验：与效用引导遗忘进行对比
+# ============================================
+forgetting:
+  enabled: true
+  random_mode: true
+  random_forget_ratio: 0.5  # 随机遗忘 50% 的可遗忘节点
+
+# 注意：random_mode=true 时，alpha/beta/gamma/theta 等参数被忽略
+
 api:
   include_groups:
     - dialog

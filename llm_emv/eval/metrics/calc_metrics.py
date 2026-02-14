@@ -85,6 +85,9 @@ def _category_eval(results):
                 # 将 'unknown' 归类为 'wrong'
                 if k == 'unknown':
                     broad_categories.update({'wrong': v})
+                elif k in BroadEmvOutputCategory.all_names():
+                    # 已经是宽类别，直接使用
+                    broad_categories.update({k: v})
                 else:
                     broad_categories.update({FineEmvOutputCategory(k).broad.name: v})
             categories = broad_categories

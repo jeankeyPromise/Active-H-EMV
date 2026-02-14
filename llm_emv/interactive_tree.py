@@ -347,6 +347,13 @@ def search_similarity_to_filter_fn(
         _faiss_index_type='flat',
         _embedding_fn=None,
         _embedding_dim=768,
+        _memory_graph=None,
+        _graph_embedding_fn=None,
+        _graph_alpha=0.7,
+        _graph_beta=0.25,
+        _graph_gamma=0.05,
+        _graph_max_neighbors=10,
+        _graph_adaptive_edge_selection=True,
 ) -> Callable[[str, List[Any], ...], List[int]]:
     """
     创建搜索过滤函数
@@ -361,7 +368,33 @@ def search_similarity_to_filter_fn(
         _faiss_index_type: FAISS 索引类型 ("flat", "ivf", "hnsw")
         _embedding_fn: 嵌入函数（FAISS 模式需要）
         _embedding_dim: 嵌入维度（FAISS 模式需要）
+        _memory_graph: 记忆图（图增强模式需要）
+        _graph_embedding_fn: 图增强用的嵌入函数
+        _graph_alpha: 向量相似度权重
+        _graph_beta: 图邻居贡献权重
+        _graph_gamma: 深度奖励权重
+        _graph_max_neighbors: 每个节点最多考虑的邻居数
+        _graph_adaptive_edge_selection: 是否启用查询感知的边类型选择
     """
+    
+    # 如果有记忆图且有嵌入函数，使用图增强检索
+    if _memory_graph is not None and _graph_embedding_fn is not None:
+        from .graph_augmented_search import create_graph_augmented_search_filter_fn
+        print(f'[GraphAug] 使用图增强检索，alpha={_graph_alpha}, beta={_graph_beta}, gamma={_graph_gamma}')
+        return create_graph_augmented_search_filter_fn(
+            search_similarity_fn=search_similarity_fn,
+            graph=_memory_graph,
+            embedding_fn=_graph_embedding_fn,
+            top_p=top_p,
+            min_cos_sim=min_cos_sim,
+            close_match_top_p=close_match_top_p,
+            close_match_min_cos_sim=close_match_min_cos_sim,
+            alpha=_graph_alpha,
+            beta=_graph_beta,
+            gamma=_graph_gamma,
+            max_neighbors=_graph_max_neighbors,
+            adaptive_edge_selection=_graph_adaptive_edge_selection,
+        )
     
     # 如果启用 FAISS，使用 FAISS 搜索
     if _use_faiss and _embedding_fn is not None:

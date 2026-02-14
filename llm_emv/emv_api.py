@@ -1,6 +1,6 @@
 from datetime import datetime
 from functools import partial
-from typing import Dict, Callable, Literal, List
+from typing import Dict, Callable, Literal, List, Optional
 
 import torch
 from PIL.Image import Image
@@ -12,6 +12,7 @@ from lmp.api_visibility_wrapper import group
 from lmp.namespace import comment
 from lmp.repl.semantic_hint_error import SemanticHintError
 from .interactive_tree import ExpandableTreeNode, ExpandableList, create_expandable_tree_node_filter_fn
+from .memory_graph import MemoryGraph
 from .vlm import VLM
 
 
@@ -26,7 +27,8 @@ class EMVerbalizationAPI:
             hierarchy_level: Literal['none', 'predefined', 'predefined+', 'deep'] = 'deep',
             vlm: VLM = None,
             search_embedding_fn: Callable[[List[str]], torch.Tensor] = None,
-            search_filter_kwargs=None
+            search_filter_kwargs=None,
+            memory_graph: Optional[MemoryGraph] = None,
     ) -> None:
         super().__init__()
         self._vlm = vlm
@@ -35,10 +37,14 @@ class EMVerbalizationAPI:
         self._now_time = now_time
         if hierarchy_level == 'deep': # 完整的整棵记忆树
             self._history: ExpandableTreeNode = make_tree_interactive(history, search_embedding_fn,
-                                                                      search_filter_kwargs)
+                                                                      search_filter_kwargs,
+                                                                      memory_graph=memory_graph,
+                                                                      graph_embedding_fn=search_embedding_fn)
         elif hierarchy_level.startswith('predefined'): # 只显示预定义的节点，即关键总结节点
             # noinspection PyTypeChecker
-            nodes = [make_tree_interactive(x, search_embedding_fn, search_filter_kwargs)
+            nodes = [make_tree_interactive(x, search_embedding_fn, search_filter_kwargs,
+                                           memory_graph=memory_graph,
+                                           graph_embedding_fn=search_embedding_fn)
                      for x in (find_all_predefined_summary_nodes
                                if hierarchy_level == 'predefined'
                                else find_all_parents_of_predefined_summary_nodes)(history)]
@@ -49,7 +55,9 @@ class EMVerbalizationAPI:
                 search_filter_fn=nodes[0]._search_filter_fn if len(nodes) > 0 else None,
             )
         else: # 只显示叶子节点，即原始数据
-            self._history = make_tree_interactive(history, search_embedding_fn, search_filter_kwargs).all_leaves
+            self._history = make_tree_interactive(history, search_embedding_fn, search_filter_kwargs,
+                                                  memory_graph=memory_graph,
+                                                  graph_embedding_fn=search_embedding_fn).all_leaves
 
         try:
             print('Initializing search embeddings eagerly...')
@@ -136,7 +144,17 @@ class EMVerbalizationAPI:
 # 它本身不做递归，只包装当前这一层
 def make_tree_interactive(history: HigherLevelSummary,
                           embedding_fn: Callable[[List[str]], torch.Tensor] = None,
-                          search_filter_kwargs=None):
+                          search_filter_kwargs=None,
+                          memory_graph: Optional[MemoryGraph] = None,
+                          graph_embedding_fn: Callable[[List[str]], torch.Tensor] = None):
+    # 如果有记忆图，将图信息和 embedding_fn 注入 search_filter_kwargs
+    if search_filter_kwargs is None:
+        search_filter_kwargs = {}
+    if memory_graph is not None:
+        search_filter_kwargs = dict(search_filter_kwargs)  # 避免修改原始 dict
+        search_filter_kwargs['_memory_graph'] = memory_graph
+        search_filter_kwargs['_graph_embedding_fn'] = graph_embedding_fn
+
     return ExpandableTreeNode(
         history,
         children_extractor=lambda c:

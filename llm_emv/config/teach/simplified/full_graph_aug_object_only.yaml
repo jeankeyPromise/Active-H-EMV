@@ -41,6 +41,18 @@ search:
     top_p: 0.3
     min_cos_sim: 0.4
 
+graph_augment:
+  enable_temporal: false
+  enable_co_object: true
+  enable_co_location: false
+  enable_similar_action: false
+  enable_causal: false
+  alpha: 0.7
+  beta: 0.25
+  gamma: 0.05
+  max_neighbors: 10
+  adaptive_edge_selection: true
+
 api:
   include_groups:
     - dialog
