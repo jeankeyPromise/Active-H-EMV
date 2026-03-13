@@ -356,6 +356,10 @@ def search_similarity_to_filter_fn(
         _graph_gamma=0.05,
         _graph_max_neighbors=10,
         _graph_adaptive_edge_selection=True,
+        _use_hbv=False,
+        _hbv_ops=None,
+        _hbv_text_encoder=None,
+        _hbv_pre_filter_k=100,
 ) -> Callable[[str, List[Any], ...], List[int]]:
     """
     创建搜索过滤函数
@@ -379,6 +383,21 @@ def search_similarity_to_filter_fn(
         _graph_adaptive_edge_selection: 是否启用查询感知的边类型选择
     """
     
+    # 如果启用 HBV，使用双空间检索
+    if _use_hbv and _hbv_ops is not None and _hbv_text_encoder is not None:
+        from .hbv_search import create_dual_space_search_filter_fn
+        print(f'[HBV] 使用双空间检索 (HBV预筛K={_hbv_pre_filter_k} + ST精排)')
+        return create_dual_space_search_filter_fn(
+            hbv_ops=_hbv_ops,
+            hbv_text_encoder=_hbv_text_encoder,
+            st_similarity_fn=search_similarity_fn,
+            hbv_pre_filter_k=_hbv_pre_filter_k,
+            top_p=top_p,
+            min_cos_sim=min_cos_sim,
+            close_match_top_p=close_match_top_p,
+            close_match_min_cos_sim=close_match_min_cos_sim,
+        )
+
     # 如果有记忆图且有嵌入函数，使用图增强检索
     if _memory_graph is not None and _graph_embedding_fn is not None:
         from .graph_augmented_search import create_graph_augmented_search_filter_fn

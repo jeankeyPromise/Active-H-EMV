@@ -67,10 +67,19 @@ def setup_llm_emv(cfg_path='teach/simplified/full',
     vlm = _instantiate_vlm(cfg.pop('question_vlm', None))
     search_emb, filter_kwargs = create_search_embedding_and_cfg(cfg.pop('search', None))
 
+    # ===== HBV 初始化 =====
+    hbv_cfg = cfg.pop('hbv', None)
+    hbv_encoder = None
+    if hbv_cfg is not None and hbv_cfg.get('enabled', False):
+        hbv_encoder = _init_hbv(history, hbv_cfg, filter_kwargs)
+
     # ===== 记忆巩固（遗忘机制）=====
     forgetting_cfg = cfg.pop('forgetting', None)
     if forgetting_cfg is not None and forgetting_cfg.pop('enabled', False):
-        history = apply_memory_consolidation(history, now_time, search_emb, forgetting_cfg)
+        history = apply_memory_consolidation(
+            history, now_time, search_emb, forgetting_cfg,
+            hbv_encoder=hbv_encoder,
+        )
 
     # 图增强检索：构建记忆图（带缓存）
     graph_cfg = cfg.pop('graph_augment', None)
@@ -273,7 +282,41 @@ def _build_memory_graph_from_cfg(history: HigherLevelSummary, embedding_fn, grap
     return graph
 
 
-def apply_memory_consolidation(history: HigherLevelSummary, now_time, embedding_fn, forgetting_cfg: dict):
+def _init_hbv(history, hbv_cfg: dict, filter_kwargs: dict):
+    """
+    初始化 HBV 子系统：创建编码器，编码整棵树，注入搜索参数。
+
+    Args:
+        history: 记忆树根节点
+        hbv_cfg: HBV 配置字典
+        filter_kwargs: 搜索过滤参数字典（会被 in-place 修改）
+
+    Returns:
+        HBVTreeEncoder 实例
+    """
+    from hbv.config import HBVConfig
+    from .hbv_tree_encoder import HBVTreeEncoder
+
+    config = HBVConfig.from_dict(hbv_cfg)
+    encoder = HBVTreeEncoder(config)
+
+    print('[HBV] 开始编码记忆树...')
+    encoder.encode_tree(history)
+
+    if filter_kwargs is None:
+        filter_kwargs = {}
+
+    filter_kwargs['_use_hbv'] = True
+    filter_kwargs['_hbv_ops'] = encoder.ops
+    filter_kwargs['_hbv_text_encoder'] = encoder.text_enc
+    filter_kwargs['_hbv_pre_filter_k'] = config.search_pre_filter_k
+
+    print(f'[HBV] 初始化完成 (dim={config.dim}, device={config.device})')
+    return encoder
+
+
+def apply_memory_consolidation(history: HigherLevelSummary, now_time, embedding_fn,
+                               forgetting_cfg: dict, hbv_encoder=None):
     """
     应用记忆巩固（遗忘机制）到 history 树。
 
@@ -319,6 +362,7 @@ def apply_memory_consolidation(history: HigherLevelSummary, now_time, embedding_
         use_graph_centrality=use_graph_centrality,
         random_mode=random_mode,
         random_forget_ratio=random_forget_ratio,
+        hbv_encoder=hbv_encoder,
     )
 
     print(f'[Forgetting] 统计: {stats}')

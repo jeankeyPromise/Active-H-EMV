@@ -503,6 +503,115 @@ def auto_propagate_correction(
 
 
 # =============================================================================
+# HBV XOR 修正 (HBV-Based Correction)
+# =============================================================================
+
+def compute_correction_vector(
+        error_text: str,
+        correct_text: str,
+        hbv_text_encoder,
+        hbv_ops,
+) -> torch.Tensor:
+    """
+    计算 HBV 修正向量。
+
+    correction = text_enc(error) XOR text_enc(correct)
+
+    应用修正：new_hbv = old_hbv XOR correction
+    这等价于先解绑错误成分，再绑定正确成分。
+
+    Args:
+        error_text: 错误答案文本
+        correct_text: 正确答案文本
+        hbv_text_encoder: HBV 文本编码器
+        hbv_ops: HBV 运算引擎
+
+    Returns:
+        修正向量（torch.Tensor）
+    """
+    error_hbv = hbv_text_encoder.encode(error_text)
+    correct_hbv = hbv_text_encoder.encode(correct_text)
+    return hbv_ops.bind(error_hbv, correct_hbv)
+
+
+def apply_hbv_correction(
+        node,
+        correction_vector: torch.Tensor,
+        hbv_ops,
+) -> None:
+    """
+    应用 XOR 修正到节点的 HBV。
+
+    new_hbv = old_hbv XOR correction_vector
+
+    同时保存原始 HBV 以便回溯。
+
+    Args:
+        node: 要修正的树节点
+        correction_vector: 由 compute_correction_vector 生成
+        hbv_ops: HBV 运算引擎
+    """
+    old_hbv = getattr(node, '_hbv', None)
+    if old_hbv is None:
+        return
+
+    if not hasattr(node, '_original_hbv'):
+        node._original_hbv = old_hbv.clone()
+
+    node._hbv = hbv_ops.bind(old_hbv, correction_vector)
+    node._hbv_correction_vector = correction_vector
+
+
+def propagate_correction_hbv(
+        corrected_node,
+        all_events: List[EventBasedSummary],
+        correction_vector: torch.Tensor,
+        hbv_ops,
+        similarity_threshold: float = 0.15,
+) -> List[Tuple[EventBasedSummary, float, str]]:
+    """
+    基于 HBV 汉明距离的修正传播。
+
+    检查所有事件节点是否与被修正节点的原始错误 HBV 相似，
+    如果相似度高则自动应用相同的修正向量。
+
+    比文本级传播更快、覆盖更广（不限于时间邻居）。
+
+    Args:
+        corrected_node: 已修正的源节点
+        all_events: 所有事件节点列表
+        correction_vector: 修正向量
+        hbv_ops: HBV 运算引擎
+        similarity_threshold: 汉明距离阈值（低于此值视为相似）
+
+    Returns:
+        [(受影响节点, 距离, 说明)] 列表
+    """
+    original_hbv = getattr(corrected_node, '_original_hbv', None)
+    if original_hbv is None:
+        return []
+
+    propagated = []
+    for event in all_events:
+        if event is corrected_node:
+            continue
+        if hasattr(event, '_hbv_correction_vector'):
+            continue
+
+        event_hbv = getattr(event, '_hbv', None)
+        if event_hbv is None:
+            continue
+
+        dist = hbv_ops.hamming_distance(original_hbv, event_hbv)
+        if dist < similarity_threshold:
+            apply_hbv_correction(event, correction_vector, hbv_ops)
+            reason = f"HBV汉明距离={dist:.4f} < 阈值{similarity_threshold}"
+            propagated.append((event, dist, reason))
+
+    return propagated
+
+
+# =============================================================================
 # 修正管线主函数
 # =============================================================================
 
@@ -519,6 +628,9 @@ def correction_pipeline(
         propagation_max_hops: int = 2,
         propagation_similarity_threshold: float = 0.7,
         auto_propagate: bool = True,
+        hbv_ops=None,
+        hbv_text_encoder=None,
+        hbv_correction_threshold: float = 0.15,
 ) -> Dict[str, Any]:
     """
     记忆修正主管线。
@@ -555,6 +667,8 @@ def correction_pipeline(
         'propagation_detections': 0,
         'propagation_corrections': 0,
         'suspects_checked': 0,
+        'hbv_corrections': 0,
+        'hbv_propagations': 0,
     }
 
     # Stage 1: 错误定位
@@ -598,6 +712,25 @@ def correction_pipeline(
         else:
             print(f'[Correction] 节点无法修正或无变化 (suspicion={suspicion:.3f})')
 
+    # Stage 2.5: HBV XOR 修正（并行于文本修正）
+    if hbv_ops is not None and hbv_text_encoder is not None and corrected_nodes:
+        correction_vec = compute_correction_vector(
+            wrong_answer, correct_answer, hbv_text_encoder, hbv_ops
+        )
+        all_events = _collect_all_events(history)
+
+        for node in corrected_nodes:
+            apply_hbv_correction(node, correction_vec, hbv_ops)
+            stats['hbv_corrections'] += 1
+
+            hbv_propagated = propagate_correction_hbv(
+                node, all_events, correction_vec, hbv_ops,
+                similarity_threshold=hbv_correction_threshold,
+            )
+            stats['hbv_propagations'] += len(hbv_propagated)
+            if hbv_propagated:
+                print(f'[Correction] HBV 传播修正 {len(hbv_propagated)} 个节点')
+
     # Stage 3: 错误传播检测
     if enable_propagation and corrected_nodes:
         for node in corrected_nodes:
@@ -630,6 +763,8 @@ def create_correction_fn(
         correction_cfg: dict,
         embedding_fn: Callable[[List[str]], torch.Tensor],
         correction_llm: Any = None,
+        hbv_ops=None,
+        hbv_text_encoder=None,
 ) -> Callable:
     """
     创建修正函数（工厂模式）。
@@ -641,6 +776,8 @@ def create_correction_fn(
         correction_cfg: 修正配置字典
         embedding_fn: 嵌入函数
         correction_llm: 修正 LLM（可选）
+        hbv_ops: HBV 运算引擎（可选）
+        hbv_text_encoder: HBV 文本编码器（可选）
 
     Returns:
         修正函数
@@ -652,6 +789,7 @@ def create_correction_fn(
     propagation_similarity_threshold = correction_cfg.get(
         'propagation_similarity_threshold', 0.7)
     auto_propagate = correction_cfg.get('auto_propagate', True)
+    hbv_correction_threshold = correction_cfg.get('hbv_correction_threshold', 0.15)
 
     def fn(history, question, wrong_answer, correct_answer):
         return correction_pipeline(
@@ -667,6 +805,9 @@ def create_correction_fn(
             propagation_max_hops=propagation_max_hops,
             propagation_similarity_threshold=propagation_similarity_threshold,
             auto_propagate=auto_propagate,
+            hbv_ops=hbv_ops,
+            hbv_text_encoder=hbv_text_encoder,
+            hbv_correction_threshold=hbv_correction_threshold,
         )
 
     return fn

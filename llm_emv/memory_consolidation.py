@@ -89,6 +89,97 @@ def compute_uniqueness(node_idx: int,
     return max(0.0, min(1.0, 1.0 - mean_sim))
 
 
+def compute_uniqueness_hbv(node_idx: int,
+                           all_hbvs: torch.Tensor,
+                           hbv_ops) -> float:
+    """
+    HBV 独特性：用汉明距离替代余弦相似度。
+
+    比 cos_sim 快 10-50x，且 HBV 的汉明距离在高维空间有更好的区分度。
+    Uniqueness(n) = mean(hamming_dist(n, others))
+
+    Args:
+        node_idx: 当前节点在 all_hbvs 中的索引
+        all_hbvs: 所有节点的 HBV 矩阵，shape (N, dim)
+        hbv_ops: HBVOperations 实例
+
+    Returns:
+        [0, 1] 的独特性值。越接近 1 越独特（平均距离大）。
+    """
+    n = all_hbvs.shape[0]
+    if n <= 1:
+        return 1.0
+
+    distances = hbv_ops.batch_hamming(all_hbvs[node_idx], all_hbvs)
+    total_dist = distances.sum().item() - distances[node_idx].item()
+    mean_dist = total_dist / (n - 1)
+
+    # 汉明距离 0.5 为正交（随机），归一化到 [0, 1]
+    # mean_dist ∈ [0, 0.5] (实际上接近 0.5 的居多) → 乘以 2 映射到 [0, 1]
+    return min(1.0, mean_dist * 2.0)
+
+
+def detect_redundancy_hbv(events_with_goals, hbv_ops,
+                          threshold: float = 0.15):
+    """
+    用成对汉明距离检测冗余事件组。
+
+    距离 < threshold 的事件对标记为冗余候选。
+    返回可合并的事件组列表。
+
+    Args:
+        events_with_goals: (event, goal) 列表
+        hbv_ops: HBVOperations 实例
+        threshold: 汉明距离阈值（低于此值视为冗余）
+
+    Returns:
+        List[List[int]] — 每个子列表是一组冗余事件的索引
+    """
+    hbvs = []
+    for event, _ in events_with_goals:
+        hbv = getattr(event, '_hbv', None)
+        if hbv is not None:
+            hbvs.append(hbv)
+        else:
+            hbvs.append(hbv_ops.zero_hbv())
+
+    if len(hbvs) < 2:
+        return []
+
+    matrix = torch.stack(hbvs)  # (N, dim)
+
+    # 成对汉明距离（取上三角）
+    redundant_groups = []
+    merged = set()
+
+    for i in range(len(hbvs)):
+        if i in merged:
+            continue
+        group = [i]
+        for j in range(i + 1, len(hbvs)):
+            if j in merged:
+                continue
+            dist = hbv_ops.hamming_distance(matrix[i], matrix[j])
+            if dist < threshold:
+                group.append(j)
+                merged.add(j)
+        if len(group) > 1:
+            redundant_groups.append(group)
+            merged.add(i)
+
+    return redundant_groups
+
+
+def merge_events_hbv(event_hbvs: List[torch.Tensor],
+                     weights: Optional[List[float]],
+                     hbv_ops) -> torch.Tensor:
+    """
+    用加权共识求和合并冗余事件的 HBV。
+    权重由效用值决定（高效用节点对合并结果贡献更大）。
+    """
+    return hbv_ops.bundle(event_hbvs, weights=weights)
+
+
 def compute_importance(node: EventBasedSummary,
                        degree: int = 0,
                        max_degree: int = 20) -> float:
@@ -181,6 +272,39 @@ def apply_forgetting_level_1(event: EventBasedSummary) -> None:
 
     # 标记遗忘级别（用于日志和后续判断）
     event._forgetting_level = 1
+
+
+def apply_forgetting_level_1_5(event: EventBasedSummary) -> None:
+    """
+    Level 1.5 遗忘：HBV 压缩保留。
+
+    删除原始感知数据和文本摘要细节，仅保留 HBV 向量和时间戳。
+    比 Level 2 更激进（Level 2 保留最后场景文本），
+    但 HBV 仍可参与检索（汉明距离搜索不需要文本）。
+
+    前提：节点必须已经有 _hbv 属性（由 HBVTreeEncoder 设置）。
+    """
+    if not hasattr(event, '_hbv'):
+        apply_forgetting_level_1(event)
+        return
+
+    if not hasattr(event, '_cached_nl_summary'):
+        try:
+            event._cached_nl_summary = event.nl_summary
+        except (IndexError, AttributeError):
+            event._cached_nl_summary = ''
+
+    for scene in event.scenes:
+        scene.raw.image = None
+        scene.raw.sound = None
+
+    if len(event.scenes) > 1:
+        event.scenes = [event.scenes[-1]]
+
+    last_scene = event.scenes[0]
+    last_scene.relations = []
+
+    event._forgetting_level = 1.5
 
 
 def apply_forgetting_level_2(event: EventBasedSummary) -> None:
@@ -352,6 +476,8 @@ def memory_consolidation(
         # 随机遗忘基线（用于对比实验）
         random_mode: bool = False,
         random_forget_ratio: float = 0.5,
+        # HBV 增强
+        hbv_encoder=None,
 ) -> Tuple[HigherLevelSummary, Dict[str, Any]]:
     """
     记忆巩固主函数。
@@ -422,34 +548,62 @@ def memory_consolidation(
         print(f'[Forgetting] 临时图度中心性: max_degree={max_degree}, '
               f'有连接的节点数={len(degree_map)}')
 
-    # 3. 批量计算 embeddings（用于 Uniqueness）
+    # 3. 批量计算 embeddings / HBV（用于 Uniqueness）
     all_embeddings = None
-    if embedding_fn is not None and beta > 0:
+    all_hbvs = None
+    use_hbv_uniqueness = hbv_encoder is not None
+
+    if use_hbv_uniqueness and beta > 0:
+        # 优先使用 HBV 计算独特性（速度更快）
+        print('[Forgetting] 使用 HBV 汉明距离计算独特性...')
+        hbv_list = []
+        for event, _ in events_with_goals:
+            hbv = getattr(event, '_hbv', None)
+            if hbv is not None:
+                hbv_list.append(hbv)
+            else:
+                hbv_list.append(hbv_encoder.ops.zero_hbv())
+        all_hbvs = torch.stack(hbv_list)
+    elif embedding_fn is not None and beta > 0:
         print('[Forgetting] 计算节点 embeddings...')
         all_texts = []
         for event, _ in events_with_goals:
-            # 使用 index_content 的非空文本拼接
             texts = [s for s in event.index_content if s]
-            combined = ' '.join(texts[:10]) if texts else ''  # 截断避免过长
+            combined = ' '.join(texts[:10]) if texts else ''
             all_texts.append(combined)
 
         if all_texts:
             all_embeddings = embedding_fn(all_texts)  # (N, dim)
 
+    # 3.5 HBV 冗余检测（可选）
+    redundancy_stats = {'redundant_groups': 0, 'redundant_events': 0}
+    if use_hbv_uniqueness:
+        redundant_groups = detect_redundancy_hbv(
+            events_with_goals, hbv_encoder.ops,
+            threshold=getattr(hbv_encoder.config, 'consolidation_redundancy_threshold', 0.15),
+        )
+        if redundant_groups:
+            redundancy_stats['redundant_groups'] = len(redundant_groups)
+            redundancy_stats['redundant_events'] = sum(len(g) for g in redundant_groups)
+            print(f'[Forgetting] HBV 冗余检测: {len(redundant_groups)} 组, '
+                  f'共 {redundancy_stats["redundant_events"]} 个冗余事件')
+
     # 4. 计算每个节点的效用值
     utility_scores: List[Tuple[EventBasedSummary, float, bool]] = []  # (node, utility, immune)
 
     for idx, (event, goal) in enumerate(events_with_goals):
-        # 检查豁免
         immune = is_immune(event)
 
         # Recency
         r = compute_recency(event, now_time, half_life) if alpha > 0 else 0.0
 
-        # Uniqueness
+        # Uniqueness — 优先用 HBV，回退到 ST embedding
         u = 0.0
-        if beta > 0 and all_embeddings is not None:
-            u = compute_uniqueness(idx, all_embeddings)
+        if beta > 0:
+            if all_hbvs is not None:
+                u = compute_uniqueness_hbv(idx, all_hbvs, hbv_encoder.ops)
+            elif all_embeddings is not None:
+                u = compute_uniqueness(idx, all_embeddings)
 
         # Importance
         degree = degree_map.get(id(event), 0)
@@ -517,6 +671,8 @@ def memory_consolidation(
         'effective_theta_2': effective_theta_2,
         'retain_ratio': count_level_0 / total_events if total_events > 0 else 1.0,
         'forgetting_ratio': (count_level_1 + count_level_2) / total_events if total_events > 0 else 0.0,
+        'hbv_uniqueness_used': use_hbv_uniqueness,
+        **redundancy_stats,
     }
 
     print(f'[Forgetting] 巩固完成: '
