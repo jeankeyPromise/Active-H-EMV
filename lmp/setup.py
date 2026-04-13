@@ -165,11 +165,21 @@ def instantiate_llm(llm_cfg: Dict) -> BaseLanguageModel:
     llm_cfg.setdefault('type', 'ChatOpenAI')
     if 'OpenAI' in llm_cfg['type']:
         import os
-        # 支持从环境变量读取自定义API密钥和URL
-        my_api_key = os.getenv('KAIHONG_API_KEY') 
-        llm_cfg['openai_api_key'] = my_api_key
-        my_base_url = os.getenv('KAIHONG_API_URL') 
-        llm_cfg['base_url'] = my_base_url
+        # 支持从常见环境变量读取 OpenAI-compatible API 配置，
+        # 同时兼容项目里早期使用的自定义变量名。
+        if 'openai_api_key' not in llm_cfg:
+            llm_cfg['openai_api_key'] = (
+                os.getenv('OPENAI_API_KEY')
+                or os.getenv('QWEN_API_KEY')
+                or os.getenv('KAIHONG_API_KEY')
+            )
+        if 'base_url' not in llm_cfg:
+            llm_cfg['base_url'] = (
+                os.getenv('OPENAI_BASE_URL')
+                or os.getenv('CUSTOM_API_BASE_URL')
+                or os.getenv('QWEN_API_BASE_URL')
+                or os.getenv('KAIHONG_API_URL')
+            )
         # 增加默认超时时间和重试次数，避免504 Gateway Timeout
         llm_cfg.setdefault('request_timeout', 120)
         llm_cfg.setdefault('max_retries', 3)

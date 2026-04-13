@@ -1,15 +1,15 @@
 type: simplified_coding
 max_rounds: 15
 llm:
-  type: ChatGoogleGenerativeAI
-  model: gemini-1.5-pro
-  max_output_tokens: 512
+  type: ChatOpenAI
+  model_name: google/gemini-2.5-pro
+  max_tokens: 2048
   temperature: 0.1
-  timeout: 40
+  request_timeout: 60
   max_retries: 2
 question_vlm:
   type: ChatOpenAI
-  model_name: gpt-4o-2024-08-06
+  model_name: google/gemini-2.5-pro
   max_tokens: 64
   temperature: 0.3
   request_timeout: 30

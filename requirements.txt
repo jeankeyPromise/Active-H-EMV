@@ -4,14 +4,19 @@ opencv-python>=4.8.0,<4.10.0
 matplotlib>=3.7.0  
 seaborn>=0.12.0  
 langchain~=0.2.1
+langchain-core~=0.2.1
+langchain-community~=0.2.1
 langchain-openai~=0.1.17
 langchain-experimental~=0.0.59
 PyYAML~=6.0.1
-torch
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.6.0+cpu
 sentence-transformers>=5.1.0  # 需要与huggingface-hub 0.36+兼容
 faiss-cpu>=1.7.0  # FAISS 向量索引加速 (如需 GPU 加速，替换为 faiss-gpu)
 sacrebleu~=2.4.3
 rouge_score~=0.1.2
+nltk>=3.8.1
+tiktoken>=0.7.0
 astunparse~=1.6.3
 openai>=1.32.0,<2.0.0
 zarr
