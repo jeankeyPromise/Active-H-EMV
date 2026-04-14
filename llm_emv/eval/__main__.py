@@ -13,10 +13,18 @@ from llm_emv.eval.simple_qa_data import SimpleHistoryQADataset
 from llm_emv.eval.util import determine_git_commit
 from lmp.repl.code_execution import ReplExecutionEnvironment
 from .dechant_qa_dataset import TeachDeChantDataset
-from .qa_eval import run_evaluation, run_evaluation_with_correction, EpisodicQADataset
+from .qa_eval import run_evaluation, run_evaluation_with_correction, EpisodicQADataset, create_llm_answer_judge
 from ..setup import setup_llm_emv
 
 total_prompt_tokens, total_completion_tokens, total_cost = 0, 0, 0
+
+
+def _load_cfg(cfg_path: str):
+    import yaml
+
+    full_cfg_path = Path(__file__).parent.parent / 'config' / f'{cfg_path}.yaml'
+    with open(full_cfg_path, encoding='utf-8') as f:
+        return yaml.safe_load(f)
 
 
 def _create_correction_fn(cfg_path: str):
@@ -32,14 +40,11 @@ def _create_correction_fn(cfg_path: str):
     Returns:
         修正函数，或 None（如果未配置）
     """
-    import yaml
     from sentence_transformers import SentenceTransformer
     from lmp.setup import instantiate_llm
     from llm_emv.memory_correction import create_correction_fn
 
-    full_cfg_path = Path(__file__).parent.parent / 'config' / f'{cfg_path}.yaml'
-    with open(full_cfg_path, encoding='utf-8') as f:
-        raw_cfg = yaml.safe_load(f)
+    raw_cfg = _load_cfg(cfg_path)
 
     correction_cfg = raw_cfg.get('correction', {})
     if not correction_cfg.get('enabled', False):
@@ -62,6 +67,31 @@ def _create_correction_fn(cfg_path: str):
         correction_llm = instantiate_llm(llm_cfg)
 
     return create_correction_fn(correction_cfg, embedding_fn, correction_llm)
+
+
+def _create_answer_judge_fn(cfg_path: str):
+    from lmp.setup import instantiate_llm
+
+    raw_cfg = _load_cfg(cfg_path)
+    correction_cfg = raw_cfg.get('correction', {})
+    if not correction_cfg.get('enabled', False):
+        return None
+
+    llm_cfg = dict(
+        correction_cfg.get('answer_judge_llm')
+        or correction_cfg.get('correction_llm')
+        or raw_cfg.get('llm', {})
+    )
+    if not llm_cfg:
+        return None
+
+    llm_cfg.setdefault('type', 'ChatOpenAI')
+    llm_cfg['max_tokens'] = 16
+    llm_cfg['temperature'] = 0
+    llm_cfg.setdefault('request_timeout', 30)
+    llm_cfg.setdefault('max_retries', 2)
+    print(f'[CorrectionEval] 创建 Answer Judge LLM: {llm_cfg.get("model_name", "unknown")}')
+    return create_llm_answer_judge(instantiate_llm(llm_cfg))
 
 
 def run_model(cfg: str, question: str, question_time: datetime, history: HigherLevelSummary) -> str:
@@ -131,9 +161,10 @@ def main():
     if args.enable_correction:
         correction_fn = _create_correction_fn(args.cfg)
         if correction_fn:
+            answer_judge_fn = _create_answer_judge_fn(args.cfg)
             print('\n[Correction] 启用模拟反馈修正协议\n')
             result = run_evaluation_with_correction(
-                partial(run_model, args.cfg), dataset, correction_fn)
+                partial(run_model, args.cfg), dataset, correction_fn, answer_judge_fn)
         else:
             print('\n[Correction] 配置中未找到 correction 块，回退到标准评测\n')
             result = run_evaluation(partial(run_model, args.cfg), dataset)

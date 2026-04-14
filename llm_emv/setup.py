@@ -85,6 +85,11 @@ def setup_llm_emv(cfg_path='teach/simplified/full',
         filter_kwargs['_graph_gamma'] = graph_cfg.get('gamma', 0.05)
         filter_kwargs['_graph_max_neighbors'] = graph_cfg.get('max_neighbors', 10)
         filter_kwargs['_graph_adaptive_edge_selection'] = graph_cfg.get('adaptive_edge_selection', True)
+        filter_kwargs['_graph_expansion_hops'] = graph_cfg.get('expansion_hops', 1)
+        filter_kwargs['_graph_max_seed_events_per_item'] = graph_cfg.get('max_seed_events_per_item', 3)
+        filter_kwargs['_graph_min_score'] = graph_cfg.get('graph_min_score', 0.0)
+        filter_kwargs['_graph_min_expanded_results'] = graph_cfg.get('min_expanded_results', 1)
+        filter_kwargs['_graph_debug'] = graph_cfg.get('debug', False)
 
     # noinspection PyTypeChecker
     api = EMVerbalizationAPI(

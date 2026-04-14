@@ -266,7 +266,8 @@ class ExpandableTreeNode(ExpandableList):
         self._wrapped = wrapped
         search_filter_fn = search_similarity_to_filter_fn(search_similarity_fn, **search_filter_kwargs)
         super().__init__(children=[
-            ExpandableTreeNode(c, children_extractor, search_similarity_fn)
+            ExpandableTreeNode(c, children_extractor, search_similarity_fn,
+                               search_filter_kwargs=search_filter_kwargs)
             for c in children
         ], filter_fn_generator=create_expandable_tree_node_filter_fn,
             search_filter_fn=search_filter_fn)
@@ -356,6 +357,11 @@ def search_similarity_to_filter_fn(
         _graph_gamma=0.05,
         _graph_max_neighbors=10,
         _graph_adaptive_edge_selection=True,
+        _graph_expansion_hops=1,
+        _graph_max_seed_events_per_item=3,
+        _graph_min_score=0.0,
+        _graph_min_expanded_results=1,
+        _graph_debug=False,
 ) -> Callable[[str, List[Any], ...], List[int]]:
     """
     创建搜索过滤函数
@@ -377,6 +383,11 @@ def search_similarity_to_filter_fn(
         _graph_gamma: 深度奖励权重
         _graph_max_neighbors: 每个节点最多考虑的邻居数
         _graph_adaptive_edge_selection: 是否启用查询感知的边类型选择
+        _graph_expansion_hops: 图扩展跳数
+        _graph_max_seed_events_per_item: 每个 seed child 最多使用多少个内部事件做扩展起点
+        _graph_min_score: 图扩展候选的最低图分阈值
+        _graph_min_expanded_results: 有扩展候选时至少保留多少个图扩展结果
+        _graph_debug: 是否打印图扩展调试日志
     """
     
     # 如果有记忆图且有嵌入函数，使用图增强检索
@@ -396,6 +407,11 @@ def search_similarity_to_filter_fn(
             gamma=_graph_gamma,
             max_neighbors=_graph_max_neighbors,
             adaptive_edge_selection=_graph_adaptive_edge_selection,
+            expansion_hops=_graph_expansion_hops,
+            max_seed_events_per_item=_graph_max_seed_events_per_item,
+            graph_min_score=_graph_min_score,
+            min_expanded_results=_graph_min_expanded_results,
+            debug=_graph_debug,
         )
     
     # 如果启用 FAISS，使用 FAISS 搜索
