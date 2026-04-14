@@ -27,7 +27,7 @@ python -m llm_emv.eval \
   --teach-base dataset/TEACh \
   --qa-file data/teach/test_set_100.pkl \
   --output experiments/results/teach/h_emv_gemini_2.5_pro_100.json \
-  --llm-summarizer-cfg "{'llm': {'model_name': 'google/gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5}, 'example_db_name': 'teach', 'few_shot_k': 2}"
+  --llm-summarizer-cfg "{'llm': {'model_name': 'gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5}, 'example_db_name': 'teach', 'few_shot_k': 2}"
 ```
 
 ### 2. TEACh 图增强实验
@@ -39,7 +39,7 @@ python -m llm_emv.eval \
   --teach-base dataset/TEACh \
   --qa-file data/teach/test_set_50.pkl \
   --output experiments/results/teach/h_emv_graph_aug_50.json \
-  --llm-summarizer-cfg "{'llm': {'model_name': 'google/gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5}, 'example_db_name': 'teach', 'few_shot_k': 2}"
+  --llm-summarizer-cfg "{'llm': {'model_name': 'gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5}, 'example_db_name': 'teach', 'few_shot_k': 2}"
 ```
 
 ### 3. TEACh 遗忘实验
@@ -51,7 +51,7 @@ python -m llm_emv.eval \
   --teach-base dataset/TEACh \
   --qa-file data/teach/test_set_50.pkl \
   --output experiments/results/teach/h_emv_graph_aug_forget_50.json \
-  --llm-summarizer-cfg "{'llm': {'model_name': 'google/gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5}, 'example_db_name': 'teach', 'few_shot_k': 2}"
+  --llm-summarizer-cfg "{'llm': {'model_name': 'gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5}, 'example_db_name': 'teach', 'few_shot_k': 2}"
 ```
 
 ### 4. TEACh 修正实验
@@ -64,7 +64,7 @@ python -m llm_emv.eval \
   --qa-file data/teach/test_set_50.pkl \
   --output experiments/results/teach/h_emv_graph_aug_correction_50.json \
   --enable-correction \
-  --llm-summarizer-cfg "{'llm': {'model_name': 'google/gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5}, 'example_db_name': 'teach', 'few_shot_k': 2}"
+  --llm-summarizer-cfg "{'llm': {'model_name': 'gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5}, 'example_db_name': 'teach', 'few_shot_k': 2}"
 ```
 
 ### 5. Ego4D 实验
