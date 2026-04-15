@@ -297,7 +297,11 @@ class ExpandableTreeNode(ExpandableList):
                         + children_str + (('\n' + ' ' * INDENT_SIZE) * pretty))
 
         # 优先使用修正后的摘要（记忆修正模块设置的 _summary_override）
-        _nl_text = getattr(self._wrapped, '_summary_override', None) or self._wrapped.nl_summary
+        _nl_text = (
+                getattr(self._wrapped, '_summary_override', None)
+                or getattr(self._wrapped, '_cached_nl_summary', None)
+                or self._wrapped.nl_summary
+        )
         nl_summary = indent_following_lines(_nl_text, num_spaces=INDENT_SIZE * pretty)
         if len(nl_summary.splitlines()) > 1:
             nl_summary = f'"""{nl_summary}"""'

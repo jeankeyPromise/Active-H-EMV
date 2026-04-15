@@ -1,5 +1,6 @@
 import argparse
 import json
+import re
 from datetime import datetime
 from functools import partial
 from itertools import islice
@@ -17,6 +18,28 @@ from .qa_eval import run_evaluation, run_evaluation_with_correction, EpisodicQAD
 from ..setup import setup_llm_emv
 
 total_prompt_tokens, total_completion_tokens, total_cost = 0, 0, 0
+
+
+def _redact_config_value(value):
+    text = str(value)
+    text = re.sub(
+        r"(['\"]?(?:openai_api_key|api_key|key|token|secret)['\"]?\s*:\s*)['\"][^'\"]+['\"]",
+        r"\1'***REDACTED***'",
+        text,
+        flags=re.IGNORECASE,
+    )
+    text = re.sub(
+        r"(['\"]?(?:base_url|openai_base_url)['\"]?\s*:\s*)['\"][^'\"]+['\"]",
+        r"\1'***REDACTED***'",
+        text,
+        flags=re.IGNORECASE,
+    )
+    text = re.sub(r'sk-[A-Za-z0-9_-]+', 'sk-***REDACTED***', text)
+    return text
+
+
+def _safe_config(args: argparse.Namespace) -> dict:
+    return {k: _redact_config_value(v) for k, v in args.__dict__.items()}
 
 
 def _load_cfg(cfg_path: str):
@@ -172,7 +195,7 @@ def main():
         result = run_evaluation(partial(run_model, args.cfg), dataset)
 
     args.output.write_text(json.dumps({
-        'config': {k: str(v) for k, v in args.__dict__.items()},
+        'config': _safe_config(args),
         'code_commit': determine_git_commit(),
         'results': {
             r.sample_id: {

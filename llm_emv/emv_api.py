@@ -196,9 +196,10 @@ def history_search_similarity(embedding_fn: Callable[[List[str]], torch.Tensor],
         # 获取索引内容，如果底层节点有修正覆盖则包含修正文本
         texts = [s for s in node.index_content if s]
         wrapped = getattr(node, '_wrapped', node)
-        override = getattr(wrapped, '_summary_override', None)
-        if override is not None:
-            texts.append(override)
+        for attr in ('_summary_override', '_cached_nl_summary'):
+            extra = getattr(wrapped, attr, None)
+            if extra is not None:
+                texts.append(extra)
         embedding = embedding_fn(texts)
         setattr(node, '_embedding_cache', embedding)
 

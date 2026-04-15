@@ -139,8 +139,12 @@ class FAISSIndex:
             if hasattr(node, 'index_content'):
                 texts = [s for s in node.index_content if s]
             else:
-                continue
-                
+                texts = []
+            wrapped = getattr(node, '_wrapped', node)
+            for attr in ('_summary_override', '_cached_nl_summary'):
+                extra = getattr(wrapped, attr, None)
+                if extra is not None:
+                    texts.append(extra)
             if not texts:
                 continue
             
@@ -259,6 +263,18 @@ def create_faiss_search_filter_fn(
     # 索引会在首次搜索时懒加载
     faiss_index: Optional[FAISSIndex] = None
     cached_items: Optional[List[Any]] = None
+
+    def _effective_index_texts(node: Any) -> List[str]:
+        if hasattr(node, 'index_content'):
+            texts = [s for s in node.index_content if s]
+        else:
+            texts = []
+        wrapped = getattr(node, '_wrapped', node)
+        for attr in ('_summary_override', '_cached_nl_summary'):
+            extra = getattr(wrapped, attr, None)
+            if extra is not None:
+                texts.append(extra)
+        return texts
     
     def search(query: str, items: List[Any], close_match: bool = False) -> List[int]:
         nonlocal faiss_index, cached_items
@@ -294,7 +310,7 @@ def create_faiss_search_filter_fn(
                 if hasattr(item, '_embedding_cache'):
                     emb = item._embedding_cache
                 else:
-                    texts = [s for s in item.index_content if s] if hasattr(item, 'index_content') else []
+                    texts = _effective_index_texts(item)
                     if texts:
                         emb = embedding_fn(texts)
                         item._embedding_cache = emb

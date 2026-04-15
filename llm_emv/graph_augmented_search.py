@@ -378,6 +378,11 @@ def _compute_similarity(
     else:
         if hasattr(tree_node, 'index_content'):
             texts = [s for s in tree_node.index_content if s]
+            wrapped = getattr(tree_node, '_wrapped', tree_node)
+            for attr in ('_summary_override', '_cached_nl_summary'):
+                extra = getattr(wrapped, attr, None)
+                if extra is not None:
+                    texts.append(extra)
             if texts:
                 embedding = embedding_fn(texts)
                 tree_node._embedding_cache = embedding

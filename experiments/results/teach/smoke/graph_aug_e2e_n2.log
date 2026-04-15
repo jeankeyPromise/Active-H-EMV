@@ -1,0 +1,25 @@
+/home/user22303471/Project/Active-H-EMV/em/llm_summary.py:115: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the langchain-huggingface package and should be used instead. To use it run `pip install -U langchain-huggingface` and import as `from langchain_huggingface import HuggingFaceEmbeddings`.
+  embeddings = HuggingFaceEmbeddings(
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 4770.83it/s]
+[1mBertModel LOAD REPORT[0m from: sentence-transformers/all-MiniLM-l6-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+HTTP Error 504 thrown while requesting HEAD https://huggingface.co/sentence-transformers/all-MiniLM-l6-v2/resolve/main/processor_config.json
+Retrying in 1s [Retry 1/5].
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loaded 3 examples
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 5121.37it/s]
+[1mBertModel LOAD REPORT[0m from: sentence-transformers/all-MiniLM-l6-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+HTTP Error 504 thrown while requesting HEAD https://huggingface.co/sentence-transformers/all-MiniLM-l6-v2/resolve/main/processor_config.json
+Retrying in 1s [Retry 1/5].
+Terminated

@@ -204,6 +204,8 @@ def apply_forgetting_level_2(event: EventBasedSummary) -> None:
             event._cached_nl_summary = event.nl_summary
         except (IndexError, AttributeError):
             event._cached_nl_summary = ''
+    if event._cached_nl_summary:
+        event._summary_override = event._cached_nl_summary
 
     # 只保留最后一个场景
     if len(event.scenes) > 1:
@@ -217,6 +219,8 @@ def apply_forgetting_level_2(event: EventBasedSummary) -> None:
 
     # 标记遗忘级别
     event._forgetting_level = 2
+    if hasattr(event, '_embedding_cache'):
+        delattr(event, '_embedding_cache')
 
 
 # =============================================================================
