@@ -1,3 +1,4 @@
+import ast
 import re
 import traceback
 from typing import List
@@ -54,6 +55,125 @@ def _clean_markdown_code(code: str) -> str:
         print(f'[代码清理] 移除了 Markdown 格式标记')
     
     return code
+
+
+def _extract_leading_answer_call(code: str) -> str:
+    stripped = code.lstrip()
+    if not stripped.startswith('answer('):
+        return code
+
+    start_offset = len(code) - len(stripped)
+    depth = 0
+    quote = None
+    escape = False
+    for idx, char in enumerate(code[start_offset:], start=start_offset):
+        if quote:
+            if escape:
+                escape = False
+            elif char == '\\':
+                escape = True
+            elif char == quote:
+                quote = None
+            continue
+        if char in ('"', "'"):
+            quote = char
+        elif char == '(':
+            depth += 1
+        elif char == ')':
+            depth -= 1
+            if depth == 0:
+                candidate = code[start_offset:idx + 1]
+                try:
+                    ast.parse(candidate)
+                except SyntaxError:
+                    repaired = _repair_answer_call(candidate)
+                    if repaired is not None:
+                        print('[代码清理] 修复 answer(...) 中的多行字符串')
+                        return repaired
+                    return code
+                print('[代码清理] 截断 answer(...) 后的非 Python 文本')
+                return candidate
+    return code
+
+
+def _repair_answer_call(code: str) -> str | None:
+    stripped = code.strip()
+    if not stripped.startswith('answer(') or not stripped.endswith(')'):
+        return None
+
+    content = stripped[len('answer('):-1].strip()
+    quoted = r'(?P<{quote}>["\'])(?P<{value}>.*?)(?P={quote})'
+
+    patterns = (
+        (
+            r'^reasoning\s*=\s*'
+            + quoted.format(quote='rq', value='reasoning')
+            + r'\s*,\s*answer\s*=\s*'
+            + quoted.format(quote='aq', value='answer')
+            + r'\s*,?\s*$'
+        ),
+        (
+            r'^answer\s*=\s*'
+            + quoted.format(quote='aq', value='answer')
+            + r'\s*,\s*reasoning\s*=\s*'
+            + quoted.format(quote='rq', value='reasoning')
+            + r'\s*,?\s*$'
+        ),
+        (
+            r'^answer\s*=\s*'
+            + quoted.format(quote='aq', value='answer')
+            + r'\s*,?\s*$'
+        ),
+        (
+            r'^'
+            + quoted.format(quote='aq', value='answer')
+            + r'\s*,?\s*$'
+        ),
+    )
+    for pattern in patterns:
+        match = re.fullmatch(pattern, content, flags=re.DOTALL)
+        if not match:
+            continue
+        answer = match.groupdict().get('answer')
+        reasoning = match.groupdict().get('reasoning')
+        if answer is None:
+            return None
+        if reasoning is None:
+            return f'answer(answer={answer!r})'
+        return f'answer(reasoning={reasoning!r}, answer={answer!r})'
+    return None
+
+
+def _looks_like_plain_answer(code: str) -> bool:
+    stripped = code.strip()
+    if not stripped:
+        return False
+    code_like_prefixes = (
+        'history', 'answer(', 'ask(', 'vqa(', 'now(', 'import ', 'from ',
+        'for ', 'if ', 'while ', 'def ', 'class ', 'try:', 'with ',
+    )
+    if stripped.startswith(code_like_prefixes):
+        return False
+    first_line = stripped.splitlines()[0]
+    return bool(re.search(r'[A-Za-z]', first_line))
+
+
+def _coerce_to_safe_python_console(code: str) -> str:
+    try:
+        ast.parse(code)
+        return code
+    except SyntaxError:
+        leading_answer = _extract_leading_answer_call(code)
+        if leading_answer != code:
+            return leading_answer
+        repaired_answer = _repair_answer_call(code)
+        if repaired_answer is not None:
+            print('[代码清理] 修复 answer(...) 中的多行字符串')
+            return repaired_answer
+        if _looks_like_plain_answer(code):
+            print('[代码清理] 将纯自然语言最终回复包装为 answer(answer=...)')
+            return f'answer(answer={code!r})'
+        return code
 
 
 class SimplifiedCodingEMV:
@@ -169,6 +289,7 @@ class SimplifiedCodingEMV:
                 
                 # 清理 LLM 可能添加的 Markdown 格式
                 code = _clean_markdown_code(code)
+                code = _coerce_to_safe_python_console(code)
                 
                 self._exec_hist.items.append(ExecutionHistory.Command(code))
 

@@ -1,0 +1,38 @@
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5137.64it/s]
+[1mMPNetModel LOAD REPORT[0m from: sentence-transformers/all-mpnet-base-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:206: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:164: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  result = torch.empty(len(texts), embedding_model.get_sentence_embedding_dimension(),
+[配置] 启用 FAISS 加速，索引类型: flat
+LEVEL2_SUMMARY_OVERRIDE True
+LEVEL2_CACHED_SUMMARY True
+LEVEL2_SCENES_AFTER 1
+Embedding 4 , new: 0
+Embedding 1 , new: 0
+TREE_SIMILARITY 1.0
+Embedding 1 , new: 0
+GRAPH_SIMILARITY 1.0
+[FAISS] 构建新索引...
+[FAISS] 构建索引，节点数: 10, 索引类型: flat
+Embedding 1 , new: 0
+Embedding 2 , new: 0
+Embedding 1 , new: 0
+Embedding 1 , new: 0
+Embedding 1 , new: 0
+Embedding 4 , new: 0
+Embedding 6 , new: 0
+Embedding 7 , new: 0
+Embedding 7 , new: 0
+[FAISS] 索引构建完成，总向量数: 52
+Embedding 1 , new: 0
+FAISS_RESULT [5]
+TARGET_RETURNED True
+PHASE2_CURRENT_SANITY_SUCCESS True

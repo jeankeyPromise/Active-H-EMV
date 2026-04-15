@@ -132,3 +132,56 @@ Result interpretation:
 - The answer was semantically close but not lexically identical to ground truth.
 - The LLM Judge returned `PARTIAL`, and the safety policy correctly skipped memory correction.
 - This validates the intended fix for the earlier ROUGE-L false-positive correction problem.
+
+## Current Recheck Command (2026-04-15)
+
+```bash
+set -a; source .env; set +a
+conda run --no-capture-output -n active-h-emv python -m llm_emv.eval \
+  --cfg teach/simplified/full_graph_aug_correction \
+  --dataset teach-dechant \
+  --teach-base dataset/TEACh \
+  --qa-file data/teach/test_set_5.pkl \
+  --output experiments/results/teach/smoke/phase3_correction_api_n1_retry.json \
+  --n-samples 1 \
+  --enable-correction \
+  --llm-summarizer-cfg "{'llm': {'model_name': 'gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5}, 'example_db_name': 'teach', 'few_shot_k': 2}" \
+  2>&1 | tee experiments/results/teach/smoke/phase3_correction_api_n1_retry.log
+```
+
+## Current Recheck Result
+
+Output:
+
+```text
+experiments/results/teach/smoke/phase3_correction_api_n1_retry.json
+experiments/results/teach/smoke/phase3_correction_api_n1_retry.log
+```
+
+Key output:
+
+```text
+[Correction] 创建修正 LLM: gemini-2.5-pro
+[CorrectionEval] 创建 Answer Judge LLM: gemini-2.5-pro
+Answering clean a mug. make a salad. boil a potato. water the plant. make a plate of toast.
+[CorrectionEval] answer_judge=llm_PARTIAL score=0.50 correct=True
+[CorrectionEval] 跳过修正：回答已判定为正确/等价
+```
+
+Result:
+
+```text
+result_count 1
+q: List the tasks you performed.
+gt: prepare coffee in a clean mug. make a salad. boil potato. water the plant. make a plate of toast.
+hyp: clean a mug. make a salad. boil a potato. water the plant. make a plate of toast.
+```
+
+Validation:
+
+```text
+rg "Traceback|SyntaxError|###ERROR###|Error code|Connection error" phase3_correction_api_n1_retry.log -> no matches
+rg "sk-[A-Za-z0-9_-]+" phase3_correction_api_n1_retry.json record/phase3_correction_api.md -> no matches
+```
+
+Current status remains passed. The semantic Judge treated the lexical mismatch as `PARTIAL`, so correction was not triggered.

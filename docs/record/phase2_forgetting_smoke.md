@@ -125,3 +125,34 @@ PHASE2_OVERALL_SUCCESS True
 ## Result
 
 Passed. Forgetting does not break local retrieval on the tested samples. A real consumption bug for Level 2 cached summaries was fixed and verified through direct similarity, FAISS retrieval, and interactive-tree search.
+
+## Current Sanity Check (2026-04-15)
+
+After the Phase 1 REPL cleanup, I reran a lightweight Level 2 consumption check on the current code:
+
+```bash
+conda run --no-capture-output -n active-h-emv python - <<'PY' \
+  2>&1 | tee experiments/results/teach/smoke/phase2_forgetting_current_sanity_retry.log
+# Load one TEACh sample, pick a multi-scene EventBasedSummary,
+# apply_forgetting_level_2(event), then verify tree similarity,
+# graph similarity, and FAISS retrieval all consume the cached summary.
+PY
+```
+
+The first current sanity attempt had a script-only bug: I called `create_faiss_search_filter_fn(..., _use_faiss=True, _faiss_index_type='flat')`, but the real signature is `dim=..., index_type=...`. I corrected the script and reran.
+
+Key output:
+
+```text
+LEVEL2_SUMMARY_OVERRIDE True
+LEVEL2_CACHED_SUMMARY True
+LEVEL2_SCENES_AFTER 1
+TREE_SIMILARITY 1.0
+GRAPH_SIMILARITY 1.0
+[FAISS] 构建索引，节点数: 10, 索引类型: flat
+FAISS_RESULT [5]
+TARGET_RETURNED True
+PHASE2_CURRENT_SANITY_SUCCESS True
+```
+
+Current status remains passed.

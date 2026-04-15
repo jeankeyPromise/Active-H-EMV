@@ -1,0 +1,329 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4880.35it/s]
+[1mMPNetModel LOAD REPORT[0m from: sentence-transformers/all-mpnet-base-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:206: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:164: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  result = torch.empty(len(texts), embedding_model.get_sentence_embedding_dimension(),
+[配置] 启用 FAISS 加速，索引类型: flat
+[GraphAug] 开始构建记忆图...
+[MemoryGraph] 收集到 493 个事件节点
+[MemoryGraph] 时间相邻边: 393
+[MemoryGraph] 共享物体边: 1401
+[MemoryGraph] 共享位置边: 1894
+Embedding 88 , new: 0
+[MemoryGraph] 唯一动作数: 88, 相似动作对: 23
+[MemoryGraph] 相似动作边: 129
+[MemoryGraph] 图构建完成: {'num_nodes': 493, 'num_edges': 3817, 'edges_temporal_adjacent': 393, 'edges_co_object': 1401, 'edges_co_location': 1894, 'edges_similar_action': 129}
+[GraphAug] 记忆图构建完成
+
+TRACE_PROBE path=root children=3 query='Say("hi") Say("hi")'
+Embedding 216 , new: 0
+Embedding 1 , new: 0
+Embedding 116 , new: 0
+Embedding 1 , new: 0
+Embedding 145 , new: 0
+Embedding 1 , new: 0
+[GraphAug] query="Say("hi") Say("hi")" base_seed_indices=[0] items=3
+[GraphAug] seed item=0 base=0.899 summary="On the morning of July 22nd, I cleaned a mug to prepare it for coffee and then prepared a salad by slicing and cooking v"
+Embedding 1 , new: 0
+Embedding 1 , new: 0
+Embedding 2 , new: 0
+Embedding 1 , new: 0
+Embedding 1 , new: 0
+Embedding 1 , new: 0
+Embedding 3 , new: 0
+Embedding 4 , new: 0
+Embedding 6 , new: 0
+Embedding 7 , new: 0
+Embedding 7 , new: 0
+Embedding 5 , new: 0
+Embedding 5 , new: 0
+Embedding 7 , new: 0
+Embedding 12 , new: 0
+Embedding 7 , new: 0
+Embedding 3 , new: 0
+Embedding 1 , new: 0
+Embedding 3 , new: 0
+Embedding 3 , new: 0
+Embedding 5 , new: 0
+Embedding 6 , new: 0
+Embedding 5 , new: 0
+Embedding 7 , new: 0
+Embedding 8 , new: 0
+Embedding 8 , new: 0
+Embedding 7 , new: 0
+Embedding 9 , new: 0
+Embedding 18 , new: 0
+Embedding 17 , new: 0
+Embedding 25 , new: 0
+Embedding 20 , new: 0
+Embedding 21 , new: 0
+Embedding 26 , new: 0
+Embedding 21 , new: 0
+Embedding 18 , new: 0
+Embedding 13 , new: 0
+Embedding 10 , new: 0
+Embedding 8 , new: 0
+Embedding 6 , new: 0
+Embedding 3 , new: 0
+Embedding 2 , new: 0
+Embedding 16 , new: 0
+Embedding 15 , new: 0
+Embedding 16 , new: 0
+Embedding 28 , new: 0
+Embedding 28 , new: 0
+Embedding 25 , new: 0
+Embedding 28 , new: 0
+Embedding 21 , new: 0
+Embedding 21 , new: 0
+Embedding 19 , new: 0
+Embedding 15 , new: 0
+Embedding 13 , new: 0
+Embedding 14 , new: 0
+Embedding 15 , new: 0
+Embedding 14 , new: 0
+Embedding 14 , new: 0
+Embedding 14 , new: 0
+Embedding 15 , new: 0
+Embedding 14 , new: 0
+Embedding 15 , new: 0
+Embedding 14 , new: 0
+Embedding 13 , new: 0
+Embedding 14 , new: 0
+Embedding 13 , new: 0
+Embedding 12 , new: 0
+Embedding 13 , new: 0
+Embedding 13 , new: 0
+Embedding 12 , new: 0
+Embedding 12 , new: 0
+Embedding 13 , new: 0
+Embedding 13 , new: 0
+Embedding 12 , new: 0
+Embedding 12 , new: 0
+Embedding 13 , new: 0
+Embedding 12 , new: 0
+Embedding 26 , new: 0
+Embedding 23 , new: 0
+Embedding 19 , new: 0
+Embedding 14 , new: 0
+Embedding 12 , new: 0
+Embedding 11 , new: 0
+Embedding 11 , new: 0
+Embedding 29 , new: 0
+Embedding 29 , new: 0
+Embedding 1 , new: 0
+Embedding 2 , new: 0
+Embedding 2 , new: 0
+Embedding 1 , new: 0
+Embedding 1 , new: 0
+Embedding 1 , new: 0
+Embedding 1 , new: 0
+Embedding 1 , new: 0
+Embedding 3 , new: 0
+Embedding 5 , new: 0
+Embedding 7 , new: 0
+Embedding 8 , new: 0
+Embedding 9 , new: 0
+Embedding 10 , new: 0
+Embedding 4 , new: 0
+Embedding 5 , new: 0
+Embedding 6 , new: 0
+Embedding 7 , new: 0
+Embedding 6 , new: 0
+Embedding 7 , new: 0
+Embedding 6 , new: 0
+Embedding 7 , new: 0
+Embedding 7 , new: 0
+Embedding 6 , new: 0
+Embedding 5 , new: 0
+Embedding 5 , new: 0
+Embedding 9 , new: 0
+Embedding 9 , new: 0
+Embedding 11 , new: 0
+Embedding 14 , new: 0
+Embedding 14 , new: 0
+Embedding 15 , new: 0
+Embedding 16 , new: 0
+Embedding 22 , new: 0
+Embedding 22 , new: 0
+Embedding 23 , new: 0
+Embedding 23 , new: 0
+Embedding 22 , new: 0
+Embedding 22 , new: 0
+Embedding 21 , new: 0
+Embedding 23 , new: 0
+Embedding 24 , new: 0
+Embedding 22 , new: 0
+Embedding 21 , new: 0
+Embedding 30 , new: 0
+Embedding 30 , new: 0
+Embedding 26 , new: 0
+Embedding 29 , new: 0
+Embedding 32 , new: 0
+Embedding 36 , new: 0
+Embedding 34 , new: 0
+Embedding 32 , new: 0
+Embedding 23 , new: 0
+Embedding 18 , new: 0
+Embedding 26 , new: 0
+Embedding 26 , new: 0
+Embedding 25 , new: 0
+Embedding 26 , new: 0
+Embedding 31 , new: 0
+Embedding 43 , new: 0
+Embedding 41 , new: 0
+Embedding 30 , new: 0
+Embedding 30 , new: 0
+Embedding 29 , new: 0
+Embedding 32 , new: 0
+Embedding 32 , new: 0
+Embedding 30 , new: 0
+Embedding 29 , new: 0
+Embedding 30 , new: 0
+Embedding 29 , new: 0
+Embedding 30 , new: 0
+Embedding 29 , new: 0
+Embedding 29 , new: 0
+Embedding 30 , new: 0
+Embedding 30 , new: 0
+Embedding 30 , new: 0
+Embedding 30 , new: 0
+Embedding 32 , new: 0
+Embedding 33 , new: 0
+Embedding 33 , new: 0
+Embedding 25 , new: 0
+Embedding 26 , new: 0
+Embedding 22 , new: 0
+Embedding 22 , new: 0
+Embedding 29 , new: 0
+Embedding 28 , new: 0
+Embedding 27 , new: 0
+Embedding 26 , new: 0
+Embedding 16 , new: 0
+Embedding 26 , new: 0
+Embedding 29 , new: 0
+Embedding 30 , new: 0
+Embedding 29 , new: 0
+Embedding 31 , new: 0
+Embedding 30 , new: 0
+Embedding 29 , new: 0
+Embedding 29 , new: 0
+Embedding 29 , new: 0
+Embedding 42 , new: 0
+Embedding 42 , new: 0
+Embedding 43 , new: 0
+Embedding 42 , new: 0
+Embedding 42 , new: 0
+Embedding 36 , new: 0
+Embedding 32 , new: 0
+Embedding 30 , new: 0
+Embedding 29 , new: 0
+Embedding 38 , new: 0
+Embedding 38 , new: 0
+Embedding 38 , new: 0
+Embedding 37 , new: 0
+Embedding 37 , new: 0
+Embedding 32 , new: 0
+Embedding 33 , new: 0
+Embedding 39 , new: 0
+Embedding 39 , new: 0
+Embedding 35 , new: 0
+Embedding 35 , new: 0
+Embedding 40 , new: 0
+Embedding 39 , new: 0
+Embedding 40 , new: 0
+Embedding 33 , new: 0
+Embedding 33 , new: 0
+Embedding 38 , new: 0
+Embedding 39 , new: 0
+Embedding 39 , new: 0
+Embedding 39 , new: 0
+Embedding 39 , new: 0
+Embedding 42 , new: 0
+Embedding 38 , new: 0
+Embedding 38 , new: 0
+Embedding 42 , new: 0
+Embedding 42 , new: 0
+Embedding 42 , new: 0
+Embedding 44 , new: 0
+Embedding 48 , new: 0
+Embedding 46 , new: 0
+Embedding 45 , new: 0
+Embedding 44 , new: 0
+Embedding 45 , new: 0
+Embedding 45 , new: 0
+Embedding 46 , new: 0
+Embedding 45 , new: 0
+Embedding 46 , new: 0
+Embedding 45 , new: 0
+Embedding 46 , new: 0
+Embedding 45 , new: 0
+Embedding 45 , new: 0
+Embedding 45 , new: 0
+Embedding 46 , new: 0
+[GraphAug] expanded_indices=[] candidate_pool=[0]
+[GraphAug] final item=0 base=0.899 graph=0.810 final=0.832 summary="On the morning of July 22nd, I cleaned a mug to prepare it for coffee and then prepared a salad by slicing and cooking v"
+TRACE_RESULT result= [0]
+TRACE_EXPANDED expanded= [] candidates= [0]
+
+TRACE_PROBE path=root children=3 query='put all small handheld objects on one armchair'
+Embedding 1 , new: 1
+Embedding 1 , new: 0
+Embedding 1 , new: 0
+[GraphAug] query="put all small handheld objects on one armchair" base_seed_indices=[0] items=3
+[GraphAug] seed item=0 base=0.389 summary="On the morning of July 22nd, I cleaned a mug to prepare it for coffee and then prepared a salad by slicing and cooking v"
+Embedding 1 , new: 0
+[GraphAug] expanded_indices=[] candidate_pool=[0]
+[GraphAug] final item=0 base=0.389 graph=0.350 final=0.360 summary="On the morning of July 22nd, I cleaned a mug to prepare it for coffee and then prepared a salad by slicing and cooking v"
+TRACE_RESULT result= [0]
+TRACE_EXPANDED expanded= [] candidates= [0]
+
+TRACE_PROBE path=root children=3 query='make a salad'
+Embedding 1 , new: 0
+Embedding 1 , new: 0
+Embedding 1 , new: 0
+[GraphAug] query="make a salad" base_seed_indices=[0] items=3
+[GraphAug] seed item=0 base=0.795 summary="On the morning of July 22nd, I cleaned a mug to prepare it for coffee and then prepared a salad by slicing and cooking v"
+Embedding 1 , new: 0
+[GraphAug] expanded_indices=[] candidate_pool=[0]
+[GraphAug] final item=0 base=0.795 graph=0.716 final=0.736 summary="On the morning of July 22nd, I cleaned a mug to prepare it for coffee and then prepared a salad by slicing and cooking v"
+TRACE_RESULT result= [0]
+TRACE_EXPANDED expanded= [] candidates= [0]
+
+TRACE_PROBE path=root children=3 query='List the tasks you performed.'
+Embedding 1 , new: 0
+Embedding 1 , new: 0
+Embedding 1 , new: 0
+[GraphAug] query="List the tasks you performed." base_seed_indices=[0] items=3
+[GraphAug] seed item=0 base=0.412 summary="On the morning of July 22nd, I cleaned a mug to prepare it for coffee and then prepared a salad by slicing and cooking v"
+Embedding 1 , new: 0
+[GraphAug] expanded_indices=[] candidate_pool=[0]
+[GraphAug] final item=0 base=0.412 graph=0.370 final=0.381 summary="On the morning of July 22nd, I cleaned a mug to prepare it for coffee and then prepared a salad by slicing and cooking v"
+TRACE_RESULT result= [0]
+TRACE_EXPANDED expanded= [] candidates= [0]
+
+TRACE_PROBE path=root.0 children=2 query='Say("hi") Say("hi")'
+Embedding 98 , new: 0
+Embedding 1 , new: 0
+Embedding 163 , new: 0
+Embedding 1 , new: 0
+[GraphAug] query="Say("hi") Say("hi")" base_seed_indices=[0] items=2
+[GraphAug] seed item=0 base=0.899 summary="I cleaned a dirty mug to prepare it for fresh coffee. This involved moving it to the sink, emptying its contents, washin"
+Embedding 1 , new: 0
+[GraphAug] expand seed_item=0 seed_graph=8 -> item=1 graph=114 via=co_location w=0.60 graph_score=0.378 summary="I prepared a salad by slicing a tomato and cooking and slicing a potato, then I plated the ingredients on a clean plate "
+[GraphAug] expand seed_item=0 seed_graph=8 -> item=1 graph=115 via=co_location w=0.60 graph_score=0.378 summary="I prepared a salad by slicing a tomato and cooking and slicing a potato, then I plated the ingredients on a clean plate "
+[GraphAug] expand seed_item=0 seed_graph=8 -> item=1 graph=116 via=co_location w=0.60 graph_score=0.378 summary="I prepared a salad by slicing a tomato and cooking and slicing a potato, then I plated the ingredients on a clean plate "
+[GraphAug] expand seed_item=0 seed_graph=84 -> item=1 graph=231 via=similar_action w=0.93 graph_score=0.713 summary="I prepared a salad by slicing a tomato and cooking and slicing a potato, then I plated the ingredients on a clean plate "
+[GraphAug] expand seed_item=0 seed_graph=84 -> item=1 graph=145 via=co_location w=0.60 graph_score=0.378 summary="I prepared a salad by slicing a tomato and cooking and slicing a potato, then I plated the ingredients on a clean plate "
+[GraphAug] expanded_indices=[1] candidate_pool=[0, 1]
+[GraphAug] final item=0 base=0.899 graph=0.810 final=0.832 summary="I cleaned a dirty mug to prepare it for fresh coffee. This involved moving it to the sink, emptying its contents, washin", item=1 base=0.645 graph=0.713 final=0.630 summary="I prepared a salad by slicing a tomato and cooking and slicing a potato, then I plated the ingredients on a clean plate "
+TRACE_RESULT result= [0, 1]
+TRACE_EXPANDED expanded= [1] candidates= [0, 1]
+PHASE1_GRAPH_TRACE_SUCCESS {'path': 'root.0', 'query': 'Say("hi") Say("hi")', 'expanded': [1], 'result': [0, 1]}

@@ -1,0 +1,1664 @@
+/home/user22303471/Project/Active-H-EMV/em/llm_summary.py:115: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the langchain-huggingface package and should be used instead. To use it run `pip install -U langchain-huggingface` and import as `from langchain_huggingface import HuggingFaceEmbeddings`.
+  embeddings = HuggingFaceEmbeddings(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 4560.57it/s]
+[1mBertModel LOAD REPORT[0m from: sentence-transformers/all-MiniLM-l6-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loaded 3 examples
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 4992.76it/s]
+[1mBertModel LOAD REPORT[0m from: sentence-transformers/all-MiniLM-l6-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loaded 4 examples
+[Correction] 加载嵌入模型: all-mpnet-base-v2
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4945.44it/s]
+[1mMPNetModel LOAD REPORT[0m from: sentence-transformers/all-mpnet-base-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+[Correction] 创建修正 LLM: gemini-2.5-pro
+[CorrectionEval] 创建 Answer Judge LLM: gemini-2.5-pro
+
+[Correction] 启用模拟反馈修正协议
+
+
+[CorrectionEval] === 新 episode: 03379f213dfbda39_79a2-724c11f87d95f819_a970-38d01f55a8e1ff9b_ca2f-2513b9a8d8ae5129_ab38-2bb159500f5ee79b_77a4-0 ===
+Evaluating sample 03379f213dfbda39_79a2-724c11f87d95f819_a970-38d01f55a8e1ff9b_ca2f-2513b9a8d8ae5129_ab38-2bb159500f5ee79b_77a4-0-sequence_of_task_descs (correction mode)
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4447.21it/s]
+[1mMPNetModel LOAD REPORT[0m from: sentence-transformers/all-mpnet-base-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:206: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:164: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  result = torch.empty(len(texts), embedding_model.get_sentence_embedding_dimension(),
+[配置] 启用 FAISS 加速，索引类型: flat
+[GraphAug] 开始构建记忆图...
+[MemoryGraph] 收集到 493 个事件节点
+[MemoryGraph] 时间相邻边: 393
+[MemoryGraph] 共享物体边: 1401
+[MemoryGraph] 共享位置边: 1894
+Embedding 88 , new: 0
+[MemoryGraph] 唯一动作数: 88, 相似动作对: 23
+[MemoryGraph] 相似动作边: 130
+[MemoryGraph] 图构建完成: {'num_nodes': 493, 'num_edges': 3818, 'edges_temporal_adjacent': 393, 'edges_co_object': 1401, 'edges_co_location': 1894, 'edges_similar_action': 130}
+[GraphAug] 记忆图构建完成
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+[GraphAug] 使用图增强检索，alpha=0.7, beta=0.25, gamma=0.05
+Initializing search embeddings eagerly...
+Embedding 216 , new: 0
+Embedding 1 , new: 0
+Embedding 116 , new: 0
+Embedding 1 , new: 0
+Embedding 145 , new: 0
+Embedding 1 , new: 0
+Got 21 examples
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4635.28it/s]
+[1mMPNetModel LOAD REPORT[0m from: sentence-transformers/all-mpnet-base-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+
+**SystemMessage**:
+"""You are a smart humanoid robot answering user question about your past actions.
+The history object contains information on what you did in the past, represented as a tree.
+Use the method expand to look at details of a node.
+Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in order to keep the tree compact.
+Enter Python expressions into the console to see the value and decide for the next command based on that result.
+Answer by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
+Closely follow the answer style and format from the given examples.
+Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found" or you get "Nothing changed" multiple times, it means there is no record. Answer honestly that you have no record, do NOT keep searching repeatedly."""
+
+**HumanMessage**:
+"""
+def answer(reasoning: str = None, answer: str = Ellipsis)
+def ask(question: str)
+def now() -> datetime.datetime
+def vqa(question: str, *images: PIL.Image.Image)
+"""
+
+**HumanMessage**:
+"""Usage examples:
+>>> history.expand()  # Shows the history tree with all child nodes expanded
+>>> history.expand(date(2021, 12, 20))  # Expand the children that overlap with the given day
+>>> history.expand(now() - timedelta(hours=6), now() - timedelta(hours=4))  # Expand all children that overlap with the given range (in this example "about 5 hours ago")
+>>> history.expand((now() - timedelta(days=2)).date())  # Expand all children that overlap with the day before yesterday
+>>> history.expand(0)  # Shows child node 0
+>>> history[0].expand()  # Expands all child nodes of node 0 (node 0 must be expanded already to see them)
+>>> history[5][2].expand()  # Shows child node 2 of child node 5 with all its child nodes expanded
+>>> history.search("green cup") # Semantic index search. Expands the most relevant children according to similarity of the natural language query and the node's (recursively defined) index content.
+>>> history[1][42].search("bicycle") # Semantic index search on some node further down the tree. Expands the children of node 1.42 most relevant to the search term
+>>> history[3].collapse_all_but(1); history[3][1].expand()  # Zooms into details of child node 3.1 while collapsing all other childs of node 3
+>>> vqa("What color is the ... in this image?",
+...     history[2][4][-1][0].image)  # Invoke a model to answer a visual question about image(s) of some leaf (!) node(s)
+
+# After gathering the relevant information, answer the question:
+# Optionally, provide a reasoning on why you choose the respective answer
+>>> answer(reasoning="...", answer="...")"""
+
+**HumanMessage**:
+"""Example interactions:
+User question: List the tasks you performed.
+
+2023/10/01 - 2023/10/04: "Over the past few days, I have been busy performing household tasks such as watering plants, preparing meals like toasted bread and salads, and organizing items around the living space, ensuring cleanliness and satisfaction with the completed tasks."  
+  ...
+
+>>> history.expand()
+
+2023/10/01 - 2023/10/04: "Over the past few days, I have been busy performing household tasks such as watering plants, preparing meals like toasted bread and salads, and organizing items around the living space, ensuring cleanliness and satisfaction with the completed tasks."  
+  0: 2023/10/01 11:39 - 16:28: "On October 1st, I completed tasks including watering a houseplant, slicing a tomato and placing it on the dining table, and rearranging Box_1 and watches across different locations like the CoffeeTable and Sofa."  
+    ...
+  1: 2023/10/02 13:39 - 14:07: "On October 2nd, I prepared and toasted a slice of bread, ensuring it was placed on a clean plate after cleaning dining items, confirming task completion."  
+    ...
+  2: 2023/10/03 11:05 - 11:25: "On October 3rd, I placed a pillow on the sofa and prepared a salad with lettuce and tomatoes, which was well-received."  
+    ...
+  3: 2023/10/04 12:20 - 15:13: "On October 4th, I stored a dirty plate in Cabinet_7, watered a houseplant with water from a pot, and cooked potato slices, transferring them to a clean plate and confirming satisfaction."  
+    ...
+
+>>> history[0].expand(); history[2].expand(); history[3].expand()
+
+2023/10/01 - 2023/10/04: "Over the past few days, I have been busy performing household tasks such as watering plants, preparing meals like toasted bread and salads, and organizing items around the living space, ensuring cleanliness and satisfaction with the completed tasks."  
+  0: 2023/10/01 11:39 - 16:28: "On October 1st, I completed tasks including watering a houseplant, slicing a tomato and placing it on the dining table, and rearranging Box_1 and watches across different locations like the CoffeeTable and Sofa."  
+    0: 2023/10/01 11:39 - 12:08: "On October 1st, I watered a houseplant and then sliced a tomato, placing the slices on a plate on the dining table upon request. I confirmed the completion of these tasks."  
+      ...
+    1: 2023/10/01 16:22 - 16:28: "Later on October 1st, I rearranged Box_1 and watches, moving them between various locations including the CoffeeTable, ArmChair, SideTable, and Sofa, completing the task as instructed."  
+      ...
+  1: 2023/10/02 13:39 - 14:07: "On October 2nd, I prepared and toasted a slice of bread, ensuring it was placed on a clean plate after cleaning dining items, confirming task completion."  
+    ...
+  2: 2023/10/03 11:05 - 11:25: "On October 3rd, I placed a pillow on the sofa and prepared a salad with lettuce and tomatoes, which was well-received."  
+    0: 2023/10/03 11:05 - 11:25: "On October 3rd, I placed a pillow on the sofa and prepared a salad by slicing and arranging lettuce and tomatoes on a plate, receiving positive feedback for completing both tasks."  
+      ...
+  3: 2023/10/04 12:20 - 15:13: "On October 4th, I stored a dirty plate in Cabinet_7, watered a houseplant with water from a pot, and cooked potato slices, transferring them to a clean plate and confirming satisfaction."  
+    0: 2023/10/04 12:20:23 - 12:21:14: "I was instructed to put the plate next to the microwave into a cabinet. I opened Cabinet_7, picked up the dirty plate from the countertop, placed it inside Cabinet_7, and received confirmation that the task was satisfactory."  
+      ...
+    1: 2023/10/04 13:23:24 - 13:25:39: "I picked up a pot filled with water and poured it into the houseplant on the table, completing the task of watering the plant."  
+      ...
+    2: 2023/10/04 15:02 - 15:13: "I greeted and received a request to cook two pieces of potato. I sliced the potato, placed the slices in a pan, cooked them on the stove, and then transferred the cooked slices to a clean plate. I completed the task and received confirmation of satisfaction."  
+      ...
+
+>>> history[0][1].expand(); history[2][0].expand()
+
+2023/10/01 - 2023/10/04: "Over the past few days, I have been busy performing household tasks such as watering plants, preparing meals like toasted bread and salads, and organizing items around the living space, ensuring cleanliness and satisfaction with the completed tasks."  
+  0: 2023/10/01 11:39 - 16:28: "On October 1st, I completed tasks including watering a houseplant, slicing a tomato and placing it on the dining table, and rearranging Box_1 and watches across different locations like the CoffeeTable and Sofa."  
+    0: 2023/10/01 11:39 - 12:08: "On October 1st, I watered a houseplant and then sliced a tomato, placing the slices on a plate on the dining table upon request. I confirmed the completion of these tasks."  
+      ...
+    1: 2023/10/01 16:22 - 16:28: "Later on October 1st, I rearranged Box_1 and watches, moving them between various locations including the CoffeeTable, ArmChair, SideTable, and Sofa, completing the task as instructed."  
+      0: 2023/10/01 16:22 - 16:28: "I interacted with Box_1 and various watches, moving Box_1 between the CoffeeTable and other locations multiple times. I was also instructed to place watches on the Sofa, which I did by moving Watch_1 from the ArmChair to the SideTable and finally to the Sofa, along with placing Watch_2 on the Sofa and confirming task completion."  
+        ...
+  1: 2023/10/02 13:39 - 14:07: "On October 2nd, I prepared and toasted a slice of bread, ensuring it was placed on a clean plate after cleaning dining items, confirming task completion."  
+    ...
+  2: 2023/10/03 11:05 - 11:25: "On October 3rd, I placed a pillow on the sofa and prepared a salad with lettuce and tomatoes, which was well-received."  
+    0: 2023/10/03 11:05 - 11:25: "On October 3rd, I placed a pillow on the sofa and prepared a salad by slicing and arranging lettuce and tomatoes on a plate, receiving positive feedback for completing both tasks."  
+      0: 2023/10/03 11:05:11 - 11:06:58: "I picked up a pillow and placed it on the sofa as instructed. After completing the task, I confirmed the action was done."  
+        ...
+      1: 2023/10/03 11:12 - 11:25: "I was instructed to prepare a salad. I sliced lettuce and tomatoes, placed them on the countertop, and received further instructions to refine the lettuce slices and arrange them on a plate. After arranging the sliced vegetables, I completed the task and received positive feedback."  
+        ...
+  3: 2023/10/04 12:20 - 15:13: "On October 4th, I stored a dirty plate in Cabinet_7, watered a houseplant with water from a pot, and cooked potato slices, transferring them to a clean plate and confirming satisfaction."  
+    0: 2023/10/04 12:20:23 - 12:21:14: "I was instructed to put the plate next to the microwave into a cabinet. I opened Cabinet_7, picked up the dirty plate from the countertop, placed it inside Cabinet_7, and received confirmation that the task was satisfactory."  
+      ...
+    1: 2023/10/04 13:23:24 - 13:25:39: "I picked up a pot filled with water and poured it into the houseplant on the table, completing the task of watering the plant."  
+      ...
+    2: 2023/10/04 15:02 - 15:13: "I greeted and received a request to cook two pieces of potato. I sliced the potato, placed the slices in a pan, cooked them on the stove, and then transferred the cooked slices to a clean plate. I completed the task and received confirmation of satisfaction."  
+      ...
+
+>>> answer("water the plant. serve 1 slice(s) of tomato on a plate. put all watch on one sofa. make a plate of toast. put all pillow on any sofa. make a salad. put all plate in any cabinet. water the plant. cook 2 slice(s) of potato and serve on a plate.")"""
+
+**HumanMessage**:
+"""User question: List the tasks you performed."""
+
+**HumanMessage**:
+"""Current state:
+2023/07/22 - 2023/07/24: "Over the past few days, I focused on meal preparation by making a salad, boiling a potato, and preparing toast, while also cleaning a mug and watering a houseplant. My actions centered on kitchen tasks and routine household maintenance."  
+  ..."""
+{}
+LLM generated empty reply, increasing temperature to 0.3
+{'temperature': 0.3}
+command: history.expand()
+expected output: 
+
+
+ ============================== 
+
+
+eval history.expand()
+Updated/Defined variables after execution: {}
+
+**SystemMessage**:
+"""You are a smart humanoid robot answering user question about your past actions.
+The history object contains information on what you did in the past, represented as a tree.
+Use the method expand to look at details of a node.
+Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in order to keep the tree compact.
+Enter Python expressions into the console to see the value and decide for the next command based on that result.
+Answer by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
+Closely follow the answer style and format from the given examples.
+Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found" or you get "Nothing changed" multiple times, it means there is no record. Answer honestly that you have no record, do NOT keep searching repeatedly."""
+
+**HumanMessage**:
+"""
+def answer(reasoning: str = None, answer: str = Ellipsis)
+def ask(question: str)
+def now() -> datetime.datetime
+def vqa(question: str, *images: PIL.Image.Image)
+"""
+
+**HumanMessage**:
+"""Usage examples:
+>>> history.expand()  # Shows the history tree with all child nodes expanded
+>>> history.expand(date(2021, 12, 20))  # Expand the children that overlap with the given day
+>>> history.expand(now() - timedelta(hours=6), now() - timedelta(hours=4))  # Expand all children that overlap with the given range (in this example "about 5 hours ago")
+>>> history.expand((now() - timedelta(days=2)).date())  # Expand all children that overlap with the day before yesterday
+>>> history.expand(0)  # Shows child node 0
+>>> history[0].expand()  # Expands all child nodes of node 0 (node 0 must be expanded already to see them)
+>>> history[5][2].expand()  # Shows child node 2 of child node 5 with all its child nodes expanded
+>>> history.search("green cup") # Semantic index search. Expands the most relevant children according to similarity of the natural language query and the node's (recursively defined) index content.
+>>> history[1][42].search("bicycle") # Semantic index search on some node further down the tree. Expands the children of node 1.42 most relevant to the search term
+>>> history[3].collapse_all_but(1); history[3][1].expand()  # Zooms into details of child node 3.1 while collapsing all other childs of node 3
+>>> vqa("What color is the ... in this image?",
+...     history[2][4][-1][0].image)  # Invoke a model to answer a visual question about image(s) of some leaf (!) node(s)
+
+# After gathering the relevant information, answer the question:
+# Optionally, provide a reasoning on why you choose the respective answer
+>>> answer(reasoning="...", answer="...")"""
+
+**HumanMessage**:
+"""Example interactions:
+User question: List the tasks you performed.
+
+2023/10/01 - 2023/10/04: "Over the past few days, I have been busy performing household tasks such as watering plants, preparing meals like toasted bread and salads, and organizing items around the living space, ensuring cleanliness and satisfaction with the completed tasks."  
+  ...
+
+>>> history.expand()
+
+2023/10/01 - 2023/10/04: "Over the past few days, I have been busy performing household tasks such as watering plants, preparing meals like toasted bread and salads, and organizing items around the living space, ensuring cleanliness and satisfaction with the completed tasks."  
+  0: 2023/10/01 11:39 - 16:28: "On October 1st, I completed tasks including watering a houseplant, slicing a tomato and placing it on the dining table, and rearranging Box_1 and watches across different locations like the CoffeeTable and Sofa."  
+    ...
+  1: 2023/10/02 13:39 - 14:07: "On October 2nd, I prepared and toasted a slice of bread, ensuring it was placed on a clean plate after cleaning dining items, confirming task completion."  
+    ...
+  2: 2023/10/03 11:05 - 11:25: "On October 3rd, I placed a pillow on the sofa and prepared a salad with lettuce and tomatoes, which was well-received."  
+    ...
+  3: 2023/10/04 12:20 - 15:13: "On October 4th, I stored a dirty plate in Cabinet_7, watered a houseplant with water from a pot, and cooked potato slices, transferring them to a clean plate and confirming satisfaction."  
+    ...
+
+>>> history[0].expand(); history[2].expand(); history[3].expand()
+
+2023/10/01 - 2023/10/04: "Over the past few days, I have been busy performing household tasks such as watering plants, preparing meals like toasted bread and salads, and organizing items around the living space, ensuring cleanliness and satisfaction with the completed tasks."  
+  0: 2023/10/01 11:39 - 16:28: "On October 1st, I completed tasks including watering a houseplant, slicing a tomato and placing it on the dining table, and rearranging Box_1 and watches across different locations like the CoffeeTable and Sofa."  
+    0: 2023/10/01 11:39 - 12:08: "On October 1st, I watered a houseplant and then sliced a tomato, placing the slices on a plate on the dining table upon request. I confirmed the completion of these tasks."  
+      ...
+    1: 2023/10/01 16:22 - 16:28: "Later on October 1st, I rearranged Box_1 and watches, moving them between various locations including the CoffeeTable, ArmChair, SideTable, and Sofa, completing the task as instructed."  
+      ...
+  1: 2023/10/02 13:39 - 14:07: "On October 2nd, I prepared and toasted a slice of bread, ensuring it was placed on a clean plate after cleaning dining items, confirming task completion."  
+    ...
+  2: 2023/10/03 11:05 - 11:25: "On October 3rd, I placed a pillow on the sofa and prepared a salad with lettuce and tomatoes, which was well-received."  
+    0: 2023/10/03 11:05 - 11:25: "On October 3rd, I placed a pillow on the sofa and prepared a salad by slicing and arranging lettuce and tomatoes on a plate, receiving positive feedback for completing both tasks."  
+      ...
+  3: 2023/10/04 12:20 - 15:13: "On October 4th, I stored a dirty plate in Cabinet_7, watered a houseplant with water from a pot, and cooked potato slices, transferring them to a clean plate and confirming satisfaction."  
+    0: 2023/10/04 12:20:23 - 12:21:14: "I was instructed to put the plate next to the microwave into a cabinet. I opened Cabinet_7, picked up the dirty plate from the countertop, placed it inside Cabinet_7, and received confirmation that the task was satisfactory."  
+      ...
+    1: 2023/10/04 13:23:24 - 13:25:39: "I picked up a pot filled with water and poured it into the houseplant on the table, completing the task of watering the plant."  
+      ...
+    2: 2023/10/04 15:02 - 15:13: "I greeted and received a request to cook two pieces of potato. I sliced the potato, placed the slices in a pan, cooked them on the stove, and then transferred the cooked slices to a clean plate. I completed the task and received confirmation of satisfaction."  
+      ...
+
+>>> history[0][1].expand(); history[2][0].expand()
+
+2023/10/01 - 2023/10/04: "Over the past few days, I have been busy performing household tasks such as watering plants, preparing meals like toasted bread and salads, and organizing items around the living space, ensuring cleanliness and satisfaction with the completed tasks."  
+  0: 2023/10/01 11:39 - 16:28: "On October 1st, I completed tasks including watering a houseplant, slicing a tomato and placing it on the dining table, and rearranging Box_1 and watches across different locations like the CoffeeTable and Sofa."  
+    0: 2023/10/01 11:39 - 12:08: "On October 1st, I watered a houseplant and then sliced a tomato, placing the slices on a plate on the dining table upon request. I confirmed the completion of these tasks."  
+      ...
+    1: 2023/10/01 16:22 - 16:28: "Later on October 1st, I rearranged Box_1 and watches, moving them between various locations including the CoffeeTable, ArmChair, SideTable, and Sofa, completing the task as instructed."  
+      0: 2023/10/01 16:22 - 16:28: "I interacted with Box_1 and various watches, moving Box_1 between the CoffeeTable and other locations multiple times. I was also instructed to place watches on the Sofa, which I did by moving Watch_1 from the ArmChair to the SideTable and finally to the Sofa, along with placing Watch_2 on the Sofa and confirming task completion."  
+        ...
+  1: 2023/10/02 13:39 - 14:07: "On October 2nd, I prepared and toasted a slice of bread, ensuring it was placed on a clean plate after cleaning dining items, confirming task completion."  
+    ...
+  2: 2023/10/03 11:05 - 11:25: "On October 3rd, I placed a pillow on the sofa and prepared a salad with lettuce and tomatoes, which was well-received."  
+    0: 2023/10/03 11:05 - 11:25: "On October 3rd, I placed a pillow on the sofa and prepared a salad by slicing and arranging lettuce and tomatoes on a plate, receiving positive feedback for completing both tasks."  
+      0: 2023/10/03 11:05:11 - 11:06:58: "I picked up a pillow and placed it on the sofa as instructed. After completing the task, I confirmed the action was done."  
+        ...
+      1: 2023/10/03 11:12 - 11:25: "I was instructed to prepare a salad. I sliced lettuce and tomatoes, placed them on the countertop, and received further instructions to refine the lettuce slices and arrange them on a plate. After arranging the sliced vegetables, I completed the task and received positive feedback."  
+        ...
+  3: 2023/10/04 12:20 - 15:13: "On October 4th, I stored a dirty plate in Cabinet_7, watered a houseplant with water from a pot, and cooked potato slices, transferring them to a clean plate and confirming satisfaction."  
+    0: 2023/10/04 12:20:23 - 12:21:14: "I was instructed to put the plate next to the microwave into a cabinet. I opened Cabinet_7, picked up the dirty plate from the countertop, placed it inside Cabinet_7, and received confirmation that the task was satisfactory."  
+      ...
+    1: 2023/10/04 13:23:24 - 13:25:39: "I picked up a pot filled with water and poured it into the houseplant on the table, completing the task of watering the plant."  
+      ...
+    2: 2023/10/04 15:02 - 15:13: "I greeted and received a request to cook two pieces of potato. I sliced the potato, placed the slices in a pan, cooked them on the stove, and then transferred the cooked slices to a clean plate. I completed the task and received confirmation of satisfaction."  
+      ...
+
+>>> answer("water the plant. serve 1 slice(s) of tomato on a plate. put all watch on one sofa. make a plate of toast. put all pillow on any sofa. make a salad. put all plate in any cabinet. water the plant. cook 2 slice(s) of potato and serve on a plate.")"""
+
+**HumanMessage**:
+"""User question: List the tasks you performed."""
+
+**AIMessage**:
+"""history.expand()"""
+
+**HumanMessage**:
+"""Current state:
+2023/07/22 - 2023/07/24: "Over the past few days, I focused on meal preparation by making a salad, boiling a potato, and preparing toast, while also cleaning a mug and watering a houseplant. My actions centered on kitchen tasks and routine household maintenance."  
+  0: 2023/07/22 10:06 - 11:18: "On the morning of July 22nd, I cleaned a mug to prepare it for coffee and then prepared a salad by slicing and cooking vegetables."  
+    ...
+  1: 2023/07/23 15:20 - 15:26: "On the afternoon of July 23rd, I prepared the kitchen workspace and started boiling a potato on the stove."  
+    ...
+  2: 2023/07/24 12:54 - 13:07: "On the afternoon of July 24th, I watered a houseplant and prepared toast by slicing and toasting bread."  
+    ..."""
+{}
+command: history[0].expand(); history[1].expand(); history[2].expand()
+expected output: 
+
+
+ ============================== 
+
+
+eval history[0].expand(); history[1].expand(); history[2].expand()
+
+
+ ============================== 
+
+
+eval history[0].expand(); history[1].expand(); history[2].expand()
+
+
+ ============================== 
+
+
+
+
+history[0].expand(); history[1].expand(); history[2].expand()
+
+Updated/Defined variables after execution: {}
+
+**SystemMessage**:
+"""You are a smart humanoid robot answering user question about your past actions.
+The history object contains information on what you did in the past, represented as a tree.
+Use the method expand to look at details of a node.
+Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in order to keep the tree compact.
+Enter Python expressions into the console to see the value and decide for the next command based on that result.
+Answer by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
+Closely follow the answer style and format from the given examples.
+Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found" or you get "Nothing changed" multiple times, it means there is no record. Answer honestly that you have no record, do NOT keep searching repeatedly."""
+
+**HumanMessage**:
+"""
+def answer(reasoning: str = None, answer: str = Ellipsis)
+def ask(question: str)
+def now() -> datetime.datetime
+def vqa(question: str, *images: PIL.Image.Image)
+"""
+
+**HumanMessage**:
+"""Usage examples:
+>>> history.expand()  # Shows the history tree with all child nodes expanded
+>>> history.expand(date(2021, 12, 20))  # Expand the children that overlap with the given day
+>>> history.expand(now() - timedelta(hours=6), now() - timedelta(hours=4))  # Expand all children that overlap with the given range (in this example "about 5 hours ago")
+>>> history.expand((now() - timedelta(days=2)).date())  # Expand all children that overlap with the day before yesterday
+>>> history.expand(0)  # Shows child node 0
+>>> history[0].expand()  # Expands all child nodes of node 0 (node 0 must be expanded already to see them)
+>>> history[5][2].expand()  # Shows child node 2 of child node 5 with all its child nodes expanded
+>>> history.search("green cup") # Semantic index search. Expands the most relevant children according to similarity of the natural language query and the node's (recursively defined) index content.
+>>> history[1][42].search("bicycle") # Semantic index search on some node further down the tree. Expands the children of node 1.42 most relevant to the search term
+>>> history[3].collapse_all_but(1); history[3][1].expand()  # Zooms into details of child node 3.1 while collapsing all other childs of node 3
+>>> vqa("What color is the ... in this image?",
+...     history[2][4][-1][0].image)  # Invoke a model to answer a visual question about image(s) of some leaf (!) node(s)
+
+# After gathering the relevant information, answer the question:
+# Optionally, provide a reasoning on why you choose the respective answer
+>>> answer(reasoning="...", answer="...")"""
+
+**HumanMessage**:
+"""Example interactions:
+User question: List the tasks you performed.
+
+2023/10/01 - 2023/10/04: "Over the past few days, I have been busy performing household tasks such as watering plants, preparing meals like toasted bread and salads, and organizing items around the living space, ensuring cleanliness and satisfaction with the completed tasks."  
+  ...
+
+>>> history.expand()
+
+2023/10/01 - 2023/10/04: "Over the past few days, I have been busy performing household tasks such as watering plants, preparing meals like toasted bread and salads, and organizing items around the living space, ensuring cleanliness and satisfaction with the completed tasks."  
+  0: 2023/10/01 11:39 - 16:28: "On October 1st, I completed tasks including watering a houseplant, slicing a tomato and placing it on the dining table, and rearranging Box_1 and watches across different locations like the CoffeeTable and Sofa."  
+    ...
+  1: 2023/10/02 13:39 - 14:07: "On October 2nd, I prepared and toasted a slice of bread, ensuring it was placed on a clean plate after cleaning dining items, confirming task completion."  
+    ...
+  2: 2023/10/03 11:05 - 11:25: "On October 3rd, I placed a pillow on the sofa and prepared a salad with lettuce and tomatoes, which was well-received."  
+    ...
+  3: 2023/10/04 12:20 - 15:13: "On October 4th, I stored a dirty plate in Cabinet_7, watered a houseplant with water from a pot, and cooked potato slices, transferring them to a clean plate and confirming satisfaction."  
+    ...
+
+>>> history[0].expand(); history[2].expand(); history[3].expand()
+
+2023/10/01 - 2023/10/04: "Over the past few days, I have been busy performing household tasks such as watering plants, preparing meals like toasted bread and salads, and organizing items around the living space, ensuring cleanliness and satisfaction with the completed tasks."  
+  0: 2023/10/01 11:39 - 16:28: "On October 1st, I completed tasks including watering a houseplant, slicing a tomato and placing it on the dining table, and rearranging Box_1 and watches across different locations like the CoffeeTable and Sofa."  
+    0: 2023/10/01 11:39 - 12:08: "On October 1st, I watered a houseplant and then sliced a tomato, placing the slices on a plate on the dining table upon request. I confirmed the completion of these tasks."  
+      ...
+    1: 2023/10/01 16:22 - 16:28: "Later on October 1st, I rearranged Box_1 and watches, moving them between various locations including the CoffeeTable, ArmChair, SideTable, and Sofa, completing the task as instructed."  
+      ...
+  1: 2023/10/02 13:39 - 14:07: "On October 2nd, I prepared and toasted a slice of bread, ensuring it was placed on a clean plate after cleaning dining items, confirming task completion."  
+    ...
+  2: 2023/10/03 11:05 - 11:25: "On October 3rd, I placed a pillow on the sofa and prepared a salad with lettuce and tomatoes, which was well-received."  
+    0: 2023/10/03 11:05 - 11:25: "On October 3rd, I placed a pillow on the sofa and prepared a salad by slicing and arranging lettuce and tomatoes on a plate, receiving positive feedback for completing both tasks."  
+      ...
+  3: 2023/10/04 12:20 - 15:13: "On October 4th, I stored a dirty plate in Cabinet_7, watered a houseplant with water from a pot, and cooked potato slices, transferring them to a clean plate and confirming satisfaction."  
+    0: 2023/10/04 12:20:23 - 12:21:14: "I was instructed to put the plate next to the microwave into a cabinet. I opened Cabinet_7, picked up the dirty plate from the countertop, placed it inside Cabinet_7, and received confirmation that the task was satisfactory."  
+      ...
+    1: 2023/10/04 13:23:24 - 13:25:39: "I picked up a pot filled with water and poured it into the houseplant on the table, completing the task of watering the plant."  
+      ...
+    2: 2023/10/04 15:02 - 15:13: "I greeted and received a request to cook two pieces of potato. I sliced the potato, placed the slices in a pan, cooked them on the stove, and then transferred the cooked slices to a clean plate. I completed the task and received confirmation of satisfaction."  
+      ...
+
+>>> history[0][1].expand(); history[2][0].expand()
+
+2023/10/01 - 2023/10/04: "Over the past few days, I have been busy performing household tasks such as watering plants, preparing meals like toasted bread and salads, and organizing items around the living space, ensuring cleanliness and satisfaction with the completed tasks."  
+  0: 2023/10/01 11:39 - 16:28: "On October 1st, I completed tasks including watering a houseplant, slicing a tomato and placing it on the dining table, and rearranging Box_1 and watches across different locations like the CoffeeTable and Sofa."  
+    0: 2023/10/01 11:39 - 12:08: "On October 1st, I watered a houseplant and then sliced a tomato, placing the slices on a plate on the dining table upon request. I confirmed the completion of these tasks."  
+      ...
+    1: 2023/10/01 16:22 - 16:28: "Later on October 1st, I rearranged Box_1 and watches, moving them between various locations including the CoffeeTable, ArmChair, SideTable, and Sofa, completing the task as instructed."  
+      0: 2023/10/01 16:22 - 16:28: "I interacted with Box_1 and various watches, moving Box_1 between the CoffeeTable and other locations multiple times. I was also instructed to place watches on the Sofa, which I did by moving Watch_1 from the ArmChair to the SideTable and finally to the Sofa, along with placing Watch_2 on the Sofa and confirming task completion."  
+        ...
+  1: 2023/10/02 13:39 - 14:07: "On October 2nd, I prepared and toasted a slice of bread, ensuring it was placed on a clean plate after cleaning dining items, confirming task completion."  
+    ...
+  2: 2023/10/03 11:05 - 11:25: "On October 3rd, I placed a pillow on the sofa and prepared a salad with lettuce and tomatoes, which was well-received."  
+    0: 2023/10/03 11:05 - 11:25: "On October 3rd, I placed a pillow on the sofa and prepared a salad by slicing and arranging lettuce and tomatoes on a plate, receiving positive feedback for completing both tasks."  
+      0: 2023/10/03 11:05:11 - 11:06:58: "I picked up a pillow and placed it on the sofa as instructed. After completing the task, I confirmed the action was done."  
+        ...
+      1: 2023/10/03 11:12 - 11:25: "I was instructed to prepare a salad. I sliced lettuce and tomatoes, placed them on the countertop, and received further instructions to refine the lettuce slices and arrange them on a plate. After arranging the sliced vegetables, I completed the task and received positive feedback."  
+        ...
+  3: 2023/10/04 12:20 - 15:13: "On October 4th, I stored a dirty plate in Cabinet_7, watered a houseplant with water from a pot, and cooked potato slices, transferring them to a clean plate and confirming satisfaction."  
+    0: 2023/10/04 12:20:23 - 12:21:14: "I was instructed to put the plate next to the microwave into a cabinet. I opened Cabinet_7, picked up the dirty plate from the countertop, placed it inside Cabinet_7, and received confirmation that the task was satisfactory."  
+      ...
+    1: 2023/10/04 13:23:24 - 13:25:39: "I picked up a pot filled with water and poured it into the houseplant on the table, completing the task of watering the plant."  
+      ...
+    2: 2023/10/04 15:02 - 15:13: "I greeted and received a request to cook two pieces of potato. I sliced the potato, placed the slices in a pan, cooked them on the stove, and then transferred the cooked slices to a clean plate. I completed the task and received confirmation of satisfaction."  
+      ...
+
+>>> answer("water the plant. serve 1 slice(s) of tomato on a plate. put all watch on one sofa. make a plate of toast. put all pillow on any sofa. make a salad. put all plate in any cabinet. water the plant. cook 2 slice(s) of potato and serve on a plate.")"""
+
+**HumanMessage**:
+"""User question: List the tasks you performed."""
+
+**AIMessage**:
+"""history.expand()"""
+
+**AIMessage**:
+"""history[0].expand(); history[1].expand(); history[2].expand()"""
+
+**HumanMessage**:
+"""Current state:
+2023/07/22 - 2023/07/24: "Over the past few days, I focused on meal preparation by making a salad, boiling a potato, and preparing toast, while also cleaning a mug and watering a houseplant. My actions centered on kitchen tasks and routine household maintenance."  
+  0: 2023/07/22 10:06 - 11:18: "On the morning of July 22nd, I cleaned a mug to prepare it for coffee and then prepared a salad by slicing and cooking vegetables."  
+    0: 2023/07/22 10:06:14 - 10:09:11: "I cleaned a dirty mug to prepare it for fresh coffee. This involved moving it to the sink, emptying its contents, washing it under the faucet, and finally placing the clean mug back into the coffee machine."  
+      ...
+    1: 2023/07/22 11:06 - 11:18: "I prepared a salad by slicing a tomato and cooking and slicing a potato, then I plated the ingredients on a clean plate and confirmed the task was complete."  
+      ...
+  1: 2023/07/23 15:20 - 15:26: "On the afternoon of July 23rd, I prepared the kitchen workspace and started boiling a potato on the stove."  
+    0: 2023/07/23 15:20 - 15:26: "I received an instruction to boil a potato. I prepared the workspace by moving a soap bottle and dirty cookware, retrieved a potato from the fridge, placed a pot on the stove, turned on the burner, and put the potato in the pot to boil."  
+      ...
+  2: 2023/07/24 12:54 - 13:07: "On the afternoon of July 24th, I watered a houseplant and prepared toast by slicing and toasting bread."  
+    0: 2023/07/24 12:54:51 - 12:56:40: "The user asked me to water the plant. I filled a cup with water at the sink, watered the houseplant, and confirmed the task was finished."  
+      ...
+    1: 2023/07/24 13:03 - 13:07: "Upon request, I prepared toast by slicing bread, toasting two slices, and placing them on a plate. I also rearranged some items on the countertop during the process, and the task was completed."  
+      ..."""
+{}
+command: answer(reasoning="I have reviewed my activity history from July 22nd to July 24th, 2023. On July 22nd, I cleaned a mug and prepared a salad with tomato and potato. On July 23rd, I boiled a potato. On July 24th, I watered a houseplant and prepared two slices of toast.", answer="clean a mug. make a salad. boil a potato. water the plant. make a plate of toast.")
+expected output: 
+
+
+ ============================== 
+
+
+eval answer(reasoning="I have reviewed my activity history from July 22nd to July 24th, 2023. On July 22nd, I cleaned a mug and prepared a salad with tomato and potato. On July 23rd, I boiled a potato. On July 24th, I watered a houseplant and prepared two slices of toast.", answer="clean a mug. make a salad. boil a potato. water the plant. make a plate of toast.")
+Answering clean a mug. make a salad. boil a potato. water the plant. make a plate of toast.  with reason: I have reviewed my activity history from July 22nd to July 24th, 2023. On July 22nd, I cleaned a mug and prepared a salad with tomato and potato. On July 23rd, I boiled a potato. On July 24th, I watered a houseplant and prepared two slices of toast.
+Tokens Used: 19434
+	Prompt Tokens: 15022
+	Completion Tokens: 4412
+Successful Requests: 28
+Total Cost (USD): $0.0
+[CorrectionEval] answer_judge=llm_PARTIAL score=0.50 correct=True
+[CorrectionEval] 跳过修正：回答已判定为正确/等价
