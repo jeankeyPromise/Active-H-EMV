@@ -1,0 +1,44 @@
+BLEU
+{'BLEU': 3.5671475672782655,
+ 'BLEU.bp': 0.9634137213782324,
+ 'BLEU.hyp_len': 2361.0,
+ 'BLEU.ratio': 0.9640669661086158,
+ 'BLEU.ref_len': 2449.0}
+
+ROUGE
+{'rouge1': {'f': 0.21679578836157126,
+            'p': 0.23011267510876823,
+            'r': 0.34774793300751666},
+ 'rouge2': {'f': 0.07364269597490025,
+            'p': 0.09290170393009944,
+            'r': 0.08787639301370265},
+ 'rougeL': {'f': 0.19374766074678768,
+            'p': 0.20672350883217805,
+            'r': 0.31501632227014364}}
+
+METEOR: 0.2302597625961816 
+
+Total: 50
+Exact matches: 1
+Plain Accuracy: 2.00%
+
+Reading auto-eval from experiments/results/teach/metrics/phase4_graph_aug_50_merged.gemini_2.5_pro-6a4157.auto_eval.json
+
+Fine Categories:
+                  correct :   6 ( 12.0%)
+       correct_summarized :   6 ( 12.0%)
+              correct_tmi :  11 ( 22.0%)
+                no_answer :  13 ( 26.0%)
+partially_correct_missing :   4 (  8.0%)
+    partially_correct_tmi :   4 (  8.0%)
+                    wrong :   6 ( 12.0%)
+
+Broad Categories:
+          correct :  23 ( 46.0%)
+partially_correct :   8 ( 16.0%)
+            wrong :  19 ( 38.0%)
+Token cost per sample:  15862.42
+
+LaTeX table entry:
+B & R & $S_c$ & $S_p$ & T 
+3.6 & 19.4 &  46 &  16 & 15.9

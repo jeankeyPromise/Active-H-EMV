@@ -1,0 +1,123 @@
+/home/user22303471/Project/Active-H-EMV/llm_emv/eval/metrics/llm_eval.py:28: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the langchain-huggingface package and should be used instead. To use it run `pip install -U langchain-huggingface` and import as `from langchain_huggingface import HuggingFaceEmbeddings`.
+  embeddings = HuggingFaceEmbeddings(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading eval chain from llm_emv/config/llm_eval/gemini_2.5_pro.yaml
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5666.44it/s]
+[1mMPNetModel LOAD REPORT[0m from: sentence-transformers/all-mpnet-base-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Traceback (most recent call last):
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_sync/http_proxy.py", line 343, in handle_request
+    return self._connection.handle_request(request)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_sync/http11.py", line 136, in handle_request
+    raise exc
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_sync/http11.py", line 106, in handle_request
+    ) = self._receive_response_headers(**kwargs)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_sync/http11.py", line 177, in _receive_response_headers
+    event = self._receive_event(timeout=timeout)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_sync/http11.py", line 217, in _receive_event
+    data = self._network_stream.read(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_backends/sync.py", line 126, in read
+    with map_exceptions(exc_map):
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ReadTimeout: The read operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/openai/_base_client.py", line 982, in request
+    response = self._client.send(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpx/_transports/default.py", line 249, in handle_request
+    with map_httpcore_exceptions():
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ReadTimeout: The read operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/metrics/llm_eval.py", line 146, in <module>
+    main()
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/metrics/llm_eval.py", line 140, in main
+    llm_eval(eval_cfg_file, Path(eval_file), eval_chain)
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/metrics/llm_eval.py", line 110, in llm_eval
+    categories = eval_chain.batch(samples)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 3024, in batch
+    inputs = step.batch(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 648, in batch
+    return cast(List[Output], list(executor.map(invoke, inputs, configs)))
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/concurrent/futures/_base.py", line 621, in result_iterator
+    yield _result_or_cancel(fs.pop())
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/concurrent/futures/_base.py", line 319, in _result_or_cancel
+    return fut.result(timeout)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/concurrent/futures/_base.py", line 458, in result
+    return self.__get_result()
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/runnables/config.py", line 529, in _wrapped_fn
+    return contexts.pop().run(fn, *args)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 641, in invoke
+    return self.invoke(input, config, **kwargs)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 277, in invoke
+    self.generate_prompt(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 777, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 634, in generate
+    raise e
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 624, in generate
+    self._generate_with_cache(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 846, in _generate_with_cache
+    result = self._generate(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_openai/chat_models/base.py", line 686, in _generate
+    response = self.client.create(**payload)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/openai/_utils/_utils.py", line 286, in wrapper
+    return func(*args, **kwargs)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/openai/resources/chat/completions/completions.py", line 1147, in create
+    return self._post(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/openai/_base_client.py", line 1259, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/openai/_base_client.py", line 1000, in request
+    raise APITimeoutError(request=request) from err
+openai.APITimeoutError: Request timed out.
+Loaded few-shot sample db of size 60
+
+
+Evaluating experiments/results/teach/metrics/phase4_graph_aug_50_merged.json 
+
+Tokens Used: 60571
+	Prompt Tokens: 60167
+	Completion Tokens: 404
+Successful Requests: 47
+Total Cost (USD): $0.0
+ERROR conda.cli.main_run:execute(127): `conda run python -m llm_emv.eval.metrics.llm_eval llm_emv/config/llm_eval/gemini_2.5_pro.yaml experiments/results/teach/metrics/phase4_graph_aug_50_merged.json` failed. (See above for error)

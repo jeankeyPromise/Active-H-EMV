@@ -1,0 +1,37 @@
+{
+  "config": {
+    "cfg": "teach/simplified/full_graph_aug",
+    "output": "experiments/results/teach/metrics/phase4_graph_aug_50_failed_remaining_retry.json",
+    "dataset": "teach-dechant",
+    "only_iter_dataset": "False",
+    "n_samples": "None",
+    "enable_correction": "False",
+    "qa_file": "experiments/results/teach/metrics/phase4_graph_aug_50_failed_remaining.pkl",
+    "max_samples_per_episode": "None",
+    "use_only_question_types": "None",
+    "skip_first_n_episodes": "0",
+    "teach_base": "dataset/TEACh",
+    "llm_summarizer_cfg": "{'llm': {'model_name': 'gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5, 'openai_api_key': '***REDACTED***', 'base_url': '***REDACTED***'}, 'example_db_name': 'teach', 'few_shot_k': 2}",
+    "pure_img_approach": "None"
+  },
+  "code_commit": "6a4157e66378426fe9a62d408668e728625264bc",
+  "results": {
+    "18e6380ba49c1f55_4ae0-e141c8f6246ebd83_9dee-88f8ad0d2d356270_bb95-05fbc1a35520554d_c1b9-9d1c053084e66e7b_dc9f-14995cb55fdcb9f9_e822-dbb41344c474217f_2e3e-369a8cd57dde1b82_096e-35351038f6f3be3b_9c0e-8b2af8ba42ca5cae_913a-af3ea35af62cb764_aea5-d8d05917aadc27f7_0e39-48f25d2481974dee_e871-064a69cb5d40b41f_9237-04ae108b77699c0f_2453-dfc3dfb3dd5ff1fd_69af-5aa3cbd322d4f163_3bda-d56ca9d2e98c55a5_5d2f-0de4b62afcd06138_f2bb-32e631d248583662_5835-f2fab283e8dd367a_cb1f-3a9da83a824cb52d_c626-faa9c7a273f50d7f_eeba-0ad91909295bf186_134b-7c0a07e02524ae40_f540-3574c805169b19b0_a532-e4909f617bc99db4_4ab8-578d2cc749317a6f_ae7b-af3ea35af62cb764_dbcb-9c97a83f60095487_02d9-7d0e059ca3243596_a484-9e23434a16a146b5_7f9a-c58ede352f7d040b_04a3-1e037cbd9977ec99_d8f3-f2f6723ebab1e6a2_6bea-93af984d7981fdaa_6fc9-9539c0004762d6a8_cdd8-c1eba1e4b831e04b_aab3-09916b24496645e4_5ff9-935fb97bba18de43_1130-6f4aca312776de7b_7e6e-dda9ea220761cc52_5a27-2623dd6b654da651_0cb3-5f3063384d77aa71_0ac8-8455e3db97f9a4dc_de9d-2f8d482d22e56fdd_3e5c-8e41a1f030035e13_d7f5-6e26385c641764c7_1d69-f0f408b728183c76_09d4-a72c03efd22ce41c_c338-0-seq_right_before_questions": {
+      "q_time": "2023/05/14 17:50:02",
+      "q": "What task did you do just before serve 2 slice(s) of tomato on a plate?",
+      "gt": "put all remote control on one chairs.",
+      "hyp": "I don't have a record of serving exactly 2 slices of tomato on a plate. However, in `history[8][0]`, I sliced a tomato and assembled a meal by plating potato, lettuce, and tomato. The task immediately before this was not explicitly recorded as a separate step within this node. The node `history[8][0]` describes a sequence of actions that includes slicing a tomato and plating it as part of a meal assembly."
+    },
+    "18e6380ba49c1f55_4ae0-e141c8f6246ebd83_9dee-88f8ad0d2d356270_bb95-05fbc1a35520554d_c1b9-9d1c053084e66e7b_dc9f-14995cb55fdcb9f9_e822-dbb41344c474217f_2e3e-369a8cd57dde1b82_096e-35351038f6f3be3b_9c0e-8b2af8ba42ca5cae_913a-af3ea35af62cb764_aea5-d8d05917aadc27f7_0e39-48f25d2481974dee_e871-064a69cb5d40b41f_9237-04ae108b77699c0f_2453-dfc3dfb3dd5ff1fd_69af-5aa3cbd322d4f163_3bda-d56ca9d2e98c55a5_5d2f-0de4b62afcd06138_f2bb-32e631d248583662_5835-f2fab283e8dd367a_cb1f-3a9da83a824cb52d_c626-faa9c7a273f50d7f_eeba-0ad91909295bf186_134b-7c0a07e02524ae40_f540-3574c805169b19b0_a532-e4909f617bc99db4_4ab8-578d2cc749317a6f_ae7b-af3ea35af62cb764_dbcb-9c97a83f60095487_02d9-7d0e059ca3243596_a484-9e23434a16a146b5_7f9a-c58ede352f7d040b_04a3-1e037cbd9977ec99_d8f3-f2f6723ebab1e6a2_6bea-93af984d7981fdaa_6fc9-9539c0004762d6a8_cdd8-c1eba1e4b831e04b_aab3-09916b24496645e4_5ff9-935fb97bba18de43_1130-6f4aca312776de7b_7e6e-dda9ea220761cc52_5a27-2623dd6b654da651_0cb3-5f3063384d77aa71_0ac8-8455e3db97f9a4dc_de9d-2f8d482d22e56fdd_3e5c-8e41a1f030035e13_d7f5-6e26385c641764c7_1d69-f0f408b728183c76_09d4-a72c03efd22ce41c_c338-0-tasks_to_days_ago": {
+      "q_time": "2023/05/14 17:50:02",
+      "q": "Today is May 14, 2023 at 05:50 PM. How many days ago did you put all pillow on any armchair?",
+      "gt": "17 days ago and 10 days ago",
+      "hyp": null
+    }
+  },
+  "openai_costs": {
+    "cost": 0.0,
+    "prompt_tokens": 24933,
+    "completion_tokens": 9656
+  }
+}

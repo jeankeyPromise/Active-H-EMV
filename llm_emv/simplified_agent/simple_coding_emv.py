@@ -57,6 +57,84 @@ def _clean_markdown_code(code: str) -> str:
     return code
 
 
+def _strip_python_prompt_prefixes(code: str) -> str:
+    lines = code.splitlines()
+    cleaned_lines = []
+    changed = False
+    for line in lines:
+        stripped = line.lstrip()
+        indent = line[:len(line) - len(stripped)]
+        if stripped.startswith('>>> '):
+            cleaned_lines.append(indent + stripped[4:])
+            changed = True
+        elif stripped.startswith('... '):
+            cleaned_lines.append(indent + stripped[4:])
+            changed = True
+        else:
+            cleaned_lines.append(line)
+    cleaned = '\n'.join(cleaned_lines).strip()
+    if changed:
+        print('[代码清理] 移除了 Python 控制台提示符')
+    return cleaned
+
+
+def _split_adjacent_console_statements(code: str) -> str:
+    statement_prefixes = ('history', 'answer', 'ask', 'vqa', 'now')
+    result = []
+    paren_depth = 0
+    bracket_depth = 0
+    brace_depth = 0
+    quote = None
+    escape = False
+    changed = False
+    idx = 0
+
+    while idx < len(code):
+        char = code[idx]
+        result.append(char)
+
+        if quote:
+            if escape:
+                escape = False
+            elif char == '\\':
+                escape = True
+            elif char == quote:
+                quote = None
+            idx += 1
+            continue
+
+        if char in ('"', "'"):
+            quote = char
+        elif char == '(':
+            paren_depth += 1
+        elif char == ')':
+            paren_depth = max(paren_depth - 1, 0)
+            if paren_depth == 0 and bracket_depth == 0 and brace_depth == 0:
+                next_idx = idx + 1
+                while next_idx < len(code) and code[next_idx].isspace() and code[next_idx] != '\n':
+                    next_idx += 1
+                next_text = code[next_idx:]
+                if (next_idx < len(code)
+                        and code[next_idx] != '\n'
+                        and any(next_text.startswith(prefix) for prefix in statement_prefixes)):
+                    result.append('; ')
+                    changed = True
+        elif char == '[':
+            bracket_depth += 1
+        elif char == ']':
+            bracket_depth = max(bracket_depth - 1, 0)
+        elif char == '{':
+            brace_depth += 1
+        elif char == '}':
+            brace_depth = max(brace_depth - 1, 0)
+        idx += 1
+
+    cleaned = ''.join(result)
+    if changed:
+        print('[代码清理] 拆分粘连的 Python 控制台语句')
+    return cleaned
+
+
 def _extract_leading_answer_call(code: str) -> str:
     stripped = code.lstrip()
     if not stripped.startswith('answer('):
@@ -159,6 +237,8 @@ def _looks_like_plain_answer(code: str) -> bool:
 
 
 def _coerce_to_safe_python_console(code: str) -> str:
+    code = _strip_python_prompt_prefixes(code)
+    code = _split_adjacent_console_statements(code)
     try:
         ast.parse(code)
         return code
