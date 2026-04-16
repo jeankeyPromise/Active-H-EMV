@@ -158,7 +158,11 @@ def main():
     if len(cost_keys) == 1:
         prompt_tokens = exp_output[cost_keys[0]]['prompt_tokens']
         token_per_sample = prompt_tokens / len(results)
-        print('Token cost per sample: ', token_per_sample)
+        print('Token cost per QA sample/question: ', token_per_sample)
+        if len(results) != 100:
+            print('NOTE: This file has', len(results),
+                  'QA samples. Standard TEACh |h| table results should use 100 QA samples '
+                  '(10 long histories x 10 questions).')
         metric_latex_line += [token_per_sample / 1000]
     elif len(cost_keys) > 1:
         print('\n!!!\nWARNING: Multiple cost keys found. Not sure which one to consider!', cost_keys, '\n!!!\n')

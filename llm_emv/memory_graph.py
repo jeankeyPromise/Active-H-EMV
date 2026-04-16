@@ -77,6 +77,9 @@ class MemoryGraph:
         self.adjacency: Dict[int, List[Tuple[int, GraphEdge]]] = defaultdict(list)
         # 从 tree_node (EventBasedSummary) 的 id() 到 graph node_id 的映射
         self._tree_node_to_graph_id: Dict[int, int] = {}
+        # 从 tree_node 的稳定内容签名到 graph node_id 的映射。
+        # 评测数据会对同一段 history 做 deepcopy；id 映射会失效，内容签名用于跨副本复用图缓存。
+        self._tree_node_signature_to_graph_id: Dict[Tuple[Any, ...], int] = {}
         self._next_id = 0
 
     def _add_node(self, tree_node: EventBasedSummary,
@@ -122,7 +125,24 @@ class MemoryGraph:
         )
         self.nodes[node_id] = graph_node
         self._tree_node_to_graph_id[id(tree_node)] = node_id
+        self._tree_node_signature_to_graph_id[self._tree_node_signature(tree_node)] = node_id
         return node_id
+
+    @staticmethod
+    def _tree_node_signature(tree_node: EventBasedSummary) -> Tuple[Any, ...]:
+        node_range = getattr(tree_node, 'range', None)
+        if node_range is not None:
+            range_key = tuple(x.isoformat() for x in node_range)
+        else:
+            range_key = None
+        latest_raw = getattr(tree_node, 'latest_raw', None)
+        action = getattr(latest_raw, 'current_action', None)
+        return (
+            tree_node.__class__.__name__,
+            range_key,
+            getattr(tree_node, 'nl_summary', None),
+            action,
+        )
 
     def _add_edge(self, source_id: int, target_id: int,
                   edge_type: EdgeType, weight: float = 1.0,
@@ -139,7 +159,10 @@ class MemoryGraph:
 
     def get_node_id_for_tree_node(self, tree_node: EventBasedSummary) -> Optional[int]:
         """根据原始树节点获取图节点 ID"""
-        return self._tree_node_to_graph_id.get(id(tree_node))
+        node_id = self._tree_node_to_graph_id.get(id(tree_node))
+        if node_id is not None:
+            return node_id
+        return self._tree_node_signature_to_graph_id.get(self._tree_node_signature(tree_node))
 
     def get_neighbors(self, node_id: int,
                       edge_types: Optional[List[EdgeType]] = None,
@@ -439,6 +462,7 @@ def _build_similar_action_edges(
     3. 限制每个节点的最大边数，避免热点节点爆炸
     """
     import random
+    rng = random.Random(0)
 
     # 按动作名分组
     action_to_nodes: Dict[str, List[int]] = defaultdict(list)
@@ -472,8 +496,8 @@ def _build_similar_action_edges(
         nodes_b = action_to_nodes[unique_actions[aj]]
 
         # 采样：每组最多取 max_edges_per_node 个代表
-        sample_a = random.sample(nodes_a, min(max_edges_per_node, len(nodes_a)))
-        sample_b = random.sample(nodes_b, min(max_edges_per_node, len(nodes_b)))
+        sample_a = rng.sample(nodes_a, min(max_edges_per_node, len(nodes_a)))
+        sample_b = rng.sample(nodes_b, min(max_edges_per_node, len(nodes_b)))
 
         for nid_a in sample_a:
             if node_edge_count[nid_a] >= max_edges_per_node:

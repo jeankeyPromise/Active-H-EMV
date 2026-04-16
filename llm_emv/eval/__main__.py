@@ -160,7 +160,10 @@ def main():
                         help='Only iter through the dataset. Useful if the dataset does '
                              'some preprocessing and caching.')
     parser.add_argument('--n-samples', type=int, default=None,
-                        help='Use only the first n samples from the dataset')
+                        help='Use only the first n QA samples/questions from the dataset. '
+                             'This is a debugging/pilot-run shortcut, not the TEACh |h| setting. '
+                             'For paper-table |h|=5/15/25/50/100 results, select the matching '
+                             'data/teach/test_set_*.pkl file and leave this unset to run all 100 QA samples.')
     parser.add_argument('--enable-correction', action='store_true', default=False,
                         help='Enable simulated feedback correction protocol. '
                              'Questions within the same episode share history, '

@@ -42,6 +42,20 @@ python -m llm_emv.eval \
   --llm-summarizer-cfg "{'llm': {'model_name': 'gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5}, 'example_db_name': 'teach', 'few_shot_k': 2}"
 ```
 
+### 2.1 TEACh 图增强零样本实验
+
+`test_set_50.pkl` 表示 `|h|=50`，即每段长历史由 50 个基础情景组成。标准论文表格评测不要添加 `--n-samples 50`，因为该参数只截断前 50 个 QA 问题；跑满当前文件应得到 100 个 QA 结果，T 按 `prompt_tokens / 100 / 1000` 计算。
+
+```bash
+python -m llm_emv.eval \
+  --cfg teach/simplified/full_graph_aug_zs \
+  --dataset teach-dechant \
+  --teach-base dataset/TEACh \
+  --qa-file data/teach/test_set_50.pkl \
+  --output experiments/results/teach/h_emv_graph_aug_50_zs.json \
+  --llm-summarizer-cfg "{'llm': {'model_name': 'gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5}, 'example_db_name': 'teach', 'few_shot_k': 2}"
+```
+
 ### 3. TEACh 遗忘实验
 
 ```bash
@@ -103,10 +117,14 @@ python -m llm_emv.eval.metrics.calc_metrics \
 
 ## 实验样本大小选择
 
-| 实验类型       | 配置                     | 建议样本量 | 理由         |
-| ---------- | ---------------------- | ----- | ---------- |
-| 主基线        | H-EMV + Gemini 2.5 Pro | 100   | 最终对比用，需要可靠 |
-| 层级消融       | flat配置                 | 50    | 只需证明差异存在   |
-| Few-shot对照 | 2-shot配置               | 50    | 对比用        |
-| 你的改进系统     | Active-H-EMV           | 100   | 最终对比用      |
-| 语义查询专项     | 语义类问题子集                | 30-50 | 专项验证       |
+这里的“样本量”指 QA 问题数，不是 `|h|`。`|h|` 由 `data/teach/test_set_*.pkl` 文件名决定，例如 `test_set_50.pkl` 表示 `|h|=50`；标准 TEACh 表格每个 `|h|` 文件包含 10 段长历史 × 10 个问答 = 100 个 QA。
+
+| 实验类型       | 配置                     | 建议 QA 数 | 理由         |
+| ---------- | ---------------------- | ------ | ---------- |
+| 主基线        | H-EMV + Gemini 2.5 Pro | 100    | 最终对比用，需要可靠 |
+| 层级消融       | flat配置                 | 50-100 | pilot 可截断，论文表应跑满 |
+| Few-shot对照 | 2-shot配置               | 100    | 与 zero-shot 公平对比 |
+| 你的改进系统     | Active-H-EMV           | 100    | 最终对比用      |
+| 语义查询专项     | 语义类问题子集                | 30-50  | 专项验证       |
+
+调试时可以使用 `--n-samples N` 临时截断前 N 个 QA；这只能生成 pilot 结果，不能直接作为 `|h|=N` 或标准 `|h|=50` 表格结果。

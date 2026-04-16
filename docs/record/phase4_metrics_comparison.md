@@ -1,10 +1,27 @@
-# Phase 4 Graph-only 50 样本对比实验
+# Phase 4 Graph-only `|h|=50` Pilot 对比实验
 
 Date: 2026-04-15
 
+## 2026-04-16 口径修正
+
+根据 `docs/Key Concept/正确理解h和T.md`，`|h|=50` 表示每段长历史包含 50 个基础情景，不表示运行 50 个 QA 样本。标准 TEACh 表格中的每个 `|h|` 列应跑满 10 段长历史 × 10 个问答 = 100 个 QA；T 是总 prompt token 除以 100 后的每题千 token 数。
+
+因此，本记录中带 `--n-samples 50` 的 Phase 4 结果只能作为 50-QA pilot/调试结果，用于观察趋势和稳定性，不能直接替代论文表格里的标准 `|h|=50` 指标。可与论文表直接对齐的历史 zero-shot 图增强结果是：
+
+```text
+experiments/results/teach/h_emv_graph_aug_50_zs.json
+results: 100
+prompt_tokens: 518529
+T: 5.185K ≈ 5.2
+S_c: 43
+S_p: 23
+```
+
+后续若重新跑 Phase 4 标准实验，应使用 `data/teach/test_set_50.pkl` 但不要添加 `--n-samples 50`，并优先使用 `teach/simplified/full_graph_aug_zs` 作为 zero-shot 对齐配置。
+
 ## Objective
 
-在前三阶段逻辑稳定后，启动 50 样本级 TEACh 实验，收集论文可用的量化指标。优先跑 `full_graph_aug`，随后根据耗时与稳定性补 baseline 对照。
+在前三阶段逻辑稳定后，启动 `|h|=50` 文件上的 50-QA pilot 实验，观察论文级量化指标的趋势与系统稳定性。优先跑 `full_graph_aug`，随后根据耗时与稳定性补 baseline 对照。标准论文表格仍需在同一 `test_set_50.pkl` 上跑满 100 个 QA。
 
 ## Graph-Augmented 50 Command
 

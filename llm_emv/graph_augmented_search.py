@@ -128,6 +128,7 @@ def graph_augmented_rerank(
         expansion_hops: int = 1,
         max_seed_events_per_item: int = 3,
         debug: bool = False,
+        item_graph_index_cache: Optional[Dict[Tuple[int, ...], Tuple[Dict[int, List[int]], Dict[int, int]]]] = None,
 ) -> torch.Tensor:
     """
     图增强重排序：在 seed ∪ graph-expanded 的候选池中融合图邻居信息重新计算得分。
@@ -179,6 +180,7 @@ def graph_augmented_rerank(
         expansion_hops=expansion_hops,
         max_seed_events_per_item=max_seed_events_per_item,
         debug=debug,
+        item_graph_index_cache=item_graph_index_cache,
     )
 
     graph_scores = expansion_result.graph_scores
@@ -226,6 +228,7 @@ def expand_candidates_with_graph(
         expansion_hops: int = 1,
         max_seed_events_per_item: int = 3,
         debug: bool = False,
+        item_graph_index_cache: Optional[Dict[Tuple[int, ...], Tuple[Dict[int, List[int]], Dict[int, int]]]] = None,
 ) -> GraphExpansionResult:
     """
     从初始 seed 节点沿记忆图扩展候选池，并把图事件节点映射回当前层 child index。
@@ -237,7 +240,7 @@ def expand_candidates_with_graph(
     expanded_indices: Set[int] = set()
     traces: List[str] = []
 
-    item_graph_nodes, graph_node_to_item = _build_item_graph_index(items, graph)
+    item_graph_nodes, graph_node_to_item = _get_item_graph_index(items, graph, item_graph_index_cache)
     if not item_graph_nodes:
         return GraphExpansionResult(
             seed_indices=seed_indices,
@@ -247,14 +250,24 @@ def expand_candidates_with_graph(
             traces=traces,
         )
 
+    graph_similarity_cache: Dict[int, float] = {}
+
+    def graph_node_similarity(graph_node_id: int) -> float:
+        if graph_node_id not in graph_similarity_cache:
+            graph_similarity_cache[graph_node_id] = _graph_node_similarity(
+                graph_node_id, graph, query_emb, embedding_fn
+            )
+        return graph_similarity_cache[graph_node_id]
+
     for seed_item_idx in seed_indices:
         seed_graph_ids = item_graph_nodes.get(seed_item_idx, [])
         if not seed_graph_ids:
             continue
 
+        _precache_graph_node_embeddings(seed_graph_ids, graph, embedding_fn)
         seed_graph_ids = sorted(
             seed_graph_ids,
-            key=lambda gid: _graph_node_similarity(gid, graph, query_emb, embedding_fn),
+            key=graph_node_similarity,
             reverse=True,
         )[:max_seed_events_per_item]
 
@@ -270,13 +283,18 @@ def expand_candidates_with_graph(
 
                 neighbors = graph.get_neighbors(current_graph_id, edge_types=active_edge_types)
                 neighbors = sorted(neighbors, key=lambda x: x[1].weight, reverse=True)[:max_neighbors]
+                _precache_graph_node_embeddings(
+                    [neighbor_graph_id for neighbor_graph_id, _ in neighbors],
+                    graph,
+                    embedding_fn,
+                )
 
                 for neighbor_graph_id, edge in neighbors:
                     edge_prior = _EDGE_TYPE_PRIORS.get(edge.edge_type, 1.0)
                     distance_decay = 1.0 / (depth + 1)
                     neighbor_event_sim = max(
                         0.0,
-                        _graph_node_similarity(neighbor_graph_id, graph, query_emb, embedding_fn),
+                        graph_node_similarity(neighbor_graph_id),
                     )
                     step_score = max(
                         path_score * edge.weight * edge_prior * distance_decay,
@@ -355,6 +373,64 @@ def _build_item_graph_index(
     return item_graph_nodes, graph_node_to_item
 
 
+def _get_item_graph_index(
+        items: List[Any],
+        graph: MemoryGraph,
+        cache: Optional[Dict[Tuple[int, ...], Tuple[Dict[int, List[int]], Dict[int, int]]]] = None,
+) -> Tuple[Dict[int, List[int]], Dict[int, int]]:
+    cache_key = tuple(id(item) for item in items)
+    if cache is not None and cache_key in cache:
+        return cache[cache_key]
+    result = _build_item_graph_index(items, graph)
+    if cache is not None:
+        cache[cache_key] = result
+    return result
+
+
+def _effective_index_texts(tree_node: Any) -> List[str]:
+    if not hasattr(tree_node, 'index_content'):
+        return []
+    texts = [s for s in tree_node.index_content if s]
+    wrapped = getattr(tree_node, '_wrapped', tree_node)
+    for attr in ('_summary_override', '_cached_nl_summary'):
+        extra = getattr(wrapped, attr, None)
+        if extra is not None:
+            texts.append(extra)
+    return texts
+
+
+def _precache_graph_node_embeddings(
+        graph_node_ids: Iterable[int],
+        graph: MemoryGraph,
+        embedding_fn: Callable[[List[str]], torch.Tensor],
+) -> None:
+    flat_texts: List[str] = []
+    node_slices: List[Tuple[Any, int, int]] = []
+    seen_tree_nodes: Set[int] = set()
+
+    for graph_node_id in graph_node_ids:
+        graph_node = graph.nodes.get(graph_node_id)
+        if graph_node is None:
+            continue
+        tree_node = graph_node.tree_node
+        if hasattr(tree_node, '_embedding_cache') or id(tree_node) in seen_tree_nodes:
+            continue
+        seen_tree_nodes.add(id(tree_node))
+        texts = _effective_index_texts(tree_node)
+        if not texts:
+            continue
+        start = len(flat_texts)
+        flat_texts.extend(texts)
+        node_slices.append((tree_node, start, len(flat_texts)))
+
+    if not flat_texts:
+        return
+
+    embeddings = embedding_fn(flat_texts)
+    for tree_node, start, end in node_slices:
+        tree_node._embedding_cache = embeddings[start:end]
+
+
 def _graph_node_similarity(
         graph_node_id: int,
         graph: MemoryGraph,
@@ -377,12 +453,7 @@ def _compute_similarity(
         embedding = tree_node._embedding_cache
     else:
         if hasattr(tree_node, 'index_content'):
-            texts = [s for s in tree_node.index_content if s]
-            wrapped = getattr(tree_node, '_wrapped', tree_node)
-            for attr in ('_summary_override', '_cached_nl_summary'):
-                extra = getattr(wrapped, attr, None)
-                if extra is not None:
-                    texts.append(extra)
+            texts = _effective_index_texts(tree_node)
             if texts:
                 embedding = embedding_fn(texts)
                 tree_node._embedding_cache = embedding
@@ -475,6 +546,8 @@ def create_graph_augmented_search_filter_fn(
         搜索过滤函数，签名: (query, items, close_match=False) -> List[int]
     """
 
+    item_graph_index_cache: Dict[Tuple[int, ...], Tuple[Dict[int, List[int]], Dict[int, int]]] = {}
+
     def search(query: str, items: List[Any], close_match: bool = False) -> List[int]:
         _top_p = close_match_top_p if close_match else top_p
         _min_cos_sim = close_match_min_cos_sim if close_match else min_cos_sim
@@ -516,6 +589,7 @@ def create_graph_augmented_search_filter_fn(
                 expansion_hops=expansion_hops,
                 max_seed_events_per_item=max_seed_events_per_item,
                 debug=debug_this_query,
+                item_graph_index_cache=item_graph_index_cache,
             )
             expansion_result = graph_augmented_rerank._last_expansion_result
         else:

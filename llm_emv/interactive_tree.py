@@ -165,7 +165,7 @@ class ExpandableList:
 
     def search(self, query, **kwargs):
         self.collapse()              
-        indices = self._search_filter_fn(query, list(self.children), **kwargs) # 调用外部传入的搜索函数
+        indices = self._search_filter_fn(query, self.children, **kwargs) # 调用外部传入的搜索函数
         
         # 获取最高相似度
         max_sim = getattr(self._search_filter_fn, '_last_max_similarity', 0.0)
@@ -397,7 +397,8 @@ def search_similarity_to_filter_fn(
     # 如果有记忆图且有嵌入函数，使用图增强检索
     if _memory_graph is not None and _graph_embedding_fn is not None:
         from .graph_augmented_search import create_graph_augmented_search_filter_fn
-        print(f'[GraphAug] 使用图增强检索，alpha={_graph_alpha}, beta={_graph_beta}, gamma={_graph_gamma}')
+        if _graph_debug:
+            print(f'[GraphAug] 使用图增强检索，alpha={_graph_alpha}, beta={_graph_beta}, gamma={_graph_gamma}')
         return create_graph_augmented_search_filter_fn(
             search_similarity_fn=search_similarity_fn,
             graph=_memory_graph,

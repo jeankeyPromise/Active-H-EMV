@@ -1,4 +1,5 @@
 import datetime
+import os
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
 from pathlib import Path
@@ -17,6 +18,10 @@ from .emv_api import EMVerbalizationAPI
 from .simplified_agent.simple_coding_emv import SimplifiedCodingEMV
 from .vlm import OpenAiVision
 from .zs_flat_history_qa import ZeroShotOnePassSemiFlatQA
+
+_embedding_model_cache = {}
+_embedding_cache_store = {}
+_search_cache_write_executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix='search-emb-cache-writer')
 
 
 class _DatetimePackageNamespace:
@@ -65,7 +70,12 @@ def setup_llm_emv(cfg_path='teach/simplified/full',
         return partial(model, history)
 
     vlm = _instantiate_vlm(cfg.pop('question_vlm', None))
-    search_emb, filter_kwargs = create_search_embedding_and_cfg(cfg.pop('search', None))
+    search_cfg = cfg.pop('search', None)
+    eager_search_init = True
+    if search_cfg is not None:
+        search_cfg = dict(search_cfg)
+        eager_search_init = search_cfg.pop('eager_init', True)
+    search_emb, filter_kwargs = create_search_embedding_and_cfg(search_cfg)
 
     # ===== 记忆巩固（遗忘机制）=====
     forgetting_cfg = cfg.pop('forgetting', None)
@@ -101,7 +111,8 @@ def setup_llm_emv(cfg_path='teach/simplified/full',
         vlm=vlm, 
         search_embedding_fn=search_emb, 
         search_filter_kwargs=filter_kwargs,
-        memory_graph=memory_graph)
+        memory_graph=memory_graph,
+        eager_search_init=eager_search_init)
 
     # 用来控制哪些方法/属性暴露给 LLM（防止 prompt 里误调用危险函数）
     api = ApiVisibilityWrapper(api, **cfg.pop('api'))
@@ -153,12 +164,19 @@ def create_search_embedding_and_cfg(search_cfg: Optional[dict]):
         return None, None
 
     embedding_model_name = search_cfg.pop('embedding', 'all-MiniLM-L6-v2')
-    embedding_model = SentenceTransformer(embedding_model_name)
-    cache = {}
+    if embedding_model_name in _embedding_model_cache:
+        embedding_model = _embedding_model_cache[embedding_model_name]
+    else:
+        embedding_model = SentenceTransformer(embedding_model_name)
+        _embedding_model_cache[embedding_model_name] = embedding_model
+
     cache_file = Path('search-embedding-cache.pt')
-    if cache_file.is_file():
-        cache = torch.load(cache_file, map_location=embedding_model.device)
-    write_cache_executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix='search-emb-cache-writer')
+    cache_key = str(cache_file.resolve())
+    if cache_key in _embedding_cache_store:
+        cache = _embedding_cache_store[cache_key]
+    else:
+        cache = torch.load(cache_file, map_location=embedding_model.device) if cache_file.is_file() else {}
+        _embedding_cache_store[cache_key] = cache
 
     def _embed_cached(texts: Tuple[str, ...]):
         result = torch.empty(len(texts), embedding_model.get_sentence_embedding_dimension(),
@@ -171,13 +189,14 @@ def create_search_embedding_and_cfg(search_cfg: Optional[dict]):
                 todo_texts.append(text)
                 todo_indices.append(i)
 
-        print('Embedding', len(texts), ', new:', len(todo_texts))
+        if todo_texts or os.environ.get('LLM_EMV_EMBED_DEBUG', '').lower() in {'1', 'true', 'yes'}:
+            print('Embedding', len(texts), ', new:', len(todo_texts))
         if todo_indices:
             new_embeddings = embedding_model.encode(list(todo_texts), convert_to_tensor=True)
             result[todo_indices] = new_embeddings
             for text, emb in zip(todo_texts, new_embeddings):
                 cache[text] = emb
-            write_cache_executor.submit(lambda: torch.save(dict(cache), cache_file))
+            _search_cache_write_executor.submit(lambda: torch.save(dict(cache), cache_file))
         return result
 
     def _embed(texts: List[str]):
@@ -209,8 +228,48 @@ def create_search_embedding_and_cfg(search_cfg: Optional[dict]):
     return _embed, filter_kwargs
 
 
-# 图缓存：key = history 对象的 id()，避免同一个 history 反复构建图
+# 图缓存：key = history 结构签名 + 图配置。TEACh 评测会 deepcopy 同一份 history，
+# 单纯使用 id(history) 会导致每个问题重复构建大图。
 _graph_cache: dict = {}
+
+
+def _node_range_key(node):
+    node_range = getattr(node, 'range', None)
+    if node_range is None:
+        return None
+    return tuple(x.isoformat() for x in node_range)
+
+
+def _history_structural_cache_key(node):
+    if hasattr(node, 'children'):
+        children = getattr(node, 'children') or []
+    elif hasattr(node, 'events'):
+        children = getattr(node, 'events') or []
+    else:
+        children = []
+
+    child_boundary = ()
+    if children:
+        child_boundary = (
+            _history_structural_cache_key(children[0]),
+            _history_structural_cache_key(children[-1]),
+        )
+
+    return (
+        node.__class__.__name__,
+        _node_range_key(node),
+        getattr(node, 'nl_summary', None),
+        len(children),
+        child_boundary,
+    )
+
+
+def _graph_cfg_cache_key(graph_cfg: dict):
+    return tuple(
+        (k, repr(v))
+        for k, v in sorted(graph_cfg.items())
+        if k != 'causal_llm'
+    )
 
 
 def create_memory_graph_cached(history: HigherLevelSummary, embedding_fn, graph_cfg: dict):
@@ -226,8 +285,7 @@ def create_memory_graph_cached(history: HigherLevelSummary, embedding_fn, graph_
     Returns:
         构建完成的 MemoryGraph
     """
-    # 用 history 对象的 id 作为缓存 key
-    cache_key = id(history)
+    cache_key = (_history_structural_cache_key(history), _graph_cfg_cache_key(graph_cfg))
     if cache_key in _graph_cache:
         cached_graph = _graph_cache[cache_key]
         print(f'[GraphAug] 命中图缓存 (nodes={cached_graph.num_nodes}, edges={cached_graph.num_edges})')

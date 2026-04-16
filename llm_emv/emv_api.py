@@ -29,6 +29,7 @@ class EMVerbalizationAPI:
             search_embedding_fn: Callable[[List[str]], torch.Tensor] = None,
             search_filter_kwargs=None,
             memory_graph: Optional[MemoryGraph] = None,
+            eager_search_init: bool = True,
     ) -> None:
         super().__init__()
         self._vlm = vlm
@@ -59,13 +60,14 @@ class EMVerbalizationAPI:
                                                   memory_graph=memory_graph,
                                                   graph_embedding_fn=search_embedding_fn).all_leaves
 
-        try:
-            print('Initializing search embeddings eagerly...')
-            self._history.search('')
-        except SemanticHintError:
-            pass
-        finally:
-            self._history.collapse_deep()
+        if eager_search_init:
+            try:
+                print('Initializing search embeddings eagerly...')
+                self._history.search('')
+            except SemanticHintError:
+                pass
+            finally:
+                self._history.collapse_deep()
 
     #########################
     # dialog
