@@ -17,6 +17,7 @@
 | Phase 8 | `phase8_graph_trace_and_cache_workflow.md` | 图检索案例日志与缓存预构建流程 | 新增 graph trace JSONL 与显式 history cache 预构建入口 |
 | Phase 9 | `phase9_h15_task_tools_diagnostics.md` | h=15 task tools 与稳定性诊断 | 新增 task_list/task_lookup/object_lookup；h=15 n=15 最终 15/15 有效，平均 prompt 2.51K |
 | Phase 10 | `phase10_h15_auto_eval_and_error_analysis.md` | h=15 n=15 自动语义评估与错误分析 | `S_c=46.7%`, `S_p=20.0%`, valid=100%, `T=2.70K`；下一步修 when/event 与 temporal ambiguity |
+| Phase 11 | `phase11_when_event_lookup_fix.md` | `when did you X` 事件日期修复 | targeted sample 从 wrong 变 correct，`T=1.72K`，过滤 plant 误匹配 |
 
 ## 固定实验口径
 

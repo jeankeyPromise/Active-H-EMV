@@ -1,0 +1,9 @@
+{
+  "config": "llm_emv/config/llm_eval/gemini_2.5_pro.yaml",
+  "code_commit": "19eb87fce8d001c087680e9801f39580f4d3962a",
+  "results": {
+    "4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-tasks_to_exact_times": {
+      "cat": "correct_summarized"
+    }
+  }
+}

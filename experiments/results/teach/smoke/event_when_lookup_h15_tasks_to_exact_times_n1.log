@@ -1,0 +1,114 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Evaluating sample 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-tasks_to_exact_times
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5317.97it/s]
+[1mMPNetModel LOAD REPORT[0m from: sentence-transformers/all-mpnet-base-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:226: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:183: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  result = torch.empty(len(texts), embedding_model.get_sentence_embedding_dimension(),
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:183: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  result = torch.empty(len(texts), embedding_model.get_sentence_embedding_dimension(),
+[配置] 启用 FAISS 加速，索引类型: flat
+[GraphAug] 开始构建记忆图...
+[MemoryGraph] 收集到 1658 个事件节点
+[MemoryGraph] 时间相邻边: 1328
+[MemoryGraph] 共享物体边: 4394
+[MemoryGraph] 唯一动作数: 157, 相似动作对: 129
+[MemoryGraph] 相似动作边: 452
+[MemoryGraph] 图构建完成: {'num_nodes': 1658, 'num_edges': 6174, 'edges_temporal_adjacent': 1328, 'edges_co_object': 4394, 'edges_similar_action': 452}
+[GraphAug] 记忆图构建完成
+Got 0 examples
+
+
+ ============================== 
+
+
+eval event_date_lookup('When did you water the plant?')
+Updated/Defined variables after execution: {}
+
+**SystemMessage**:
+"""You are a smart humanoid robot answering user question about your past actions.
+The history object contains information on what you did in the past, represented as a tree.
+Use the method expand to look at details of a node.
+Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in order to keep the tree compact.
+Enter Python expressions into the console to see the value and decide for the next command based on that result.
+Answer concisely by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
+Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found", your next command MUST be answer(reasoning="No relevant record was found.", answer="I have no record of that."). Do not search synonyms, do not expand further, and do not call vqa.
+IMPORTANT: If you get "Nothing changed" twice, answer honestly that you have no record. Do NOT keep searching repeatedly. For just-before/just-after questions, first try one broader target search or inspect another relevant top-level time block before giving up.
+For object yes/no questions, first use object_lookup("object name"). If it reports no matching summary, answer "No, I have no record of that." Do not call vqa unless you already have a directly relevant leaf image.
+For task-list questions such as "List the tasks you performed", first use task_list(). Prefer its chronological candidates instead of manually expanding the whole tree.
+For task-description questions such as "describe what you did when you X", first use task_lookup("X"). Prefer its matching task candidates instead of manually expanding the whole tree.
+For exact date/time questions or "N days ago" questions asking what happened, first use date_lookup(question). Prefer its Recommended answer when it is confident instead of manually expanding by date.
+For "How many days ago did you X?" or "When did you X?" questions, first use event_date_lookup(question). If it lists multiple days, include all of them in the final answer instead of only the most recent match.
+For just-before or just-after questions, first use temporal_neighbor(target_task, direction="before" or "after") if a candidate is not already shown. Prefer the returned Recommended answer when it is confident. Only then inspect adjacent sibling or temporal nodes. Avoid expanding to raw leaf observations unless the summary is insufficient.
+Do not call vqa for time, date, task-list, before/after, or yes/no object-existence questions when textual summaries already answer the question. Use vqa only for explicit visual appearance questions such as color, visible state, or what something looks like.
+Never output bare parameters such as reasoning="..." answer="...". Always call answer(reasoning="...", answer="...")."""
+
+**HumanMessage**:
+"""
+def answer(reasoning: str = None, answer: str = Ellipsis)
+def ask(question: str)
+def date_lookup(query: str, max_matches: int = 8) -> str # For exact date/time or N-days-ago questions, list matching history summaries directly
+def event_date_lookup(query: str, max_matches: int = 12) -> str # For "how many days ago did you X" questions, find all matching event dates directly
+def now() -> datetime.datetime
+def object_lookup(object_name: str, max_matches: int = 8) -> str # For object yes/no questions, check whether task summaries mention the object
+def task_list(max_tasks: int = 30) -> str # For task-list questions, list task-sized history summaries in chronological order
+def task_lookup(query: str, max_matches: int = 8) -> str # For task-description questions, list task-sized summaries matching a query
+def temporal_neighbor(target_task: str, direction: str = 'before', max_candidates: int = 6) -> str # For just-before/just-after questions, find the target task and return adjacent task candidates
+def vqa(question: str, *images: PIL.Image.Image)
+"""
+
+**HumanMessage**:
+"""Usage examples:
+>>> history.expand()  # Shows the history tree with all child nodes expanded
+>>> history.expand(date(2021, 12, 20))  # Expand the children that overlap with the given day
+>>> history.expand(now() - timedelta(hours=6), now() - timedelta(hours=4))  # Expand all children that overlap with the given range (in this example "about 5 hours ago")
+>>> history.expand((now() - timedelta(days=2)).date())  # Expand all children that overlap with the day before yesterday
+>>> history.expand(0)  # Shows child node 0
+>>> history[0].expand()  # Expands all child nodes of node 0 (node 0 must be expanded already to see them)
+>>> history[5][2].expand()  # Shows child node 2 of child node 5 with all its child nodes expanded
+>>> history.search("green cup") # Semantic index search. Expands the most relevant children according to similarity of the natural language query and the node's (recursively defined) index content.
+>>> history[1][42].search("bicycle") # Semantic index search on some node further down the tree. Expands the children of node 1.42 most relevant to the search term
+>>> history[3].collapse_all_but(1); history[3][1].expand()  # Zooms into details of child node 3.1 while collapsing all other childs of node 3
+>>> vqa("What color is the ... in this image?",
+...     history[2][4][-1][0].image)  # Invoke a model to answer a visual question about image(s) of some leaf (!) node(s)
+
+# After gathering the relevant information, answer the question:
+# Optionally, provide a reasoning on why you choose the respective answer
+>>> answer(reasoning="...", answer="...")"""
+
+**HumanMessage**:
+"""User question: When did you water the plant?"""
+
+**AIMessage**:
+"""event_date_lookup('When did you water the plant?')"""
+
+**HumanMessage**:
+""""Event date lookup for query='When did you water the plant?': event='water the plant', today=2024/03/17.\n1. score=0.74; days_ago=4; 2024/03/13 10:31 - 10:36: I cleaned a mug in the sink and then used it to water a houseplant.\n2. score=0.76; days_ago=2; 2024/03/15 14:36 - 14:39: I began the task of watering a plant by first moving a statue to the countertop. I then searched for a container, moving a bowl around the countertops, before eventually picking up another bowl, filling it from the sink,...\n3. score=0.78; days_ago=1; 2024/03/16 19:27:13 - 19:29:35: I received instructions to water a plant. I picked up a pot filled with water and poured it onto the houseplant.\nRecommended answer: on 2024/03/13, 2024/03/15, and 2024/03/16""""
+
+**HumanMessage**:
+"""Current state:
+2024/03/10 - 2024/03/16: "From March 10th to 16th, I performed a variety of kitchen and household tasks, including preparing salads and potatoes, cleaning and organizing dishes, and managing morning routines such as making breakfast and watering houseplants."  
+  ..."""
+{}
+command: answer(reasoning="I found three instances of watering a plant in my history: on March 13th, March 15th, and March 16th.", answer="I watered the plant on March 13th, March 15th, and March 16th.")
+expected output: 
+
+
+ ============================== 
+
+
+eval answer(reasoning="I found three instances of watering a plant in my history: on March 13th, March 15th, and March 16th.", answer="I watered the plant on March 13th, March 15th, and March 16th.")
+Answering I watered the plant on March 13th, March 15th, and March 16th.  with reason: I found three instances of watering a plant in my history: on March 13th, March 15th, and March 16th.
+Tokens Used: 1784
+	Prompt Tokens: 1721
+	Completion Tokens: 63
+Successful Requests: 1
+Total Cost (USD): $0.0

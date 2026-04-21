@@ -1,0 +1,38 @@
+{
+  "config": {
+    "cfg": "teach/simplified/full_graph_aug_zs_fast",
+    "output": "experiments/results/teach/smoke/event_when_lookup_h15_tasks_to_exact_times_n1.json",
+    "dataset": "teach-dechant",
+    "only_iter_dataset": "False",
+    "precompute_history_cache": "False",
+    "n_samples": "1",
+    "enable_correction": "False",
+    "resume": "False",
+    "retry_errors": "False",
+    "checkpoint_file": "None",
+    "max_prompt_tokens_per_sample": "8000",
+    "max_average_prompt_tokens_per_sample": "6000.0",
+    "max_seconds_per_sample": "180",
+    "qa_file": "data/teach/test_set_15.pkl",
+    "max_samples_per_episode": "None",
+    "use_only_question_types": "['tasks_to_exact_times']",
+    "skip_first_n_episodes": "0",
+    "teach_base": "dataset/TEACh",
+    "llm_summarizer_cfg": "None",
+    "pure_img_approach": "None"
+  },
+  "code_commit": "19eb87fce8d001c087680e9801f39580f4d3962a",
+  "results": {
+    "4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-tasks_to_exact_times": {
+      "q_time": "2024/03/17 08:33:36",
+      "q": "When did you water the plant?",
+      "gt": "Mar 13, 2024 at 10:31 AM and Mar 15, 2024 at 02:36 PM and Mar 16, 2024 at 07:27 PM",
+      "hyp": "I watered the plant on March 13th, March 15th, and March 16th."
+    }
+  },
+  "openai_costs": {
+    "cost": 0.0,
+    "prompt_tokens": 1721,
+    "completion_tokens": 63
+  }
+}

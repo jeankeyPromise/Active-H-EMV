@@ -235,7 +235,8 @@ class EMVerbalizationAPI:
                 f'{_format_node_brief(match["node"], max_len=220)}'
             )
 
-        recommended = _event_date_lookup_recommendation(matches)
+        answer_mode = 'date' if _is_when_event_query(query) else 'days_ago'
+        recommended = _event_date_lookup_recommendation(matches, mode=answer_mode)
         lines.append(f'Recommended answer: {recommended}')
         return '\n'.join(lines)
 
@@ -451,7 +452,11 @@ class EMVerbalizationAPI:
             semantic_scores = util.cos_sim(text_emb, query_emb).squeeze(1).tolist()
 
         best_by_date = {}
+        event_tokens = _content_tokens(event)
         for record, semantic_score in zip(records, semantic_scores):
+            text_tokens = _content_tokens(record['text'])
+            if 'plant' in event_tokens and not ({'plant', 'houseplant'} & text_tokens):
+                continue
             lexical_score = _lexical_overlap(event, record['text'])
             if lexical_score < 0.34 and semantic_score < 0.42:
                 continue
@@ -823,6 +828,10 @@ def _parse_event_date_query(query: str, now: datetime) -> tuple[str, date] | Non
     return None
 
 
+def _is_when_event_query(query: str) -> bool:
+    return bool(re.search(r'\bwhen did you\s+.+\??$', query.strip(), flags=re.IGNORECASE))
+
+
 def _parse_today_date(query: str) -> date | None:
     today_match = re.search(
         rf'\btoday\s+is\s+({_MONTH_DATE_RE}|{_NUMERIC_DATE_RE})',
@@ -840,10 +849,19 @@ def _parse_today_date(query: str) -> date | None:
     return value
 
 
-def _event_date_lookup_recommendation(matches) -> str:
+def _event_date_lookup_recommendation(matches, mode: str = 'days_ago') -> str:
     reliable_matches = [match for match in matches if match.get('lexical_score', 0.0) >= 0.34]
     if reliable_matches:
         matches = reliable_matches
+
+    if mode == 'date':
+        dates = sorted({match['date'] for match in matches})
+        if not dates:
+            return 'I have no record of that.'
+        formatted = [f'{event_date:%Y/%m/%d}' for event_date in dates]
+        if len(formatted) == 1:
+            return f'on {formatted[0]}'
+        return 'on ' + ', '.join(formatted[:-1]) + f', and {formatted[-1]}'
 
     days = sorted({match['days_ago'] for match in matches}, reverse=True)
     if not days:

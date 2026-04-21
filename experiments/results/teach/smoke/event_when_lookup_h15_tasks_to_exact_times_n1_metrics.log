@@ -1,0 +1,17 @@
+
+Reading auto-eval from experiments/results/teach/smoke/event_when_lookup_h15_tasks_to_exact_times_n1.gemini_2.5_pro-19eb87.auto_eval.json
+
+Broad Categories:
+correct :   1 (100.0%)
+
+Primary thesis metrics
+Total QA: 1
+Valid answer rate: 100.0% (1/1)
+Error/empty answer rate: 0.0% (0/1)
+S_c semantic correct: 100.0% (1/1)
+S_p partially correct: 0.0% (0/1)
+Wrong/no-answer: 0.0% (0/1)
+T prompt tokens per QA: 1.72K
+Completion tokens per QA: 0.06K
+Token cost per QA sample/question:  1721.0
+NOTE: This file has 1 QA samples. Standard TEACh |h| table results should use 100 QA samples (10 long histories x 10 questions).
