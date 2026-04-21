@@ -20,6 +20,7 @@
 | Phase 11 | `phase11_when_event_lookup_fix.md` | `when did you X` 事件日期修复 | targeted sample 从 wrong 变 correct，`T=1.72K`，过滤 plant 误匹配 |
 | Phase 12 | `phase12_week4_result_inventory.md` | 第 4 周正式结果盘点与论文主表草案 | 复算 h=50/h=100 正式主指标；新增 `scripts/evaluate_result.sh` 固化 smoke 后 correctness evaluation |
 | Phase 13 | `phase13_experiment_section_draft.md` | 论文实验章节草稿 | 将主表、h=15 诊断、三类案例和限制整理成可进入正文的实验章节 |
+| Phase 14 | `phase14_h50_cached_probe.md` | h=50 缓存前缀可行性预检 | 新增 history cache audit/require guard；h=50 n=10 cached probe valid=100%, `S_c=80%`, `T=2.25K`；暂不继续 n=60 |
 
 ## 固定实验口径
 

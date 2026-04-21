@@ -1,0 +1,976 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+History cache audit
+Selected histories: 1
+Cached histories: 1
+Missing histories: 0
+00 cached qa_start=0 qa_count=10 episodes=50 dataset/TEACh/preprocessed_histories/valid_unseen-multi/50ep-8ff5291f2e02216cc14877f3841c5033.pkl
+Evaluating sample 6c24abb778c24a7c_704a-977b52faf01e6c05_d71f-01c1b8aa1820aa0b_adaf-32918ea00b69d9fe_38ff-cdf30defa61245ba_5590-2513b9a8d8ae5129_ab38-7337be5c30b1b5d1_874c-57862376ad3394a1_c9dc-32fe2fa7cc43fbc3_b8f3-0de4b62afcd06138_45f2-a966ba0c6e0d463d_ce88-25ef88cce38adfbc_1740-7504548a0dd7baf8_b148-064a69cb5d40b41f_9c2e-a690a35743c855aa_4c00-4b813e7c9bc088d0_1ce1-e4909f617bc99db4_4ab8-03379f213dfbda39_79a2-c49a96282ec09e90_5bfa-a2d31b84a569e568_fb03-88ddc0cbf1a23687_43ea-b36a8d73976068a3_6afd-c02445dd7a5b6f26_d92a-a76099fbab67c9da_4d48-c6c5c151b7b8e770_38db-60d26ec0f9c4757e_425d-9539c0004762d6a8_2eee-b2fde7ee4eb1c40f_1f95-c2ffd6a81bfe2613_f91c-81b10da74f7ac9ff_15c8-6ccc8b815fbc093a_e921-5aa3cbd322d4f163_402a-52e190f2e5f3b790_edbb-71392179ff5e728f_d7fe-4e893adaff5699af_ab4f-6f4aca312776de7b_97f3-4e88e46c6584bd85_21d2-eef61c8f3cdd8280_c537-bfb3e4eaf7ba458f_81db-af3fc77ab8313235_5b72-dbb41344c474217f_ee0e-498d06abfb7e9487_5c19-36492265af47de94_a352-9c97a83f60095487_02d9-0d1a67f82b3b5854_d74d-2f8d482d22e56fdd_410e-5c12b219bbb5bc07_6008-4aafdc038df138e8_58f0-474a8460bc35eb12_20d0-0f0664338151d4ac_5c06-0-sequence_of_task_descs
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6125.36it/s]
+[1mMPNetModel LOAD REPORT[0m from: sentence-transformers/all-mpnet-base-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:226: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:183: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  result = torch.empty(len(texts), embedding_model.get_sentence_embedding_dimension(),
+[配置] 启用 FAISS 加速，索引类型: flat
+[GraphAug] 开始构建记忆图...
+[MemoryGraph] 收集到 4933 个事件节点
+[MemoryGraph] 时间相邻边: 3925
+[MemoryGraph] 共享物体边: 10978
+[MemoryGraph] 唯一动作数: 395, 相似动作对: 786
+[MemoryGraph] 相似动作边: 1527
+[MemoryGraph] 图构建完成: {'num_nodes': 4933, 'num_edges': 16430, 'edges_temporal_adjacent': 3925, 'edges_co_object': 10978, 'edges_similar_action': 1527}
+[GraphAug] 记忆图构建完成
+Got 0 examples
+
+
+ ============================== 
+
+
+eval task_list()
+Updated/Defined variables after execution: {}
+
+**SystemMessage**:
+"""You are a smart humanoid robot answering user question about your past actions.
+The history object contains information on what you did in the past, represented as a tree.
+Use the method expand to look at details of a node.
+Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in order to keep the tree compact.
+Enter Python expressions into the console to see the value and decide for the next command based on that result.
+Answer concisely by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
+Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found", your next command MUST be answer(reasoning="No relevant record was found.", answer="I have no record of that."). Do not search synonyms, do not expand further, and do not call vqa.
+IMPORTANT: If you get "Nothing changed" twice, answer honestly that you have no record. Do NOT keep searching repeatedly. For just-before/just-after questions, first try one broader target search or inspect another relevant top-level time block before giving up.
+For object yes/no questions, first use object_lookup("object name"). If it reports no matching summary, answer "No, I have no record of that." Do not call vqa unless you already have a directly relevant leaf image.
+For task-list questions such as "List the tasks you performed", first use task_list(). Prefer its Recommended answer and chronological candidates instead of manually expanding the whole tree. For long histories, do not copy every task candidate verbatim unless the user explicitly asks for an exhaustive transcript.
+For task-description questions such as "describe what you did when you X", first use task_lookup("X"). Prefer its matching task candidates instead of manually expanding the whole tree.
+For exact date/time questions or "N days ago" questions asking what happened, first use date_lookup(question). Prefer its Recommended answer when it is confident instead of manually expanding by date.
+For "How many days ago did you X?" or "When did you X?" questions, first use event_date_lookup(question). If it lists multiple days, include all of them in the final answer instead of only the most recent match.
+For just-before or just-after questions, first use temporal_neighbor(target_task, direction="before" or "after") if a candidate is not already shown. Prefer the returned Recommended answer when it is confident. Only then inspect adjacent sibling or temporal nodes. Avoid expanding to raw leaf observations unless the summary is insufficient.
+Do not call vqa for time, date, task-list, before/after, or yes/no object-existence questions when textual summaries already answer the question. Use vqa only for explicit visual appearance questions such as color, visible state, or what something looks like.
+Never output bare parameters such as reasoning="..." answer="...". Always call answer(reasoning="...", answer="...")."""
+
+**HumanMessage**:
+"""
+def answer(reasoning: str = None, answer: str = Ellipsis)
+def ask(question: str)
+def date_lookup(query: str, max_matches: int = 8) -> str # For exact date/time or N-days-ago questions, list matching history summaries directly
+def event_date_lookup(query: str, max_matches: int = 12) -> str # For "how many days ago did you X" questions, find all matching event dates directly
+def now() -> datetime.datetime
+def object_lookup(object_name: str, max_matches: int = 8) -> str # For object yes/no questions, check whether task summaries mention the object
+def task_list(max_tasks: int = 30) -> str # For task-list questions, list task-sized history summaries in chronological order
+def task_lookup(query: str, max_matches: int = 8) -> str # For task-description questions, list task-sized summaries matching a query
+def temporal_neighbor(target_task: str, direction: str = 'before', max_candidates: int = 6) -> str # For just-before/just-after questions, find the target task and return adjacent task candidates
+def vqa(question: str, *images: PIL.Image.Image)
+"""
+
+**HumanMessage**:
+"""Usage examples:
+>>> history.expand()  # Shows the history tree with all child nodes expanded
+>>> history.expand(date(2021, 12, 20))  # Expand the children that overlap with the given day
+>>> history.expand(now() - timedelta(hours=6), now() - timedelta(hours=4))  # Expand all children that overlap with the given range (in this example "about 5 hours ago")
+>>> history.expand((now() - timedelta(days=2)).date())  # Expand all children that overlap with the day before yesterday
+>>> history.expand(0)  # Shows child node 0
+>>> history[0].expand()  # Expands all child nodes of node 0 (node 0 must be expanded already to see them)
+>>> history[5][2].expand()  # Shows child node 2 of child node 5 with all its child nodes expanded
+>>> history.search("green cup") # Semantic index search. Expands the most relevant children according to similarity of the natural language query and the node's (recursively defined) index content.
+>>> history[1][42].search("bicycle") # Semantic index search on some node further down the tree. Expands the children of node 1.42 most relevant to the search term
+>>> history[3].collapse_all_but(1); history[3][1].expand()  # Zooms into details of child node 3.1 while collapsing all other childs of node 3
+>>> vqa("What color is the ... in this image?",
+...     history[2][4][-1][0].image)  # Invoke a model to answer a visual question about image(s) of some leaf (!) node(s)
+
+# After gathering the relevant information, answer the question:
+# Optionally, provide a reasoning on why you choose the respective answer
+>>> answer(reasoning="...", answer="...")"""
+
+**HumanMessage**:
+"""User question: List the tasks you performed."""
+
+**AIMessage**:
+"""task_list()"""
+
+**HumanMessage**:
+""""Task list candidates in chronological order:\nUse these as evidence. If there are many candidates, do not copy every candidate verbatim; use the Recommended answer unless the user explicitly asks for an exhaustive transcript.\n1. 2023/07/13 10:37 - 10:40: I located and retrieved a loaf of bread from the lower cabinet and placed it on the countertop.\n2. 2023/07/13 14:04 - 14:08: In response to an instruction to microwave a potato, I first moved an egg out of the way, then retrieved a potato from the sink, cooked it in the microwave, and placed it on the countertop.\n3. 2023/07/13 14:08 - 14:11: Following a new instruction to prepare potato slices, I retrieved a knife from a garbage can to slice the cooked potato. I then emptied a bowl and placed two potato slices into it, completing the task.\n4. 2023/07/16 12:06 - 12:09: I began preparing to clean two dirty plates by clearing the sink, moving a bowl to the countertop. I then retrieved a second dirty plate from a cabinet and placed it on the countertop.\n5. 2023/07/17 08:11 - 08:17: Following the user's instruction to microwave a potato, I picked one up from a shelf. I then cleared the microwave by removing an apple and a salt shaker, placed the potato inside, cooked it, and finally placed the cooked potato on the coun...\n6. 2023/07/17 14:26 - 14:29: I started making toast by retrieving bread and a knife from the fridge, slicing the bread, and then toasting one slice as per user clarification.\n7. 2023/07/17 14:29 - 14:32: I prepared to serve the toast by getting a plate from the fridge, then finding another plate in the upper cabinets after a user prompt. I then toasted a second slice of bread, placed the finished toast on the first plate, and announced task...\n8. 2023/07/18 13:37 - 13:42: I prepared a sandwich by slicing bread, toasting two slices, and then slicing a tomato. I then assembled the sandwich by placing the toasted bread and tomato slices onto a plate, completing the user's request.\n9. 2023/07/18 17:38 - 17:48: Upon being instructed to cook five potato slices, I first searched for a knife, which I then used to slice a potato. I proceeded to cook the five slices in a pan on the stove. Finally, I moved the cooked potato slices to a plate and confirm...\n10. 2023/07/19 08:45 - 09:00: I prepared a sandwich by picking up bread, finding a knife, slicing and toasting the bread. I then cleared the sink, washed a dirty plate, and placed the toasted bread on it, completing the sandwich preparation as confirmed by the user.\n11. 2023/07/19 17:03 - 17:09: I was instructed to clean mugs and make coffee. I picked up a dirty cup and placed it in the sink, then took a filled mug, emptied it, and started the coffee machine. While the coffee brewed, I rinsed the dirty cup in the sink and emptied a...\n12. 2023/07/21 09:16 - 09:22: I prepared ingredients for a sandwich by slicing and toasting two slices of bread, and then slicing lettuce and a tomato.\n13. 2023/07/21 09:22 - 09:32: I cleaned a plate, and then began assembling the sandwich by placing toast, lettuce, and tomato on the plate. After a correction, I reorganized the ingredients and added a newly toasted slice of bread to complete the sandwich on the plate.\n14. 2023/07/21 15:56 - 16:00: I picked up the butter knife again and used it to slice lettuce and tomato, placing all the sliced items on the countertop.\n15. 2023/07/22 19:24 - 19:32: The user instructed me to prepare a salad with lettuce, tomato, and potato. I searched for ingredients, then used a knife to slice lettuce, tomato, and potato. I cooked the potato slices in a pan and assembled all ingredients on a plate, co...\n16. 2023/07/23 08:00 - 08:06: I was asked to make coffee. I first rinsed a dirty mug in the sink. Following a series of user instructions, I operated the coffee machine three times to fill the mug, correcting a mistake where I briefly placed the mug on the counter befor...\n17. 2023/07/23 19:49 - 19:54: I was asked to place the tissue boxes on the side tables. I picked up the first tissue box and placed it on one side table, then picked up the second tissue box and placed it on another side table to complete the task.\n18. 2023/07/24 15:07 - 15:11: I was instructed to clean the drinkware. I picked up a dirty cup from the counter, brought it to the sink, and placed it in the basin. I then retrieved a dirty mug from the counter and also placed it in the sink. Finally, I turned the fauce...\n19. 2023/07/24 16:12 - 16:15: I retrieved a dirty plate from a chair and prepared the sink for washing by moving a soap bottle and an egg out of the basin. I also moved a potato to the countertop before washing the plate and declaring it clean.\n20. 2023/07/25 16:32 - 16:36: I picked up a knife and then boiled a potato as instructed, placing it in a pot on the stove and turning it on. After cooking, I placed the pot back on the stove and asked the user if they wanted another potato boiled.\n21. 2023/07/25 18:42 - 18:49: Following the instruction to cook a potato, I retrieved it from a bookshelf, cooked it on the stove, and sliced it. Afterwards, I got a plate from the fridge and placed the potato slices on it.\n22. 2023/07/26 18:10 - 18:14: I retrieved a tomato from the fridge/cabinet, sliced it, and placed a slice on a plate as instructed by the user.\n23. 2023/07/29 14:40 - 14:44: I received an instruction to boil a potato. I retrieved a pot from the fridge, emptied it, and then got the potato from the microwave, placing it inside the pot. I also cleared some items from the countertop to make space.\n24. 2023/07/29 14:44 - 14:47: I filled the pot with water at the sink, moved it to the countertop, and cleared other items like a dirty pot and a dirty pan from the stove. After briefly adjusting the water level, I placed the pot on the stove burner to boil the potato a...\n25. 2023/07/29 16:06 - 16:09: Following the user's instructions, I retrieved a knife from a shelf, took lettuce out of the fridge, and sliced it on the countertop.\n26. 2023/07/30 11:05 - 11:09: I prepared for the task by retrieving a potato and a knife, slicing the potato, and placing three slices onto a plate.\n27. 2023/07/30 11:09 - 11:15: Since the microwave was occupied, I cleaned a pan and used the stove to cook the three potato slices before placing them back on the plate to complete the task.\n28. 2023/08/01 18:56 - 19:01: I was asked to slice and cook a potato. I mistakenly picked up a tomato, but then used a knife to slice both the tomato and a potato. I cooked one potato slice in a pan on the stove. Finally, I assembled the dish by placing the cooked potat...\n29. 2023/08/02 10:38 - 10:49: The user asked me to slice some lettuce and place it on a clean plate. I retrieved a knife, sliced the lettuce inside the fridge, washed a dirty plate, and then placed a lettuce slice onto the clean plate to complete the request.\n30. 2023/08/02 10:58 - 11:12: I completed two consecutive tasks: first, I prepared two cups of coffee by washing the mugs and using the coffee machine, and then I sliced an apple and placed the slices into two bowls.\nRecommended answer: From 2023/07/13 to 2023/08/02, I performed 30 recorded task groups, including bread, toast, and sandwich preparation; potato cooking and slicing; salad, lettuce, and tomato preparation; coffee and drinkware tasks; dish, plate, bowl, and pan cleaning; household organization tasks; plant watering.""""
+
+**HumanMessage**:
+"""Current state:
+2023/07/13 - 2023/08/04: "From July 13th to August 4th, I consistently performed a variety of daily kitchen and household tasks, including preparing diverse meals like toast, sandwiches, cooked potatoes, salads, and coffee, along with routine activities such as watering houseplants, cleaning dishes, and organizing various items including credit cards, remotes, tissue boxes, pencils, newspapers, and watches."  
+  ..."""
+{}
+command: /home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:226: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:183: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  result = torch.empty(len(texts), embedding_model.get_sentence_embedding_dimension(),
+answer(reasoning="The task_list() function provided a summary of all recorded task groups.", answer="From 2023/07/13 to 2023/08/02, I performed 30 recorded task groups, including bread, toast, and sandwich preparation; potato cooking and slicing; salad, lettuce, and tomato preparation; coffee and drinkware tasks; dish, plate, bowl, and pan cleaning; household organization tasks; plant watering.")
+expected output: 
+
+
+ ============================== 
+
+
+eval answer(reasoning="The task_list() function provided a summary of all recorded task groups.", answer="From 2023/07/13 to 2023/08/02, I performed 30 recorded task groups, including bread, toast, and sandwich preparation; potato cooking and slicing; salad, lettuce, and tomato preparation; coffee and drinkware tasks; dish, plate, bowl, and pan cleaning; household organization tasks; plant watering.")
+Answering From 2023/07/13 to 2023/08/02, I performed 30 recorded task groups, including bread, toast, and sandwich preparation; potato cooking and slicing; salad, lettuce, and tomato preparation; coffee and drinkware tasks; dish, plate, bowl, and pan cleaning; household organization tasks; plant watering.  with reason: The task_list() function provided a summary of all recorded task groups.
+Tokens Used: 3851
+	Prompt Tokens: 3709
+	Completion Tokens: 142
+Successful Requests: 1
+Total Cost (USD): $0.0
+Evaluating sample 6c24abb778c24a7c_704a-977b52faf01e6c05_d71f-01c1b8aa1820aa0b_adaf-32918ea00b69d9fe_38ff-cdf30defa61245ba_5590-2513b9a8d8ae5129_ab38-7337be5c30b1b5d1_874c-57862376ad3394a1_c9dc-32fe2fa7cc43fbc3_b8f3-0de4b62afcd06138_45f2-a966ba0c6e0d463d_ce88-25ef88cce38adfbc_1740-7504548a0dd7baf8_b148-064a69cb5d40b41f_9c2e-a690a35743c855aa_4c00-4b813e7c9bc088d0_1ce1-e4909f617bc99db4_4ab8-03379f213dfbda39_79a2-c49a96282ec09e90_5bfa-a2d31b84a569e568_fb03-88ddc0cbf1a23687_43ea-b36a8d73976068a3_6afd-c02445dd7a5b6f26_d92a-a76099fbab67c9da_4d48-c6c5c151b7b8e770_38db-60d26ec0f9c4757e_425d-9539c0004762d6a8_2eee-b2fde7ee4eb1c40f_1f95-c2ffd6a81bfe2613_f91c-81b10da74f7ac9ff_15c8-6ccc8b815fbc093a_e921-5aa3cbd322d4f163_402a-52e190f2e5f3b790_edbb-71392179ff5e728f_d7fe-4e893adaff5699af_ab4f-6f4aca312776de7b_97f3-4e88e46c6584bd85_21d2-eef61c8f3cdd8280_c537-bfb3e4eaf7ba458f_81db-af3fc77ab8313235_5b72-dbb41344c474217f_ee0e-498d06abfb7e9487_5c19-36492265af47de94_a352-9c97a83f60095487_02d9-0d1a67f82b3b5854_d74d-2f8d482d22e56fdd_410e-5c12b219bbb5bc07_6008-4aafdc038df138e8_58f0-474a8460bc35eb12_20d0-0f0664338151d4ac_5c06-0-seq_specific_shortened_low_actions
+[配置] 启用 FAISS 加速，索引类型: flat
+[GraphAug] 命中图缓存 (nodes=4933, edges=16430)
+Got 0 examples
+
+
+ ============================== 
+
+
+eval task_lookup('clean all the pans')
+Updated/Defined variables after execution: {}
+
+**SystemMessage**:
+"""You are a smart humanoid robot answering user question about your past actions.
+The history object contains information on what you did in the past, represented as a tree.
+Use the method expand to look at details of a node.
+Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in order to keep the tree compact.
+Enter Python expressions into the console to see the value and decide for the next command based on that result.
+Answer concisely by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
+Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found", your next command MUST be answer(reasoning="No relevant record was found.", answer="I have no record of that."). Do not search synonyms, do not expand further, and do not call vqa.
+IMPORTANT: If you get "Nothing changed" twice, answer honestly that you have no record. Do NOT keep searching repeatedly. For just-before/just-after questions, first try one broader target search or inspect another relevant top-level time block before giving up.
+For object yes/no questions, first use object_lookup("object name"). If it reports no matching summary, answer "No, I have no record of that." Do not call vqa unless you already have a directly relevant leaf image.
+For task-list questions such as "List the tasks you performed", first use task_list(). Prefer its Recommended answer and chronological candidates instead of manually expanding the whole tree. For long histories, do not copy every task candidate verbatim unless the user explicitly asks for an exhaustive transcript.
+For task-description questions such as "describe what you did when you X", first use task_lookup("X"). Prefer its matching task candidates instead of manually expanding the whole tree.
+For exact date/time questions or "N days ago" questions asking what happened, first use date_lookup(question). Prefer its Recommended answer when it is confident instead of manually expanding by date.
+For "How many days ago did you X?" or "When did you X?" questions, first use event_date_lookup(question). If it lists multiple days, include all of them in the final answer instead of only the most recent match.
+For just-before or just-after questions, first use temporal_neighbor(target_task, direction="before" or "after") if a candidate is not already shown. Prefer the returned Recommended answer when it is confident. Only then inspect adjacent sibling or temporal nodes. Avoid expanding to raw leaf observations unless the summary is insufficient.
+Do not call vqa for time, date, task-list, before/after, or yes/no object-existence questions when textual summaries already answer the question. Use vqa only for explicit visual appearance questions such as color, visible state, or what something looks like.
+Never output bare parameters such as reasoning="..." answer="...". Always call answer(reasoning="...", answer="...")."""
+
+**HumanMessage**:
+"""
+def answer(reasoning: str = None, answer: str = Ellipsis)
+def ask(question: str)
+def date_lookup(query: str, max_matches: int = 8) -> str # For exact date/time or N-days-ago questions, list matching history summaries directly
+def event_date_lookup(query: str, max_matches: int = 12) -> str # For "how many days ago did you X" questions, find all matching event dates directly
+def now() -> datetime.datetime
+def object_lookup(object_name: str, max_matches: int = 8) -> str # For object yes/no questions, check whether task summaries mention the object
+def task_list(max_tasks: int = 30) -> str # For task-list questions, list task-sized history summaries in chronological order
+def task_lookup(query: str, max_matches: int = 8) -> str # For task-description questions, list task-sized summaries matching a query
+def temporal_neighbor(target_task: str, direction: str = 'before', max_candidates: int = 6) -> str # For just-before/just-after questions, find the target task and return adjacent task candidates
+def vqa(question: str, *images: PIL.Image.Image)
+"""
+
+**HumanMessage**:
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:226: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:183: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  result = torch.empty(len(texts), embedding_model.get_sentence_embedding_dimension(),
+"""Usage examples:
+>>> history.expand()  # Shows the history tree with all child nodes expanded
+>>> history.expand(date(2021, 12, 20))  # Expand the children that overlap with the given day
+>>> history.expand(now() - timedelta(hours=6), now() - timedelta(hours=4))  # Expand all children that overlap with the given range (in this example "about 5 hours ago")
+>>> history.expand((now() - timedelta(days=2)).date())  # Expand all children that overlap with the day before yesterday
+>>> history.expand(0)  # Shows child node 0
+>>> history[0].expand()  # Expands all child nodes of node 0 (node 0 must be expanded already to see them)
+>>> history[5][2].expand()  # Shows child node 2 of child node 5 with all its child nodes expanded
+>>> history.search("green cup") # Semantic index search. Expands the most relevant children according to similarity of the natural language query and the node's (recursively defined) index content.
+>>> history[1][42].search("bicycle") # Semantic index search on some node further down the tree. Expands the children of node 1.42 most relevant to the search term
+>>> history[3].collapse_all_but(1); history[3][1].expand()  # Zooms into details of child node 3.1 while collapsing all other childs of node 3
+>>> vqa("What color is the ... in this image?",
+...     history[2][4][-1][0].image)  # Invoke a model to answer a visual question about image(s) of some leaf (!) node(s)
+
+# After gathering the relevant information, answer the question:
+# Optionally, provide a reasoning on why you choose the respective answer
+>>> answer(reasoning="...", answer="...")"""
+
+**HumanMessage**:
+"""User question: describe what you did when you clean all the pans."""
+
+**AIMessage**:
+"""task_lookup('clean all the pans')"""
+
+**HumanMessage**:
+""""Task lookup candidates for query='clean all the pans':\n1. score=0.56; 2023/07/16 13:10:02 - 13:12:13: I cleaned a dirty pan from the stove. To do this, I temporarily placed it on the countertop while I cleared the obstructed sink by moving several items out of the basin. Then, I placed the pan in the sink, rinsed it by turning the faucet on...\n2. score=0.53; 2023/07/13 10:41:28 - 10:43:40: I found a dirty plate and moved it to the countertop while searching for a way to clean it.\n3. score=0.49; 2023/07/21 09:22 - 09:32: I cleaned a plate, and then began assembling the sandwich by placing toast, lettuce, and tomato on the plate. After a correction, I reorganized the ingredients and added a newly toasted slice of bread to complete the sandwich on the plate.\n4. score=0.49; 2023/07/30 11:09 - 11:15: Since the microwave was occupied, I cleaned a pan and used the stove to cook the three potato slices before placing them back on the plate to complete the task.\n5. score=0.47; 2023/08/03 16:22:51 - 16:25:21: I made a mistake by first picking up a clean mug from the island. After emptying its contents into the sink, I placed it in the coffee machine. The user corrected me, so I removed the mug from the machine and placed it back on the counterto...\n6. score=0.44; 2023/07/16 12:06 - 12:09: I began preparing to clean two dirty plates by clearing the sink, moving a bowl to the countertop. I then retrieved a second dirty plate from a cabinet and placed it on the countertop.\n7. score=0.44; 2023/07/24 15:07 - 15:11: I was instructed to clean the drinkware. I picked up a dirty cup from the counter, brought it to the sink, and placed it in the basin. I then retrieved a dirty mug from the counter and also placed it in the sink. Finally, I turned the fauce...\n8. score=0.43; 2023/07/19 17:03 - 17:09: I was instructed to clean mugs and make coffee. I picked up a dirty cup and placed it in the sink, then took a filled mug, emptied it, and started the coffee machine. While the coffee brewed, I rinsed the dirty cup in the sink and emptied a...\nRecommended answer: I cleaned a dirty pan from the stove. To do this, I temporarily placed it on the countertop while I cleared the obstruct...; I found a dirty plate and moved it to the countertop while searching for a way to clean it.; I cleaned a plate, and then began assembling the sandwich by placing toast, lettuce, and tomato on the plate. After a co...""""
+
+**HumanMessage**:
+"""Current state:
+2023/07/13 - 2023/08/04: "From July 13th to August 4th, I consistently performed a variety of daily kitchen and household tasks, including preparing diverse meals like toast, sandwiches, cooked potatoes, salads, and coffee, along with routine activities such as watering houseplants, cleaning dishes, and organizing various items including credit cards, remotes, tissue boxes, pencils, newspapers, and watches."  
+  ..."""
+{}
+command: answer(reasoning="I found a record of cleaning a pan on 2023/07/16. The task lookup describes the process of moving the pan from the stove to the countertop, clearing the sink, and then rinsing the pan in the sink.", answer="When I cleaned the pan, I first moved it from the stove to the countertop. I then cleared the sink by moving several items out of the basin to make room. Finally, I placed the pan in the sink and rinsed it by turning on the faucet.")
+expected output: 
+
+
+ ============================== 
+
+
+eval answer(reasoning="I found a record of cleaning a pan on 2023/07/16. The task lookup describes the process of moving the pan from the stove to the countertop, clearing the sink, and then rinsing the pan in the sink.", answer="When I cleaned the pan, I first moved it from the stove to the countertop. I then cleared the sink by moving several items out of the basin to make room. Finally, I placed the pan in the sink and rinsed it by turning on the faucet.")
+Answering When I cleaned the pan, I first moved it from the stove to the countertop. I then cleared the sink by moving several items out of the basin to make room. Finally, I placed the pan in the sink and rinsed it by turning on the faucet.  with reason: I found a record of cleaning a pan on 2023/07/16. The task lookup describes the process of moving the pan from the stove to the countertop, clearing the sink, and then rinsing the pan in the sink.
+Tokens Used: 2336
+	Prompt Tokens: 2226
+	Completion Tokens: 110
+Successful Requests: 1
+Total Cost (USD): $0.0
+Evaluating sample 6c24abb778c24a7c_704a-977b52faf01e6c05_d71f-01c1b8aa1820aa0b_adaf-32918ea00b69d9fe_38ff-cdf30defa61245ba_5590-2513b9a8d8ae5129_ab38-7337be5c30b1b5d1_874c-57862376ad3394a1_c9dc-32fe2fa7cc43fbc3_b8f3-0de4b62afcd06138_45f2-a966ba0c6e0d463d_ce88-25ef88cce38adfbc_1740-7504548a0dd7baf8_b148-064a69cb5d40b41f_9c2e-a690a35743c855aa_4c00-4b813e7c9bc088d0_1ce1-e4909f617bc99db4_4ab8-03379f213dfbda39_79a2-c49a96282ec09e90_5bfa-a2d31b84a569e568_fb03-88ddc0cbf1a23687_43ea-b36a8d73976068a3_6afd-c02445dd7a5b6f26_d92a-a76099fbab67c9da_4d48-c6c5c151b7b8e770_38db-60d26ec0f9c4757e_425d-9539c0004762d6a8_2eee-b2fde7ee4eb1c40f_1f95-c2ffd6a81bfe2613_f91c-81b10da74f7ac9ff_15c8-6ccc8b815fbc093a_e921-5aa3cbd322d4f163_402a-52e190f2e5f3b790_edbb-71392179ff5e728f_d7fe-4e893adaff5699af_ab4f-6f4aca312776de7b_97f3-4e88e46c6584bd85_21d2-eef61c8f3cdd8280_c537-bfb3e4eaf7ba458f_81db-af3fc77ab8313235_5b72-dbb41344c474217f_ee0e-498d06abfb7e9487_5c19-36492265af47de94_a352-9c97a83f60095487_02d9-0d1a67f82b3b5854_d74d-2f8d482d22e56fdd_410e-5c12b219bbb5bc07_6008-4aafdc038df138e8_58f0-474a8460bc35eb12_20d0-0f0664338151d4ac_5c06-0-seq_right_after_questions
+[配置] 启用 FAISS 加速，索引类型: flat
+[GraphAug] 命中图缓存 (nodes=4933, edges=16430)
+Got 0 examples
+
+
+ ============================== 
+
+
+eval temporal_neighbor('put all book on any bed', direction='after')
+Updated/Defined variables after execution: {}
+
+**SystemMessage**:
+"""You are a smart humanoid robot answering user question about your past actions.
+The history object contains information on what you did in the past, represented as a tree.
+Use the method expand to look at details of a node.
+Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in order to keep the tree compact.
+Enter Python expressions into the console to see the value and decide for the next command based on that result.
+Answer concisely by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
+Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found", your next command MUST be answer(reasoning="No relevant record was found.", answer="I have no record of that."). Do not search synonyms, do not expand further, and do not call vqa.
+IMPORTANT: If you get "Nothing changed" twice, answer honestly that you have no record. Do NOT keep searching repeatedly. For just-before/just-after questions, first try one broader target search or inspect another relevant top-level time block before giving up.
+For object yes/no questions, first use object_lookup("object name"). If it reports no matching summary, answer "No, I have no record of that." Do not call vqa unless you already have a directly relevant leaf image.
+For task-list questions such as "List the tasks you performed", first use task_list(). Prefer its Recommended answer and chronological candidates instead of manually expanding the whole tree. For long histories, do not copy every task candidate verbatim unless the user explicitly asks for an exhaustive transcript.
+For task-description questions such as "describe what you did when you X", first use task_lookup("X"). Prefer its matching task candidates instead of manually expanding the whole tree.
+For exact date/time questions or "N days ago" questions asking what happened, first use date_lookup(question). Prefer its Recommended answer when it is confident instead of manually expanding by date.
+For "How many days ago did you X?" or "When did you X?" questions, first use event_date_lookup(question). If it lists multiple days, include all of them in the final answer instead of only the most recent match.
+For just-before or just-after questions, first use temporal_neighbor(target_task, direction="before" or "after") if a candidate is not already shown. Prefer the returned Recommended answer when it is confident. Only then inspect adjacent sibling or temporal nodes. Avoid expanding to raw leaf observations unless the summary is insufficient.
+Do not call vqa for time, date, task-list, before/after, or yes/no object-existence questions when textual summaries already answer the question. Use vqa only for explicit visual appearance questions such as color, visible state, or what something looks like.
+Never output bare parameters such as reasoning="..." answer="...". Always call answer(reasoning="...", answer="...")."""
+
+**HumanMessage**:
+"""
+def answer(reasoning: str = None, answer: str = Ellipsis)
+def ask(question: str)
+def date_lookup(query: str, max_matches: int = 8) -> str # For exact date/time or N-days-ago questions, list matching history summaries directly
+def event_date_lookup(query: str, max_matches: int = 12) -> str # For "how many days ago did you X" questions, find all matching event dates directly
+def now() -> datetime.datetime
+def object_lookup(object_name: str, max_matches: int = 8) -> str # For object yes/no questions, check whether task summaries mention the object
+def task_list(max_tasks: int = 30) -> str # For task-list questions, list task-sized history summaries in chronological order
+def task_lookup(query: str, max_matches: int = 8) -> str # For task-description questions, list task-sized summaries matching a query
+def temporal_neighbor(target_task: str, direction: str = 'before', max_candidates: int = 6) -> str # For just-before/just-after questions, find the target task and return adjacent task candidates
+def vqa(question: str, *images: PIL.Image.Image)
+"""
+
+**HumanMessage**:
+"""Usage examples:
+>>> history.expand()  # Shows the history tree with all child nodes expanded
+>>> history.expand(date(2021, 12, 20))  # Expand the children that overlap with the given day
+>>> history.expand(now() - timedelta(hours=6), now() - timedelta(hours=4))  # Expand all children that overlap with the given range (in this example "about 5 hours ago")
+>>> history.expand((now() - timedelta(days=2)).date())  # Expand all children that overlap with the day before yesterday
+>>> history.expand(0)  # Shows child node 0
+>>> history[0].expand()  # Expands all child nodes of node 0 (node 0 must be expanded already to see them)
+>>> history[5][2].expand()  # Shows child node 2 of child node 5 with all its child nodes expanded
+>>> history.search("green cup") # Semantic index search. Expands the most relevant children according to similarity of the natural language query and the node's (recursively defined) index content.
+>>> history[1][42].search("bicycle") # Semantic index search on some node further down the tree. Expands the children of node 1.42 most relevant to the search term
+>>> history[3].collapse_all_but(1); history[3][1].expand()  # Zooms into details of child node 3.1 while collapsing all other childs of node 3
+>>> vqa("What color is the ... in this image?",
+...     history[2][4][-1][0].image)  # Invoke a model to answer a visual question about image(s) of some leaf (!) node(s)
+
+# After gathering the relevant information, answer the question:
+# Optionally, provide a reasoning on why you choose the respective answer
+>>> answer(reasoning="...", answer="...")"""
+
+**HumanMessage**:
+"""User question: What task did you do just after put all book on any bed?"""
+
+**AIMessage**:
+"""temporal_neighbor('put all book on any bed', direction='after')"""
+
+**HumanMessage**:
+""""Temporal neighbor candidates for target='put all book on any bed', direction='after':\n1. score=0.64; target=2023/07/28 12:26:43 - 12:27:45: I was instructed to put the book on the bed, so I picked it up from the desk and placed it on the bed.; after=2023/07/28 12:27:50 - 12:27:56: The user thanked me, confirming the task was complete.\n2. score=0.61; target=2023/07/29 17:21:13 - 17:21:42: I picked up the first pencil (Pencil_0) and placed it on the bed, following the instruction to put all pencils on the bed.; after=2023/07/29 17:21:44 - 17:22:03: I located and picked up the second pencil (Pencil_1) and also placed it on the bed.\n3. score=0.57; target=2023/07/28 12:26:43 - 12:27:56: I placed a book on the bed as instructed and received confirmation from the user that the task was complete.; no after sibling at this level\n4. score=0.56; target=2023/07/29 17:22:04 - 17:22:15: I retrieved the third pencil (Pencil_2) from the desk and placed it on the bed, completing the task of gathering all pencils onto the bed.; after=2023/07/29 17:22:18 - 17:22:29: I confirmed task completion and received thanks from the user.\n5. score=0.55; target=2023/07/29 17:21:13 - 17:22:29: I gathered all three pencils (Pencil_0, Pencil_1, and Pencil_2) and placed them on the bed as instructed, then confirmed task completion to the user.; no after sibling at this level\n6. score=0.54; target=2023/07/31 11:39:16 - 11:41:13: I started by picking up a newspaper from the dresser and placing it on an armchair, following the instruction to gather all newspapers on one armchair.; after=2023/07/31 11:41:26 - 11:43:11: I then searched for another newspaper by opening and closing various drawers and cabinets (Drawer_4, Drawer_2, Cabinet_2). Upon finding a second newspaper, I picked it up and place...\nRecommended answer: The user thanked me, confirming the task was complete.""""
+
+**HumanMessage**:
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:226: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:183: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  result = torch.empty(len(texts), embedding_model.get_sentence_embedding_dimension(),
+"""Current state:
+2023/07/13 - 2023/08/04: "From July 13th to August 4th, I consistently performed a variety of daily kitchen and household tasks, including preparing diverse meals like toast, sandwiches, cooked potatoes, salads, and coffee, along with routine activities such as watering houseplants, cleaning dishes, and organizing various items including credit cards, remotes, tissue boxes, pencils, newspapers, and watches."  
+  ..."""
+{}
+command: answer(reasoning="The `temporal_neighbor` function identified the task immediately following 'put all book on any bed'.", answer="The user thanked me, confirming the task was complete.")
+expected output: 
+
+
+ ============================== 
+
+
+eval answer(reasoning="The `temporal_neighbor` function identified the task immediately following 'put all book on any bed'.", answer="The user thanked me, confirming the task was complete.")
+Answering The user thanked me, confirming the task was complete.  with reason: The `temporal_neighbor` function identified the task immediately following 'put all book on any bed'.
+Tokens Used: 2268
+	Prompt Tokens: 2172
+	Completion Tokens: 96
+Successful Requests: 1
+Total Cost (USD): $0.0
+Evaluating sample 6c24abb778c24a7c_704a-977b52faf01e6c05_d71f-01c1b8aa1820aa0b_adaf-32918ea00b69d9fe_38ff-cdf30defa61245ba_5590-2513b9a8d8ae5129_ab38-7337be5c30b1b5d1_874c-57862376ad3394a1_c9dc-32fe2fa7cc43fbc3_b8f3-0de4b62afcd06138_45f2-a966ba0c6e0d463d_ce88-25ef88cce38adfbc_1740-7504548a0dd7baf8_b148-064a69cb5d40b41f_9c2e-a690a35743c855aa_4c00-4b813e7c9bc088d0_1ce1-e4909f617bc99db4_4ab8-03379f213dfbda39_79a2-c49a96282ec09e90_5bfa-a2d31b84a569e568_fb03-88ddc0cbf1a23687_43ea-b36a8d73976068a3_6afd-c02445dd7a5b6f26_d92a-a76099fbab67c9da_4d48-c6c5c151b7b8e770_38db-60d26ec0f9c4757e_425d-9539c0004762d6a8_2eee-b2fde7ee4eb1c40f_1f95-c2ffd6a81bfe2613_f91c-81b10da74f7ac9ff_15c8-6ccc8b815fbc093a_e921-5aa3cbd322d4f163_402a-52e190f2e5f3b790_edbb-71392179ff5e728f_d7fe-4e893adaff5699af_ab4f-6f4aca312776de7b_97f3-4e88e46c6584bd85_21d2-eef61c8f3cdd8280_c537-bfb3e4eaf7ba458f_81db-af3fc77ab8313235_5b72-dbb41344c474217f_ee0e-498d06abfb7e9487_5c19-36492265af47de94_a352-9c97a83f60095487_02d9-0d1a67f82b3b5854_d74d-2f8d482d22e56fdd_410e-5c12b219bbb5bc07_6008-4aafdc038df138e8_58f0-474a8460bc35eb12_20d0-0f0664338151d4ac_5c06-0-seq_right_before_questions
+[配置] 启用 FAISS 加速，索引类型: flat
+[GraphAug] 命中图缓存 (nodes=4933, edges=16430)
+Got 0 examples
+
+
+ ============================== 
+
+
+eval temporal_neighbor('put all newspaper on one armchair', direction='before')
+Updated/Defined variables after execution: {}
+
+**SystemMessage**:
+"""You are a smart humanoid robot answering user question about your past actions.
+The history object contains information on what you did in the past, represented as a tree.
+Use the method expand to look at details of a node.
+Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in order to keep the tree compact.
+Enter Python expressions into the console to see the value and decide for the next command based on that result.
+Answer concisely by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
+Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found", your next command MUST be answer(reasoning="No relevant record was found.", answer="I have no record of that."). Do not search synonyms, do not expand further, and do not call vqa.
+IMPORTANT: If you get "Nothing changed" twice, answer honestly that you have no record. Do NOT keep searching repeatedly. For just-before/just-after questions, first try one broader target search or inspect another relevant top-level time block before giving up.
+For object yes/no questions, first use object_lookup("object name"). If it reports no matching summary, answer "No, I have no record of that." Do not call vqa unless you already have a directly relevant leaf image.
+For task-list questions such as "List the tasks you performed", first use task_list(). Prefer its Recommended answer and chronological candidates instead of manually expanding the whole tree. For long histories, do not copy every task candidate verbatim unless the user explicitly asks for an exhaustive transcript.
+For task-description questions such as "describe what you did when you X", first use task_lookup("X"). Prefer its matching task candidates instead of manually expanding the whole tree.
+For exact date/time questions or "N days ago" questions asking what happened, first use date_lookup(question). Prefer its Recommended answer when it is confident instead of manually expanding by date.
+For "How many days ago did you X?" or "When did you X?" questions, first use event_date_lookup(question). If it lists multiple days, include all of them in the final answer instead of only the most recent match.
+For just-before or just-after questions, first use temporal_neighbor(target_task, direction="before" or "after") if a candidate is not already shown. Prefer the returned Recommended answer when it is confident. Only then inspect adjacent sibling or temporal nodes. Avoid expanding to raw leaf observations unless the summary is insufficient.
+Do not call vqa for time, date, task-list, before/after, or yes/no object-existence questions when textual summaries already answer the question. Use vqa only for explicit visual appearance questions such as color, visible state, or what something looks like.
+Never output bare parameters such as reasoning="..." answer="...". Always call answer(reasoning="...", answer="...")."""
+
+**HumanMessage**:
+"""
+def answer(reasoning: str = None, answer: str = Ellipsis)
+def ask(question: str)
+def date_lookup(query: str, max_matches: int = 8) -> str # For exact date/time or N-days-ago questions, list matching history summaries directly
+def event_date_lookup(query: str, max_matches: int = 12) -> str # For "how many days ago did you X" questions, find all matching event dates directly
+def now() -> datetime.datetime
+def object_lookup(object_name: str, max_matches: int = 8) -> str # For object yes/no questions, check whether task summaries mention the object
+def task_list(max_tasks: int = 30) -> str # For task-list questions, list task-sized history summaries in chronological order
+def task_lookup(query: str, max_matches: int = 8) -> str # For task-description questions, list task-sized summaries matching a query
+def temporal_neighbor(target_task: str, direction: str = 'before', max_candidates: int = 6) -> str # For just-before/just-after questions, find the target task and return adjacent task candidates
+def vqa(question: str, *images: PIL.Image.Image)
+"""
+
+**HumanMessage**:
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:226: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+"""Usage examples:
+>>> history.expand()  # Shows the history tree with all child nodes expanded
+>>> history.expand(date(2021, 12, 20))  # Expand the children that overlap with the given day
+>>> history.expand(now() - timedelta(hours=6), now() - timedelta(hours=4))  # Expand all children that overlap with the given range (in this example "about 5 hours ago")
+>>> history.expand((now() - timedelta(days=2)).date())  # Expand all children that overlap with the day before yesterday
+>>> history.expand(0)  # Shows child node 0
+>>> history[0].expand()  # Expands all child nodes of node 0 (node 0 must be expanded already to see them)
+>>> history[5][2].expand()  # Shows child node 2 of child node 5 with all its child nodes expanded
+>>> history.search("green cup") # Semantic index search. Expands the most relevant children according to similarity of the natural language query and the node's (recursively defined) index content.
+>>> history[1][42].search("bicycle") # Semantic index search on some node further down the tree. Expands the children of node 1.42 most relevant to the search term
+>>> history[3].collapse_all_but(1); history[3][1].expand()  # Zooms into details of child node 3.1 while collapsing all other childs of node 3
+>>> vqa("What color is the ... in this image?",
+...     history[2][4][-1][0].image)  # Invoke a model to answer a visual question about image(s) of some leaf (!) node(s)
+
+# After gathering the relevant information, answer the question:
+# Optionally, provide a reasoning on why you choose the respective answer
+>>> answer(reasoning="...", answer="...")"""
+
+**HumanMessage**:
+"""User question: What task did you do just before put all newspaper on one armchair?"""
+
+**AIMessage**:
+"""temporal_neighbor('put all newspaper on one armchair', direction='before')"""
+
+**HumanMessage**:
+""""Temporal neighbor candidates for target='put all newspaper on one armchair', direction='before':\n1. score=0.87; target=2023/07/31 11:39:16 - 11:41:13: I started by picking up a newspaper from the dresser and placing it on an armchair, following the instruction to gather all newspapers on one armchair.; no before sibling at this level\n2. score=0.85; target=2023/07/31 11:39 - 11:45: As instructed, I began gathering newspapers onto an armchair. I moved one newspaper from the dresser to the armchair, and to clear space, I relocated a cellphone from the armchair...; before=2023/07/31 08:25:31 - 08:28:29: In response to a request to serve two slices of tomato, I sliced a tomato, placed two slices on a plate, and then asked the user for confirmation that the task was complete.\n3. score=0.80; target=2023/07/31 11:41:26 - 11:43:11: I then searched for another newspaper by opening and closing various drawers and cabinets (Drawer_4, Drawer_2, Cabinet_2). Upon finding a second newspaper, I picked it up and place...; before=2023/07/31 11:39:16 - 11:41:13: I started by picking up a newspaper from the dresser and placing it on an armchair, following the instruction to gather all newspapers on one armchair.\n4. score=0.72; target=2023/07/23 19:49 - 19:54: I was asked to place the tissue boxes on the side tables. I picked up the first tissue box and placed it on one side table, then picked up the second tissue box and placed it on an...; before=2023/07/23 08:13:14 - 08:14:58: The user instructed me to collect remote controls, including one from the safe. I retrieved the remote from the safe and placed it on the sofa as directed, after which the user con...\n5. score=0.69; target=2023/07/25 12:08 - 12:11: As instructed by the user, I opened the safe, picked up two remote controls, and placed them on the armchair.; before=2023/07/24 16:12 - 16:15: I retrieved a dirty plate from a chair and prepared the sink for washing by moving a soap bottle and an egg out of the basin. I also moved a potato to the countertop before washing...\n6. score=0.66; target=2023/07/31 11:44:20 - 11:45:46: I continued searching for more newspapers by opening Cabinet_0, Cabinet_3, and Drawer_1.; before=2023/07/31 11:43:28 - 11:44:18: I picked up a cellphone that was on the armchair and placed it on the dresser.\nRecommended answer: In response to a request to serve two slices of tomato, I sliced a tomato, placed two slices on a plate, and then asked the user for confirmation that the task was complete.""""
+
+**HumanMessage**:
+"""Current state:
+2023/07/13 - 2023/08/04: "From July 13th to August 4th, I consistently performed a variety of daily kitchen and household tasks, including preparing diverse meals like toast, sandwiches, cooked potatoes, salads, and coffee, along with routine activities such as watering houseplants, cleaning dishes, and organizing various items including credit cards, remotes, tissue boxes, pencils, newspapers, and watches."  
+  ..."""
+{}
+command: answer(reasoning="According to the temporal neighbor search, the task 'put all newspaper on one armchair' occurred on 2023/07/31 starting around 11:39. The task immediately preceding this sequence of gathering newspapers was serving two slices of tomato.", answer="Just before I started putting the newspapers on the armchair, I sliced a tomato and placed two slices on a plate as requested.")
+expected output: 
+
+
+ ============================== 
+
+
+eval answer(reasoning="According to the temporal neighbor search, the task 'put all newspaper on one armchair' occurred on 2023/07/31 starting around 11:39. The task immediately preceding this sequence of gathering newspapers was serving two slices of tomato.", answer="Just before I started putting the newspapers on the armchair, I sliced a tomato and placed two slices on a plate as requested.")
+Answering Just before I started putting the newspapers on the armchair, I sliced a tomato and placed two slices on a plate as requested.  with reason: According to the temporal neighbor search, the task 'put all newspaper on one armchair' occurred on 2023/07/31 starting around 11:39. The task immediately preceding this sequence of gathering newspapers was serving two slices of tomato.
+Tokens Used: 2383
+	Prompt Tokens: 2296
+	Completion Tokens: 87
+Successful Requests: 1
+Total Cost (USD): $0.0
+Evaluating sample 6c24abb778c24a7c_704a-977b52faf01e6c05_d71f-01c1b8aa1820aa0b_adaf-32918ea00b69d9fe_38ff-cdf30defa61245ba_5590-2513b9a8d8ae5129_ab38-7337be5c30b1b5d1_874c-57862376ad3394a1_c9dc-32fe2fa7cc43fbc3_b8f3-0de4b62afcd06138_45f2-a966ba0c6e0d463d_ce88-25ef88cce38adfbc_1740-7504548a0dd7baf8_b148-064a69cb5d40b41f_9c2e-a690a35743c855aa_4c00-4b813e7c9bc088d0_1ce1-e4909f617bc99db4_4ab8-03379f213dfbda39_79a2-c49a96282ec09e90_5bfa-a2d31b84a569e568_fb03-88ddc0cbf1a23687_43ea-b36a8d73976068a3_6afd-c02445dd7a5b6f26_d92a-a76099fbab67c9da_4d48-c6c5c151b7b8e770_38db-60d26ec0f9c4757e_425d-9539c0004762d6a8_2eee-b2fde7ee4eb1c40f_1f95-c2ffd6a81bfe2613_f91c-81b10da74f7ac9ff_15c8-6ccc8b815fbc093a_e921-5aa3cbd322d4f163_402a-52e190f2e5f3b790_edbb-71392179ff5e728f_d7fe-4e893adaff5699af_ab4f-6f4aca312776de7b_97f3-4e88e46c6584bd85_21d2-eef61c8f3cdd8280_c537-bfb3e4eaf7ba458f_81db-af3fc77ab8313235_5b72-dbb41344c474217f_ee0e-498d06abfb7e9487_5c19-36492265af47de94_a352-9c97a83f60095487_02d9-0d1a67f82b3b5854_d74d-2f8d482d22e56fdd_410e-5c12b219bbb5bc07_6008-4aafdc038df138e8_58f0-474a8460bc35eb12_20d0-0f0664338151d4ac_5c06-0-seq_simple_object_yes_no
+[配置] 启用 FAISS 加速，索引类型: flat
+[GraphAug] 命中图缓存 (nodes=4933, edges=16430)
+Got 0 examples
+
+
+ ============================== 
+
+
+eval object_lookup('baseball bat')
+Updated/Defined variables after execution: {}
+
+**SystemMessage**:
+"""You are a smart humanoid robot answering user question about your past actions.
+The history object contains information on what you did in the past, represented as a tree.
+Use the method expand to look at details of a node.
+Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in order to keep the tree compact.
+Enter Python expressions into the console to see the value and decide for the next command based on that result.
+Answer concisely by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
+Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found", your next command MUST be answer(reasoning="No relevant record was found.", answer="I have no record of that."). Do not search synonyms, do not expand further, and do not call vqa.
+IMPORTANT: If you get "Nothing changed" twice, answer honestly that you have no record. Do NOT keep searching repeatedly. For just-before/just-after questions, first try one broader target search or inspect another relevant top-level time block before giving up.
+For object yes/no questions, first use object_lookup("object name"). If it reports no matching summary, answer "No, I have no record of that." Do not call vqa unless you already have a directly relevant leaf image.
+For task-list questions such as "List the tasks you performed", first use task_list(). Prefer its Recommended answer and chronological candidates instead of manually expanding the whole tree. For long histories, do not copy every task candidate verbatim unless the user explicitly asks for an exhaustive transcript.
+For task-description questions such as "describe what you did when you X", first use task_lookup("X"). Prefer its matching task candidates instead of manually expanding the whole tree.
+For exact date/time questions or "N days ago" questions asking what happened, first use date_lookup(question). Prefer its Recommended answer when it is confident instead of manually expanding by date.
+For "How many days ago did you X?" or "When did you X?" questions, first use event_date_lookup(question). If it lists multiple days, include all of them in the final answer instead of only the most recent match.
+For just-before or just-after questions, first use temporal_neighbor(target_task, direction="before" or "after") if a candidate is not already shown. Prefer the returned Recommended answer when it is confident. Only then inspect adjacent sibling or temporal nodes. Avoid expanding to raw leaf observations unless the summary is insufficient.
+Do not call vqa for time, date, task-list, before/after, or yes/no object-existence questions when textual summaries already answer the question. Use vqa only for explicit visual appearance questions such as color, visible state, or what something looks like.
+Never output bare parameters such as reasoning="..." answer="...". Always call answer(reasoning="...", answer="...")."""
+
+**HumanMessage**:
+"""
+def answer(reasoning: str = None, answer: str = Ellipsis)
+def ask(question: str)
+def date_lookup(query: str, max_matches: int = 8) -> str # For exact date/time or N-days-ago questions, list matching history summaries directly
+def event_date_lookup(query: str, max_matches: int = 12) -> str # For "how many days ago did you X" questions, find all matching event dates directly
+def now() -> datetime.datetime
+def object_lookup(object_name: str, max_matches: int = 8) -> str # For object yes/no questions, check whether task summaries mention the object
+def task_list(max_tasks: int = 30) -> str # For task-list questions, list task-sized history summaries in chronological order
+def task_lookup(query: str, max_matches: int = 8) -> str # For task-description questions, list task-sized summaries matching a query
+def temporal_neighbor(target_task: str, direction: str = 'before', max_candidates: int = 6) -> str # For just-before/just-after questions, find the target task and return adjacent task candidates
+def vqa(question: str, *images: PIL.Image.Image)
+"""
+
+**HumanMessage**:
+"""Usage examples:
+>>> history.expand()  # Shows the history tree with all child nodes expanded
+>>> history.expand(date(2021, 12, 20))  # Expand the children that overlap with the given day
+>>> history.expand(now() - timedelta(hours=6), now() - timedelta(hours=4))  # Expand all children that overlap with the given range (in this example "about 5 hours ago")
+>>> history.expand((now() - timedelta(days=2)).date())  # Expand all children that overlap with the day before yesterday
+>>> history.expand(0)  # Shows child node 0
+>>> history[0].expand()  # Expands all child nodes of node 0 (node 0 must be expanded already to see them)
+>>> history[5][2].expand()  # Shows child node 2 of child node 5 with all its child nodes expanded
+>>> history.search("green cup") # Semantic index search. Expands the most relevant children according to similarity of the natural language query and the node's (recursively defined) index content.
+>>> history[1][42].search("bicycle") # Semantic index search on some node further down the tree. Expands the children of node 1.42 most relevant to the search term
+>>> history[3].collapse_all_but(1); history[3][1].expand()  # Zooms into details of child node 3.1 while collapsing all other childs of node 3
+>>> vqa("What color is the ... in this image?",
+...     history[2][4][-1][0].image)  # Invoke a model to answer a visual question about image(s) of some leaf (!) node(s)
+
+# After gathering the relevant information, answer the question:
+# Optionally, provide a reasoning on why you choose the respective answer
+>>> answer(reasoning="...", answer="...")"""
+
+**HumanMessage**:
+"""User question: Was there a baseball bat ?"""
+
+**AIMessage**:
+"""object_lookup('baseball bat')"""
+
+**HumanMessage**:
+""""Object lookup for object='baseball bat':\nNo task-sized summaries mention this object.\nRecommended answer: No, I have no record of that.""""
+
+**HumanMessage**:
+"""Current state:
+2023/07/13 - 2023/08/04: "From July 13th to August 4th, I consistently performed a variety of daily kitchen and household tasks, including preparing diverse meals like toast, sandwiches, cooked potatoes, salads, and coffee, along with routine activities such as watering houseplants, cleaning dishes, and organizing various items including credit cards, remotes, tissue boxes, pencils, newspapers, and watches."  
+  ..."""
+{}
+command: answer(reasoning="Object lookup did not find any mention of a 'baseball bat' in the task summaries.", answer="No, I have no record of that.")
+expected output: 
+
+
+ ============================== 
+
+
+eval answer(reasoning="Object lookup did not find any mention of a 'baseball bat' in the task summaries.", answer="No, I have no record of that.")
+Answering No, I have no record of that.  with reason: Object lookup did not find any mention of a 'baseball bat' in the task summaries.
+Tokens Used: 1586
+	Prompt Tokens: 1503
+	Completion Tokens: 83
+Successful Requests: 1
+Total Cost (USD): $0.0
+Evaluating sample /home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:226: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:183: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  result = torch.empty(len(texts), embedding_model.get_sentence_embedding_dimension(),
+6c24abb778c24a7c_704a-977b52faf01e6c05_d71f-01c1b8aa1820aa0b_adaf-32918ea00b69d9fe_38ff-cdf30defa61245ba_5590-2513b9a8d8ae5129_ab38-7337be5c30b1b5d1_874c-57862376ad3394a1_c9dc-32fe2fa7cc43fbc3_b8f3-0de4b62afcd06138_45f2-a966ba0c6e0d463d_ce88-25ef88cce38adfbc_1740-7504548a0dd7baf8_b148-064a69cb5d40b41f_9c2e-a690a35743c855aa_4c00-4b813e7c9bc088d0_1ce1-e4909f617bc99db4_4ab8-03379f213dfbda39_79a2-c49a96282ec09e90_5bfa-a2d31b84a569e568_fb03-88ddc0cbf1a23687_43ea-b36a8d73976068a3_6afd-c02445dd7a5b6f26_d92a-a76099fbab67c9da_4d48-c6c5c151b7b8e770_38db-60d26ec0f9c4757e_425d-9539c0004762d6a8_2eee-b2fde7ee4eb1c40f_1f95-c2ffd6a81bfe2613_f91c-81b10da74f7ac9ff_15c8-6ccc8b815fbc093a_e921-5aa3cbd322d4f163_402a-52e190f2e5f3b790_edbb-71392179ff5e728f_d7fe-4e893adaff5699af_ab4f-6f4aca312776de7b_97f3-4e88e46c6584bd85_21d2-eef61c8f3cdd8280_c537-bfb3e4eaf7ba458f_81db-af3fc77ab8313235_5b72-dbb41344c474217f_ee0e-498d06abfb7e9487_5c19-36492265af47de94_a352-9c97a83f60095487_02d9-0d1a67f82b3b5854_d74d-2f8d482d22e56fdd_410e-5c12b219bbb5bc07_6008-4aafdc038df138e8_58f0-474a8460bc35eb12_20d0-0f0664338151d4ac_5c06-0-seq_low_actions_to_episode_task_descs
+[配置] 启用 FAISS 加速，索引类型: flat
+[GraphAug] 命中图缓存 (nodes=4933, edges=16430)
+Got 0 examples
+
+
+ ============================== 
+
+
+eval task_lookup('place the mug on the coffeemachine')
+Updated/Defined variables after execution: {}
+
+**SystemMessage**:
+"""You are a smart humanoid robot answering user question about your past actions.
+The history object contains information on what you did in the past, represented as a tree.
+Use the method expand to look at details of a node.
+Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in order to keep the tree compact.
+Enter Python expressions into the console to see the value and decide for the next command based on that result.
+Answer concisely by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
+Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found", your next command MUST be answer(reasoning="No relevant record was found.", answer="I have no record of that."). Do not search synonyms, do not expand further, and do not call vqa.
+IMPORTANT: If you get "Nothing changed" twice, answer honestly that you have no record. Do NOT keep searching repeatedly. For just-before/just-after questions, first try one broader target search or inspect another relevant top-level time block before giving up.
+For object yes/no questions, first use object_lookup("object name"). If it reports no matching summary, answer "No, I have no record of that." Do not call vqa unless you already have a directly relevant leaf image.
+For task-list questions such as "List the tasks you performed", first use task_list(). Prefer its Recommended answer and chronological candidates instead of manually expanding the whole tree. For long histories, do not copy every task candidate verbatim unless the user explicitly asks for an exhaustive transcript.
+For task-description questions such as "describe what you did when you X", first use task_lookup("X"). Prefer its matching task candidates instead of manually expanding the whole tree.
+For exact date/time questions or "N days ago" questions asking what happened, first use date_lookup(question). Prefer its Recommended answer when it is confident instead of manually expanding by date.
+For "How many days ago did you X?" or "When did you X?" questions, first use event_date_lookup(question). If it lists multiple days, include all of them in the final answer instead of only the most recent match.
+For just-before or just-after questions, first use temporal_neighbor(target_task, direction="before" or "after") if a candidate is not already shown. Prefer the returned Recommended answer when it is confident. Only then inspect adjacent sibling or temporal nodes. Avoid expanding to raw leaf observations unless the summary is insufficient.
+Do not call vqa for time, date, task-list, before/after, or yes/no object-existence questions when textual summaries already answer the question. Use vqa only for explicit visual appearance questions such as color, visible state, or what something looks like.
+Never output bare parameters such as reasoning="..." answer="...". Always call answer(reasoning="...", answer="...")."""
+
+**HumanMessage**:
+"""
+def answer(reasoning: str = None, answer: str = Ellipsis)
+def ask(question: str)
+def date_lookup(query: str, max_matches: int = 8) -> str # For exact date/time or N-days-ago questions, list matching history summaries directly
+def event_date_lookup(query: str, max_matches: int = 12) -> str # For "how many days ago did you X" questions, find all matching event dates directly
+def now() -> datetime.datetime
+def object_lookup(object_name: str, max_matches: int = 8) -> str # For object yes/no questions, check whether task summaries mention the object
+def task_list(max_tasks: int = 30) -> str # For task-list questions, list task-sized history summaries in chronological order
+def task_lookup(query: str, max_matches: int = 8) -> str # For task-description questions, list task-sized summaries matching a query
+def temporal_neighbor(target_task: str, direction: str = 'before', max_candidates: int = 6) -> str # For just-before/just-after questions, find the target task and return adjacent task candidates
+def vqa(question: str, *images: PIL.Image.Image)
+"""
+
+**HumanMessage**:
+"""Usage examples:
+>>> history.expand()  # Shows the history tree with all child nodes expanded
+>>> history.expand(date(2021, 12, 20))  # Expand the children that overlap with the given day
+>>> history.expand(now() - timedelta(hours=6), now() - timedelta(hours=4))  # Expand all children that overlap with the given range (in this example "about 5 hours ago")
+>>> history.expand((now() - timedelta(days=2)).date())  # Expand all children that overlap with the day before yesterday
+>>> history.expand(0)  # Shows child node 0
+>>> history[0].expand()  # Expands all child nodes of node 0 (node 0 must be expanded already to see them)
+>>> history[5][2].expand()  # Shows child node 2 of child node 5 with all its child nodes expanded
+>>> history.search("green cup") # Semantic index search. Expands the most relevant children according to similarity of the natural language query and the node's (recursively defined) index content.
+>>> history[1][42].search("bicycle") # Semantic index search on some node further down the tree. Expands the children of node 1.42 most relevant to the search term
+>>> history[3].collapse_all_but(1); history[3][1].expand()  # Zooms into details of child node 3.1 while collapsing all other childs of node 3
+>>> vqa("What color is the ... in this image?",
+...     history[2][4][-1][0].image)  # Invoke a model to answer a visual question about image(s) of some leaf (!) node(s)
+
+# After gathering the relevant information, answer the question:
+# Optionally, provide a reasoning on why you choose the respective answer
+>>> answer(reasoning="...", answer="...")"""
+
+**HumanMessage**:
+"""User question: what task or tasks did you perform when you place the mug on the coffeemachine?"""
+
+**AIMessage**:
+"""task_lookup('place the mug on the coffeemachine')"""
+
+**HumanMessage**:
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:226: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+""""Task lookup candidates for query='place the mug on the coffeemachine':\n1. score=0.66; 2023/07/20 13:07:57 - 13:10:54: I cleaned a dirty mug to prepare it for fresh coffee. This involved moving it to the sink, emptying its contents, washing it under the faucet, and finally placing the clean mug back into the coffee machine.\n2. score=0.66; 2023/08/03 16:25:23 - 16:27:39: After briefly moving a bowl, I correctly identified the dirty mug by the sink. I emptied it, rinsed it with water from the faucet, and then placed it in the coffee machine. I operated the machine to brew the coffee, successfully completing...\n3. score=0.65; 2023/07/23 08:00 - 08:06: I was asked to make coffee. I first rinsed a dirty mug in the sink. Following a series of user instructions, I operated the coffee machine three times to fill the mug, correcting a mistake where I briefly placed the mug on the counter befor...\n4. score=0.63; 2023/07/30 10:01:26 - 10:03:35: Following the user's instruction to prepare coffee, I began by moving a vase to the countertop. I then took a mug from the sink, cleaned it with water, and placed it into the coffee machine to brew the coffee, completing the task.\n5. score=0.62; 2023/08/03 16:22:51 - 16:25:21: I made a mistake by first picking up a clean mug from the island. After emptying its contents into the sink, I placed it in the coffee machine. The user corrected me, so I removed the mug from the machine and placed it back on the counterto...\n6. score=0.61; 2023/07/19 17:03 - 17:09: I was instructed to clean mugs and make coffee. I picked up a dirty cup and placed it in the sink, then took a filled mug, emptied it, and started the coffee machine. While the coffee brewed, I rinsed the dirty cup in the sink and emptied a...\n7. score=0.58; 2023/07/14 16:29:51 - 16:31:29: I picked up a dirty mug, placed it in the sink, and then filled it with water by toggling the faucet on and off.\n8. score=0.55; 2023/08/02 10:58 - 11:12: I completed two consecutive tasks: first, I prepared two cups of coffee by washing the mugs and using the coffee machine, and then I sliced an apple and placed the slices into two bowls.\nRecommended answer: I cleaned a dirty mug to prepare it for fresh coffee. This involved moving it to the sink, emptying its contents, washin...; After briefly moving a bowl, I correctly identified the dirty mug by the sink. I emptied it, rinsed it with water from t...; I was asked to make coffee. I first rinsed a dirty mug in the sink. Following a series of user instructions, I operated...""""
+
+**HumanMessage**:
+"""Current state:
+2023/07/13 - 2023/08/04: "From July 13th to August 4th, I consistently performed a variety of daily kitchen and household tasks, including preparing diverse meals like toast, sandwiches, cooked potatoes, salads, and coffee, along with routine activities such as watering houseplants, cleaning dishes, and organizing various items including credit cards, remotes, tissue boxes, pencils, newspapers, and watches."  
+  ..."""
+{}
+command: answer(reasoning="I found several instances where I placed a mug on the coffee machine. In most cases, this was part of a larger task to prepare coffee, which typically involved cleaning a dirty mug first (moving it to the sink, emptying it, and rinsing it) before placing it in the machine to brew.", answer="When I placed the mug on the coffee machine, I was typically performing the task of preparing coffee. This usually involved first cleaning a dirty mug by moving it to the sink, emptying its contents, and rinsing it with water before placing it in the machine to brew.")
+expected output: 
+
+
+ ============================== 
+
+
+eval answer(reasoning="I found several instances where I placed a mug on the coffee machine. In most cases, this was part of a larger task to prepare coffee, which typically involved cleaning a dirty mug first (moving it to the sink, emptying it, and rinsing it) before placing it in the machine to brew.", answer="When I placed the mug on the coffee machine, I was typically performing the task of preparing coffee. This usually involved first cleaning a dirty mug by moving it to the sink, emptying its contents, and rinsing it with water before placing it in the machine to brew.")
+Answering When I placed the mug on the coffee machine, I was typically performing the task of preparing coffee. This usually involved first cleaning a dirty mug by moving it to the sink, emptying its contents, and rinsing it with water before placing it in the machine to brew.  with reason: I found several instances where I placed a mug on the coffee machine. In most cases, this was part of a larger task to prepare coffee, which typically involved cleaning a dirty mug first (moving it to the sink, emptying it, and rinsing it) before placing it in the machine to brew.
+Tokens Used: 2397
+	Prompt Tokens: 2277
+	Completion Tokens: 120
+Successful Requests: 1
+Total Cost (USD): $0.0
+Evaluating sample 6c24abb778c24a7c_704a-977b52faf01e6c05_d71f-01c1b8aa1820aa0b_adaf-32918ea00b69d9fe_38ff-cdf30defa61245ba_5590-2513b9a8d8ae5129_ab38-7337be5c30b1b5d1_874c-57862376ad3394a1_c9dc-32fe2fa7cc43fbc3_b8f3-0de4b62afcd06138_45f2-a966ba0c6e0d463d_ce88-25ef88cce38adfbc_1740-7504548a0dd7baf8_b148-064a69cb5d40b41f_9c2e-a690a35743c855aa_4c00-4b813e7c9bc088d0_1ce1-e4909f617bc99db4_4ab8-03379f213dfbda39_79a2-c49a96282ec09e90_5bfa-a2d31b84a569e568_fb03-88ddc0cbf1a23687_43ea-b36a8d73976068a3_6afd-c02445dd7a5b6f26_d92a-a76099fbab67c9da_4d48-c6c5c151b7b8e770_38db-60d26ec0f9c4757e_425d-9539c0004762d6a8_2eee-b2fde7ee4eb1c40f_1f95-c2ffd6a81bfe2613_f91c-81b10da74f7ac9ff_15c8-6ccc8b815fbc093a_e921-5aa3cbd322d4f163_402a-52e190f2e5f3b790_edbb-71392179ff5e728f_d7fe-4e893adaff5699af_ab4f-6f4aca312776de7b_97f3-4e88e46c6584bd85_21d2-eef61c8f3cdd8280_c537-bfb3e4eaf7ba458f_81db-af3fc77ab8313235_5b72-dbb41344c474217f_ee0e-498d06abfb7e9487_5c19-36492265af47de94_a352-9c97a83f60095487_02d9-0d1a67f82b3b5854_d74d-2f8d482d22e56fdd_410e-5c12b219bbb5bc07_6008-4aafdc038df138e8_58f0-474a8460bc35eb12_20d0-0f0664338151d4ac_5c06-0-exact_time_to_episode
+[配置] 启用 FAISS 加速，索引类型: flat
+[GraphAug] 命中图缓存 (nodes=4933, edges=16430)
+Got 0 examples
+
+
+ ============================== 
+
+
+eval date_lookup('what did you do on Jul 24, 2023 at 04:12 PM?')
+Updated/Defined variables after execution: {}
+
+**SystemMessage**:
+"""You are a smart humanoid robot answering user question about your past actions.
+The history object contains information on what you did in the past, represented as a tree.
+Use the method expand to look at details of a node.
+Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in order to keep the tree compact.
+Enter Python expressions into the console to see the value and decide for the next command based on that result.
+Answer concisely by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
+Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found", your next command MUST be answer(reasoning="No relevant record was found.", answer="I have no record of that."). Do not search synonyms, do not expand further, and do not call vqa.
+IMPORTANT: If you get "Nothing changed" twice, answer honestly that you have no record. Do NOT keep searching repeatedly. For just-before/just-after questions, first try one broader target search or inspect another relevant top-level time block before giving up.
+For object yes/no questions, first use object_lookup("object name"). If it reports no matching summary, answer "No, I have no record of that." Do not call vqa unless you already have a directly relevant leaf image.
+For task-list questions such as "List the tasks you performed", first use task_list(). Prefer its Recommended answer and chronological candidates instead of manually expanding the whole tree. For long histories, do not copy every task candidate verbatim unless the user explicitly asks for an exhaustive transcript.
+For task-description questions such as "describe what you did when you X", first use task_lookup("X"). Prefer its matching task candidates instead of manually expanding the whole tree.
+For exact date/time questions or "N days ago" questions asking what happened, first use date_lookup(question). Prefer its Recommended answer when it is confident instead of manually expanding by date.
+For "How many days ago did you X?" or "When did you X?" questions, first use event_date_lookup(question). If it lists multiple days, include all of them in the final answer instead of only the most recent match.
+For just-before or just-after questions, first use temporal_neighbor(target_task, direction="before" or "after") if a candidate is not already shown. Prefer the returned Recommended answer when it is confident. Only then inspect adjacent sibling or temporal nodes. Avoid expanding to raw leaf observations unless the summary is insufficient.
+Do not call vqa for time, date, task-list, before/after, or yes/no object-existence questions when textual summaries already answer the question. Use vqa only for explicit visual appearance questions such as color, visible state, or what something looks like.
+Never output bare parameters such as reasoning="..." answer="...". Always call answer(reasoning="...", answer="...")."""
+
+**HumanMessage**:
+"""
+def answer(reasoning: str = None, answer: str = Ellipsis)
+def ask(question: str)
+def date_lookup(query: str, max_matches: int = 8) -> str # For exact date/time or N-days-ago questions, list matching history summaries directly
+def event_date_lookup(query: str, max_matches: int = 12) -> str # For "how many days ago did you X" questions, find all matching event dates directly
+def now() -> datetime.datetime
+def object_lookup(object_name: str, max_matches: int = 8) -> str # For object yes/no questions, check whether task summaries mention the object
+def task_list(max_tasks: int = 30) -> str # For task-list questions, list task-sized history summaries in chronological order
+def task_lookup(query: str, max_matches: int = 8) -> str # For task-description questions, list task-sized summaries matching a query
+def temporal_neighbor(target_task: str, direction: str = 'before', max_candidates: int = 6) -> str # For just-before/just-after questions, find the target task and return adjacent task candidates
+def vqa(question: str, *images: PIL.Image.Image)
+"""
+
+**HumanMessage**:
+"""Usage examples:
+>>> history.expand()  # Shows the history tree with all child nodes expanded
+>>> history.expand(date(2021, 12, 20))  # Expand the children that overlap with the given day
+>>> history.expand(now() - timedelta(hours=6), now() - timedelta(hours=4))  # Expand all children that overlap with the given range (in this example "about 5 hours ago")
+>>> history.expand((now() - timedelta(days=2)).date())  # Expand all children that overlap with the day before yesterday
+>>> history.expand(0)  # Shows child node 0
+>>> history[0].expand()  # Expands all child nodes of node 0 (node 0 must be expanded already to see them)
+>>> history[5][2].expand()  # Shows child node 2 of child node 5 with all its child nodes expanded
+>>> history.search("green cup") # Semantic index search. Expands the most relevant children according to similarity of the natural language query and the node's (recursively defined) index content.
+>>> history[1][42].search("bicycle") # Semantic index search on some node further down the tree. Expands the children of node 1.42 most relevant to the search term
+>>> history[3].collapse_all_but(1); history[3][1].expand()  # Zooms into details of child node 3.1 while collapsing all other childs of node 3
+>>> vqa("What color is the ... in this image?",
+...     history[2][4][-1][0].image)  # Invoke a model to answer a visual question about image(s) of some leaf (!) node(s)
+
+# After gathering the relevant information, answer the question:
+# Optionally, provide a reasoning on why you choose the respective answer
+>>> answer(reasoning="...", answer="...")"""
+
+**HumanMessage**:
+"""User question: what did you do on Jul 24, 2023 at 04:12 PM?"""
+
+**AIMessage**:
+"""date_lookup('what did you do on Jul 24, 2023 at 04:12 PM?')"""
+
+**HumanMessage**:
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:226: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:183: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  result = torch.empty(len(texts), embedding_model.get_sentence_embedding_dimension(),
+""""Date lookup for query='what did you do on Jul 24, 2023 at 04:12 PM?': resolved=2023/07/24 16:12:00.\n1. score=0.98; 2023/07/24 16:12 - 16:15: I retrieved a dirty plate from a chair and prepared the sink for washing by moving a soap bottle and an egg out of the basin. I also moved a potato to the countertop before washing the plate and declaring it clean.\n2. score=0.91; 2023/07/24 16:12:01 - 16:14:01: I retrieved a dirty plate from the chair and placed it on the countertop.\n3. score=0.76; 2023/07/24 16:12:01 - 16:12:49: Goal: Pickup(Plate_2) Visual observation: Plate_2 [dirty], Potato_1, CounterTop_0, Spoon_0, Chair_0 Speech: 2023-07-24 16:12:11.322343: hi 2023-07-24 16:12:19.796754: let's clean a plate in water 2023-07-24 16:12:46.7259...\n4. score=0.76; 2023/07/24 16:12:52 - 16:14:01: Goal: Place(CounterTop_1) Visual observation: Plate_2 [dirty], Potato_1, Cabinet_0, Drawer_0, CounterTop_1, Drawer_1, Drawer_2, Cabinet_4, Cabinet_5, Statue, Toaster, Spatula, Fridge, Bowl [dirty], agent hand Plate_2 is...\n5. score=0.36; 2023/07/24 15:07 - 2023/07/25 12:11: On July 24th and 25th, I cleaned drinkware (a cup and a mug), cleaned a dirty plate after clearing the sink, and retrieved two remote controls from the safe to place on an armchair.\n6. score=0.25; 2023/07/22 - 2023/07/25: From July 22nd to 25th, I prepared a salad with cooked potato, made coffee, collected remote controls (including one from a safe), placed two tissue boxes on side tables, cleaned drinkware (a cup and a mug), and retrieve...\n7. score=0.16; 2023/07/22 - 2023/07/31: From July 22nd to July 31st, I focused on more complex meal preparation involving salads and coffee, while also tidying the house by organizing remote controls, tissue boxes, pencils, and newspapers. I also continued rou...\n8. score=0.08; 2023/07/13 - 2023/08/04: From July 13th to August 4th, I consistently performed a variety of daily kitchen and household tasks, including preparing diverse meals like toast, sandwiches, cooked potatoes, salads, and coffee, along with routine act...\nRecommended answer: I retrieved a dirty plate from a chair and prepared the sink for washing by moving a soap bottle and an egg out of the basin. I also moved a potato to the countertop before washing the plate and declaring it clean.""""
+
+**HumanMessage**:
+"""Current state:
+2023/07/13 - 2023/08/04: "From July 13th to August 4th, I consistently performed a variety of daily kitchen and household tasks, including preparing diverse meals like toast, sandwiches, cooked potatoes, salads, and coffee, along with routine activities such as watering houseplants, cleaning dishes, and organizing various items including credit cards, remotes, tissue boxes, pencils, newspapers, and watches."  
+  ..."""
+{}
+command: answer(reasoning="The date_lookup for July 24, 2023 at 04:12 PM shows that I was in the process of cleaning a plate. Specifically, I retrieved a dirty plate from a chair, cleared the sink by moving a soap bottle, an egg, and a potato, and then washed the plate.", answer="At 04:12 PM on July 24, 2023, I retrieved a dirty plate from a chair and prepared the sink for washing by moving a soap bottle, an egg, and a potato. I then washed the plate and declared it clean.")
+expected output: 
+
+
+ ============================== 
+
+
+eval answer(reasoning="The date_lookup for July 24, 2023 at 04:12 PM shows that I was in the process of cleaning a plate. Specifically, I retrieved a dirty plate from a chair, cleared the sink by moving a soap bottle, an egg, and a potato, and then washed the plate.", answer="At 04:12 PM on July 24, 2023, I retrieved a dirty plate from a chair and prepared the sink for washing by moving a soap bottle, an egg, and a potato. I then washed the plate and declared it clean.")
+Answering At 04:12 PM on July 24, 2023, I retrieved a dirty plate from a chair and prepared the sink for washing by moving a soap bottle, an egg, and a potato. I then washed the plate and declared it clean.  with reason: The date_lookup for July 24, 2023 at 04:12 PM shows that I was in the process of cleaning a plate. Specifically, I retrieved a dirty plate from a chair, cleared the sink by moving a soap bottle, an egg, and a potato, and then washed the plate.
+Tokens Used: 2507
+	Prompt Tokens: 2375
+	Completion Tokens: 132
+Successful Requests: 1
+Total Cost (USD): $0.0
+Evaluating sample 6c24abb778c24a7c_704a-977b52faf01e6c05_d71f-01c1b8aa1820aa0b_adaf-32918ea00b69d9fe_38ff-cdf30defa61245ba_5590-2513b9a8d8ae5129_ab38-7337be5c30b1b5d1_874c-57862376ad3394a1_c9dc-32fe2fa7cc43fbc3_b8f3-0de4b62afcd06138_45f2-a966ba0c6e0d463d_ce88-25ef88cce38adfbc_1740-7504548a0dd7baf8_b148-064a69cb5d40b41f_9c2e-a690a35743c855aa_4c00-4b813e7c9bc088d0_1ce1-e4909f617bc99db4_4ab8-03379f213dfbda39_79a2-c49a96282ec09e90_5bfa-a2d31b84a569e568_fb03-88ddc0cbf1a23687_43ea-b36a8d73976068a3_6afd-c02445dd7a5b6f26_d92a-a76099fbab67c9da_4d48-c6c5c151b7b8e770_38db-60d26ec0f9c4757e_425d-9539c0004762d6a8_2eee-b2fde7ee4eb1c40f_1f95-c2ffd6a81bfe2613_f91c-81b10da74f7ac9ff_15c8-6ccc8b815fbc093a_e921-5aa3cbd322d4f163_402a-52e190f2e5f3b790_edbb-71392179ff5e728f_d7fe-4e893adaff5699af_ab4f-6f4aca312776de7b_97f3-4e88e46c6584bd85_21d2-eef61c8f3cdd8280_c537-bfb3e4eaf7ba458f_81db-af3fc77ab8313235_5b72-dbb41344c474217f_ee0e-498d06abfb7e9487_5c19-36492265af47de94_a352-9c97a83f60095487_02d9-0d1a67f82b3b5854_d74d-2f8d482d22e56fdd_410e-5c12b219bbb5bc07_6008-4aafdc038df138e8_58f0-474a8460bc35eb12_20d0-0f0664338151d4ac_5c06-0-tasks_to_exact_times
+[配置] 启用 FAISS 加速，索引类型: flat
+[GraphAug] 命中图缓存 (nodes=4933, edges=16430)
+Got 0 examples
+
+
+ ============================== 
+
+
+eval event_date_lookup('When did you make a sandwich?')
+Updated/Defined variables after execution: {}
+
+**SystemMessage**:
+"""You are a smart humanoid robot answering user question about your past actions.
+The history object contains information on what you did in the past, represented as a tree.
+Use the method expand to look at details of a node.
+Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in order to keep the tree compact.
+Enter Python expressions into the console to see the value and decide for the next command based on that result.
+Answer concisely by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
+Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found", your next command MUST be answer(reasoning="No relevant record was found.", answer="I have no record of that."). Do not search synonyms, do not expand further, and do not call vqa.
+IMPORTANT: If you get "Nothing changed" twice, answer honestly that you have no record. Do NOT keep searching repeatedly. For just-before/just-after questions, first try one broader target search or inspect another relevant top-level time block before giving up.
+For object yes/no questions, first use object_lookup("object name"). If it reports no matching summary, answer "No, I have no record of that." Do not call vqa unless you already have a directly relevant leaf image.
+For task-list questions such as "List the tasks you performed", first use task_list(). Prefer its Recommended answer and chronological candidates instead of manually expanding the whole tree. For long histories, do not copy every task candidate verbatim unless the user explicitly asks for an exhaustive transcript.
+For task-description questions such as "describe what you did when you X", first use task_lookup("X"). Prefer its matching task candidates instead of manually expanding the whole tree.
+For exact date/time questions or "N days ago" questions asking what happened, first use date_lookup(question). Prefer its Recommended answer when it is confident instead of manually expanding by date.
+For "How many days ago did you X?" or "When did you X?" questions, first use event_date_lookup(question). If it lists multiple days, include all of them in the final answer instead of only the most recent match.
+For just-before or just-after questions, first use temporal_neighbor(target_task, direction="before" or "after") if a candidate is not already shown. Prefer the returned Recommended answer when it is confident. Only then inspect adjacent sibling or temporal nodes. Avoid expanding to raw leaf observations unless the summary is insufficient.
+Do not call vqa for time, date, task-list, before/after, or yes/no object-existence questions when textual summaries already answer the question. Use vqa only for explicit visual appearance questions such as color, visible state, or what something looks like.
+Never output bare parameters such as reasoning="..." answer="...". Always call answer(reasoning="...", answer="...")."""
+
+**HumanMessage**:
+"""
+def answer(reasoning: str = None, answer: str = Ellipsis)
+def ask(question: str)
+def date_lookup(query: str, max_matches: int = 8) -> str # For exact date/time or N-days-ago questions, list matching history summaries directly
+def event_date_lookup(query: str, max_matches: int = 12) -> str # For "how many days ago did you X" questions, find all matching event dates directly
+def now() -> datetime.datetime
+def object_lookup(object_name: str, max_matches: int = 8) -> str # For object yes/no questions, check whether task summaries mention the object
+def task_list(max_tasks: int = 30) -> str # For task-list questions, list task-sized history summaries in chronological order
+def task_lookup(query: str, max_matches: int = 8) -> str # For task-description questions, list task-sized summaries matching a query
+def temporal_neighbor(target_task: str, direction: str = 'before', max_candidates: int = 6) -> str # For just-before/just-after questions, find the target task and return adjacent task candidates
+def vqa(question: str, *images: PIL.Image.Image)
+"""
+
+**HumanMessage**:
+"""Usage examples:
+>>> history.expand()  # Shows the history tree with all child nodes expanded
+>>> history.expand(date(2021, 12, 20))  # Expand the children that overlap with the given day
+>>> history.expand(now() - timedelta(hours=6), now() - timedelta(hours=4))  # Expand all children that overlap with the given range (in this example "about 5 hours ago")
+>>> history.expand((now() - timedelta(days=2)).date())  # Expand all children that overlap with the day before yesterday
+>>> history.expand(0)  # Shows child node 0
+>>> history[0].expand()  # Expands all child nodes of node 0 (node 0 must be expanded already to see them)
+>>> history[5][2].expand()  # Shows child node 2 of child node 5 with all its child nodes expanded
+>>> history.search("green cup") # Semantic index search. Expands the most relevant children according to similarity of the natural language query and the node's (recursively defined) index content.
+>>> history[1][42].search("bicycle") # Semantic index search on some node further down the tree. Expands the children of node 1.42 most relevant to the search term
+>>> history[3].collapse_all_but(1); history[3][1].expand()  # Zooms into details of child node 3.1 while collapsing all other childs of node 3
+>>> vqa("What color is the ... in this image?",
+...     history[2][4][-1][0].image)  # Invoke a model to answer a visual question about image(s) of some leaf (!) node(s)
+
+# After gathering the relevant information, answer the question:
+# Optionally, provide a reasoning on why you choose the respective answer
+>>> answer(reasoning="...", answer="...")"""
+
+**HumanMessage**:
+"""User question: When did you make a sandwich?"""
+
+**AIMessage**:
+"""event_date_lookup('When did you make a sandwich?')"""
+
+**HumanMessage**:
+""""Event date lookup for query='When did you make a sandwich?': event='make a sandwich', today=2023/08/04.\n1. score=0.81; days_ago=20; 2023/07/15 09:29 - 09:38: Upon receiving the instruction to make a sandwich, I first prepared the bread by slicing and toasting it. I then prepared the other ingredients by slicing lettuce and a tomato. After washing a plate, I assembled the sand...\n2. score=0.72; days_ago=17; 2023/07/18 13:37 - 13:42: I prepared a sandwich by slicing bread, toasting two slices, and then slicing a tomato. I then assembled the sandwich by placing the toasted bread and tomato slices onto a plate, completing the user's request.\n3. score=0.85; days_ago=16; 2023/07/19 08:45:16 - 08:47:27: I picked up the bread from the chair and placed it on the countertop, receiving instructions to make a sandwich and slice the bread.\n4. score=0.68; days_ago=14; 2023/07/21 09:16 - 09:22: I prepared ingredients for a sandwich by slicing and toasting two slices of bread, and then slicing lettuce and a tomato.\nRecommended answer: on 2023/07/15, 2023/07/18, 2023/07/19, and 2023/07/21""""
+
+**HumanMessage**:
+"""Current state:
+2023/07/13 - 2023/08/04: "From July 13th to August 4th, I consistently performed a variety of daily kitchen and household tasks, including preparing diverse meals like toast, sandwiches, cooked potatoes, salads, and coffee, along with routine activities such as watering houseplants, cleaning dishes, and organizing various items including credit cards, remotes, tissue boxes, pencils, newspapers, and watches."  
+  ..."""
+{}
+command: answer(reasoning="The event_date_lookup found four instances where I made or prepared ingredients for a sandwich.", answer="I made a sandwich on July 15th, July 18th, July 19th, and July 21st, 2023.")
+expected output: 
+
+
+ ============================== 
+
+
+eval answer(reasoning="The event_date_lookup found four instances where I made or prepared ingredients for a sandwich.", answer="I made a sandwich on July 15th, July 18th, July 19th, and July 21st, 2023.")
+Answering I made a sandwich on July 15th, July 18th, July 19th, and July 21st, 2023.  with reason: The event_date_lookup found four instances where I made or prepared ingredients for a sandwich.
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:226: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:183: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  result = torch.empty(len(texts), embedding_model.get_sentence_embedding_dimension(),
+Tokens Used: 1944
+	Prompt Tokens: 1882
+	Completion Tokens: 62
+Successful Requests: 1
+Total Cost (USD): $0.0
+Evaluating sample 6c24abb778c24a7c_704a-977b52faf01e6c05_d71f-01c1b8aa1820aa0b_adaf-32918ea00b69d9fe_38ff-cdf30defa61245ba_5590-2513b9a8d8ae5129_ab38-7337be5c30b1b5d1_874c-57862376ad3394a1_c9dc-32fe2fa7cc43fbc3_b8f3-0de4b62afcd06138_45f2-a966ba0c6e0d463d_ce88-25ef88cce38adfbc_1740-7504548a0dd7baf8_b148-064a69cb5d40b41f_9c2e-a690a35743c855aa_4c00-4b813e7c9bc088d0_1ce1-e4909f617bc99db4_4ab8-03379f213dfbda39_79a2-c49a96282ec09e90_5bfa-a2d31b84a569e568_fb03-88ddc0cbf1a23687_43ea-b36a8d73976068a3_6afd-c02445dd7a5b6f26_d92a-a76099fbab67c9da_4d48-c6c5c151b7b8e770_38db-60d26ec0f9c4757e_425d-9539c0004762d6a8_2eee-b2fde7ee4eb1c40f_1f95-c2ffd6a81bfe2613_f91c-81b10da74f7ac9ff_15c8-6ccc8b815fbc093a_e921-5aa3cbd322d4f163_402a-52e190f2e5f3b790_edbb-71392179ff5e728f_d7fe-4e893adaff5699af_ab4f-6f4aca312776de7b_97f3-4e88e46c6584bd85_21d2-eef61c8f3cdd8280_c537-bfb3e4eaf7ba458f_81db-af3fc77ab8313235_5b72-dbb41344c474217f_ee0e-498d06abfb7e9487_5c19-36492265af47de94_a352-9c97a83f60095487_02d9-0d1a67f82b3b5854_d74d-2f8d482d22e56fdd_410e-5c12b219bbb5bc07_6008-4aafdc038df138e8_58f0-474a8460bc35eb12_20d0-0f0664338151d4ac_5c06-0-tasks_to_days_ago
+[配置] 启用 FAISS 加速，索引类型: flat
+[GraphAug] 命中图缓存 (nodes=4933, edges=16430)
+Got 0 examples
+
+
+ ============================== 
+
+
+eval event_date_lookup('Today is Aug 04, 2023 at 03:24 PM. How many days ago did you clean all the cups?')
+Updated/Defined variables after execution: {}
+
+**SystemMessage**:
+"""You are a smart humanoid robot answering user question about your past actions.
+The history object contains information on what you did in the past, represented as a tree.
+Use the method expand to look at details of a node.
+Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in order to keep the tree compact.
+Enter Python expressions into the console to see the value and decide for the next command based on that result.
+Answer concisely by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
+Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found", your next command MUST be answer(reasoning="No relevant record was found.", answer="I have no record of that."). Do not search synonyms, do not expand further, and do not call vqa.
+IMPORTANT: If you get "Nothing changed" twice, answer honestly that you have no record. Do NOT keep searching repeatedly. For just-before/just-after questions, first try one broader target search or inspect another relevant top-level time block before giving up.
+For object yes/no questions, first use object_lookup("object name"). If it reports no matching summary, answer "No, I have no record of that." Do not call vqa unless you already have a directly relevant leaf image.
+For task-list questions such as "List the tasks you performed", first use task_list(). Prefer its Recommended answer and chronological candidates instead of manually expanding the whole tree. For long histories, do not copy every task candidate verbatim unless the user explicitly asks for an exhaustive transcript.
+For task-description questions such as "describe what you did when you X", first use task_lookup("X"). Prefer its matching task candidates instead of manually expanding the whole tree.
+For exact date/time questions or "N days ago" questions asking what happened, first use date_lookup(question). Prefer its Recommended answer when it is confident instead of manually expanding by date.
+For "How many days ago did you X?" or "When did you X?" questions, first use event_date_lookup(question). If it lists multiple days, include all of them in the final answer instead of only the most recent match.
+For just-before or just-after questions, first use temporal_neighbor(target_task, direction="before" or "after") if a candidate is not already shown. Prefer the returned Recommended answer when it is confident. Only then inspect adjacent sibling or temporal nodes. Avoid expanding to raw leaf observations unless the summary is insufficient.
+Do not call vqa for time, date, task-list, before/after, or yes/no object-existence questions when textual summaries already answer the question. Use vqa only for explicit visual appearance questions such as color, visible state, or what something looks like.
+Never output bare parameters such as reasoning="..." answer="...". Always call answer(reasoning="...", answer="...")."""
+
+**HumanMessage**:
+"""
+def answer(reasoning: str = None, answer: str = Ellipsis)
+def ask(question: str)
+def date_lookup(query: str, max_matches: int = 8) -> str # For exact date/time or N-days-ago questions, list matching history summaries directly
+def event_date_lookup(query: str, max_matches: int = 12) -> str # For "how many days ago did you X" questions, find all matching event dates directly
+def now() -> datetime.datetime
+def object_lookup(object_name: str, max_matches: int = 8) -> str # For object yes/no questions, check whether task summaries mention the object
+def task_list(max_tasks: int = 30) -> str # For task-list questions, list task-sized history summaries in chronological order
+def task_lookup(query: str, max_matches: int = 8) -> str # For task-description questions, list task-sized summaries matching a query
+def temporal_neighbor(target_task: str, direction: str = 'before', max_candidates: int = 6) -> str # For just-before/just-after questions, find the target task and return adjacent task candidates
+def vqa(question: str, *images: PIL.Image.Image)
+"""
+
+**HumanMessage**:
+"""Usage examples:
+>>> history.expand()  # Shows the history tree with all child nodes expanded
+>>> history.expand(date(2021, 12, 20))  # Expand the children that overlap with the given day
+>>> history.expand(now() - timedelta(hours=6), now() - timedelta(hours=4))  # Expand all children that overlap with the given range (in this example "about 5 hours ago")
+>>> history.expand((now() - timedelta(days=2)).date())  # Expand all children that overlap with the day before yesterday
+>>> history.expand(0)  # Shows child node 0
+>>> history[0].expand()  # Expands all child nodes of node 0 (node 0 must be expanded already to see them)
+>>> history[5][2].expand()  # Shows child node 2 of child node 5 with all its child nodes expanded
+>>> history.search("green cup") # Semantic index search. Expands the most relevant children according to similarity of the natural language query and the node's (recursively defined) index content.
+>>> history[1][42].search("bicycle") # Semantic index search on some node further down the tree. Expands the children of node 1.42 most relevant to the search term
+>>> history[3].collapse_all_but(1); history[3][1].expand()  # Zooms into details of child node 3.1 while collapsing all other childs of node 3
+>>> vqa("What color is the ... in this image?",
+...     history[2][4][-1][0].image)  # Invoke a model to answer a visual question about image(s) of some leaf (!) node(s)
+
+# After gathering the relevant information, answer the question:
+# Optionally, provide a reasoning on why you choose the respective answer
+>>> answer(reasoning="...", answer="...")"""
+
+**HumanMessage**:
+"""User question: Today is Aug 04, 2023 at 03:24 PM. How many days ago did you clean all the cups?"""
+
+**AIMessage**:
+"""event_date_lookup('Today is Aug 04, 2023 at 03:24 PM. How many days ago did you clean all the cups?')"""
+
+**HumanMessage**:
+""""Event date lookup for query='Today is Aug 04, 2023 at 03:24 PM. How many days ago did you clean all the cups?': event='clean all the cups', today=2023/08/04.\n1. score=0.84; days_ago=16; 2023/07/19 17:03 - 17:09: I was instructed to clean the mugs. I picked up a dirty cup, placed it in the sink, then took a filled mug, emptied it, placed it in the coffee machine, and turned the machine on to make coffee.\nRecommended answer: 16 days ago""""
+
+**HumanMessage**:
+/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py:226: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.
+  filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+"""Current state:
+2023/07/13 - 2023/08/04: "From July 13th to August 4th, I consistently performed a variety of daily kitchen and household tasks, including preparing diverse meals like toast, sandwiches, cooked potatoes, salads, and coffee, along with routine activities such as watering houseplants, cleaning dishes, and organizing various items including credit cards, remotes, tissue boxes, pencils, newspapers, and watches."  
+  ..."""
+{}
+command: answer(reasoning="The event_date_lookup for 'clean all the cups' returned a match from 16 days ago (July 19, 2023), where I was instructed to clean the mugs and proceeded to handle the cups and coffee machine.", answer="I cleaned the cups 16 days ago, on July 19, 2023.")
+expected output: 
+
+
+ ============================== 
+
+
+eval answer(reasoning="The event_date_lookup for 'clean all the cups' returned a match from 16 days ago (July 19, 2023), where I was instructed to clean the mugs and proceeded to handle the cups and coffee machine.", answer="I cleaned the cups 16 days ago, on July 19, 2023.")
+Answering I cleaned the cups 16 days ago, on July 19, 2023.  with reason: The event_date_lookup for 'clean all the cups' returned a match from 16 days ago (July 19, 2023), where I was instructed to clean the mugs and proceeded to handle the cups and coffee machine.
+Tokens Used: 1772
+	Prompt Tokens: 1691
+	Completion Tokens: 81
+Successful Requests: 1
+Total Cost (USD): $0.0
+Evaluating sample 6c24abb778c24a7c_704a-977b52faf01e6c05_d71f-01c1b8aa1820aa0b_adaf-32918ea00b69d9fe_38ff-cdf30defa61245ba_5590-2513b9a8d8ae5129_ab38-7337be5c30b1b5d1_874c-57862376ad3394a1_c9dc-32fe2fa7cc43fbc3_b8f3-0de4b62afcd06138_45f2-a966ba0c6e0d463d_ce88-25ef88cce38adfbc_1740-7504548a0dd7baf8_b148-064a69cb5d40b41f_9c2e-a690a35743c855aa_4c00-4b813e7c9bc088d0_1ce1-e4909f617bc99db4_4ab8-03379f213dfbda39_79a2-c49a96282ec09e90_5bfa-a2d31b84a569e568_fb03-88ddc0cbf1a23687_43ea-b36a8d73976068a3_6afd-c02445dd7a5b6f26_d92a-a76099fbab67c9da_4d48-c6c5c151b7b8e770_38db-60d26ec0f9c4757e_425d-9539c0004762d6a8_2eee-b2fde7ee4eb1c40f_1f95-c2ffd6a81bfe2613_f91c-81b10da74f7ac9ff_15c8-6ccc8b815fbc093a_e921-5aa3cbd322d4f163_402a-52e190f2e5f3b790_edbb-71392179ff5e728f_d7fe-4e893adaff5699af_ab4f-6f4aca312776de7b_97f3-4e88e46c6584bd85_21d2-eef61c8f3cdd8280_c537-bfb3e4eaf7ba458f_81db-af3fc77ab8313235_5b72-dbb41344c474217f_ee0e-498d06abfb7e9487_5c19-36492265af47de94_a352-9c97a83f60095487_02d9-0d1a67f82b3b5854_d74d-2f8d482d22e56fdd_410e-5c12b219bbb5bc07_6008-4aafdc038df138e8_58f0-474a8460bc35eb12_20d0-0f0664338151d4ac_5c06-0-days_ago_to_episode
+[配置] 启用 FAISS 加速，索引类型: flat
+[GraphAug] 命中图缓存 (nodes=4933, edges=16430)
+Got 0 examples
+
+
+ ============================== 
+
+
+eval date_lookup('Today is Aug 04, 2023 at 03:24 PM. What did you do 4 days ago?')
+Updated/Defined variables after execution: {}
+
+**SystemMessage**:
+"""You are a smart humanoid robot answering user question about your past actions.
+The history object contains information on what you did in the past, represented as a tree.
+Use the method expand to look at details of a node.
+Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in order to keep the tree compact.
+Enter Python expressions into the console to see the value and decide for the next command based on that result.
+Answer concisely by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
+Generate syntactically correct python console statements only, no explanations or other natural language statements.
+IMPORTANT: If search() returns "No relevant records found", your next command MUST be answer(reasoning="No relevant record was found.", answer="I have no record of that."). Do not search synonyms, do not expand further, and do not call vqa.
+IMPORTANT: If you get "Nothing changed" twice, answer honestly that you have no record. Do NOT keep searching repeatedly. For just-before/just-after questions, first try one broader target search or inspect another relevant top-level time block before giving up.
+For object yes/no questions, first use object_lookup("object name"). If it reports no matching summary, answer "No, I have no record of that." Do not call vqa unless you already have a directly relevant leaf image.
+For task-list questions such as "List the tasks you performed", first use task_list(). Prefer its Recommended answer and chronological candidates instead of manually expanding the whole tree. For long histories, do not copy every task candidate verbatim unless the user explicitly asks for an exhaustive transcript.
+For task-description questions such as "describe what you did when you X", first use task_lookup("X"). Prefer its matching task candidates instead of manually expanding the whole tree.
+For exact date/time questions or "N days ago" questions asking what happened, first use date_lookup(question). Prefer its Recommended answer when it is confident instead of manually expanding by date.
+For "How many days ago did you X?" or "When did you X?" questions, first use event_date_lookup(question). If it lists multiple days, include all of them in the final answer instead of only the most recent match.
+For just-before or just-after questions, first use temporal_neighbor(target_task, direction="before" or "after") if a candidate is not already shown. Prefer the returned Recommended answer when it is confident. Only then inspect adjacent sibling or temporal nodes. Avoid expanding to raw leaf observations unless the summary is insufficient.
+Do not call vqa for time, date, task-list, before/after, or yes/no object-existence questions when textual summaries already answer the question. Use vqa only for explicit visual appearance questions such as color, visible state, or what something looks like.
+Never output bare parameters such as reasoning="..." answer="...". Always call answer(reasoning="...", answer="...")."""
+
+**HumanMessage**:
+"""
+def answer(reasoning: str = None, answer: str = Ellipsis)
+def ask(question: str)
+def date_lookup(query: str, max_matches: int = 8) -> str # For exact date/time or N-days-ago questions, list matching history summaries directly
+def event_date_lookup(query: str, max_matches: int = 12) -> str # For "how many days ago did you X" questions, find all matching event dates directly
+def now() -> datetime.datetime
+def object_lookup(object_name: str, max_matches: int = 8) -> str # For object yes/no questions, check whether task summaries mention the object
+def task_list(max_tasks: int = 30) -> str # For task-list questions, list task-sized history summaries in chronological order
+def task_lookup(query: str, max_matches: int = 8) -> str # For task-description questions, list task-sized summaries matching a query
+def temporal_neighbor(target_task: str, direction: str = 'before', max_candidates: int = 6) -> str # For just-before/just-after questions, find the target task and return adjacent task candidates
+def vqa(question: str, *images: PIL.Image.Image)
+"""
+
+**HumanMessage**:
+"""Usage examples:
+>>> history.expand()  # Shows the history tree with all child nodes expanded
+>>> history.expand(date(2021, 12, 20))  # Expand the children that overlap with the given day
+>>> history.expand(now() - timedelta(hours=6), now() - timedelta(hours=4))  # Expand all children that overlap with the given range (in this example "about 5 hours ago")
+>>> history.expand((now() - timedelta(days=2)).date())  # Expand all children that overlap with the day before yesterday
+>>> history.expand(0)  # Shows child node 0
+>>> history[0].expand()  # Expands all child nodes of node 0 (node 0 must be expanded already to see them)
+>>> history[5][2].expand()  # Shows child node 2 of child node 5 with all its child nodes expanded
+>>> history.search("green cup") # Semantic index search. Expands the most relevant children according to similarity of the natural language query and the node's (recursively defined) index content.
+>>> history[1][42].search("bicycle") # Semantic index search on some node further down the tree. Expands the children of node 1.42 most relevant to the search term
+>>> history[3].collapse_all_but(1); history[3][1].expand()  # Zooms into details of child node 3.1 while collapsing all other childs of node 3
+>>> vqa("What color is the ... in this image?",
+...     history[2][4][-1][0].image)  # Invoke a model to answer a visual question about image(s) of some leaf (!) node(s)
+
+# After gathering the relevant information, answer the question:
+# Optionally, provide a reasoning on why you choose the respective answer
+>>> answer(reasoning="...", answer="...")"""
+
+**HumanMessage**:
+"""User question: Today is Aug 04, 2023 at 03:24 PM. What did you do 4 days ago?"""
+
+**AIMessage**:
+"""date_lookup('Today is Aug 04, 2023 at 03:24 PM. What did you do 4 days ago?')"""
+
+**HumanMessage**:
+""""Date lookup for query='Today is Aug 04, 2023 at 03:24 PM. What did you do 4 days ago?': resolved=2023/07/31.\n1. score=0.87; 2023/07/31 08:25 - 18:43: On July 31st, I served two slices of tomato, gathered newspapers onto an armchair, and prepared a dish with sliced lettuce, tomato, and a cooked potato.\n2. score=0.85; 2023/07/31 18:36 - 18:43: I prepared a dish by slicing lettuce, a tomato, and a potato. I then cooked the potato slice in a pan, retrieved a plate, and assembled the dish by placing the cooked potato, tomato slices, and lettuce onto the plate bef...\n3. score=0.85; 2023/07/31 11:39 - 11:45: As instructed, I began gathering newspapers onto an armchair. I moved one newspaper from the dresser to the armchair, and to clear space, I relocated a cellphone from the armchair to the dresser. I then searched various...\n4. score=0.85; 2023/07/31 08:25:31 - 08:28:29: In response to a request to serve two slices of tomato, I sliced a tomato, placed two slices on a plate, and then asked the user for confirmation that the task was complete.\n5. score=0.78; 2023/07/31 08:25:31 - 08:27:46: Upon receiving the user's request to serve two slices of tomato, I first picked up a tomato and a plate and placed them on the countertop. Afterwards, I grabbed a knife and sliced the tomato.\n6. score=0.78; 2023/07/31 18:40:47 - 18:43:01: I picked up a sliced lettuce piece and placed it on the plate. I then picked up another tomato slice and placed it on the plate.\n7. score=0.78; 2023/07/31 11:39:16 - 11:41:13: I started by picking up a newspaper from the dresser and placing it on an armchair, following the instruction to gather all newspapers on one armchair.\n8. score=0.78; 2023/07/31 11:41:26 - 11:43:11: I then searched for another newspaper by opening and closing various drawers and cabinets (Drawer_4, Drawer_2, Cabinet_2). Upon finding a second newspaper, I picked it up and placed it on the same armchair.\nRecommended answer: On July 31st, I served two slices of tomato, gathered newspapers onto an armchair, and prepared a dish with sliced lettuce, tomato, and a cooked potato. I prepared a dish by slicing lettuce, a tomato, and a potato. I then cooked the potato slice in a pan, retrieved a plate, and assembled the dish by placing the cooked potato, tomato slices, and lettuce onto the plate bef... As instructed, I began gathering newspapers onto an armchair. I moved one newspaper from the dresser to the armchair, and to clear space, I relocated a cellphone from the armchair to the dresser. I then searched various... In response to a request to serve two slices of tomato, I sliced a tomato, placed two slices on a plate, and then asked the user for confirmation that the task was complete.""""
+
+**HumanMessage**:
+"""Current state:
+2023/07/13 - 2023/08/04: "From July 13th to August 4th, I consistently performed a variety of daily kitchen and household tasks, including preparing diverse meals like toast, sandwiches, cooked potatoes, salads, and coffee, along with routine activities such as watering houseplants, cleaning dishes, and organizing various items including credit cards, remotes, tissue boxes, pencils, newspapers, and watches."  
+  ..."""
+{}
+command: answer(reasoning="The user asked what I did 4 days ago. Today is August 4, 2023, so 4 days ago was July 31, 2023. According to my history for that date, I performed several tasks.", answer="On July 31, 2023, I served two slices of tomato, gathered newspapers onto an armchair, and prepared a dish consisting of sliced lettuce, tomato, and a cooked potato.")
+expected output: 
+
+
+ ============================== 
+
+
+eval answer(reasoning="The user asked what I did 4 days ago. Today is August 4, 2023, so 4 days ago was July 31, 2023. According to my history for that date, I performed several tasks.", answer="On July 31, 2023, I served two slices of tomato, gathered newspapers onto an armchair, and prepared a dish consisting of sliced lettuce, tomato, and a cooked potato.")
+Answering On July 31, 2023, I served two slices of tomato, gathered newspapers onto an armchair, and prepared a dish consisting of sliced lettuce, tomato, and a cooked potato.  with reason: The user asked what I did 4 days ago. Today is August 4, 2023, so 4 days ago was July 31, 2023. According to my history for that date, I performed several tasks.
+Tokens Used: 2462
+	Prompt Tokens: 2361
+	Completion Tokens: 101
+Successful Requests: 1
+Total Cost (USD): $0.0
