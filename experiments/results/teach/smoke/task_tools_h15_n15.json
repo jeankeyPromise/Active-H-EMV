@@ -1,0 +1,122 @@
+{
+  "config": {
+    "cfg": "teach/simplified/full_graph_aug_zs_fast",
+    "output": "experiments/results/teach/smoke/task_tools_h15_n15.json",
+    "dataset": "teach-dechant",
+    "only_iter_dataset": "False",
+    "precompute_history_cache": "False",
+    "n_samples": "15",
+    "enable_correction": "False",
+    "resume": "True",
+    "retry_errors": "True",
+    "checkpoint_file": "None",
+    "max_prompt_tokens_per_sample": "10000",
+    "max_average_prompt_tokens_per_sample": "6000.0",
+    "max_seconds_per_sample": "180",
+    "qa_file": "data/teach/test_set_15.pkl",
+    "max_samples_per_episode": "None",
+    "use_only_question_types": "None",
+    "skip_first_n_episodes": "0",
+    "teach_base": "dataset/TEACh",
+    "llm_summarizer_cfg": "None",
+    "pure_img_approach": "None"
+  },
+  "code_commit": "965366ca46fb79ff042ab47f042221bc600fd2ac",
+  "results": {
+    "4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-sequence_of_task_descs": {
+      "q_time": "2024/03/17 08:33:36",
+      "q": "List the tasks you performed.",
+      "gt": "put all newspaper on one sidetable. make a salad. clean all the drinkwares. prepare breakfast. clean all the drinkwares. cook 2 slice(s) of potato and serve in a bowl. clean all the plates. water the plant. make a plate of toast. prepare breakfast. cook 2 slice(s) of potato and serve in a bowl. prepare breakfast. water the plant. clean all the mugs. water the plant.",
+      "hyp": "I performed the following tasks: \n1. Moved newspapers from the sofa and floor to the side table (2024/03/10).\n2. Prepared a salad by slicing lettuce and cooking potato slices (2024/03/10).\n3. Cleaned drinkware by rinsing the sink and washing a cup and mug (2024/03/10).\n4. Prepared another salad with lettuce and tomatoes (2024/03/11).\n5. Sliced and cooked potato slices for the salad (2024/03/11).\n6. Cleaned drinkware by moving a cup and mug to the sink (2024/03/11).\n7. Sliced, cooked potato slices, and washed a bowl (2024/03/12).\n8. Cleaned plates by washing a dirty plate in the sink (2024/03/12).\n9. Cleaned a mug and used it to water a houseplant (2024/03/13).\n10. Prepared toast by slicing and toasting bread (2024/03/13).\n11. Prepared a meal with coffee, bread, tomato, lettuce, and potato (2024/03/13).\n12. Placed cooked potato slices into a clean bowl (2024/03/14).\n13. Prepared breakfast with coffee and various vegetables (2024/03/15).\n14. Watered a plant using a bowl (2024/03/15).\n15. Cleaned a mug by rinsing it in the sink (2024/03/16).\n16. Watered a plant using a pot (2024/03/16)."
+    },
+    "4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-seq_specific_shortened_low_actions": {
+      "q_time": "2024/03/17 08:33:36",
+      "q": "describe what you did when you make a salad.",
+      "gt": "pick up the knife, slice tomato, slice lettuce, place the knife on the countertop, pick up the tomato, place the tomato on the countertop, pick up the egg, place the egg on the countertop, pick up the potato, place the potato on the countertop, pick up the knife, slice potato, place the knife on the countertop, pick up the potato, place the potato on the countertop, pick up the potato, toggle off the microwave, open the microwave, place the potato in the microwave, pick up the potato, place the potato in the microwave, close the microwave, toggle on the microwave, toggle off the microwave, open the cabinet, pick up the plate, close the cabinet, place the plate on the countertop, open the microwave, pick up the potato, place the potato on the plate, pick up the tomato, place the tomato on the plate, pick up the lettuce, place the lettuce on the plate, pick up the spoon, place the spoon on the countertop, pick up the potato, place the potato on the plate",
+      "hyp": "I prepared a salad for the user by slicing lettuce, cooking potato slices in the microwave, and assembling all the ingredients on a plate retrieved from the cabinet. I began preparing a salad by retrieving lettuce and tomatoes, slicing them, and placing the initial ingredients onto a plate. I then prepared the potato by slicing it and cooking two slices in the microwave. Finally, I added the cooked potato to the salad plate and completed the task for the user."
+    },
+    "4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-seq_right_after_questions": {
+      "q_time": "2024/03/17 08:33:36",
+      "q": "What task did you do just after clean all the mugs?",
+      "gt": "water the plant.",
+      "hyp": "Just after cleaning the mugs, I watered a houseplant using a pot and then returned the pot to the countertop."
+    },
+    "4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-seq_right_before_questions": {
+      "q_time": "2024/03/17 08:33:36",
+      "q": "What task did you do just before make a plate of toast?",
+      "gt": "water the plant.",
+      "hyp": "Just before making a plate of toast, I cleaned a mug in the sink, used it to water a houseplant, and then acknowledged that the task was complete."
+    },
+    "4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-seq_simple_object_yes_no": {
+      "q_time": "2024/03/17 08:33:36",
+      "q": "Was there an armchair ?",
+      "gt": "no",
+      "hyp": "No, I have no record of that."
+    },
+    "4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-seq_low_actions_to_episode_task_descs": {
+      "q_time": "2024/03/17 08:33:36",
+      "q": "what task or tasks did you perform when you pick up the tomato?",
+      "gt": " prepare breakfast. and make a salad.",
+      "hyp": "I prepared a meal by first making coffee and slicing bread and tomato. I also prepared a salad by retrieving lettuce and tomatoes, slicing them, and placing the initial ingredients onto a plate. Additionally, I gathered ingredients like an egg, lettuce, tomato, and potato for breakfast."
+    },
+    "4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-exact_time_to_episode": {
+      "q_time": "2024/03/17 08:33:36",
+      "q": "what did you do on Mar 10, 2024 at 09:02 AM?",
+      "gt": "put all newspaper on one sidetable.",
+      "hyp": "The user asked for their newspapers to be moved to the side table. I picked up the first newspaper from the sofa and placed it on the side table."
+    },
+    "4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-tasks_to_exact_times": {
+      "q_time": "2024/03/17 08:33:36",
+      "q": "When did you water the plant?",
+      "gt": "Mar 13, 2024 at 10:31 AM and Mar 15, 2024 at 02:36 PM and Mar 16, 2024 at 07:27 PM",
+      "hyp": "I watered the plant 7 days ago, 6 days ago, 4 days ago, 2 days ago, and 1 day ago."
+    },
+    "4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-tasks_to_days_ago": {
+      "q_time": "2024/03/17 08:33:36",
+      "q": "Today is Mar 17, 2024 at 08:33 AM. How many days ago did you water the plant?",
+      "gt": "4 days ago and 2 days ago and 1 day ago",
+      "hyp": "I watered the plant 7 days ago, 6 days ago, 4 days ago, 2 days ago, and 1 day ago."
+    },
+    "4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-days_ago_to_episode": {
+      "q_time": "2024/03/17 08:33:36",
+      "q": "Today is Mar 17, 2024 at 08:33 AM. What did you do 4 days ago?",
+      "gt": "water the plant and make a plate of toast and prepare breakfast.",
+      "hyp": "On March 13, 2024, I cleaned a mug and used it to water a houseplant, prepared toast, and later assembled a meal by slicing lettuce, tomato, and potato, cooking the potato, and arranging the ingredients on a plate."
+    },
+    "f2fab283e8dd367a_6c4c-e035a44ebae9d3fd_c842-977b52faf01e6c05_d71f-fb7d765ba6874372_0a26-a01d8c5e515fa9c4_0404-38d01f55a8e1ff9b_d9cc-9d1c053084e66e7b_dc9f-a0ccd363ffb0ee94_c237-6f28bbc4c8ed232a_bfc2-52e190f2e5f3b790_edbb-ce6428e9c062e409_9fae-4fc54b735d3f45a6_b7b4-18f6da623ba658a2_81b3-a44d13c7da084070_fe04-18f6da623ba658a2_aa07-0-sequence_of_task_descs": {
+      "q_time": "2023/07/08 10:45:28",
+      "q": "List the tasks you performed.",
+      "gt": "make a sandwich. make a sandwich. cook 2 slice(s) of potato and serve in a bowl. cook 1 slice(s) of potato and serve on a plate. serve 1 slice(s) of tomato in a bowl. boil potato. water the plant. make a plate of toast. clean all the plates. clean all the plates. make a plate of toast. boil potato. cook 1 slice(s) of potato and serve in a bowl. make a plate of toast. cook 1 slice(s) of potato and serve in a bowl.",
+      "hyp": "I performed the following tasks:\n1. Sliced bread and prepared a sandwich (2023/07/01).\n2. Toasted bread slices (2023/07/01).\n3. Assembled a sandwich with toast and tomato (2023/07/01).\n4. Sliced lettuce and bread (2023/07/01).\n5. Gathered plates and a sponge (2023/07/01).\n6. Added lettuce to a toast plate (2023/07/01).\n7. Microwaved a potato (2023/07/02).\n8. Sliced a cooked potato and placed it in a bowl (2023/07/02).\n9. Searched for a potato (2023/07/02).\n10. Cooked, sliced, and plated a potato (2023/07/02).\n11. Organized the workspace and pan-cooked a potato slice (2023/07/02).\n12. Sliced a tomato (2023/07/03).\n13. Placed a tomato slice in a bowl (2023/07/03).\n14. Prepared a potato for boiling (2023/07/04).\n15. Boiled a potato in a pot (2023/07/04).\n16. Cleaned a mug and watered a houseplant (2023/07/04).\n17. Prepared toast and placed it on a plate (2023/07/04).\n18. Washed a dirty plate (2023/07/05).\n19. Cleared the sink and washed another plate (2023/07/05).\n20. Retrieved a plate and cleaned a dirty one (2023/07/06).\n21. Prepared to boil a potato (2023/07/06).\n22. Gathered items and sliced a potato (2023/07/06).\n23. Microwaved a potato slice and served it in a bowl (2023/07/06).\n24. Started making toast (2023/07/07).\n25. Cleaned a plate and toasted more bread (2023/07/07).\n26. Completed the toast task (2023/07/07).\n27. Sliced a potato (2023/07/07).\n28. Microwaved and plated three potato slices (2023/07/07)."
+    },
+    "f2fab283e8dd367a_6c4c-e035a44ebae9d3fd_c842-977b52faf01e6c05_d71f-fb7d765ba6874372_0a26-a01d8c5e515fa9c4_0404-38d01f55a8e1ff9b_d9cc-9d1c053084e66e7b_dc9f-a0ccd363ffb0ee94_c237-6f28bbc4c8ed232a_bfc2-52e190f2e5f3b790_edbb-ce6428e9c062e409_9fae-4fc54b735d3f45a6_b7b4-18f6da623ba658a2_81b3-a44d13c7da084070_fe04-18f6da623ba658a2_aa07-0-seq_specific_shortened_low_actions": {
+      "q_time": "2023/07/08 10:45:28",
+      "q": "describe what you did when you water the plant.",
+      "gt": "pick up the mug, toggle off the faucet, pour the mug in the sink, place the mug in the sink, toggle on the faucet, toggle off the faucet, pick up the mug, pour the mug on the houseplant",
+      "hyp": "I cleaned a mug in the sink and then used it to water a houseplant."
+    },
+    "f2fab283e8dd367a_6c4c-e035a44ebae9d3fd_c842-977b52faf01e6c05_d71f-fb7d765ba6874372_0a26-a01d8c5e515fa9c4_0404-38d01f55a8e1ff9b_d9cc-9d1c053084e66e7b_dc9f-a0ccd363ffb0ee94_c237-6f28bbc4c8ed232a_bfc2-52e190f2e5f3b790_edbb-ce6428e9c062e409_9fae-4fc54b735d3f45a6_b7b4-18f6da623ba658a2_81b3-a44d13c7da084070_fe04-18f6da623ba658a2_aa07-0-seq_right_after_questions": {
+      "q_time": "2023/07/08 10:45:28",
+      "q": "What task did you do just after cook 1 slice(s) of potato and serve on a plate?",
+      "gt": "serve 1 slice(s) of tomato in a bowl.",
+      "hyp": "I retrieved a bowl from the fridge, emptied its contents into the sink, and placed it on the counter."
+    },
+    "f2fab283e8dd367a_6c4c-e035a44ebae9d3fd_c842-977b52faf01e6c05_d71f-fb7d765ba6874372_0a26-a01d8c5e515fa9c4_0404-38d01f55a8e1ff9b_d9cc-9d1c053084e66e7b_dc9f-a0ccd363ffb0ee94_c237-6f28bbc4c8ed232a_bfc2-52e190f2e5f3b790_edbb-ce6428e9c062e409_9fae-4fc54b735d3f45a6_b7b4-18f6da623ba658a2_81b3-a44d13c7da084070_fe04-18f6da623ba658a2_aa07-0-seq_right_before_questions": {
+      "q_time": "2023/07/08 10:45:28",
+      "q": "What task did you do just before cook 1 slice(s) of potato and serve on a plate?",
+      "gt": "cook 2 slice(s) of potato and serve in a bowl.",
+      "hyp": "Just before that, I prepared the workspace by gathering a plate, bread, a knife, and an egg, and then I retrieved and sliced a potato."
+    },
+    "f2fab283e8dd367a_6c4c-e035a44ebae9d3fd_c842-977b52faf01e6c05_d71f-fb7d765ba6874372_0a26-a01d8c5e515fa9c4_0404-38d01f55a8e1ff9b_d9cc-9d1c053084e66e7b_dc9f-a0ccd363ffb0ee94_c237-6f28bbc4c8ed232a_bfc2-52e190f2e5f3b790_edbb-ce6428e9c062e409_9fae-4fc54b735d3f45a6_b7b4-18f6da623ba658a2_81b3-a44d13c7da084070_fe04-18f6da623ba658a2_aa07-0-seq_simple_object_yes_no": {
+      "q_time": "2023/07/08 10:45:28",
+      "q": "Was there a pillow ?",
+      "gt": "no",
+      "hyp": "No, I have no record of that."
+    }
+  },
+  "openai_costs": {
+    "cost": 0.0,
+    "prompt_tokens": 40463,
+    "completion_tokens": 2667
+  }
+}

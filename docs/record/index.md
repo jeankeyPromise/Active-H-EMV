@@ -15,6 +15,8 @@
 | Phase 6 | `phase6_temporal_neighbor_h15_n50.md` | h=15 temporal neighbor smoke | QA token 未爆炸，发现在线摘要隐藏成本 |
 | Phase 7 | `phase7_completion_plan_implementation.md` | 毕设完成计划首批落地 | 新增 date/event lookup、VQA guard、记录规范；h=15 n=2 smoke T=1.79K |
 | Phase 8 | `phase8_graph_trace_and_cache_workflow.md` | 图检索案例日志与缓存预构建流程 | 新增 graph trace JSONL 与显式 history cache 预构建入口 |
+| Phase 9 | `phase9_h15_task_tools_diagnostics.md` | h=15 task tools 与稳定性诊断 | 新增 task_list/task_lookup/object_lookup；h=15 n=15 最终 15/15 有效，平均 prompt 2.51K |
+| Phase 10 | `phase10_h15_auto_eval_and_error_analysis.md` | h=15 n=15 自动语义评估与错误分析 | `S_c=46.7%`, `S_p=20.0%`, valid=100%, `T=2.70K`；下一步修 when/event 与 temporal ambiguity |
 
 ## 固定实验口径
 

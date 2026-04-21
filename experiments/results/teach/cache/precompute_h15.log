@@ -1,0 +1,213 @@
+/home/user22303471/Project/Active-H-EMV/em/llm_summary.py:115: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the langchain-huggingface package and should be used instead. To use it run `pip install -U langchain-huggingface` and import as `from langchain_huggingface import HuggingFaceEmbeddings`.
+  embeddings = HuggingFaceEmbeddings(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 5213.77it/s]
+[1mBertModel LOAD REPORT[0m from: sentence-transformers/all-MiniLM-l6-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loaded 3 examples
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 4478.40it/s]
+[1mBertModel LOAD REPORT[0m from: sentence-transformers/all-MiniLM-l6-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loaded 4 examples
+
+!!! PRECOMPUTING HISTORY CACHE, NOT PERFORMING EVAL !!!
+
+
+
+Loaded sample 0 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-sequence_of_task_descs
+
+
+Loaded sample 1 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-seq_specific_shortened_low_actions
+
+
+Loaded sample 2 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-seq_right_after_questions
+
+
+Loaded sample 3 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-seq_right_before_questions
+
+
+Loaded sample 4 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-seq_simple_object_yes_no
+
+
+Loaded sample 5 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-seq_low_actions_to_episode_task_descs
+
+
+Loaded sample 6 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-exact_time_to_episode
+
+
+Loaded sample 7 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-tasks_to_exact_times
+
+
+Loaded sample 8 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-tasks_to_days_ago
+
+
+Loaded sample 9 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-days_ago_to_episode
+
+
+Loaded sample 10 f2fab283e8dd367a_6c4c-e035a44ebae9d3fd_c842-977b52faf01e6c05_d71f-fb7d765ba6874372_0a26-a01d8c5e515fa9c4_0404-38d01f55a8e1ff9b_d9cc-9d1c053084e66e7b_dc9f-a0ccd363ffb0ee94_c237-6f28bbc4c8ed232a_bfc2-52e190f2e5f3b790_edbb-ce6428e9c062e409_9fae-4fc54b735d3f45a6_b7b4-18f6da623ba658a2_81b3-a44d13c7da084070_fe04-18f6da623ba658a2_aa07-0-sequence_of_task_descs
+
+
+Loaded sample 11 f2fab283e8dd367a_6c4c-e035a44ebae9d3fd_c842-977b52faf01e6c05_d71f-fb7d765ba6874372_0a26-a01d8c5e515fa9c4_0404-38d01f55a8e1ff9b_d9cc-9d1c053084e66e7b_dc9f-a0ccd363ffb0ee94_c237-6f28bbc4c8ed232a_bfc2-52e190f2e5f3b790_edbb-ce6428e9c062e409_9fae-4fc54b735d3f45a6_b7b4-18f6da623ba658a2_81b3-a44d13c7da084070_fe04-18f6da623ba658a2_aa07-0-seq_specific_shortened_low_actions
+
+
+Loaded sample 12 f2fab283e8dd367a_6c4c-e035a44ebae9d3fd_c842-977b52faf01e6c05_d71f-fb7d765ba6874372_0a26-a01d8c5e515fa9c4_0404-38d01f55a8e1ff9b_d9cc-9d1c053084e66e7b_dc9f-a0ccd363ffb0ee94_c237-6f28bbc4c8ed232a_bfc2-52e190f2e5f3b790_edbb-ce6428e9c062e409_9fae-4fc54b735d3f45a6_b7b4-18f6da623ba658a2_81b3-a44d13c7da084070_fe04-18f6da623ba658a2_aa07-0-seq_right_after_questions
+
+
+Loaded sample 13 f2fab283e8dd367a_6c4c-e035a44ebae9d3fd_c842-977b52faf01e6c05_d71f-fb7d765ba6874372_0a26-a01d8c5e515fa9c4_0404-38d01f55a8e1ff9b_d9cc-9d1c053084e66e7b_dc9f-a0ccd363ffb0ee94_c237-6f28bbc4c8ed232a_bfc2-52e190f2e5f3b790_edbb-ce6428e9c062e409_9fae-4fc54b735d3f45a6_b7b4-18f6da623ba658a2_81b3-a44d13c7da084070_fe04-18f6da623ba658a2_aa07-0-seq_right_before_questions
+
+
+Loaded sample 14 f2fab283e8dd367a_6c4c-e035a44ebae9d3fd_c842-977b52faf01e6c05_d71f-fb7d765ba6874372_0a26-a01d8c5e515fa9c4_0404-38d01f55a8e1ff9b_d9cc-9d1c053084e66e7b_dc9f-a0ccd363ffb0ee94_c237-6f28bbc4c8ed232a_bfc2-52e190f2e5f3b790_edbb-ce6428e9c062e409_9fae-4fc54b735d3f45a6_b7b4-18f6da623ba658a2_81b3-a44d13c7da084070_fe04-18f6da623ba658a2_aa07-0-seq_simple_object_yes_no
+
+
+Loaded sample 15 f2fab283e8dd367a_6c4c-e035a44ebae9d3fd_c842-977b52faf01e6c05_d71f-fb7d765ba6874372_0a26-a01d8c5e515fa9c4_0404-38d01f55a8e1ff9b_d9cc-9d1c053084e66e7b_dc9f-a0ccd363ffb0ee94_c237-6f28bbc4c8ed232a_bfc2-52e190f2e5f3b790_edbb-ce6428e9c062e409_9fae-4fc54b735d3f45a6_b7b4-18f6da623ba658a2_81b3-a44d13c7da084070_fe04-18f6da623ba658a2_aa07-0-seq_low_actions_to_episode_task_descs
+
+
+Loaded sample 16 f2fab283e8dd367a_6c4c-e035a44ebae9d3fd_c842-977b52faf01e6c05_d71f-fb7d765ba6874372_0a26-a01d8c5e515fa9c4_0404-38d01f55a8e1ff9b_d9cc-9d1c053084e66e7b_dc9f-a0ccd363ffb0ee94_c237-6f28bbc4c8ed232a_bfc2-52e190f2e5f3b790_edbb-ce6428e9c062e409_9fae-4fc54b735d3f45a6_b7b4-18f6da623ba658a2_81b3-a44d13c7da084070_fe04-18f6da623ba658a2_aa07-0-exact_time_to_episode
+
+
+Loaded sample 17 f2fab283e8dd367a_6c4c-e035a44ebae9d3fd_c842-977b52faf01e6c05_d71f-fb7d765ba6874372_0a26-a01d8c5e515fa9c4_0404-38d01f55a8e1ff9b_d9cc-9d1c053084e66e7b_dc9f-a0ccd363ffb0ee94_c237-6f28bbc4c8ed232a_bfc2-52e190f2e5f3b790_edbb-ce6428e9c062e409_9fae-4fc54b735d3f45a6_b7b4-18f6da623ba658a2_81b3-a44d13c7da084070_fe04-18f6da623ba658a2_aa07-0-tasks_to_exact_times
+
+
+Loaded sample 18 f2fab283e8dd367a_6c4c-e035a44ebae9d3fd_c842-977b52faf01e6c05_d71f-fb7d765ba6874372_0a26-a01d8c5e515fa9c4_0404-38d01f55a8e1ff9b_d9cc-9d1c053084e66e7b_dc9f-a0ccd363ffb0ee94_c237-6f28bbc4c8ed232a_bfc2-52e190f2e5f3b790_edbb-ce6428e9c062e409_9fae-4fc54b735d3f45a6_b7b4-18f6da623ba658a2_81b3-a44d13c7da084070_fe04-18f6da623ba658a2_aa07-0-tasks_to_days_ago
+
+
+Loaded sample 19 f2fab283e8dd367a_6c4c-e035a44ebae9d3fd_c842-977b52faf01e6c05_d71f-fb7d765ba6874372_0a26-a01d8c5e515fa9c4_0404-38d01f55a8e1ff9b_d9cc-9d1c053084e66e7b_dc9f-a0ccd363ffb0ee94_c237-6f28bbc4c8ed232a_bfc2-52e190f2e5f3b790_edbb-ce6428e9c062e409_9fae-4fc54b735d3f45a6_b7b4-18f6da623ba658a2_81b3-a44d13c7da084070_fe04-18f6da623ba658a2_aa07-0-days_ago_to_episode
+
+
+Loaded sample 20 93af984d7981fdaa_6fc9-485726b073721e1c_04d4-25ef88cce38adfbc_d042-25ef88cce38adfbc_1740-b63996c03c2d6b3e_8ebc-26460009b5b1f985_5847-92f554e515caa159_4d16-6e4fc617d59944fa_915c-d762a50f6523e8df_c33e-100b7186117e3f3f_f776-fc0fe94a4c8e3a29_9052-bbc10dbfaeac4a70_18d0-fa13fdedbd2e99be_d0a0-aae955889a0ba5fa_d123-611141553a84af1f_38aa-0-sequence_of_task_descs
+
+
+Loaded sample 21 93af984d7981fdaa_6fc9-485726b073721e1c_04d4-25ef88cce38adfbc_d042-25ef88cce38adfbc_1740-b63996c03c2d6b3e_8ebc-26460009b5b1f985_5847-92f554e515caa159_4d16-6e4fc617d59944fa_915c-d762a50f6523e8df_c33e-100b7186117e3f3f_f776-fc0fe94a4c8e3a29_9052-bbc10dbfaeac4a70_18d0-fa13fdedbd2e99be_d0a0-aae955889a0ba5fa_d123-611141553a84af1f_38aa-0-seq_specific_shortened_low_actions
+
+
+Loaded sample 22 93af984d7981fdaa_6fc9-485726b073721e1c_04d4-25ef88cce38adfbc_d042-25ef88cce38adfbc_1740-b63996c03c2d6b3e_8ebc-26460009b5b1f985_5847-92f554e515caa159_4d16-6e4fc617d59944fa_915c-d762a50f6523e8df_c33e-100b7186117e3f3f_f776-fc0fe94a4c8e3a29_9052-bbc10dbfaeac4a70_18d0-fa13fdedbd2e99be_d0a0-aae955889a0ba5fa_d123-611141553a84af1f_38aa-0-seq_right_after_questions
+
+
+Loaded sample 23 93af984d7981fdaa_6fc9-485726b073721e1c_04d4-25ef88cce38adfbc_d042-25ef88cce38adfbc_1740-b63996c03c2d6b3e_8ebc-26460009b5b1f985_5847-92f554e515caa159_4d16-6e4fc617d59944fa_915c-d762a50f6523e8df_c33e-100b7186117e3f3f_f776-fc0fe94a4c8e3a29_9052-bbc10dbfaeac4a70_18d0-fa13fdedbd2e99be_d0a0-aae955889a0ba5fa_d123-611141553a84af1f_38aa-0-seq_right_before_questions
+
+
+Loaded sample 24 93af984d7981fdaa_6fc9-485726b073721e1c_04d4-25ef88cce38adfbc_d042-25ef88cce38adfbc_1740-b63996c03c2d6b3e_8ebc-26460009b5b1f985_5847-92f554e515caa159_4d16-6e4fc617d59944fa_915c-d762a50f6523e8df_c33e-100b7186117e3f3f_f776-fc0fe94a4c8e3a29_9052-bbc10dbfaeac4a70_18d0-fa13fdedbd2e99be_d0a0-aae955889a0ba5fa_d123-611141553a84af1f_38aa-0-seq_simple_object_yes_no
+
+
+Loaded sample 25 93af984d7981fdaa_6fc9-485726b073721e1c_04d4-25ef88cce38adfbc_d042-25ef88cce38adfbc_1740-b63996c03c2d6b3e_8ebc-26460009b5b1f985_5847-92f554e515caa159_4d16-6e4fc617d59944fa_915c-d762a50f6523e8df_c33e-100b7186117e3f3f_f776-fc0fe94a4c8e3a29_9052-bbc10dbfaeac4a70_18d0-fa13fdedbd2e99be_d0a0-aae955889a0ba5fa_d123-611141553a84af1f_38aa-0-seq_low_actions_to_episode_task_descs
+
+
+Loaded sample 26 93af984d7981fdaa_6fc9-485726b073721e1c_04d4-25ef88cce38adfbc_d042-25ef88cce38adfbc_1740-b63996c03c2d6b3e_8ebc-26460009b5b1f985_5847-92f554e515caa159_4d16-6e4fc617d59944fa_915c-d762a50f6523e8df_c33e-100b7186117e3f3f_f776-fc0fe94a4c8e3a29_9052-bbc10dbfaeac4a70_18d0-fa13fdedbd2e99be_d0a0-aae955889a0ba5fa_d123-611141553a84af1f_38aa-0-exact_time_to_episode
+
+
+Loaded sample 27 93af984d7981fdaa_6fc9-485726b073721e1c_04d4-25ef88cce38adfbc_d042-25ef88cce38adfbc_1740-b63996c03c2d6b3e_8ebc-26460009b5b1f985_5847-92f554e515caa159_4d16-6e4fc617d59944fa_915c-d762a50f6523e8df_c33e-100b7186117e3f3f_f776-fc0fe94a4c8e3a29_9052-bbc10dbfaeac4a70_18d0-fa13fdedbd2e99be_d0a0-aae955889a0ba5fa_d123-611141553a84af1f_38aa-0-tasks_to_exact_times
+
+
+Loaded sample 28 93af984d7981fdaa_6fc9-485726b073721e1c_04d4-25ef88cce38adfbc_d042-25ef88cce38adfbc_1740-b63996c03c2d6b3e_8ebc-26460009b5b1f985_5847-92f554e515caa159_4d16-6e4fc617d59944fa_915c-d762a50f6523e8df_c33e-100b7186117e3f3f_f776-fc0fe94a4c8e3a29_9052-bbc10dbfaeac4a70_18d0-fa13fdedbd2e99be_d0a0-aae955889a0ba5fa_d123-611141553a84af1f_38aa-0-tasks_to_days_ago
+
+
+Loaded sample 29 93af984d7981fdaa_6fc9-485726b073721e1c_04d4-25ef88cce38adfbc_d042-25ef88cce38adfbc_1740-b63996c03c2d6b3e_8ebc-26460009b5b1f985_5847-92f554e515caa159_4d16-6e4fc617d59944fa_915c-d762a50f6523e8df_c33e-100b7186117e3f3f_f776-fc0fe94a4c8e3a29_9052-bbc10dbfaeac4a70_18d0-fa13fdedbd2e99be_d0a0-aae955889a0ba5fa_d123-611141553a84af1f_38aa-0-days_ago_to_episode
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: False ) output: {'0-10': 'I prepared a cup of coffee. I found a mug in the cabinet, washed it in the sink, placed it in the coffee machine to brew, and then moved the filled mug to the countertop.', '11-17': 'I started preparing a tomato sandwich. I retrieved bread from a chair, placed it on the countertop, and sliced it with a knife.', '18-20': 'I located and retrieved a plate from a cabinet and placed it on the countertop to assemble the sandwich.', '21-24': 'I moved some items on the countertop, including a cellphone and a bread piece, to clear space for food preparation.', '25-32': 'I toasted two slices of bread using the toaster and placed them back on the countertop.', '33-40': 'I organized the toasted bread slices, placing one slice on the plate and another in the toaster briefly before moving it to the plate as well.', '41-45': 'I retrieved a tomato, placed it on the countertop, and sliced it with a knife.', '46-56': 'I assembled the sandwich by placing a tomato slice and another toasted bread slice onto the plate.', '57-58': 'I moved the finished tomato sandwich on the plate to the countertop next to the coffee. The user confirmed the breakfast was perfect.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: True ) output: {'0': 'I prepared a cup of coffee by washing a mug, brewing the coffee in the machine, and placing it on the countertop.', '1-7': 'I prepared a tomato sandwich by retrieving and slicing bread, clearing workspace on the countertop, toasting the bread slices, and then slicing a tomato and assembling the sandwich on a plate.', '8': 'I served the completed tomato sandwich next to the coffee on the countertop, and the user confirmed the meal was perfect.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: True ) output: {'0-2': 'I prepared breakfast by first making coffee, which involved washing a mug and brewing it, and then making a tomato sandwich. For the sandwich, I retrieved and sliced bread, toasted it, sliced a tomato, and assembled the sandwich on a plate. Finally, I placed both the coffee and the sandwich on the countertop, and the user confirmed the breakfast was complete.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: False ) output: {'0-4': 'I received instructions to rinse the mug on the coffee maker and prepare fresh coffee. I picked up the dirty mug, placed it in the sink, rinsed it under the faucet, and then emptied it.', '5-6': 'I placed the clean mug back into the coffee machine to prepare fresh coffee and notified the user that the task was complete.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: True ) output: {'0-1': 'I rinsed a dirty mug in the sink and placed it back into the coffee machine to prepare fresh coffee as instructed.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: False ) output: {'0-1': 'I picked up the first newspaper from the sofa and placed it on the side table as requested.', '2-4': 'I then retrieved the second newspaper from the floor near the shelf, placed it on the side table with the first one, and confirmed the task was complete.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: True ) output: {'0-1': 'I picked up two newspapers, one from the sofa and one from the floor, and placed them both on the side table as requested.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: False ) output: {'0-1': 'I received an instruction to place all watches on one table. I picked up a watch from the sofa and placed it on the dresser.', '2-3': 'The user clarified that the watch should be placed on a different table, specifically the dark brown one. I picked the watch back up and placed it on the side table.', '4': 'The user confirmed I did a good job, and I turned left to complete the interaction.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: True ) output: {'0-2': 'I received an instruction to place all watches on one table. I initially placed a watch from the sofa onto the dresser, but after the user clarified it should be on the dark brown table, I moved the watch to the side table. The user then confirmed I did a good job.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: False ) output: Traceback (most recent call last):
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/__main__.py", line 434, in <module>
+    main()
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/__main__.py", line 333, in main
+    for i, sample in enumerate(dataset):
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/dechant_qa_dataset.py", line 68, in __iter__
+    for i, sample in enumerate(self._iter_single_trial(start_time, trial_ids)):
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/dechant_qa_dataset.py", line 80, in _iter_single_trial
+    history = self._load_history(batch, start_time)
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/dechant_qa_dataset.py", line 195, in _load_history
+    single_ep_histories = [
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/dechant_qa_dataset.py", line 196, in <listcomp>
+    self._load_history(dict(dataset_name=split, game_id=ep_id), time_info.get(ep_id))
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/dechant_qa_dataset.py", line 207, in _load_history
+    hierarchical_history = self.llm_summarizer.recursively_summarize(raw_history.children)
+  File "/home/user22303471/Project/Active-H-EMV/em/llm_summary.py", line 258, in recursively_summarize
+    result = self.group_and_summarize(result)
+  File "/home/user22303471/Project/Active-H-EMV/em/llm_summary.py", line 210, in group_and_summarize
+    result = _invoke_with_retry(self._group_and_summarize_chain_first_summary, {'input': context})
+  File "/home/user22303471/Project/Active-H-EMV/em/llm_summary.py", line 22, in _invoke_with_retry
+    return chain.invoke(inputs)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/runnables/base.py", line 2879, in invoke
+    input = context.run(step.invoke, input, config)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 277, in invoke
+    self.generate_prompt(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 777, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 634, in generate
+    raise e
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 624, in generate
+    self._generate_with_cache(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/language_models/chat_models.py", line 846, in _generate_with_cache
+    result = self._generate(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_openai/chat_models/base.py", line 686, in _generate
+    response = self.client.create(**payload)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/openai/_utils/_utils.py", line 286, in wrapper
+    return func(*args, **kwargs)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/openai/resources/chat/completions/completions.py", line 1147, in create
+    return self._post(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/openai/_base_client.py", line 1259, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/openai/_base_client.py", line 982, in request
+    response = self._client.send(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_sync/connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_sync/http_proxy.py", line 343, in handle_request
+    return self._connection.handle_request(request)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_sync/http11.py", line 136, in handle_request
+    raise exc
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_sync/http11.py", line 106, in handle_request
+    ) = self._receive_response_headers(**kwargs)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_sync/http11.py", line 177, in _receive_response_headers
+    event = self._receive_event(timeout=timeout)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_sync/http11.py", line 217, in _receive_event
+    data = self._network_stream.read(
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/httpcore/_backends/sync.py", line 128, in read
+    return self._sock.recv(max_bytes)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/ssl.py", line 1292, in recv
+    return self.read(buflen)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/ssl.py", line 1165, in read
+    return self._sslobj.read(len)
+KeyboardInterrupt
+{'0-3': 'I gathered a potato and a tomato and placed them on the countertop. During this, I received instructions to cook one slice of potato and place it on a plate.', '4-6': 'I picked up a knife and sliced the potato on the countertop.', '7-11': 'I picked up a single potato slice, placed it in a pan on the stove, and toggled the stove on and off to cook it. I then picked up the cooked slice.', '12-16': 'I searched for a plate by checking a cabinet and then opening the fridge. I found a plate inside the fridge and placed the cooked potato slice onto it.', '17-18': 'I moved the plate with the cooked potato slice to the countertop and reported completion, which was acknowledged by the user.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: True ) output: {'0-2': 'I gathered a potato, sliced it, and cooked a single slice in a pan on the stove as instructed.', '3-4': 'I located a plate in the fridge, placed the cooked potato slice on it, and moved it to the countertop to complete the task.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: True ) output: {'0-1': 'I prepared, sliced, and cooked a potato slice in a pan, then served it on a plate retrieved from the fridge and placed it on the countertop.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: False ) output: {'0-4': 'I prepared coffee by picking up a mug, placing it in the coffee machine, turning the machine on, and then placing the filled mug on the countertop.', '5-6': 'I picked up a tomato and placed it on the countertop, in preparation for making a sandwich.', '7-11': 'I retrieved a plate and lettuce from the fridge and placed them on the countertop.', '12-15': 'I opened a cabinet to retrieve a knife, then closed the cabinet and placed the knife on CounterTop_1.', '16-23': 'I opened another cabinet to get bread, placed it on CounterTop_1, then used the knife to slice the bread, lettuce, and tomato, placing the sliced items on CounterTop_1.', '24-31': 'I toasted two slices of bread by picking them up, placing them in the toaster, then retrieving the cooked slices and placing them on the plate.', '32-36': 'I picked up one slice of tomato and one slice of lettuce and placed them on the plate, completing the sandwich preparation. The user then confirmed the task was done.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: True ) output: {'0-6': 'I prepared coffee, then made a sandwich. For the sandwich, I retrieved a tomato, plate, lettuce, knife, and bread from various locations. I sliced the bread, lettuce, and tomato, toasted two slices of bread, and then assembled the sandwich on the plate with a slice of tomato and lettuce. The user confirmed the task was completed.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: False ) output: {'0-2': 'I picked up a knife and sliced a tomato, then placed the sliced tomato on the countertop.', '3-7': 'I picked up lettuce from the countertop, placed it back, then picked it up again and placed it back on the countertop.', '8-10': 'I picked up the knife again and sliced the lettuce, then placed the sliced lettuce on the countertop.', '11-12': 'I picked up bread and placed it on the countertop.', '13-15': 'I picked up a butter knife, used it to slice the bread, and then placed the sliced bread back on the countertop.', '16-19': 'I picked up a slice of bread, placed it in the toaster, and toggled the toaster on and off to toast it.', '20-30': 'I opened a cabinet, picked up a dirty bowl, placed it in the sink, cleaned it by pouring water in and out, and then placed the cleaned bowl on the countertop. I also toggled the faucet on and off.', '31-33': 'I picked up a sliced tomato and placed it into the cleaned bowl, completing the task.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: True ) output: {'0-2': 'I prepared the vegetables by slicing a tomato and lettuce.', '3-5': 'I prepared the bread by slicing it and toasting a slice.', '6-7': 'I cleaned a bowl in the sink and placed a slice of tomato into it to complete the task.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: True ) output: {'0-2': 'I prepared vegetables and bread by slicing them, toasted a slice of bread, and then cleaned a bowl and placed a tomato slice in it to complete the task.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: False ) output: {'0-6': 'I started by preparing coffee. I retrieved a mug from the microwave, emptied it in the sink, and then placed it in the coffee machine, which I then turned on.', '7-9': "Following the user's request, I retrieved lettuce from the cabinet above the coffee maker and placed it on the countertop.", '10-15': 'I was instructed to slice a tomato and was told the knife was in the fridge. I retrieved a tomato from the cabinet, got the knife from the fridge, and then sliced the tomato on the countertop.', '16-17': 'I proceeded to slice the lettuce on the countertop as well.', '18-29': 'I began assembling a plate by picking up a slice of lettuce and a slice of tomato and placing them onto a plate I had moved to the countertop.', '30-39': 'The user then asked me to cook and slice a potato. I placed a potato in the microwave, cooked it, and then moved the cooked potato to the countertop.', '40-47': 'Finally, I sliced the cooked potato and added two slices to the plate with the lettuce and tomato, completing the task.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: True ) output: {'0': 'I started by preparing coffee, which involved cleaning a mug and starting the coffee machine.', '1-4': 'I then prepared a salad by retrieving and slicing lettuce and a tomato, and placing the slices onto a plate.', '5-6': 'Finally, I cooked a potato in the microwave, sliced it, and added the slices to the plate to complete the meal.'}
+<em.llm_summary.LLMBasedSummarizer object at 0x7f842bfd8310> group and summarize (higher level: True ) output: {'0-2': 'I prepared a meal and a beverage, which involved making coffee, assembling a salad with lettuce and tomato, and cooking a potato to complete the plate.'}
+ERROR conda.cli.main_run:execute(127): `conda run python -m llm_emv.eval --cfg teach/simplified/full_graph_aug_zs --dataset teach-dechant --teach-base dataset/TEACh --qa-file data/teach/test_set_15.pkl --output experiments/results/teach/cache/precompute_h15.json --precompute-history-cache --llm-summarizer-cfg {'llm': {'model_name': 'gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5}, 'example_db_name': 'teach', 'few_shot_k': 2}` failed. (See above for error)

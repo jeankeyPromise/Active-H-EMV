@@ -1,0 +1,107 @@
+Traceback (most recent call last):
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/__main__.py", line 385, in main
+    hypothesis = model(sample.question, sample.question_time, sample.history)
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/__main__.py", line 236, in run_model
+    lmp = setup_llm_emv(cfg, history, now_time=question_time,
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py", line 72, in setup_llm_emv
+    vlm = _instantiate_vlm(cfg.pop('question_vlm', None))
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py", line 158, in _instantiate_vlm
+    model = instantiate_llm(vlm_cfg)
+  File "/home/user22303471/Project/Active-H-EMV/lmp/setup.py", line 206, in instantiate_llm
+    return _instantiate_from_cfg(llm_cfg, *available_pkgs)
+  File "/home/user22303471/Project/Active-H-EMV/lmp/setup.py", line 218, in _instantiate_from_cfg
+    return cls(**cfg)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/load/serializable.py", line 113, in __init__
+    super().__init__(*args, **kwargs)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/pydantic/v1/main.py", line 364, in __init__
+    raise validation_error
+pydantic.v1.error_wrappers.ValidationError: 1 validation error for ChatOpenAI
+__root__
+  Did not find openai_api_key, please add an environment variable `OPENAI_API_KEY` which contains it, or pass `openai_api_key` as a named parameter. (type=value_error)
+Traceback (most recent call last):
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/__main__.py", line 385, in main
+    hypothesis = model(sample.question, sample.question_time, sample.history)
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/__main__.py", line 236, in run_model
+    lmp = setup_llm_emv(cfg, history, now_time=question_time,
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py", line 72, in setup_llm_emv
+    vlm = _instantiate_vlm(cfg.pop('question_vlm', None))
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py", line 158, in _instantiate_vlm
+    model = instantiate_llm(vlm_cfg)
+  File "/home/user22303471/Project/Active-H-EMV/lmp/setup.py", line 206, in instantiate_llm
+    return _instantiate_from_cfg(llm_cfg, *available_pkgs)
+  File "/home/user22303471/Project/Active-H-EMV/lmp/setup.py", line 218, in _instantiate_from_cfg
+    return cls(**cfg)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/load/serializable.py", line 113, in __init__
+    super().__init__(*args, **kwargs)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/pydantic/v1/main.py", line 364, in __init__
+    raise validation_error
+pydantic.v1.error_wrappers.ValidationError: 1 validation error for ChatOpenAI
+__root__
+  Did not find openai_api_key, please add an environment variable `OPENAI_API_KEY` which contains it, or pass `openai_api_key` as a named parameter. (type=value_error)
+Traceback (most recent call last):
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/__main__.py", line 385, in main
+    hypothesis = model(sample.question, sample.question_time, sample.history)
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/__main__.py", line 236, in run_model
+    lmp = setup_llm_emv(cfg, history, now_time=question_time,
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py", line 72, in setup_llm_emv
+    vlm = _instantiate_vlm(cfg.pop('question_vlm', None))
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py", line 158, in _instantiate_vlm
+    model = instantiate_llm(vlm_cfg)
+  File "/home/user22303471/Project/Active-H-EMV/lmp/setup.py", line 206, in instantiate_llm
+    return _instantiate_from_cfg(llm_cfg, *available_pkgs)
+  File "/home/user22303471/Project/Active-H-EMV/lmp/setup.py", line 218, in _instantiate_from_cfg
+    return cls(**cfg)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/load/serializable.py", line 113, in __init__
+    super().__init__(*args, **kwargs)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/pydantic/v1/main.py", line 364, in __init__
+    raise validation_error
+pydantic.v1.error_wrappers.ValidationError: 1 validation error for ChatOpenAI
+__root__
+  Did not find openai_api_key, please add an environment variable `OPENAI_API_KEY` which contains it, or pass `openai_api_key` as a named parameter. (type=value_error)
+Traceback (most recent call last):
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/__main__.py", line 385, in main
+    hypothesis = model(sample.question, sample.question_time, sample.history)
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/__main__.py", line 236, in run_model
+    lmp = setup_llm_emv(cfg, history, now_time=question_time,
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py", line 72, in setup_llm_emv
+    vlm = _instantiate_vlm(cfg.pop('question_vlm', None))
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py", line 158, in _instantiate_vlm
+    model = instantiate_llm(vlm_cfg)
+  File "/home/user22303471/Project/Active-H-EMV/lmp/setup.py", line 206, in instantiate_llm
+    return _instantiate_from_cfg(llm_cfg, *available_pkgs)
+  File "/home/user22303471/Project/Active-H-EMV/lmp/setup.py", line 218, in _instantiate_from_cfg
+    return cls(**cfg)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/load/serializable.py", line 113, in __init__
+    super().__init__(*args, **kwargs)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/pydantic/v1/main.py", line 364, in __init__
+    raise validation_error
+pydantic.v1.error_wrappers.ValidationError: 1 validation error for ChatOpenAI
+__root__
+  Did not find openai_api_key, please add an environment variable `OPENAI_API_KEY` which contains it, or pass `openai_api_key` as a named parameter. (type=value_error)
+Traceback (most recent call last):
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/__main__.py", line 385, in main
+    hypothesis = model(sample.question, sample.question_time, sample.history)
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/eval/__main__.py", line 236, in run_model
+    lmp = setup_llm_emv(cfg, history, now_time=question_time,
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py", line 72, in setup_llm_emv
+    vlm = _instantiate_vlm(cfg.pop('question_vlm', None))
+  File "/home/user22303471/Project/Active-H-EMV/llm_emv/setup.py", line 158, in _instantiate_vlm
+    model = instantiate_llm(vlm_cfg)
+  File "/home/user22303471/Project/Active-H-EMV/lmp/setup.py", line 206, in instantiate_llm
+    return _instantiate_from_cfg(llm_cfg, *available_pkgs)
+  File "/home/user22303471/Project/Active-H-EMV/lmp/setup.py", line 218, in _instantiate_from_cfg
+    return cls(**cfg)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/langchain_core/load/serializable.py", line 113, in __init__
+    super().__init__(*args, **kwargs)
+  File "/home/user22303471/.conda/envs/active-h-emv/lib/python3.10/site-packages/pydantic/v1/main.py", line 364, in __init__
+    raise validation_error
+pydantic.v1.error_wrappers.ValidationError: 1 validation error for ChatOpenAI
+__root__
+  Did not find openai_api_key, please add an environment variable `OPENAI_API_KEY` which contains it, or pass `openai_api_key` as a named parameter. (type=value_error)
+[Checkpoint] loaded 0 result(s) from experiments/results/teach/smoke/task_list_h15_n5.jsonl / experiments/results/teach/smoke/task_list_h15_n5.json
+[Checkpoint] retrying 0 previous error/empty result(s)
+Evaluating sample 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-sequence_of_task_descs
+Evaluating sample 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-seq_specific_shortened_low_actions
+Evaluating sample 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-seq_right_after_questions
+Evaluating sample 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-seq_right_before_questions
+Evaluating sample 4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-seq_simple_object_yes_no
