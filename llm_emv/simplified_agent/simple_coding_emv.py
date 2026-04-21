@@ -81,6 +81,7 @@ def _strip_python_prompt_prefixes(code: str) -> str:
 def _split_adjacent_console_statements(code: str) -> str:
     statement_prefixes = (
         'history', 'answer', 'ask', 'vqa', 'now',
+        'task_list', 'task_lookup', 'object_lookup',
         'date_lookup', 'event_date_lookup', 'temporal_neighbor',
     )
     result = []
@@ -230,6 +231,7 @@ def _repair_bare_answer_kwargs(code: str) -> str | None:
     stripped = code.strip()
     if not stripped or stripped.startswith((
             'answer(', 'history', 'ask(', 'vqa(', 'now(',
+            'task_list(', 'task_lookup(', 'object_lookup(',
             'date_lookup(', 'event_date_lookup(', 'temporal_neighbor(')):
         return None
 
@@ -264,6 +266,7 @@ def _looks_like_plain_answer(code: str) -> bool:
         return False
     code_like_prefixes = (
         'history', 'answer(', 'ask(', 'vqa(', 'now(', 'import ', 'from ',
+        'task_list(', 'task_lookup(', 'object_lookup(',
         'date_lookup(', 'event_date_lookup(', 'temporal_neighbor(',
         'for ', 'if ', 'while ', 'def ', 'class ', 'try:', 'with ',
     )
@@ -348,8 +351,58 @@ def _parse_date_lookup_question(question: str) -> str | None:
 
 def _parse_event_date_lookup_question(question: str) -> str | None:
     normalized = question.strip()
-    if re.search(r'\bhow many days ago did you\s+.+\??$', normalized, flags=re.IGNORECASE):
+    if re.search(
+            r'\b(?:how many days ago did you|when did you)\s+.+\??$',
+            normalized,
+            flags=re.IGNORECASE):
         return normalized
+    return None
+
+
+def _is_task_list_question(question: str) -> bool:
+    normalized = question.strip().lower()
+    return bool(re.search(
+        r'\b(list|what (?:are|were))\b.*\b(tasks?|activities)\b.*\b(performed|did|done)\b',
+        normalized,
+    ))
+
+
+def _parse_task_lookup_question(question: str) -> str | None:
+    normalized = question.strip()
+    lower = normalized.lower()
+    if _is_task_list_question(question):
+        return None
+    if re.search(r'\b(before|after|days? ago|what did you do on|what happened on)\b', lower):
+        return None
+
+    when_match = re.search(
+        r'\b(?:describe|summarize|what did you do|what were you doing)\b.*\bwhen you\s+(.+?)\??$',
+        normalized,
+        flags=re.IGNORECASE,
+    )
+    if when_match:
+        return when_match.group(1).strip(' .?')
+
+    describe_match = re.search(
+        r'\b(?:describe|summarize)\s+(?:what you did\s+)?(?:to\s+)?(.+?)\??$',
+        normalized,
+        flags=re.IGNORECASE,
+    )
+    if describe_match:
+        return describe_match.group(1).strip(' .?')
+    return None
+
+
+def _parse_object_lookup_question(question: str) -> str | None:
+    normalized = question.strip()
+    match = re.search(
+        r'^\s*(?:was|were)\s+there\s+(?:an?|any|the)?\s*(.+?)\s*\??$',
+        normalized,
+        flags=re.IGNORECASE,
+    )
+    if match:
+        object_name = match.group(1).strip(' .?')
+        return object_name or None
     return None
 
 
@@ -537,6 +590,50 @@ class SimplifiedCodingEMV:
                     structured_fallback_answer = structured_fallback_answer or _extract_recommended_answer(r)
             except BaseException:
                 # Event-date lookup is a low-cost hint. Fall back to regular tree navigation if parsing fails.
+                traceback.print_exc()
+
+        if _is_task_list_question(question) and not self._force_initial_command:
+            command = 'task_list()'
+            try:
+                self._exec_hist.items.append(ExecutionHistory.Command(command))
+                results = self.code_execution_env(command)
+                for r in results:
+                    if r is None:
+                        continue
+                    self._exec_hist.items.append(ExecutionHistory.ExecutionResult(r))
+                    structured_fallback_answer = structured_fallback_answer or _extract_recommended_answer(r)
+            except BaseException:
+                # Task listing is a low-cost hint. Fall back to regular tree navigation if it fails.
+                traceback.print_exc()
+
+        task_lookup_query = _parse_task_lookup_question(question)
+        if task_lookup_query and not self._force_initial_command:
+            command = f'task_lookup({task_lookup_query!r})'
+            try:
+                self._exec_hist.items.append(ExecutionHistory.Command(command))
+                results = self.code_execution_env(command)
+                for r in results:
+                    if r is None:
+                        continue
+                    self._exec_hist.items.append(ExecutionHistory.ExecutionResult(r))
+                    structured_fallback_answer = structured_fallback_answer or _extract_recommended_answer(r)
+            except BaseException:
+                # Task lookup is a low-cost hint. Fall back to regular tree navigation if it fails.
+                traceback.print_exc()
+
+        object_lookup_query = _parse_object_lookup_question(question)
+        if object_lookup_query and not self._force_initial_command:
+            command = f'object_lookup({object_lookup_query!r})'
+            try:
+                self._exec_hist.items.append(ExecutionHistory.Command(command))
+                results = self.code_execution_env(command)
+                for r in results:
+                    if r is None:
+                        continue
+                    self._exec_hist.items.append(ExecutionHistory.ExecutionResult(r))
+                    structured_fallback_answer = structured_fallback_answer or _extract_recommended_answer(r)
+            except BaseException:
+                # Object lookup is a low-cost hint. Fall back to regular tree navigation if it fails.
                 traceback.print_exc()
 
         steps = 0

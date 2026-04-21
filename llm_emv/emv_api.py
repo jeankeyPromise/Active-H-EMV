@@ -120,6 +120,66 @@ class EMVerbalizationAPI:
     def now(self) -> datetime:
         return self._now_time or datetime.now()
 
+    @comment('For task-list questions, list task-sized history summaries in chronological order')
+    @group('util')
+    def task_list(self, max_tasks: int = 30) -> str:
+        tasks = _select_task_list_nodes(self._raw_history, max_tasks=max_tasks)
+        lines = ['Task list candidates in chronological order:']
+        if not tasks:
+            lines.append('No task-sized summaries found.')
+            lines.append('Recommended answer: I have no record of that.')
+            return '\n'.join(lines)
+
+        for idx, task in enumerate(tasks, start=1):
+            lines.append(f'{idx}. {_format_node_brief(task, max_len=240)}')
+        lines.append(
+            'Recommended answer: '
+            + '; '.join(_compact_task_phrase(task) for task in tasks)
+        )
+        return '\n'.join(lines)
+
+    @comment('For task-description questions, list task-sized summaries matching a query')
+    @group('util')
+    def task_lookup(self, query: str, max_matches: int = 8) -> str:
+        matches = self._rank_task_matches(query, max_matches=max_matches)
+        lines = [f'Task lookup candidates for query={query!r}:']
+        if not matches:
+            lines.append('No matching task-sized summaries found.')
+            lines.append('Recommended answer: I have no record of that.')
+            return '\n'.join(lines)
+
+        for rank, match in enumerate(matches, start=1):
+            lines.append(
+                f'{rank}. score={match["score"]:.2f}; '
+                f'{_format_node_brief(match["node"], max_len=240)}'
+            )
+        lines.append(
+            'Recommended answer: '
+            + '; '.join(_compact_task_phrase(match['node']) for match in matches[:3])
+        )
+        return '\n'.join(lines)
+
+    @comment('For object yes/no questions, check whether task summaries mention the object')
+    @group('util')
+    def object_lookup(self, object_name: str, max_matches: int = 8) -> str:
+        object_name = object_name.strip()
+        matches = self._rank_object_matches(object_name, max_matches=max_matches)
+        lines = [f'Object lookup for object={object_name!r}:']
+        if not matches:
+            lines.append('No task-sized summaries mention this object.')
+            lines.append('Recommended answer: No, I have no record of that.')
+            return '\n'.join(lines)
+
+        for rank, match in enumerate(matches, start=1):
+            lines.append(
+                f'{rank}. score={match["score"]:.2f}; '
+                f'{_format_node_brief(match["node"], max_len=220)}'
+            )
+        lines.append(
+            f'Recommended answer: Yes, I have records mentioning {object_name}.'
+        )
+        return '\n'.join(lines)
+
     @comment('For exact date/time or N-days-ago questions, list matching history summaries directly')
     @group('util')
     def date_lookup(self, query: str, max_matches: int = 8) -> str:
@@ -265,6 +325,52 @@ class EMVerbalizationAPI:
             ranked.append({**record, 'score': score})
         ranked.sort(key=lambda r: r['score'], reverse=True)
         return ranked[:max_candidates]
+
+    def _rank_task_matches(self, query: str, max_matches: int):
+        tasks = _select_task_list_nodes(self._raw_history, max_tasks=80)
+        if not tasks:
+            return []
+
+        texts = [_node_text(task) for task in tasks]
+        semantic_scores = [0.0] * len(tasks)
+        if self._search_embedding_fn is not None:
+            query_emb = self._search_embedding_fn([query])
+            text_emb = self._search_embedding_fn(texts)
+            semantic_scores = util.cos_sim(text_emb, query_emb).squeeze(1).tolist()
+
+        ranked = []
+        for task, text, semantic_score in zip(tasks, texts, semantic_scores):
+            lexical_score = _lexical_overlap(query, text)
+            score = 0.82 * semantic_score + 0.18 * lexical_score
+            if lexical_score < 0.18 and semantic_score < 0.38:
+                continue
+            ranked.append({
+                'node': task,
+                'text': text,
+                'score': score,
+                'lexical_score': lexical_score,
+                'semantic_score': semantic_score,
+            })
+        ranked.sort(key=lambda r: (r['score'], getattr(r['node'], 'range', (datetime.min,))[0]), reverse=True)
+        return ranked[:max_matches]
+
+    def _rank_object_matches(self, object_name: str, max_matches: int):
+        query_tokens = _content_tokens(object_name)
+        if not query_tokens:
+            return []
+
+        ranked = []
+        for task in _select_task_list_nodes(self._raw_history, max_tasks=80):
+            text = _node_text(task)
+            text_tokens = _content_tokens(text)
+            overlap = len(query_tokens & text_tokens) / len(query_tokens)
+            if overlap <= 0:
+                continue
+            exact_bonus = 0.35 if re.search(rf'\b{re.escape(object_name.lower())}\b', text.lower()) else 0.0
+            score = min(1.0, overlap + exact_bonus)
+            ranked.append({'node': task, 'score': score, 'overlap': overlap})
+        ranked.sort(key=lambda r: (r['score'], getattr(r['node'], 'range', (datetime.min,))[0]), reverse=True)
+        return ranked[:max_matches]
 
     def _temporal_candidates(self):
         if self._temporal_candidate_cache is not None:
@@ -496,6 +602,64 @@ def _format_node_brief(node, max_len: int = 180) -> str:
     else:
         prefix = ''
     return prefix + _compact_summary(node, max_len=max_len)
+
+
+def _select_task_list_nodes(root, max_tasks: int):
+    candidates = []
+
+    def visit(node, depth=0):
+        children = _node_children(node)
+        node_range = getattr(node, 'range', None)
+        class_name = node.__class__.__name__
+        if (children and node_range is not None and hasattr(node, 'nl_summary')
+                and class_name not in {'GoalBasedSummary', 'EventBasedSummary'}):
+            start, end = node_range
+            duration_minutes = max((end - start).total_seconds() / 60.0, 0.0)
+            if 1.5 <= duration_minutes <= 360 and depth >= 2:
+                depth_score = max(0.0, 1.0 - abs(depth - 4) * 0.25)
+                duration_score = 1.0 / (1.0 + abs(duration_minutes - 20.0) / 40.0)
+                candidate_score = 0.62 * depth_score + 0.38 * duration_score
+                candidates.append({
+                    'node': node,
+                    'score': candidate_score,
+                    'start': start,
+                    'end': end,
+                    'duration': duration_minutes,
+                })
+        for child in children:
+            visit(child, depth + 1)
+
+    visit(root)
+    candidates.sort(key=lambda c: c['score'], reverse=True)
+
+    selected = []
+    for candidate in candidates:
+        if all(_time_overlap_ratio(candidate, accepted) < 0.65 for accepted in selected):
+            selected.append(candidate)
+        if len(selected) >= max_tasks:
+            break
+
+    selected.sort(key=lambda c: c['start'])
+    return [candidate['node'] for candidate in selected]
+
+
+def _time_overlap_ratio(a, b) -> float:
+    overlap_start = max(a['start'], b['start'])
+    overlap_end = min(a['end'], b['end'])
+    overlap = max((overlap_end - overlap_start).total_seconds(), 0.0)
+    if overlap <= 0:
+        return 0.0
+    shorter = min(
+        max((a['end'] - a['start']).total_seconds(), 1.0),
+        max((b['end'] - b['start']).total_seconds(), 1.0),
+    )
+    return overlap / shorter
+
+
+def _compact_task_phrase(node, max_len: int = 120) -> str:
+    summary = _compact_summary(node, max_len=max_len)
+    summary = re.sub(r'^(On|Later on|From) [^,]+,?\s+', '', summary, flags=re.IGNORECASE)
+    return summary
 
 
 def _lexical_overlap(query: str, text: str) -> float:
