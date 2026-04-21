@@ -150,6 +150,20 @@ python -m llm_emv.eval.metrics.calc_metrics --primary-only \
   experiments/results/teach/h_emv_gemini_2.5_pro_100.json
 ```
 
+也可以用仓库里的 helper 串起这两步，适合 h=15 `--n-samples 15` 这类 smoke 跑完后立即做 correctness evaluation：
+
+```bash
+PYTHON_BIN="conda run --no-capture-output -n active-h-emv python" \
+  scripts/evaluate_result.sh experiments/results/teach/smoke/task_tools_h15_n15.json
+```
+
+它会在结果文件同目录生成：
+
+```text
+experiments/results/teach/smoke/task_tools_h15_n15_llm_eval.log
+experiments/results/teach/smoke/task_tools_h15_n15_metrics.log
+```
+
 ## 实验样本大小选择
 
 这里的“样本量”指 QA 问题数，不是 `|h|`。`|h|` 由 `data/teach/test_set_*.pkl` 文件名决定，例如 `test_set_50.pkl` 表示 `|h|=50`；标准 TEACh 表格每个 `|h|` 文件包含 10 段长历史 × 10 个问答 = 100 个 QA。
