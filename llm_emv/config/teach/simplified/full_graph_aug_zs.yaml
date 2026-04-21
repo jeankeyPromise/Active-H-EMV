@@ -3,9 +3,9 @@ max_rounds: 15
 llm:
   type: ChatOpenAI
   model_name: gemini-2.5-pro
-  max_tokens: 2048
+  max_tokens: 768
   temperature: 0.1
-  request_timeout: 60
+  request_timeout: 120
   max_retries: 2
 question_vlm:
   type: ChatOpenAI

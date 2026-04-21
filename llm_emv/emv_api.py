@@ -1,4 +1,5 @@
-from datetime import datetime
+import re
+from datetime import date, datetime, timedelta
 from functools import partial
 from typing import Dict, Callable, Literal, List, Optional
 
@@ -11,7 +12,12 @@ from em.em_tree import HigherLevelSummary, type_to_children_property_map, Highes
 from lmp.api_visibility_wrapper import group
 from lmp.namespace import comment
 from lmp.repl.semantic_hint_error import SemanticHintError
-from .interactive_tree import ExpandableTreeNode, ExpandableList, create_expandable_tree_node_filter_fn
+from .interactive_tree import (
+    ExpandableTreeNode,
+    ExpandableList,
+    create_expandable_tree_node_filter_fn,
+    format_datetime_range,
+)
 from .memory_graph import MemoryGraph
 from .vlm import VLM
 
@@ -33,6 +39,9 @@ class EMVerbalizationAPI:
     ) -> None:
         super().__init__()
         self._vlm = vlm
+        self._raw_history = history
+        self._search_embedding_fn = search_embedding_fn
+        self._temporal_candidate_cache = None
         self._wait_for_trigger = wait_for_trigger
         self._tts = tts
         self._now_time = now_time
@@ -111,6 +120,119 @@ class EMVerbalizationAPI:
     def now(self) -> datetime:
         return self._now_time or datetime.now()
 
+    @comment('For exact date/time or N-days-ago questions, list matching history summaries directly')
+    @group('util')
+    def date_lookup(self, query: str, max_matches: int = 8) -> str:
+        resolved = _resolve_date_query(query, self.now())
+        if resolved is None:
+            raise SemanticHintError(
+                'date_lookup could not parse the date/time. Use a query such as '
+                '"Jul 06, 2023 at 01:36 PM", "2023-07-06", or "2 days ago".'
+            )
+
+        target, precision = resolved
+        matches = self._rank_date_matches(target, precision, max_matches=max_matches)
+        label = _format_resolved_date(target, precision)
+        lines = [f'Date lookup for query={query!r}: resolved={label}.']
+        if not matches:
+            lines.append('No records overlap this date/time.')
+            lines.append('Recommended answer: I have no record of that.')
+            return '\n'.join(lines)
+
+        for rank, match in enumerate(matches, start=1):
+            lines.append(
+                f'{rank}. score={match["score"]:.2f}; '
+                f'{_format_node_brief(match["node"], max_len=220)}'
+            )
+
+        recommended = _date_lookup_recommendation(matches, target, precision)
+        lines.append(f'Recommended answer: {recommended}')
+        return '\n'.join(lines)
+
+    @comment('For "how many days ago did you X" questions, find all matching event dates directly')
+    @group('util')
+    def event_date_lookup(self, query: str, max_matches: int = 12) -> str:
+        parsed = _parse_event_date_query(query, self.now())
+        if parsed is None:
+            raise SemanticHintError(
+                'event_date_lookup could not parse the event query. Use a question such as '
+                '"Today is Mar 17, 2024. How many days ago did you water the plant?"'
+            )
+
+        event, today = parsed
+        matches = self._rank_event_date_matches(event, today, max_matches=max_matches)
+        lines = [
+            f'Event date lookup for query={query!r}: event={event!r}, today={today:%Y/%m/%d}.'
+        ]
+        if not matches:
+            lines.append('No matching event records found.')
+            lines.append('Recommended answer: I have no record of that.')
+            return '\n'.join(lines)
+
+        for rank, match in enumerate(matches, start=1):
+            lines.append(
+                f'{rank}. score={match["score"]:.2f}; days_ago={match["days_ago"]}; '
+                f'{_format_node_brief(match["node"], max_len=220)}'
+            )
+
+        recommended = _event_date_lookup_recommendation(matches)
+        lines.append(f'Recommended answer: {recommended}')
+        return '\n'.join(lines)
+
+    @comment('For just-before/just-after questions, find the target task and return adjacent task candidates')
+    @group('util')
+    def temporal_neighbor(self, target_task: str, direction: str = 'before', max_candidates: int = 6) -> str:
+        direction = direction.strip().lower()
+        if direction not in {'before', 'after'}:
+            raise SemanticHintError('direction must be "before" or "after".')
+        candidates = self._rank_temporal_candidates(target_task, max_candidates=max_candidates)
+        if not candidates:
+            return f'No temporal neighbor candidates found for "{target_task}".'
+
+        lines = [
+            f'Temporal neighbor candidates for target={target_task!r}, direction={direction!r}:'
+        ]
+        recommendation_candidates = []
+        fallback_recommendation = None
+        for rank, candidate in enumerate(candidates, start=1):
+            target = candidate['node']
+            parent_children = candidate['siblings']
+            neighbor_idx = candidate['index'] - 1 if direction == 'before' else candidate['index'] + 1
+            if 0 <= neighbor_idx < len(parent_children):
+                neighbor = parent_children[neighbor_idx]
+                neighbor_summary = _compact_summary(neighbor)
+                if fallback_recommendation is None and candidate['score'] >= 0.35:
+                    fallback_recommendation = neighbor_summary
+                neighbor_overlap = _lexical_overlap(target_task, neighbor_summary)
+                if candidate['score'] >= 0.35 and neighbor_overlap < 0.35:
+                    depth_preference = max(0.0, 1.0 - abs(candidate['depth'] - 4) * 0.5) * 0.08
+                    recommendation_candidates.append((
+                        candidate['score'] + depth_preference - neighbor_overlap * 0.15,
+                        neighbor_summary,
+                    ))
+                lines.append(
+                    f'{rank}. score={candidate["score"]:.2f}; '
+                    f'target={_format_node_brief(target)}; '
+                    f'{direction}={_format_node_brief(neighbor)}'
+                )
+            else:
+                lines.append(
+                    f'{rank}. score={candidate["score"]:.2f}; '
+                    f'target={_format_node_brief(target)}; no {direction} sibling at this level'
+                )
+
+        recommended = None
+        if recommendation_candidates:
+            recommendation_candidates.sort(key=lambda x: x[0], reverse=True)
+            recommended = recommendation_candidates[0][1]
+
+        if recommended or fallback_recommendation:
+            recommended = recommended or fallback_recommendation
+            lines.append(f'Recommended answer: {recommended}')
+        else:
+            lines.append('Recommended answer: no confident adjacent task found.')
+        return '\n'.join(lines)
+
     #########################
     # EM Access
 
@@ -119,6 +241,137 @@ class EMVerbalizationAPI:
     @group('em')
     def history(self):
         return self._history
+
+    def _rank_temporal_candidates(self, target_task: str, max_candidates: int):
+        records = self._temporal_candidates()
+        if not records:
+            return []
+
+        texts = [record['text'] for record in records]
+        semantic_scores = [0.0] * len(records)
+        if self._search_embedding_fn is not None:
+            query_emb = self._search_embedding_fn([target_task])
+            text_emb = self._search_embedding_fn(texts)
+            semantic_scores = util.cos_sim(text_emb, query_emb).squeeze(1).tolist()
+
+        ranked = []
+        for record, semantic_score in zip(records, semantic_scores):
+            lexical_score = _lexical_overlap(target_task, record['text'])
+            summary_bonus = 0.05 if record['node'].__class__.__name__ == 'HigherLevelSummary' else 0.0
+            # TEACh before/after QA asks for adjacent tasks, not raw goal steps and not multi-day blocks.
+            # In the hierarchy used here, depth around 4 tends to correspond to task-sized summaries.
+            task_level_bonus = max(0.0, 1.0 - abs(record['depth'] - 4) * 0.35) * 0.18
+            score = 0.82 * semantic_score + 0.18 * lexical_score + summary_bonus + task_level_bonus
+            ranked.append({**record, 'score': score})
+        ranked.sort(key=lambda r: r['score'], reverse=True)
+        return ranked[:max_candidates]
+
+    def _temporal_candidates(self):
+        if self._temporal_candidate_cache is not None:
+            return self._temporal_candidate_cache
+
+        records = []
+
+        def visit(node, parent=None, index=None, depth=0):
+            children = _node_children(node)
+            class_name = node.__class__.__name__
+            is_task_summary = class_name not in {'GoalBasedSummary', 'EventBasedSummary'}
+            if (parent is not None and index is not None and len(children) > 0
+                    and hasattr(node, 'nl_summary') and is_task_summary):
+                records.append({
+                    'node': node,
+                    'siblings': _node_children(parent),
+                    'index': index,
+                    'depth': depth,
+                    'text': _node_text(node),
+                })
+            for child_index, child in enumerate(children):
+                visit(child, node, child_index, depth + 1)
+
+        visit(self._raw_history)
+        self._temporal_candidate_cache = records
+        return records
+
+    def _rank_date_matches(self, target: date | datetime, precision: str, max_matches: int):
+        records = []
+
+        def visit(node, depth=0):
+            node_range = getattr(node, 'range', None)
+            children = _node_children(node)
+            if node_range is not None and children and hasattr(node, 'nl_summary'):
+                if _node_overlaps_target(node_range, target, precision):
+                    records.append({
+                        'node': node,
+                        'depth': depth,
+                        'score': _date_match_score(node, target, precision, depth),
+                    })
+            for child in children:
+                visit(child, depth + 1)
+
+        visit(self._raw_history)
+        records.sort(key=lambda r: r['score'], reverse=True)
+        return records[:max_matches]
+
+    def _rank_event_date_matches(self, event: str, today: date, max_matches: int):
+        records = []
+
+        def visit(node, depth=0):
+            node_range = getattr(node, 'range', None)
+            children = _node_children(node)
+            if node_range is not None and children and hasattr(node, 'nl_summary'):
+                text = _node_text(node)
+                duration_hours = max((node_range[1] - node_range[0]).total_seconds() / 3600.0, 1 / 60)
+                # Avoid using broad multi-day summaries as event evidence. They are useful as context,
+                # but they blur repeated dates for questions like "how many days ago did you X?".
+                if duration_hours <= 12 and node_range[0].date() <= today:
+                    records.append({
+                        'node': node,
+                        'depth': depth,
+                        'text': text,
+                        'duration_hours': duration_hours,
+                    })
+            for child in children:
+                visit(child, depth + 1)
+
+        visit(self._raw_history)
+        if not records:
+            return []
+
+        texts = [record['text'] for record in records]
+        semantic_scores = [0.0] * len(records)
+        if self._search_embedding_fn is not None:
+            query_emb = self._search_embedding_fn([event])
+            text_emb = self._search_embedding_fn(texts)
+            semantic_scores = util.cos_sim(text_emb, query_emb).squeeze(1).tolist()
+
+        best_by_date = {}
+        for record, semantic_score in zip(records, semantic_scores):
+            lexical_score = _lexical_overlap(event, record['text'])
+            if lexical_score < 0.34 and semantic_score < 0.42:
+                continue
+            depth_bonus = max(0.0, 1.0 - abs(record['depth'] - 5) * 0.25) * 0.12
+            duration_bonus = 0.08 if record['duration_hours'] <= 3 else 0.0
+            score = 0.68 * semantic_score + 0.32 * lexical_score + depth_bonus + duration_bonus
+            if score < 0.38:
+                continue
+            event_date = record['node'].range[0].date()
+            days_ago = (today - event_date).days
+            if days_ago < 0:
+                continue
+            candidate = {
+                **record,
+                'score': score,
+                'lexical_score': lexical_score,
+                'semantic_score': semantic_score,
+                'date': event_date,
+                'days_ago': days_ago,
+            }
+            previous = best_by_date.get(event_date)
+            if previous is None or candidate['score'] > previous['score']:
+                best_by_date[event_date] = candidate
+
+        ranked = sorted(best_by_date.values(), key=lambda r: (-r['days_ago'], -r['score']))
+        return ranked[:max_matches]
 
     #########################
     # External tools
@@ -212,3 +465,235 @@ def history_search_similarity(embedding_fn: Callable[[List[str]], torch.Tensor],
     # 这在记忆回溯场景中非常合理（比如用户问“我什么时候提过离婚”，即使节点里只有一句相关，其他都是日常聊天，也应该被召回）。
     similarity = util.cos_sim(embedding, query_emb).max().item()
     return similarity
+
+
+def _node_children(node):
+    return getattr(node, 'children', None) or getattr(node, 'events', None) or []
+
+
+def _node_text(node) -> str:
+    parts = []
+    if hasattr(node, 'nl_summary'):
+        parts.append(str(node.nl_summary))
+    for item in getattr(node, 'index_content', []) or []:
+        if item:
+            parts.append(str(item))
+    return '\n'.join(parts)
+
+
+def _compact_summary(node, max_len: int = 180) -> str:
+    summary = str(getattr(node, 'nl_summary', '') or _node_text(node)).strip()
+    summary = re.sub(r'\s+', ' ', summary)
+    if len(summary) > max_len:
+        summary = summary[:max_len].rstrip() + '...'
+    return summary
+
+
+def _format_node_brief(node, max_len: int = 180) -> str:
+    node_range = getattr(node, 'range', None)
+    if node_range is not None:
+        prefix = format_datetime_range(*node_range) + ': '
+    else:
+        prefix = ''
+    return prefix + _compact_summary(node, max_len=max_len)
+
+
+def _lexical_overlap(query: str, text: str) -> float:
+    query_tokens = _content_tokens(query)
+    text_tokens = _content_tokens(text)
+    if not query_tokens:
+        return 0.0
+    return len(query_tokens & text_tokens) / len(query_tokens)
+
+
+def _content_tokens(text: str) -> set[str]:
+    stopwords = {
+        'a', 'an', 'the', 'all', 'and', 'or', 'to', 'of', 'in', 'on', 'with',
+        'i', 'you', 'it', 'them', 'then', 'by', 'for', 'from', 'was', 'were',
+    }
+    result = set()
+    for token in re.findall(r'[a-z0-9]+', text.lower()):
+        if token in stopwords:
+            continue
+        for suffix in ('ing', 'ed', 'es', 's'):
+            if len(token) > len(suffix) + 2 and token.endswith(suffix):
+                token = token[:-len(suffix)]
+                break
+        result.add(token)
+    return result
+
+
+_MONTH_DATE_RE = (
+    r'(?:Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|'
+    r'Aug|August|Sep|Sept|September|Oct|October|Nov|November|Dec|December)'
+    r'\s+\d{1,2},\s+\d{4}'
+    r'(?:\s+at\s+\d{1,2}:\d{2}(?::\d{2})?\s*(?:AM|PM|am|pm)?)?'
+)
+_NUMERIC_DATE_RE = (
+    r'\d{4}[-/]\d{1,2}[-/]\d{1,2}'
+    r'(?:\s+\d{1,2}:\d{2}(?::\d{2})?)?'
+)
+
+
+def _resolve_date_query(query: str, now: datetime) -> tuple[date | datetime, str] | None:
+    query = query.strip()
+    lower = query.lower()
+
+    days_ago = re.search(r'\b(\d+)\s+days?\s+ago\b', lower)
+    if days_ago and now is not None:
+        return (now.date() - timedelta(days=int(days_ago.group(1)))), 'date'
+
+    for pattern in (_MONTH_DATE_RE, _NUMERIC_DATE_RE):
+        match = re.search(pattern, query)
+        if not match:
+            continue
+        parsed = _parse_date_text(match.group(0))
+        if parsed is not None:
+            return parsed
+    return None
+
+
+def _parse_date_text(text: str) -> tuple[date | datetime, str] | None:
+    text = re.sub(r'\s+', ' ', text.strip())
+    formats = (
+        ('%b %d, %Y at %I:%M:%S %p', 'datetime'),
+        ('%b %d, %Y at %I:%M %p', 'datetime'),
+        ('%B %d, %Y at %I:%M:%S %p', 'datetime'),
+        ('%B %d, %Y at %I:%M %p', 'datetime'),
+        ('%b %d, %Y', 'date'),
+        ('%B %d, %Y', 'date'),
+        ('%Y-%m-%d %H:%M:%S', 'datetime'),
+        ('%Y-%m-%d %H:%M', 'datetime'),
+        ('%Y/%m/%d %H:%M:%S', 'datetime'),
+        ('%Y/%m/%d %H:%M', 'datetime'),
+        ('%Y-%m-%d', 'date'),
+        ('%Y/%m/%d', 'date'),
+    )
+    for fmt, precision in formats:
+        try:
+            parsed = datetime.strptime(text, fmt)
+        except ValueError:
+            continue
+        if precision == 'date':
+            return parsed.date(), precision
+        return parsed, precision
+    return None
+
+
+def _node_overlaps_target(node_range: tuple[datetime, datetime],
+                          target: date | datetime,
+                          precision: str) -> bool:
+    start, end = node_range
+    if precision == 'datetime':
+        target_dt = target
+        start_cmp = start.replace(microsecond=0)
+        end_cmp = end.replace(microsecond=0)
+        if target_dt.second == 0:
+            target_start = target_dt.replace(second=0, microsecond=0)
+            target_end = target_dt.replace(second=59, microsecond=0)
+        else:
+            target_start = target_end = target_dt.replace(microsecond=0)
+        return start_cmp <= target_end and target_start <= end_cmp
+    return start.date() <= target <= end.date()
+
+
+def _date_match_score(node, target: date | datetime, precision: str, depth: int) -> float:
+    start, end = node.range
+    duration_hours = max((end - start).total_seconds() / 3600.0, 1 / 60)
+    class_name = node.__class__.__name__
+    summary_bonus = 0.08 if class_name == 'HigherLevelSummary' else 0.0
+
+    if precision == 'datetime':
+        duration_score = 1.0 / (1.0 + duration_hours / 2.0)
+        depth_score = max(0.0, 1.0 - abs(depth - 4) * 0.25)
+        return 0.62 * duration_score + 0.30 * depth_score + summary_bonus
+
+    same_day = start.date() == target and end.date() == target
+    duration_score = 1.0 / (1.0 + abs(duration_hours - 8.0) / 12.0)
+    depth_score = max(0.0, 1.0 - abs(depth - 3) * 0.25)
+    same_day_bonus = 0.25 if same_day else 0.0
+    return 0.38 * duration_score + 0.29 * depth_score + same_day_bonus + summary_bonus
+
+
+def _date_lookup_recommendation(matches, target: date | datetime, precision: str) -> str:
+    if precision == 'datetime':
+        best = matches[0]['node']
+        return _compact_summary(best, max_len=260)
+
+    unique_summaries = []
+    seen = set()
+    for match in matches:
+        node = match['node']
+        start, end = node.range
+        if not (start.date() == target and end.date() == target):
+            continue
+        summary = _compact_summary(node, max_len=220)
+        if summary in seen:
+            continue
+        seen.add(summary)
+        unique_summaries.append(summary)
+        if len(unique_summaries) >= 4:
+            break
+    if not unique_summaries:
+        unique_summaries = [_compact_summary(matches[0]['node'], max_len=260)]
+    return ' '.join(unique_summaries)
+
+
+def _parse_event_date_query(query: str, now: datetime) -> tuple[str, date] | None:
+    today = _parse_today_date(query) or (now.date() if now is not None else None)
+    if today is None:
+        return None
+
+    patterns = (
+        r'\bhow many days ago did you\s+(.+?)\??$',
+        r'\bwhen did you\s+(.+?)\??$',
+    )
+    for pattern in patterns:
+        match = re.search(pattern, query.strip(), flags=re.IGNORECASE)
+        if not match:
+            continue
+        event = match.group(1).strip()
+        event = re.sub(r'\b(on|at)\s+$', '', event, flags=re.IGNORECASE).strip()
+        if event:
+            return event, today
+    return None
+
+
+def _parse_today_date(query: str) -> date | None:
+    today_match = re.search(
+        rf'\btoday\s+is\s+({_MONTH_DATE_RE}|{_NUMERIC_DATE_RE})',
+        query,
+        flags=re.IGNORECASE,
+    )
+    if not today_match:
+        return None
+    parsed = _parse_date_text(today_match.group(1))
+    if parsed is None:
+        return None
+    value, _precision = parsed
+    if isinstance(value, datetime):
+        return value.date()
+    return value
+
+
+def _event_date_lookup_recommendation(matches) -> str:
+    reliable_matches = [match for match in matches if match.get('lexical_score', 0.0) >= 0.34]
+    if reliable_matches:
+        matches = reliable_matches
+
+    days = sorted({match['days_ago'] for match in matches}, reverse=True)
+    if not days:
+        return 'I have no record of that.'
+
+    def fmt(day_count: int) -> str:
+        return f'{day_count} day ago' if day_count == 1 else f'{day_count} days ago'
+
+    if len(days) == 1:
+        return fmt(days[0])
+    return ' and '.join(fmt(day_count) for day_count in days)
+
+
+def _format_resolved_date(target: date | datetime, precision: str) -> str:
+    if precision == 'datetime':
+        return target.strftime('%Y/%m/%d %H:%M:%S')
+    return target.strftime('%Y/%m/%d')

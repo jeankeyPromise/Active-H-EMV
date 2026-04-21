@@ -17,6 +17,8 @@ class LlmToPythonConsoleHelper:
                  verbose=True,
                  llm_kwargs=None,
                  increase_llm_temp_on_empty_reply=0.3,
+                 max_empty_reply_retries=None,
+                 empty_reply_fallback=END_OF_TASK,
                  enforce_python_console_stop_token=True,
 
                  # Uses stream and cuts output at certain special tokens
@@ -39,6 +41,8 @@ class LlmToPythonConsoleHelper:
                 self._llm_kwargs['stop'] = ['>>>']
 
         self._increase_llm_temp_on_empty_reply = increase_llm_temp_on_empty_reply
+        self._max_empty_reply_retries = max_empty_reply_retries
+        self._empty_reply_fallback = empty_reply_fallback
 
     def __call__(self, loop_detected_flag=False) -> Tuple[str, str]:  # (code, expected output)
         code_str_with_expected_reply = self._context_length_adaptive_generate(loop_detected_flag)
@@ -87,8 +91,11 @@ class LlmToPythonConsoleHelper:
             result = self._generate_relaxing_stop_token(kwargs)
 
         if cleanup_model_output(result) == '':
-            print(f'LLM generated empty reply, substituting this with {END_OF_TASK}')
-            return END_OF_TASK
+            if self._empty_reply_fallback is None:
+                print('LLM generated empty reply, returning an empty command')
+                return ''
+            print(f'LLM generated empty reply, substituting this with {self._empty_reply_fallback}')
+            return self._empty_reply_fallback
         return result
 
     def _generate_relaxing_stop_token(self, kwargs):
@@ -114,7 +121,11 @@ class LlmToPythonConsoleHelper:
 
     def _generate_increasing_temperature(self, kwargs):
         result = ''
+        empty_attempts = 0
         while cleanup_model_output(result) == '':
+            empty_attempts += 1
+            if self._max_empty_reply_retries is not None and empty_attempts > self._max_empty_reply_retries:
+                break
             if kwargs.get('temperature', 0) > 1:
                 break
             result = self._llm_predict_and_sanitize_code_with_python_console_artifacts(kwargs)
@@ -129,6 +140,11 @@ class LlmToPythonConsoleHelper:
     def _split_llm_output(self, code_str_with_expected_reply):
         cleanup_code_tags = cleanup_model_output(code_str_with_expected_reply)
         lines = cleanup_code_tags.splitlines()
+        if not lines:
+            if self._verbose:
+                print('command:', '')
+                print('expected output:', '')
+            return '', ''
         if code_str_with_expected_reply != cleanup_code_tags and self._verbose:
             print('Cleaned model output.')
             print('Original:', code_str_with_expected_reply)

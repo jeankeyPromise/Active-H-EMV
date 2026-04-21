@@ -1,10 +1,13 @@
 import argparse
 import json
 import re
+import signal
+import traceback
 from datetime import datetime
 from functools import partial
 from itertools import islice
 from pathlib import Path
+from typing import Dict, Any, Iterable, List
 
 import langchain_community.callbacks
 
@@ -18,6 +21,109 @@ from .qa_eval import run_evaluation, run_evaluation_with_correction, EpisodicQAD
 from ..setup import setup_llm_emv
 
 total_prompt_tokens, total_completion_tokens, total_cost = 0, 0, 0
+
+
+class SampleTimeoutError(TimeoutError):
+    pass
+
+
+def _raise_sample_timeout(signum, frame):
+    raise SampleTimeoutError('Sample timed out.')
+
+
+def _is_error_hypothesis(hypothesis: Any) -> bool:
+    if hypothesis is None:
+        return True
+    hyp = str(hypothesis).strip()
+    return not hyp or hyp.startswith('###ERROR###')
+
+
+def _sample_result_dict(sample_id: str,
+                        q_time: datetime,
+                        question: str,
+                        answer: str,
+                        hypothesis: str) -> dict:
+    return {
+        'q_time': q_time.strftime('%Y/%m/%d %H:%M:%S'),
+        'q': question,
+        'gt': answer,
+        'hyp': hypothesis,
+    }
+
+
+def _costs_dict() -> dict:
+    return {
+        'cost': total_cost,
+        'prompt_tokens': total_prompt_tokens,
+        'completion_tokens': total_completion_tokens,
+    }
+
+
+def _set_costs(costs: dict):
+    global total_prompt_tokens, total_completion_tokens, total_cost
+    total_cost = costs.get('cost', 0.0)
+    total_prompt_tokens = costs.get('prompt_tokens', 0)
+    total_completion_tokens = costs.get('completion_tokens', 0)
+
+
+def _write_output_json(output: Path, args: argparse.Namespace, results: Dict[str, dict]):
+    payload = {
+        'config': _safe_config(args),
+        'code_commit': determine_git_commit(),
+        'results': results,
+        'openai_costs': _costs_dict(),
+    }
+    output.parent.mkdir(parents=True, exist_ok=True)
+    tmp_output = output.with_suffix(output.suffix + '.tmp')
+    tmp_output.write_text(json.dumps(payload, indent=2))
+    tmp_output.replace(output)
+
+
+def _checkpoint_file_for_output(output: Path, explicit_checkpoint_file: Path | None = None) -> Path:
+    return explicit_checkpoint_file or output.with_suffix('.jsonl')
+
+
+def _append_checkpoint(checkpoint_file: Path,
+                       args: argparse.Namespace,
+                       sample_id: str,
+                       sample_result: dict,
+                       token_delta: dict):
+    checkpoint_file.parent.mkdir(parents=True, exist_ok=True)
+    with checkpoint_file.open('a', encoding='utf-8') as f:
+        f.write(json.dumps({
+            'sample_id': sample_id,
+            'result': sample_result,
+            'token_delta': token_delta,
+            'openai_costs': _costs_dict(),
+            'config': _safe_config(args),
+        }, ensure_ascii=False) + '\n')
+
+
+def _load_jsonl_checkpoint(checkpoint_file: Path) -> tuple[Dict[str, dict], dict]:
+    results = {}
+    costs = {}
+    if not checkpoint_file.is_file():
+        return results, costs
+    for line in checkpoint_file.read_text(encoding='utf-8').splitlines():
+        if not line.strip():
+            continue
+        record = json.loads(line)
+        results[record['sample_id']] = record['result']
+        costs = record.get('openai_costs') or costs
+    return results, costs
+
+
+def _load_resume_state(output_file: Path, checkpoint_file: Path) -> tuple[Dict[str, dict], dict]:
+    results = {}
+    costs = {}
+    if output_file.is_file():
+        output_data = json.loads(output_file.read_text())
+        results.update(output_data.get('results', {}))
+        costs = output_data.get('openai_costs') or costs
+    checkpoint_results, checkpoint_costs = _load_jsonl_checkpoint(checkpoint_file)
+    results.update(checkpoint_results)
+    costs = checkpoint_costs or costs
+    return results, costs
 
 
 def _redact_config_value(value):
@@ -168,15 +274,50 @@ def main():
                         help='Enable simulated feedback correction protocol. '
                              'Questions within the same episode share history, '
                              'and corrections are applied after wrong answers.')
+    parser.add_argument('--resume', action='store_true', default=False,
+                        help='Resume a standard evaluation from an existing output/checkpoint. '
+                             'Completed samples are skipped.')
+    parser.add_argument('--retry-errors', action='store_true', default=False,
+                        help='When used with --resume, rerun samples whose previous hypothesis is empty '
+                             'or starts with ###ERROR###, while keeping successful samples.')
+    parser.add_argument('--checkpoint-file', type=Path, default=None,
+                        help='Optional JSONL checkpoint path. Defaults to the output path with .jsonl suffix.')
+    parser.add_argument('--max-prompt-tokens-per-sample', type=int, default=None,
+                        help='Stop the run after a sample if that sample exceeds this prompt-token budget.')
+    parser.add_argument('--max-average-prompt-tokens-per-sample', type=float, default=None,
+                        help='Stop the run after a sample if the running average prompt tokens per completed QA '
+                             'exceeds this budget.')
+    parser.add_argument('--max-seconds-per-sample', type=int, default=None,
+                        help='Mark a sample as failed and continue if it exceeds this wall-clock budget.')
     args, _ = parser.parse_known_args()
     dataset_cls = _dataset_classes[args.dataset]
     dataset_cls.add_argparse_args(parser)
     args = parser.parse_args()
-    assert not args.output.is_file(), str(args.output)
+    if args.retry_errors and not args.resume:
+        parser.error('--retry-errors requires --resume')
+    if args.enable_correction and args.resume:
+        parser.error('--resume is currently only supported for standard evaluation, not correction mode')
+    if args.output.is_file() and not args.resume:
+        raise FileExistsError(
+            f'{args.output} already exists. Use --resume to continue/retry, or choose a new output path.'
+        )
 
     dataset = dataset_cls.from_argparse_args(args)
     if args.n_samples:
         dataset = islice(dataset, args.n_samples)
+
+    checkpoint_file = _checkpoint_file_for_output(args.output, args.checkpoint_file)
+    resumed_results: Dict[str, dict] = {}
+    if args.resume:
+        resumed_results, resumed_costs = _load_resume_state(args.output, checkpoint_file)
+        _set_costs(resumed_costs)
+        print(
+            f'[Checkpoint] loaded {len(resumed_results)} result(s) from '
+            f'{checkpoint_file} / {args.output}'
+        )
+        if args.retry_errors:
+            retry_count = sum(_is_error_hypothesis(r.get('hyp')) for r in resumed_results.values())
+            print(f'[Checkpoint] retrying {retry_count} previous error/empty result(s)')
 
     if args.only_iter_dataset:
         print('\n!!! ONLY ITERATING DATASET, NOT PERFORMING EVAL !!!\n')
@@ -194,27 +335,90 @@ def main():
         else:
             print('\n[Correction] 配置中未找到 correction 块，回退到标准评测\n')
             result = run_evaluation(partial(run_model, args.cfg), dataset)
-    else:
-        result = run_evaluation(partial(run_model, args.cfg), dataset)
-
-    args.output.write_text(json.dumps({
-        'config': _safe_config(args),
-        'code_commit': determine_git_commit(),
-        'results': {
-            r.sample_id: {
-                'q_time': r.question_time.strftime('%Y/%m/%d %H:%M:%S'),
-                'q': r.question,
-                'gt': r.answer,
-                'hyp': r.hypothesis
-            }
+        _write_output_json(args.output, args, {
+            r.sample_id: _sample_result_dict(
+                r.sample_id, r.question_time, r.question, r.answer, r.hypothesis)
             for r in result
-        },
-        'openai_costs': {
-            'cost': total_cost,
-            'prompt_tokens': total_prompt_tokens,
-            'completion_tokens': total_completion_tokens,
-        }
-    }, indent=2))
+        })
+    else:
+        results = dict(resumed_results)
+        model = partial(run_model, args.cfg)
+        dataset_iter = iter(dataset)
+        while True:
+            before_costs = _costs_dict()
+            try:
+                if args.max_seconds_per_sample is not None:
+                    signal.signal(signal.SIGALRM, _raise_sample_timeout)
+                    signal.alarm(args.max_seconds_per_sample)
+                sample = next(dataset_iter)
+            except StopIteration:
+                break
+            except SampleTimeoutError:
+                traceback.print_exc()
+                break
+            finally:
+                if args.max_seconds_per_sample is not None:
+                    signal.alarm(0)
+
+            existing = results.get(sample.sample_id)
+            if existing is not None:
+                should_retry = args.retry_errors and _is_error_hypothesis(existing.get('hyp'))
+                if not should_retry:
+                    print(f'[Checkpoint] skip completed sample {sample.sample_id}')
+                    continue
+                print(f'[Checkpoint] retry error sample {sample.sample_id}')
+
+            print('Evaluating sample', sample.sample_id)
+            try:
+                if args.max_seconds_per_sample is not None:
+                    signal.signal(signal.SIGALRM, _raise_sample_timeout)
+                    signal.alarm(args.max_seconds_per_sample)
+                hypothesis = model(sample.question, sample.question_time, sample.history)
+            except KeyboardInterrupt:
+                break
+            except SampleTimeoutError as e:
+                traceback.print_exc()
+                hypothesis = '###ERROR### ' + str(e)
+            except Exception as e:
+                traceback.print_exc()
+                hypothesis = '###ERROR### ' + str(e)
+            finally:
+                if args.max_seconds_per_sample is not None:
+                    signal.alarm(0)
+
+            sample_result = _sample_result_dict(
+                sample.sample_id, sample.question_time, sample.question, sample.answer, hypothesis)
+            results[sample.sample_id] = sample_result
+            after_costs = _costs_dict()
+            token_delta = {
+                'cost': after_costs['cost'] - before_costs['cost'],
+                'prompt_tokens': after_costs['prompt_tokens'] - before_costs['prompt_tokens'],
+                'completion_tokens': after_costs['completion_tokens'] - before_costs['completion_tokens'],
+            }
+            _append_checkpoint(checkpoint_file, args, sample.sample_id, sample_result, token_delta)
+            _write_output_json(args.output, args, results)
+
+            if (args.max_prompt_tokens_per_sample is not None
+                    and token_delta['prompt_tokens'] > args.max_prompt_tokens_per_sample):
+                print(
+                    '[TokenBudget] stopping: sample prompt tokens '
+                    f'{token_delta["prompt_tokens"]} exceeded '
+                    f'{args.max_prompt_tokens_per_sample}'
+                )
+                break
+
+            if args.max_average_prompt_tokens_per_sample is not None:
+                completed_count = len(results)
+                running_average = after_costs['prompt_tokens'] / completed_count if completed_count else 0
+                if running_average > args.max_average_prompt_tokens_per_sample:
+                    print(
+                        '[TokenBudget] stopping: average prompt tokens '
+                        f'{running_average:.1f} exceeded '
+                        f'{args.max_average_prompt_tokens_per_sample}'
+                    )
+                    break
+
+        _write_output_json(args.output, args, results)
 
 
 if __name__ == '__main__':

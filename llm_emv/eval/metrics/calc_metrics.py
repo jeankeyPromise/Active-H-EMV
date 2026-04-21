@@ -62,14 +62,7 @@ def _calc_bleu(predictions: List[str], gold_annotations: List[List[str]]) -> Dic
 
 
 def _category_eval(results):
-    categories = Counter()
-    for result in results:
-        if 'cat' in result:
-            cat = result['cat']
-            # 处理空字符串或无效类别，归类为 'unknown'
-            if not cat or cat not in FineEmvOutputCategory.all_names() + BroadEmvOutputCategory.all_names():
-                cat = 'unknown'
-            categories.update([cat])
+    categories = _collect_broad_categories(results)
 
     def _print_categories():
         max_key_len = max(len(k) for k in categories.keys())
@@ -77,25 +70,63 @@ def _category_eval(results):
             print(k.rjust(max_key_len), f': {v: >3} ({v / len(results): >6.1%})')
 
     if categories:
-        if any(k not in BroadEmvOutputCategory.all_names() for k in categories.keys()):
-            print('\nFine Categories:')
-            _print_categories()
-            broad_categories = Counter()
-            for k, v in categories.items():
-                # 将 'unknown' 归类为 'wrong'
-                if k == 'unknown':
-                    broad_categories.update({'wrong': v})
-                elif k in BroadEmvOutputCategory.all_names():
-                    # 已经是宽类别，直接使用
-                    broad_categories.update({k: v})
-                else:
-                    broad_categories.update({FineEmvOutputCategory(k).broad.name: v})
-            categories = broad_categories
         print('\nBroad Categories:')
         _print_categories()
         return [categories[BroadEmvOutputCategory.correct.name] / len(results) * 100,
                 categories[BroadEmvOutputCategory.partially_correct.name] / len(results) * 100]
     return []
+
+
+def _collect_broad_categories(results):
+    categories = Counter()
+    for result in results:
+        if 'cat' not in result:
+            continue
+        cat = result['cat']
+        if not cat or cat not in FineEmvOutputCategory.all_names() + BroadEmvOutputCategory.all_names():
+            cat = 'unknown'
+        if cat == 'unknown':
+            categories.update({'wrong': 1})
+        elif cat in BroadEmvOutputCategory.all_names():
+            categories.update({cat: 1})
+        else:
+            categories.update({FineEmvOutputCategory(cat).broad.name: 1})
+    return categories
+
+
+def _is_error_hypothesis(hyp) -> bool:
+    if hyp is None:
+        return True
+    if isinstance(hyp, list):
+        hyp = '. '.join(str(x) for x in hyp)
+    hyp = str(hyp).strip()
+    return not hyp or hyp.startswith('###ERROR###')
+
+
+def _print_primary_thesis_metrics(exp_output, results, broad_categories=None):
+    total = len(results)
+    error_outputs = sum(_is_error_hypothesis(r.get('hyp')) for r in results)
+    valid_outputs = total - error_outputs
+
+    print('\nPrimary thesis metrics')
+    print('Total QA:', total)
+    print(f'Valid answer rate: {valid_outputs / total:.1%} ({valid_outputs}/{total})')
+    print(f'Error/empty answer rate: {error_outputs / total:.1%} ({error_outputs}/{total})')
+
+    if broad_categories:
+        correct = broad_categories[BroadEmvOutputCategory.correct.name]
+        partial = broad_categories[BroadEmvOutputCategory.partially_correct.name]
+        wrong = broad_categories[BroadEmvOutputCategory.wrong.name]
+        print(f'S_c semantic correct: {correct / total * 100:.1f}% ({correct}/{total})')
+        print(f'S_p partially correct: {partial / total * 100:.1f}% ({partial}/{total})')
+        print(f'Wrong/no-answer: {wrong / total * 100:.1f}% ({wrong}/{total})')
+
+    cost_keys = [k for k in exp_output.keys() if k.endswith('_costs')]
+    if len(cost_keys) == 1:
+        prompt_tokens = exp_output[cost_keys[0]]['prompt_tokens']
+        completion_tokens = exp_output[cost_keys[0]].get('completion_tokens', 0)
+        print(f'T prompt tokens per QA: {prompt_tokens / total / 1000:.2f}K')
+        print(f'Completion tokens per QA: {completion_tokens / total / 1000:.2f}K')
 
 
 def _surface_eval(results):
@@ -135,24 +166,41 @@ def _surface_eval(results):
 
 
 def main():
-    exp_output_file = Path(sys.argv[1])
+    args = sys.argv[1:]
+    primary_only = False
+    if '--primary-only' in args:
+        primary_only = True
+        args.remove('--primary-only')
+
+    exp_output_file = Path(args[0])
     exp_output = json.loads(exp_output_file.read_text())
 
     metric_latex_line = []
-    results = exp_output['results'].values()
-    if all('gt' in r for r in results):
+    results = list(exp_output['results'].values())
+    category_results = None
+
+    if all('gt' in r for r in results) and not primary_only:
         metric_latex_line += _surface_eval(results)
 
     if any('cat' in r for r in results):
-        metric_latex_line += _category_eval(results)
+        category_results = results
+        category_metrics = _category_eval(results)
+        if not primary_only:
+            metric_latex_line += category_metrics
     else:
         auto_eval_files = list(exp_output_file.parent.glob(f'{exp_output_file.stem}.*.auto_eval.json'))
         if len(auto_eval_files) == 1:
             print('\nReading auto-eval from', auto_eval_files[0])
             auto_eval_data = json.loads(auto_eval_files[0].read_text())
-            metric_latex_line += _category_eval(auto_eval_data['results'].values())
+            category_results = list(auto_eval_data['results'].values())
+            category_metrics = _category_eval(category_results)
+            if not primary_only:
+                metric_latex_line += category_metrics
         elif len(auto_eval_files) > 1:
             print('Multiple auto-eval files found, unclear which one to consider. Pass it separately.')
+
+    broad_categories = _collect_broad_categories(category_results or [])
+    _print_primary_thesis_metrics(exp_output, results, broad_categories)
 
     cost_keys = [k for k in exp_output.keys() if k.endswith('_costs')]
     if len(cost_keys) == 1:
@@ -163,13 +211,15 @@ def main():
             print('NOTE: This file has', len(results),
                   'QA samples. Standard TEACh |h| table results should use 100 QA samples '
                   '(10 long histories x 10 questions).')
-        metric_latex_line += [token_per_sample / 1000]
+        if not primary_only:
+            metric_latex_line += [token_per_sample / 1000]
     elif len(cost_keys) > 1:
         print('\n!!!\nWARNING: Multiple cost keys found. Not sure which one to consider!', cost_keys, '\n!!!\n')
 
-    print('\nLaTeX table entry:')
-    print('B & R & $S_c$ & $S_p$ & T ')
-    print(' & '.join(format(x, f'>3.{0 if i in [2, 3] else 1}f') for i, x in enumerate(metric_latex_line)))
+    if metric_latex_line:
+        print('\nLaTeX table entry:')
+        print('B & R & $S_c$ & $S_p$ & T ')
+        print(' & '.join(format(x, f'>3.{0 if i in [2, 3] else 1}f') for i, x in enumerate(metric_latex_line)))
 
 
 if __name__ == '__main__':

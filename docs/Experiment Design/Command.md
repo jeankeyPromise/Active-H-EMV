@@ -115,6 +115,13 @@ python -m llm_emv.eval.metrics.calc_metrics \
   experiments/results/teach/h_emv_gemini_2.5_pro_100.json
 ```
 
+如果只需要论文主指标，避免输出 BLEU/ROUGE/METEOR 等辅助表面指标，可以使用：
+
+```bash
+python -m llm_emv.eval.metrics.calc_metrics --primary-only \
+  experiments/results/teach/h_emv_gemini_2.5_pro_100.json
+```
+
 ## 实验样本大小选择
 
 这里的“样本量”指 QA 问题数，不是 `|h|`。`|h|` 由 `data/teach/test_set_*.pkl` 文件名决定，例如 `test_set_50.pkl` 表示 `|h|=50`；标准 TEACh 表格每个 `|h|` 文件包含 10 段长历史 × 10 个问答 = 100 个 QA。
@@ -128,3 +135,30 @@ python -m llm_emv.eval.metrics.calc_metrics \
 | 语义查询专项     | 语义类问题子集                | 30-50  | 专项验证       |
 
 调试时可以使用 `--n-samples N` 临时截断前 N 个 QA；这只能生成 pilot 结果，不能直接作为 `|h|=N` 或标准 `|h|=50` 表格结果。
+
+## 安全 smoke / resume 模板
+
+后续调参默认先从 `test_set_15.pkl` 小样本开始，不直接启动 `h=25` 及以上实验。推荐模板：
+
+```bash
+set -a; source .env; set +a
+python -m llm_emv.eval \
+  --cfg teach/simplified/full_graph_aug_zs \
+  --dataset teach-dechant \
+  --teach-base dataset/TEACh \
+  --qa-file data/teach/test_set_15.pkl \
+  --output experiments/results/teach/smoke/zs_h15_n5_guarded.json \
+  --n-samples 5 \
+  --resume --retry-errors \
+  --max-prompt-tokens-per-sample 15000 \
+  --max-average-prompt-tokens-per-sample 8000 \
+  --max-seconds-per-sample 180 \
+  --llm-summarizer-cfg "{'llm': {'model_name': 'gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5}, 'example_db_name': 'teach', 'few_shot_k': 2}" \
+  2>&1 | tee experiments/results/teach/smoke/zs_h15_n5_guarded.log
+```
+
+注意：
+
+- 如果输出文件已存在，必须使用 `--resume`，否则评测脚本会拒绝覆盖。
+- 如果 API 中断，使用 `--resume --retry-errors` 只补失败样本，不重跑成功样本。
+- 如果发现在线摘要构建、空回复重试、无效 VQA 或重复搜索导致 token 异常，应暂停并写入 `docs/record/`。

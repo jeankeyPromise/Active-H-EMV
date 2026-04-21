@@ -79,7 +79,10 @@ def _strip_python_prompt_prefixes(code: str) -> str:
 
 
 def _split_adjacent_console_statements(code: str) -> str:
-    statement_prefixes = ('history', 'answer', 'ask', 'vqa', 'now')
+    statement_prefixes = (
+        'history', 'answer', 'ask', 'vqa', 'now',
+        'date_lookup', 'event_date_lookup', 'temporal_neighbor',
+    )
     result = []
     paren_depth = 0
     bracket_depth = 0
@@ -222,12 +225,46 @@ def _repair_answer_call(code: str) -> str | None:
     return None
 
 
+def _repair_bare_answer_kwargs(code: str) -> str | None:
+    """Repair malformed final answers like: reasoning="..." answer="..."."""
+    stripped = code.strip()
+    if not stripped or stripped.startswith((
+            'answer(', 'history', 'ask(', 'vqa(', 'now(',
+            'date_lookup(', 'event_date_lookup(', 'temporal_neighbor(')):
+        return None
+
+    kv_pattern = re.compile(
+        r'\b(?P<key>reasoning|answer)\s*=\s*(?P<quote>["\'])(?P<value>.*?)(?P=quote)',
+        flags=re.DOTALL,
+    )
+    matches = list(kv_pattern.finditer(stripped))
+    if not matches:
+        return None
+
+    values = {}
+    for match in matches:
+        values[match.group('key')] = match.group('value')
+
+    if 'answer' not in values:
+        return None
+
+    remainder = kv_pattern.sub('', stripped)
+    if not re.fullmatch(r'[\s,;]*', remainder):
+        return None
+
+    print('[代码清理] 修复裸露的 reasoning/answer 参数')
+    if 'reasoning' in values:
+        return f'answer(reasoning={values["reasoning"]!r}, answer={values["answer"]!r})'
+    return f'answer(answer={values["answer"]!r})'
+
+
 def _looks_like_plain_answer(code: str) -> bool:
     stripped = code.strip()
     if not stripped:
         return False
     code_like_prefixes = (
         'history', 'answer(', 'ask(', 'vqa(', 'now(', 'import ', 'from ',
+        'date_lookup(', 'event_date_lookup(', 'temporal_neighbor(',
         'for ', 'if ', 'while ', 'def ', 'class ', 'try:', 'with ',
     )
     if stripped.startswith(code_like_prefixes):
@@ -239,6 +276,9 @@ def _looks_like_plain_answer(code: str) -> bool:
 def _coerce_to_safe_python_console(code: str) -> str:
     code = _strip_python_prompt_prefixes(code)
     code = _split_adjacent_console_statements(code)
+    repaired_bare_answer = _repair_bare_answer_kwargs(code)
+    if repaired_bare_answer is not None:
+        return repaired_bare_answer
     try:
         ast.parse(code)
         return code
@@ -256,6 +296,97 @@ def _coerce_to_safe_python_console(code: str) -> str:
         return code
 
 
+def _no_record_answer(question: str) -> str:
+    yes_no_prefixes = (
+        'was ', 'were ', 'did ', 'do ', 'does ', 'is ', 'are ', 'has ', 'have ',
+        'had ', 'can ', 'could ', 'would ',
+    )
+    normalized = question.strip().lower()
+    if normalized.startswith(yes_no_prefixes):
+        return 'No, I have no record of that.'
+    return 'I have no record of that.'
+
+
+def _is_temporal_adjacency_question(question: str) -> bool:
+    normalized = question.strip().lower()
+    temporal_markers = (
+        'just before', 'right before', 'immediately before',
+        'just after', 'right after', 'immediately after',
+    )
+    return any(marker in normalized for marker in temporal_markers)
+
+
+def _parse_temporal_adjacency_question(question: str) -> tuple[str, str] | None:
+    normalized = question.strip()
+    patterns = (
+        (r'\b(?:just|right|immediately)\s+before\s+(.+?)\??$', 'before'),
+        (r'\b(?:just|right|immediately)\s+after\s+(.+?)\??$', 'after'),
+    )
+    for pattern, direction in patterns:
+        match = re.search(pattern, normalized, flags=re.IGNORECASE)
+        if match:
+            return match.group(1).strip(), direction
+    return None
+
+
+def _parse_date_lookup_question(question: str) -> str | None:
+    normalized = question.strip()
+    lower = normalized.lower()
+    asks_for_activity_on_date = any(
+        phrase in lower
+        for phrase in (
+            'what did you do on',
+            'what were you doing on',
+            'what happened on',
+        )
+    )
+    asks_for_relative_day = bool(re.search(r'\bwhat did you do\s+\d+\s+days?\s+ago\b', lower))
+    if asks_for_activity_on_date or asks_for_relative_day:
+        return normalized
+    return None
+
+
+def _parse_event_date_lookup_question(question: str) -> str | None:
+    normalized = question.strip()
+    if re.search(r'\bhow many days ago did you\s+.+\??$', normalized, flags=re.IGNORECASE):
+        return normalized
+    return None
+
+
+def _extract_recommended_answer(result) -> str | None:
+    text = str(result)
+    match = re.search(r'^Recommended answer:\s*(.+)$', text, flags=re.MULTILINE)
+    if not match:
+        return None
+    answer = match.group(1).strip()
+    if not answer or answer.lower().startswith('no confident'):
+        return None
+    return answer
+
+
+def _question_needs_visual(question: str) -> bool:
+    lower = question.lower()
+    visual_terms = (
+        'color', 'colour', 'look like', 'visible', 'see in', 'shown', 'image',
+        'picture', 'photo', 'appearance', 'what does', 'what did it look',
+    )
+    return any(term in lower for term in visual_terms)
+
+
+def _drop_vqa_calls_for_non_visual_question(code: str) -> str:
+    if 'vqa(' not in code:
+        return code
+    parts = [part.strip() for part in code.split(';')]
+    kept_parts = [
+        part for part in parts
+        if part and not part.startswith('vqa(') and '.vqa(' not in part
+    ]
+    cleaned = '; '.join(kept_parts)
+    if cleaned != code.strip():
+        print('[代码清理] 非视觉问题跳过 vqa(...) 调用')
+    return cleaned
+
+
 class SimplifiedCodingEMV:
 
     def __init__(
@@ -266,13 +397,15 @@ class SimplifiedCodingEMV:
             error_handlers: List[ErrorHandler],
             max_rounds=10,
             exclude_imports=None,
-            force_initial_command=None
+            force_initial_command=None,
+            max_empty_replies=2,
     ):
         super().__init__()
         self._force_initial_command = force_initial_command
         self._prompt_cfg = prompt_cfg
         self._exclude_imports = exclude_imports or []
         self._max_rounds = max_rounds
+        self._max_empty_replies = max_empty_replies
         self._error_handlers = error_handlers
         self.llm = llm
         self.code_execution_env = code_exec_env
@@ -292,7 +425,9 @@ class SimplifiedCodingEMV:
         # noinspection PyTypeChecker
         self._llm_to_python_console_helper = LlmToPythonConsoleHelper(self.llm, self._exec_hist,
                                                                       self._build_prompt_message,
-                                                                      enforce_python_console_stop_token=False)
+                                                                      enforce_python_console_stop_token=False,
+                                                                      max_empty_reply_retries=1,
+                                                                      empty_reply_fallback=None)
 
         def _set_simplified_repr(node):
             node._simplified_repr = True
@@ -347,6 +482,7 @@ class SimplifiedCodingEMV:
         self._history.collapse_deep()
         self._exec_hist.items.clear()
         self._exec_hist.items.append(ExecutionHistory.ExecutionResult(question))
+        structured_fallback_answer = None
 
         if self._force_initial_command:
             self._exec_hist.items.append(ExecutionHistory.Command(self._force_initial_command))
@@ -355,12 +491,64 @@ class SimplifiedCodingEMV:
                 if r is None:
                     continue
                 self._exec_hist.items.append(ExecutionHistory.ExecutionResult(r))
+                structured_fallback_answer = structured_fallback_answer or _extract_recommended_answer(r)
+
+        temporal_query = _parse_temporal_adjacency_question(question)
+        if temporal_query and not self._force_initial_command:
+            target, direction = temporal_query
+            command = f'temporal_neighbor({target!r}, direction={direction!r})'
+            try:
+                self._exec_hist.items.append(ExecutionHistory.Command(command))
+                results = self.code_execution_env(command)
+                for r in results:
+                    if r is None:
+                        continue
+                    self._exec_hist.items.append(ExecutionHistory.ExecutionResult(r))
+                    structured_fallback_answer = structured_fallback_answer or _extract_recommended_answer(r)
+            except BaseException:
+                # This helper is only an optimization. If it fails, keep the regular REPL path alive.
+                traceback.print_exc()
+
+        date_lookup_query = _parse_date_lookup_question(question)
+        if date_lookup_query and not self._force_initial_command:
+            command = f'date_lookup({date_lookup_query!r})'
+            try:
+                self._exec_hist.items.append(ExecutionHistory.Command(command))
+                results = self.code_execution_env(command)
+                for r in results:
+                    if r is None:
+                        continue
+                    self._exec_hist.items.append(ExecutionHistory.ExecutionResult(r))
+                    structured_fallback_answer = structured_fallback_answer or _extract_recommended_answer(r)
+            except BaseException:
+                # Date lookup is a low-cost hint. Fall back to regular tree navigation if parsing fails.
+                traceback.print_exc()
+
+        event_date_lookup_query = _parse_event_date_lookup_question(question)
+        if event_date_lookup_query and not self._force_initial_command:
+            command = f'event_date_lookup({event_date_lookup_query!r})'
+            try:
+                self._exec_hist.items.append(ExecutionHistory.Command(command))
+                results = self.code_execution_env(command)
+                for r in results:
+                    if r is None:
+                        continue
+                    self._exec_hist.items.append(ExecutionHistory.ExecutionResult(r))
+                    structured_fallback_answer = structured_fallback_answer or _extract_recommended_answer(r)
+            except BaseException:
+                # Event-date lookup is a low-cost hint. Fall back to regular tree navigation if parsing fails.
+                traceback.print_exc()
 
         steps = 0
         no_change_counter = 0
+        empty_reply_counter = 0
+        no_relevant_counter = 0
+        temporal_no_change_warning_sent = False
         while True:
             steps += 1
             if steps > self._max_rounds:
+                if structured_fallback_answer:
+                    return structured_fallback_answer
                 raise StopIteration('Max rounds reached.')
 
             try:
@@ -370,6 +558,31 @@ class SimplifiedCodingEMV:
                 # 清理 LLM 可能添加的 Markdown 格式
                 code = _clean_markdown_code(code)
                 code = _coerce_to_safe_python_console(code)
+
+                if not code.strip():
+                    empty_reply_counter += 1
+                    if empty_reply_counter >= self._max_empty_replies:
+                        if structured_fallback_answer:
+                            return structured_fallback_answer
+                        return '###ERROR### Empty model reply after retries.'
+                    self._exec_hist.items.append(ExecutionHistory.ExecutionResult(
+                        'Empty model reply. You must now generate exactly one valid Python console statement. '
+                        'If the history does not contain the requested record, call '
+                        'answer(reasoning="No relevant record was found.", answer="I have no record of that.").'
+                    ))
+                    continue
+                empty_reply_counter = 0
+
+                if 'vqa(' in code and not _question_needs_visual(question):
+                    cleaned_code = _drop_vqa_calls_for_non_visual_question(code)
+                    if cleaned_code != code:
+                        self._exec_hist.items.append(ExecutionHistory.ExecutionResult(
+                            'Skipped vqa(...) because this question can be answered from textual summaries. '
+                            'Use answer(...) now if the current summaries are sufficient.'
+                        ))
+                        code = cleaned_code
+                        if not code.strip():
+                            continue
                 
                 self._exec_hist.items.append(ExecutionHistory.Command(code))
 
@@ -378,14 +591,17 @@ class SimplifiedCodingEMV:
                 if (len(results) == 1 and isinstance(results[0], ExpandableList)
                         and repr(self._history) == previous_history):
                     no_change_counter += 1
-                    if no_change_counter > 2:
-                        results = [
-                            'Loop detected. You have searched multiple times without finding relevant information. '
-                            'This strongly suggests there is NO RECORD of this activity in your history. '
-                            'Please answer honestly that you have no record of doing this task.'
-                        ]
-                        self._history.collapse_deep()
-                        self._history.expand()
+                    if no_change_counter >= 2:
+                        if _is_temporal_adjacency_question(question) and not temporal_no_change_warning_sent:
+                            temporal_no_change_warning_sent = True
+                            no_change_counter = 0
+                            results = [
+                                'Nothing changed twice. Because this is a before/after question, do not answer '
+                                'no-record yet unless the target event is truly absent. Try one broader target '
+                                'search or inspect another top-level time block and adjacent sibling events.'
+                            ]
+                        else:
+                            return _no_record_answer(question)
                     else:
                         results = [
                             'Nothing changed. If you are searching for something specific and getting no results, '
@@ -411,6 +627,21 @@ class SimplifiedCodingEMV:
                         error_message = handler.handle(e)
                         break
                 if error_message is not None:
+                    if 'No relevant records found' in error_message:
+                        no_relevant_counter += 1
+                        if _is_temporal_adjacency_question(question) and no_relevant_counter < 2:
+                            self._exec_hist.items.append(ExecutionHistory.ExecutionResult(
+                                'No relevant records found for this search. Because this is a before/after question, '
+                                'try one broader target search or inspect the most relevant top-level time block and '
+                                'its adjacent sibling events before answering no-record.'
+                            ))
+                            continue
+                        return _no_record_answer(question)
+                    if 'similarity is low' in error_message:
+                        error_message += (
+                            ' If this was your target activity or object, do not keep searching synonyms forever; '
+                            'answer that you have no record once the current evidence is insufficient.'
+                        )
                     self._exec_hist.items.append(ExecutionHistory.ExecutionResult(error_message))
                     continue
                 else:
