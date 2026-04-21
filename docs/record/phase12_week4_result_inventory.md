@@ -71,17 +71,17 @@ conda run --no-capture-output -n active-h-emv python -m llm_emv.eval.metrics.cal
 
 | Scope | Method / Config | Result file | Auto-eval file | QA | Valid | `S_c` | `S_p` | Wrong / no-answer | `T` prompt K |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| `|h|=50` formal | H-EMV baseline fs | `experiments/results/teach/h_emv_50.json` | `h_emv_50.gemini_2.5_pro-f60fb2.auto_eval.json` | 100 | 96.0% | 41.0 | 27.0 | 32.0 | 27.63 |
-| `|h|=50` formal | Graph-H-EMV zs | `experiments/results/teach/h_emv_graph_aug_50_zs.json` | `h_emv_graph_aug_50_zs.gemini_2.5_pro-20bf9e.auto_eval.json` | 100 | 100.0% | 43.0 | 23.0 | 34.0 | 5.19 |
-| `|h|=50` formal | Graph-H-EMV fs | `experiments/results/teach/h_emv_graph_aug_50_fs.json` | `h_emv_graph_aug_50_fs.gemini_2.5_pro-20bf9e.auto_eval.json` | 100 | 98.0% | 44.0 | 23.0 | 33.0 | 16.15 |
-| `|h|=100` formal | H-EMV baseline zs | `experiments/results/teach/test_set/gemini_2.5_pro/zs/h_emv_gemini_2.5_pro_100.json` | `h_emv_gemini_2.5_pro_100.gemini_2.5_pro-3bb6e1.auto_eval.json` | 100 | 90.0% | 42.0 | 27.0 | 31.0 | 7.08 |
-| `|h|=100` formal | H-EMV baseline fs | `experiments/results/teach/h_emv_gemini_2.5_pro_100_fs.json` | `h_emv_gemini_2.5_pro_100_fs.gemini_2.5_pro-f60fb2.auto_eval.json` | 100 | 95.0% | 38.0 | 21.0 | 41.0 | 29.85 |
+| \|h\|=50 formal | H-EMV baseline fs | `experiments/results/teach/h_emv_50.json` | `h_emv_50.gemini_2.5_pro-f60fb2.auto_eval.json` | 100 | 96.0% | 41.0 | 27.0 | 32.0 | 27.63 |
+| \|h\|=50 formal | Graph-H-EMV zs | `experiments/results/teach/h_emv_graph_aug_50_zs.json` | `h_emv_graph_aug_50_zs.gemini_2.5_pro-20bf9e.auto_eval.json` | 100 | 100.0% | 43.0 | 23.0 | 34.0 | 5.19 |
+| \|h\|=50 formal | Graph-H-EMV fs | `experiments/results/teach/h_emv_graph_aug_50_fs.json` | `h_emv_graph_aug_50_fs.gemini_2.5_pro-20bf9e.auto_eval.json` | 100 | 98.0% | 44.0 | 23.0 | 33.0 | 16.15 |
+| \|h\|=100 formal | H-EMV baseline zs | `experiments/results/teach/test_set/gemini_2.5_pro/zs/h_emv_gemini_2.5_pro_100.json` | `h_emv_gemini_2.5_pro_100.gemini_2.5_pro-3bb6e1.auto_eval.json` | 100 | 90.0% | 42.0 | 27.0 | 31.0 | 7.08 |
+| \|h\|=100 formal | H-EMV baseline fs | `experiments/results/teach/h_emv_gemini_2.5_pro_100_fs.json` | `h_emv_gemini_2.5_pro_100_fs.gemini_2.5_pro-f60fb2.auto_eval.json` | 100 | 95.0% | 38.0 | 21.0 | 41.0 | 29.85 |
 
 ## Thesis Main Table Draft
 
 建议论文主表先采用“可追溯、跑满 100 QA”的结果：
 
-| Method | `|h|` | Shot | Valid | `S_c` | `S_p` | `T` prompt K | Suggested use |
+| Method | \|h\| | Shot | Valid | `S_c` | `S_p` | `T` prompt K | Suggested use |
 | --- | ---: | --- | ---: | ---: | ---: | ---: | --- |
 | H-EMV baseline | 50 | fs | 96.0% | 41.0 | 27.0 | 27.63 | baseline 对照 |
 | Graph-H-EMV | 50 | zs | 100.0% | 43.0 | 23.0 | 5.19 | 主推：低成本且正确率提升 |
