@@ -1,0 +1,34 @@
+{
+  "config": {
+    "cfg": "teach/simplified/full_graph_aug_zs",
+    "output": "experiments/results/teach/smoke/zs_temporal_guard_h15_right_before_n1_v2.json",
+    "dataset": "teach-dechant",
+    "only_iter_dataset": "False",
+    "n_samples": "1",
+    "enable_correction": "False",
+    "resume": "True",
+    "retry_errors": "True",
+    "checkpoint_file": "None",
+    "qa_file": "data/teach/test_set_15.pkl",
+    "max_samples_per_episode": "None",
+    "use_only_question_types": "['seq_right_before_questions']",
+    "skip_first_n_episodes": "0",
+    "teach_base": "dataset/TEACh",
+    "llm_summarizer_cfg": "{'llm': {'model_name': 'gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5, 'openai_api_key': '***REDACTED***', 'base_url': '***REDACTED***'}, 'example_db_name': 'teach', 'few_shot_k': 2}",
+    "pure_img_approach": "None"
+  },
+  "code_commit": "eb5c62047a668d782c2eb6f7952cc5fc8a737dcc",
+  "results": {
+    "4daa22a98372b4dc_b7f3-0d600126a7947365_cac4-4894b649dd8835b9_4114-c66573f82df8618c_aad3-9539c0004762d6a8_2eee-c7cc40993ef8468b_3e7b-a34587068555c05e_5f77-9d1c053084e66e7b_dc9f-d8a90d9ef359737a_f2e9-95fa7bceaa0f3fed_bcb2-4e8496b9f642bba0_36f1-ce0a11d25e229099_8adc-f2f6723ebab1e6a2_6bea-2b5a33d4908ee77d_20f6-024a0b4be011b085_ff45-0-seq_right_before_questions": {
+      "q_time": "2024/03/17 08:33:36",
+      "q": "What task did you do just before make a plate of toast?",
+      "gt": "water the plant.",
+      "hyp": "###ERROR### Empty model reply after retries."
+    }
+  },
+  "openai_costs": {
+    "cost": 0.0,
+    "prompt_tokens": 3826,
+    "completion_tokens": 0
+  }
+}
