@@ -124,7 +124,11 @@ class EMVerbalizationAPI:
     @group('util')
     def task_list(self, max_tasks: int = 30) -> str:
         tasks = _select_task_list_nodes(self._raw_history, max_tasks=max_tasks)
-        lines = ['Task list candidates in chronological order:']
+        lines = [
+            'Task list candidates in chronological order:',
+            'Use these as evidence. If there are many candidates, do not copy every candidate verbatim; '
+            'use the Recommended answer unless the user explicitly asks for an exhaustive transcript.',
+        ]
         if not tasks:
             lines.append('No task-sized summaries found.')
             lines.append('Recommended answer: I have no record of that.')
@@ -132,10 +136,7 @@ class EMVerbalizationAPI:
 
         for idx, task in enumerate(tasks, start=1):
             lines.append(f'{idx}. {_format_node_brief(task, max_len=240)}')
-        lines.append(
-            'Recommended answer: '
-            + '; '.join(_compact_task_phrase(task) for task in tasks)
-        )
+        lines.append(f'Recommended answer: {_task_list_recommendation(tasks)}')
         return '\n'.join(lines)
 
     @comment('For task-description questions, list task-sized summaries matching a query')
@@ -253,14 +254,20 @@ class EMVerbalizationAPI:
         lines = [
             f'Temporal neighbor candidates for target={target_task!r}, direction={direction!r}:'
         ]
+        temporal_records = self._temporal_candidates()
         recommendation_candidates = []
         fallback_recommendation = None
         for rank, candidate in enumerate(candidates, start=1):
             target = candidate['node']
             parent_children = candidate['siblings']
-            neighbor_idx = candidate['index'] - 1 if direction == 'before' else candidate['index'] + 1
-            if 0 <= neighbor_idx < len(parent_children):
-                neighbor = parent_children[neighbor_idx]
+            neighbor = _find_temporal_neighbor_node(
+                target,
+                parent_children,
+                candidate['index'],
+                direction,
+                temporal_records,
+            )
+            if neighbor is not None:
                 neighbor_summary = _compact_summary(neighbor)
                 if fallback_recommendation is None and candidate['score'] >= 0.35:
                     fallback_recommendation = neighbor_summary
@@ -426,6 +433,11 @@ class EMVerbalizationAPI:
             node_range = getattr(node, 'range', None)
             children = _node_children(node)
             if node_range is not None and children and hasattr(node, 'nl_summary'):
+                evidence_text = _node_summary_text(node)
+                if not evidence_text or _is_raw_observation_summary(evidence_text):
+                    for child in children:
+                        visit(child, depth + 1)
+                    return
                 text = _node_text(node)
                 duration_hours = max((node_range[1] - node_range[0]).total_seconds() / 3600.0, 1 / 60)
                 # Avoid using broad multi-day summaries as event evidence. They are useful as context,
@@ -435,6 +447,7 @@ class EMVerbalizationAPI:
                         'node': node,
                         'depth': depth,
                         'text': text,
+                        'evidence_text': evidence_text,
                         'duration_hours': duration_hours,
                     })
             for child in children:
@@ -454,10 +467,11 @@ class EMVerbalizationAPI:
         best_by_date = {}
         event_tokens = _content_tokens(event)
         for record, semantic_score in zip(records, semantic_scores):
-            text_tokens = _content_tokens(record['text'])
-            if 'plant' in event_tokens and not ({'plant', 'houseplant'} & text_tokens):
+            evidence_text = record.get('evidence_text') or record['text']
+            text_tokens = _content_tokens(evidence_text)
+            if not _event_candidate_satisfies_constraints(event_tokens, text_tokens, event, evidence_text):
                 continue
-            lexical_score = _lexical_overlap(event, record['text'])
+            lexical_score = _lexical_overlap(event, evidence_text)
             if lexical_score < 0.34 and semantic_score < 0.42:
                 continue
             depth_bonus = max(0.0, 1.0 - abs(record['depth'] - 5) * 0.25) * 0.12
@@ -592,6 +606,19 @@ def _node_text(node) -> str:
     return '\n'.join(parts)
 
 
+def _node_summary_text(node) -> str:
+    return str(getattr(node, 'nl_summary', '') or '').strip()
+
+
+def _is_raw_observation_summary(text: str) -> bool:
+    normalized = text.strip().lower()
+    return (
+        normalized.startswith('goal:')
+        or normalized.startswith('visual observation:')
+        or ' visual observation:' in normalized[:80]
+    )
+
+
 def _compact_summary(node, max_len: int = 180) -> str:
     summary = str(getattr(node, 'nl_summary', '') or _node_text(node)).strip()
     summary = re.sub(r'\s+', ' ', summary)
@@ -661,10 +688,137 @@ def _time_overlap_ratio(a, b) -> float:
     return overlap / shorter
 
 
+def _find_temporal_neighbor_node(target, siblings, index: int, direction: str, temporal_records):
+    step = -1 if direction == 'before' else 1
+    neighbor_idx = index + step
+    while 0 <= neighbor_idx < len(siblings):
+        neighbor = siblings[neighbor_idx]
+        if not _is_confirmation_summary(_compact_summary(neighbor)):
+            return neighbor
+        neighbor_idx += step
+
+    target_range = getattr(target, 'range', None)
+    if target_range is None:
+        return None
+
+    scored = []
+    for record in temporal_records:
+        node = record['node']
+        if node is target:
+            continue
+        summary = _compact_summary(node)
+        if _is_confirmation_summary(summary):
+            continue
+        node_range = getattr(node, 'range', None)
+        if node_range is None:
+            continue
+
+        if direction == 'after':
+            gap = (node_range[0] - target_range[1]).total_seconds()
+        else:
+            gap = (target_range[0] - node_range[1]).total_seconds()
+        if gap < 0:
+            continue
+
+        depth_penalty = abs(record.get('depth', 4) - 4) * 120.0
+        scored.append((gap + depth_penalty, node))
+
+    if not scored:
+        return None
+    scored.sort(key=lambda item: item[0])
+    return scored[0][1]
+
+
+def _is_confirmation_summary(text: str) -> bool:
+    normalized = text.lower()
+    return bool(re.search(
+        r'\b(thank|thanks|confirmed?|confirmation|task (?:was )?complete|declared? (?:the )?task complete)\b',
+        normalized,
+    ))
+
+
 def _compact_task_phrase(node, max_len: int = 120) -> str:
     summary = _compact_summary(node, max_len=max_len)
     summary = re.sub(r'^(On|Later on|From) [^,]+,?\s+', '', summary, flags=re.IGNORECASE)
     return summary
+
+
+def _task_list_recommendation(tasks: List[AnyTreeNode]) -> str:
+    if len(tasks) <= 16:
+        return '; '.join(_compact_task_phrase(task) for task in tasks)
+
+    start = getattr(tasks[0], 'range', (None, None))[0]
+    end = getattr(tasks[-1], 'range', (None, None))[1]
+    date_prefix = ''
+    if start is not None and end is not None:
+        date_prefix = f'From {start:%Y/%m/%d} to {end:%Y/%m/%d}, '
+
+    category_patterns = [
+        ('bread, toast, and sandwich preparation', r'\b(bread|toast|sandwich)\b'),
+        ('potato cooking and slicing', r'\b(potato|microwave|boil|pan|stove)\b'),
+        ('salad, lettuce, and tomato preparation', r'\b(salad|lettuce|tomato)\b'),
+        ('coffee and drinkware tasks', r'\b(coffee|mug|cup|drinkware)\b'),
+        ('dish, plate, bowl, and pan cleaning', r'\b(clean|wash|rinse|plate|bowl|pan|sink)\b'),
+        ('household organization tasks', r'\b(newspaper|tissue|remote|credit card|pencil|watch|book|armchair|bed)\b'),
+        ('plant watering', r'\b(plant|houseplant|water)\b'),
+    ]
+    summaries = ' '.join(_compact_summary(task, max_len=220).lower() for task in tasks)
+    categories = [
+        label for label, pattern in category_patterns
+        if re.search(pattern, summaries)
+    ]
+    if not categories:
+        categories = [_compact_task_phrase(task, max_len=90) for task in tasks[:8]]
+
+    return (
+        f'{date_prefix}I performed {len(tasks)} recorded task groups, including '
+        + '; '.join(categories[:7])
+        + '.'
+    )
+
+
+def _event_candidate_satisfies_constraints(
+        event_tokens: set[str],
+        text_tokens: set[str],
+        event_text: str = '',
+        evidence_text: str = '',
+) -> bool:
+    event_lower = event_text.lower()
+    evidence_lower = evidence_text.lower()
+    if re.search(r'\ball\b.*\b(cup|cups|mug|mugs|drinkware)\b', event_lower):
+        if not re.search(r'\bclean(?:ed|ing)?\s+(?:the\s+)?(?:cups|mugs)\b', evidence_lower):
+            return False
+
+    required_object_groups = [
+        ({'plant', 'houseplant'}, {'plant', 'houseplant'}),
+        ({'cup', 'mug', 'drinkware'}, {'cup', 'mug', 'drinkware'}),
+        ({'sandwich'}, {'sandwich'}),
+        ({'plate', 'dish'}, {'plate', 'dish'}),
+        ({'pan'}, {'pan'}),
+        ({'potato'}, {'potato'}),
+        ({'tomato'}, {'tomato'}),
+        ({'lettuce'}, {'lettuce'}),
+        ({'bread', 'toast'}, {'bread', 'toast'}),
+        ({'newspaper'}, {'newspaper'}),
+        ({'pencil'}, {'pencil'}),
+        ({'book'}, {'book'}),
+    ]
+    for trigger_terms, required_terms in required_object_groups:
+        if event_tokens & trigger_terms and not (text_tokens & required_terms):
+            return False
+
+    required_action_groups = [
+        ({'clean', 'wash', 'rinse'}, {'clean', 'wash', 'rinse', 'rins'}),
+        ({'water'}, {'water', 'pour', 'filled', 'fill'}),
+        ({'slice'}, {'slice', 'slic', 'cut'}),
+        ({'cook', 'boil', 'microwave'}, {'cook', 'boil', 'microwave', 'stove'}),
+        ({'make', 'prepare', 'prepar'}, {'make', 'prepar', 'assemble', 'brew'}),
+    ]
+    for trigger_terms, required_terms in required_action_groups:
+        if event_tokens & trigger_terms and not (text_tokens & required_terms):
+            return False
+
+    return True
 
 
 def _lexical_overlap(query: str, text: str) -> float:

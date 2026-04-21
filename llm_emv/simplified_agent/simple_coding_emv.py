@@ -376,7 +376,7 @@ def _parse_task_lookup_question(question: str) -> str | None:
         return None
 
     when_match = re.search(
-        r'\b(?:describe|summarize|what did you do|what were you doing)\b.*\bwhen you\s+(.+?)\??$',
+        r'\b(?:describe|summarize|what did you do|what were you doing|what tasks? did you perform|what task or tasks did you perform)\b.*\bwhen you\s+(.+?)\??$',
         normalized,
         flags=re.IGNORECASE,
     )
