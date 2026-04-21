@@ -265,6 +265,9 @@ def main():
     parser.add_argument('--only-iter-dataset', action='store_true', default=False,
                         help='Only iter through the dataset. Useful if the dataset does '
                              'some preprocessing and caching.')
+    parser.add_argument('--precompute-history-cache', action='store_true', default=False,
+                        help='Alias for --only-iter-dataset with clearer intent: load every selected history '
+                             'and let the dataset write missing preprocessed history summaries before QA eval.')
     parser.add_argument('--n-samples', type=int, default=None,
                         help='Use only the first n QA samples/questions from the dataset. '
                              'This is a debugging/pilot-run shortcut, not the TEACh |h| setting. '
@@ -319,8 +322,14 @@ def main():
             retry_count = sum(_is_error_hypothesis(r.get('hyp')) for r in resumed_results.values())
             print(f'[Checkpoint] retrying {retry_count} previous error/empty result(s)')
 
+    if args.precompute_history_cache:
+        args.only_iter_dataset = True
+
     if args.only_iter_dataset:
-        print('\n!!! ONLY ITERATING DATASET, NOT PERFORMING EVAL !!!\n')
+        if args.precompute_history_cache:
+            print('\n!!! PRECOMPUTING HISTORY CACHE, NOT PERFORMING EVAL !!!\n')
+        else:
+            print('\n!!! ONLY ITERATING DATASET, NOT PERFORMING EVAL !!!\n')
         for i, sample in enumerate(dataset):
             print('\n\nLoaded sample', i, sample.sample_id)
         return

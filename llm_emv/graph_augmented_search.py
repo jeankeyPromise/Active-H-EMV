@@ -17,8 +17,10 @@
   - 第三项：树深度奖励（结构先验）
 """
 
+import json
 import os
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import List, Dict, Tuple, Optional, Callable, Any, Set, Iterable
 
 import torch
@@ -107,6 +109,7 @@ class GraphExpansionResult:
     candidate_indices: Set[int] = field(default_factory=set)
     graph_scores: torch.Tensor = field(default_factory=lambda: torch.zeros(0))
     traces: List[str] = field(default_factory=list)
+    trace_records: List[dict] = field(default_factory=list)
 
 
 # =============================================================================
@@ -128,6 +131,7 @@ def graph_augmented_rerank(
         expansion_hops: int = 1,
         max_seed_events_per_item: int = 3,
         debug: bool = False,
+        trace_enabled: bool = False,
         item_graph_index_cache: Optional[Dict[Tuple[int, ...], Tuple[Dict[int, List[int]], Dict[int, int]]]] = None,
 ) -> torch.Tensor:
     """
@@ -180,6 +184,7 @@ def graph_augmented_rerank(
         expansion_hops=expansion_hops,
         max_seed_events_per_item=max_seed_events_per_item,
         debug=debug,
+        trace_enabled=trace_enabled,
         item_graph_index_cache=item_graph_index_cache,
     )
 
@@ -228,6 +233,7 @@ def expand_candidates_with_graph(
         expansion_hops: int = 1,
         max_seed_events_per_item: int = 3,
         debug: bool = False,
+        trace_enabled: bool = False,
         item_graph_index_cache: Optional[Dict[Tuple[int, ...], Tuple[Dict[int, List[int]], Dict[int, int]]]] = None,
 ) -> GraphExpansionResult:
     """
@@ -239,6 +245,7 @@ def expand_candidates_with_graph(
     candidate_indices: Set[int] = set(seed_indices)
     expanded_indices: Set[int] = set()
     traces: List[str] = []
+    trace_records: List[dict] = []
 
     item_graph_nodes, graph_node_to_item = _get_item_graph_index(items, graph, item_graph_index_cache)
     if not item_graph_nodes:
@@ -248,6 +255,7 @@ def expand_candidates_with_graph(
             candidate_indices=candidate_indices,
             graph_scores=graph_scores,
             traces=traces,
+            trace_records=trace_records,
         )
 
     graph_similarity_cache: Dict[int, float] = {}
@@ -312,6 +320,18 @@ def expand_candidates_with_graph(
                         candidate_indices.add(target_item_idx)
                         if target_item_idx not in seed_indices:
                             expanded_indices.add(target_item_idx)
+                            if trace_enabled:
+                                trace_records.append({
+                                    'seed_item': seed_item_idx,
+                                    'seed_graph': seed_graph_id,
+                                    'expanded_item': target_item_idx,
+                                    'expanded_graph': neighbor_graph_id,
+                                    'edge_type': edge.edge_type.value,
+                                    'edge_weight': round(float(edge.weight), 4),
+                                    'graph_score': round(float(step_score), 4),
+                                    'depth': depth + 1,
+                                    'summary': _item_label(items[target_item_idx], max_len=220),
+                                })
                             if debug:
                                 traces.append(
                                     '[GraphAug] expand '
@@ -331,6 +351,7 @@ def expand_candidates_with_graph(
         candidate_indices=candidate_indices,
         graph_scores=graph_scores,
         traces=traces,
+        trace_records=trace_records,
     )
 
 
@@ -495,6 +516,20 @@ def _debug_enabled(debug: bool) -> bool:
     return debug or os.environ.get('LLM_EMV_GRAPH_AUG_DEBUG', '').lower() in {'1', 'true', 'yes'}
 
 
+def _resolve_trace_file(trace_file: Optional[str | Path]) -> Optional[Path]:
+    env_trace_file = os.environ.get('LLM_EMV_GRAPH_AUG_TRACE_FILE')
+    selected = trace_file or env_trace_file
+    if not selected:
+        return None
+    return Path(selected)
+
+
+def _write_trace_file(trace_file: Path, record: dict) -> None:
+    trace_file.parent.mkdir(parents=True, exist_ok=True)
+    with trace_file.open('a', encoding='utf-8') as f:
+        f.write(json.dumps(record, ensure_ascii=False) + '\n')
+
+
 # =============================================================================
 # 创建图增强搜索过滤函数（兼容现有接口）
 # =============================================================================
@@ -517,6 +552,7 @@ def create_graph_augmented_search_filter_fn(
         graph_min_score: float = 0.0,
         min_expanded_results: int = 1,
         debug: bool = False,
+        trace_file: Optional[str | Path] = None,
 ) -> Callable[[str, List[Any]], List[int]]:
     """
     创建图增强搜索过滤函数，兼容 search_similarity_to_filter_fn 的接口。
@@ -541,12 +577,14 @@ def create_graph_augmented_search_filter_fn(
         graph_min_score: 对图扩展候选的最低图分阈值
         min_expanded_results: 如果有图扩展候选，至少保留多少个扩展结果
         debug: 是否打印图扩展日志
+        trace_file: 可选 JSONL 路径。启用后持久记录 seed、扩展邻居和最终返回节点。
 
     Returns:
         搜索过滤函数，签名: (query, items, close_match=False) -> List[int]
     """
 
     item_graph_index_cache: Dict[Tuple[int, ...], Tuple[Dict[int, List[int]], Dict[int, int]]] = {}
+    resolved_trace_file = _resolve_trace_file(trace_file)
 
     def search(query: str, items: List[Any], close_match: bool = False) -> List[int]:
         _top_p = close_match_top_p if close_match else top_p
@@ -558,6 +596,7 @@ def create_graph_augmented_search_filter_fn(
         ])
         seed_indices = _select_base_seed_indices(base_similarities, _top_p, _min_cos_sim)
         debug_this_query = _debug_enabled(debug)
+        trace_this_query = resolved_trace_file is not None
         if debug_this_query:
             print(
                 f'[GraphAug] query="{query}" '
@@ -589,6 +628,7 @@ def create_graph_augmented_search_filter_fn(
                 expansion_hops=expansion_hops,
                 max_seed_events_per_item=max_seed_events_per_item,
                 debug=debug_this_query,
+                trace_enabled=trace_this_query,
                 item_graph_index_cache=item_graph_index_cache,
             )
             expansion_result = graph_augmented_rerank._last_expansion_result
@@ -658,6 +698,32 @@ def create_graph_augmented_search_filter_fn(
                     for idx in result_indices
                 )
             )
+
+        if trace_this_query:
+            _write_trace_file(resolved_trace_file, {
+                'query': query,
+                'close_match': close_match,
+                'num_items': len(items),
+                'base_seed_indices': seed_indices,
+                'expanded_indices': sorted(expansion_result.expanded_indices) if expansion_result else [],
+                'candidate_pool': sorted(expansion_result.candidate_indices) if expansion_result else [],
+                'expansions': expansion_result.trace_records if expansion_result else [],
+                'final_indices': result_indices,
+                'final_results': [
+                    {
+                        'item': idx,
+                        'base_score': round(float(base_similarities[idx].item()), 4),
+                        'graph_score': round(
+                            float(expansion_result.graph_scores[idx].item())
+                            if expansion_result else 0.0,
+                            4,
+                        ),
+                        'final_score': round(float(enhanced_similarities[idx].item()), 4),
+                        'summary': _item_label(items[idx], max_len=220),
+                    }
+                    for idx in result_indices
+                ],
+            })
 
         # 记录最高相似度（用于 UI 显示）
         if len(result_indices) > 0:

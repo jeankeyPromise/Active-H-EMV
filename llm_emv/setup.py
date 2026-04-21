@@ -100,6 +100,7 @@ def setup_llm_emv(cfg_path='teach/simplified/full',
         filter_kwargs['_graph_min_score'] = graph_cfg.get('graph_min_score', 0.0)
         filter_kwargs['_graph_min_expanded_results'] = graph_cfg.get('min_expanded_results', 1)
         filter_kwargs['_graph_debug'] = graph_cfg.get('debug', False)
+        filter_kwargs['_graph_trace_file'] = graph_cfg.get('trace_file')
 
     # noinspection PyTypeChecker
     api = EMVerbalizationAPI(

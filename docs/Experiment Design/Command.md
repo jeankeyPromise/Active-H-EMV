@@ -46,6 +46,34 @@ python -m llm_emv.eval \
 
 `test_set_50.pkl` 表示 `|h|=50`，即每段长历史由 50 个基础情景组成。标准论文表格评测不要添加 `--n-samples 50`，因为该参数只截断前 50 个 QA 问题；跑满当前文件应得到 100 个 QA 结果，T 按 `prompt_tokens / 100 / 1000` 计算。
 
+正式问答评测前，建议先预构建 history summary 缓存，避免问答阶段临时调用 summarizer 造成隐藏 token 成本：
+
+```bash
+python -m llm_emv.eval \
+  --cfg teach/simplified/full_graph_aug_zs \
+  --dataset teach-dechant \
+  --teach-base dataset/TEACh \
+  --qa-file data/teach/test_set_15.pkl \
+  --output experiments/results/teach/cache/precompute_h15.json \
+  --precompute-history-cache \
+  --llm-summarizer-cfg "{'llm': {'model_name': 'gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5}, 'example_db_name': 'teach', 'few_shot_k': 2}"
+```
+
+如果需要为论文案例记录图扩展过程，可以启用 JSONL trace：
+
+```bash
+LLM_EMV_GRAPH_AUG_TRACE_FILE=experiments/results/teach/traces/graph_aug_h15_trace.jsonl \
+python -m llm_emv.eval \
+  --cfg teach/simplified/full_graph_aug_zs \
+  --dataset teach-dechant \
+  --teach-base dataset/TEACh \
+  --qa-file data/teach/test_set_15.pkl \
+  --output experiments/results/teach/smoke/graph_trace_h15_n2.json \
+  --n-samples 2
+```
+
+trace 文件会记录每次搜索的 `base_seed_indices`、`expanded_indices`、边类型、图分数和最终返回节点，可直接用于“图邻居扩展帮助召回”的案例分析。
+
 ```bash
 python -m llm_emv.eval \
   --cfg teach/simplified/full_graph_aug_zs \

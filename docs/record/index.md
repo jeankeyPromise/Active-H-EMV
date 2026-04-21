@@ -14,6 +14,7 @@
 | Phase 5 | `phase5_guardrails_checkpoint_smoke.md` | no-record、checkpoint、resume、空回复控制 | 失败恢复和 guardrail 已改善 |
 | Phase 6 | `phase6_temporal_neighbor_h15_n50.md` | h=15 temporal neighbor smoke | QA token 未爆炸，发现在线摘要隐藏成本 |
 | Phase 7 | `phase7_completion_plan_implementation.md` | 毕设完成计划首批落地 | 新增 date/event lookup、VQA guard、记录规范；h=15 n=2 smoke T=1.79K |
+| Phase 8 | `phase8_graph_trace_and_cache_workflow.md` | 图检索案例日志与缓存预构建流程 | 新增 graph trace JSONL 与显式 history cache 预构建入口 |
 
 ## 固定实验口径
 

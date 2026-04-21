@@ -366,6 +366,7 @@ def search_similarity_to_filter_fn(
         _graph_min_score=0.0,
         _graph_min_expanded_results=1,
         _graph_debug=False,
+        _graph_trace_file=None,
 ) -> Callable[[str, List[Any], ...], List[int]]:
     """
     创建搜索过滤函数
@@ -392,6 +393,7 @@ def search_similarity_to_filter_fn(
         _graph_min_score: 图扩展候选的最低图分阈值
         _graph_min_expanded_results: 有扩展候选时至少保留多少个图扩展结果
         _graph_debug: 是否打印图扩展调试日志
+        _graph_trace_file: 可选 JSONL 文件路径，用于记录图扩展检索案例
     """
     
     # 如果有记忆图且有嵌入函数，使用图增强检索
@@ -417,6 +419,7 @@ def search_similarity_to_filter_fn(
             graph_min_score=_graph_min_score,
             min_expanded_results=_graph_min_expanded_results,
             debug=_graph_debug,
+            trace_file=_graph_trace_file,
         )
     
     # 如果启用 FAISS，使用 FAISS 搜索
