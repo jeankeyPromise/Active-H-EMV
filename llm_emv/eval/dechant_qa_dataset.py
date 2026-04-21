@@ -54,6 +54,9 @@ class DeChantQaDataset(EpisodicQADataset, ABC):
     def _load_history(self, batch: Dict[str, Any], start_time: datetime) -> Optional[HigherLevelSummary]:
         raise NotImplementedError
 
+    def audit_history_cache(self, n_samples: int = None) -> List[Dict[str, Any]]:
+        raise NotImplementedError
+
     @classmethod
     def _non_question_keys(cls) -> Iterable[str]:
         raise NotImplementedError
@@ -209,8 +212,78 @@ class TeachDeChantDataset(DeChantQaDataset):
         cache_file.write_bytes(pickle.dumps(hierarchical_history))
         return hierarchical_history
 
+    def audit_history_cache(self, n_samples: int = None) -> List[Dict[str, Any]]:
+        """Return cache coverage for histories needed by the selected QA prefix.
+
+        This intentionally does not load histories. It only inspects QA metadata
+        and expected cache paths, so it is safe to run before an expensive eval.
+        """
+        records: List[Dict[str, Any]] = []
+        seen = set()
+        selected_qa = 0
+
+        for i, trial_ids in enumerate(self._qa_data.keys()):
+            if i < self._skip_first_n_episodes:
+                continue
+
+            for b, batch in enumerate(self._qa_data[trial_ids]):
+                if (self._filter_by_question_types is not None
+                        and all(key not in self._filter_by_question_types for key in batch.keys())):
+                    continue
+
+                q_count = 0
+                for key, value in batch.items():
+                    if key in self._non_question_keys():
+                        continue
+                    if self._filter_by_question_types is not None and key not in self._filter_by_question_types:
+                        continue
+                    q_count += 1
+                    if self._samples_per_episode is not None and q_count >= self._samples_per_episode:
+                        break
+
+                if q_count == 0:
+                    continue
+
+                remaining = None if n_samples is None else max(n_samples - selected_qa, 0)
+                if remaining == 0:
+                    break
+                selected_from_batch = q_count if remaining is None else min(q_count, remaining)
+
+                split = batch['dataset_name']
+                single_episode = 'game_id' in batch
+                history_id = batch['game_id'] if single_episode else tuple(batch['episode_ids'])
+                cache_file = self._history_cache_file(split, history_id)
+                history_key = (split, history_id)
+                if history_key not in seen:
+                    seen.add(history_key)
+                    records.append(dict(
+                        split=split,
+                        history_id=history_id,
+                        episode_count=1 if single_episode else len(history_id),
+                        cache_file=str(cache_file),
+                        cached=cache_file.is_file(),
+                        first_selected_qa_index=selected_qa,
+                        selected_qa_count=selected_from_batch,
+                    ))
+
+                selected_qa += selected_from_batch
+                if n_samples is not None and selected_qa >= n_samples:
+                    break
+
+            if n_samples is not None and selected_qa >= n_samples:
+                break
+
+        return records
+
     def _get_cached_history(self, split: str, history_id: Union[str, Tuple[str, ...]]
                             ) -> Tuple[Optional[HigherLevelSummary], Path]:
+        preprocessed_history_file = self._history_cache_file(split, history_id)
+        if preprocessed_history_file.is_file():
+            return pickle.loads(preprocessed_history_file.read_bytes()), preprocessed_history_file
+        else:
+            return None, preprocessed_history_file
+
+    def _history_cache_file(self, split: str, history_id: Union[str, Tuple[str, ...]]) -> Path:
         single_episode = isinstance(history_id, str)
         if self.pure_img_approach_args:
             use_speech = self.pure_img_approach_args.get("use_speech", True)
@@ -236,10 +309,7 @@ class TeachDeChantDataset(DeChantQaDataset):
             preprocessed_history_file = (self.teach_base_path / 'preprocessed_histories'
                                          / f'{split}-multi' / f'{episode_id_str}.pkl')
 
-        if preprocessed_history_file.is_file():
-            return pickle.loads(preprocessed_history_file.read_bytes()), preprocessed_history_file
-        else:
-            return None, preprocessed_history_file
+        return preprocessed_history_file
 
     @classmethod
     def _non_question_keys(cls) -> Iterable[str]:

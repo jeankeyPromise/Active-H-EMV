@@ -268,6 +268,12 @@ def main():
     parser.add_argument('--precompute-history-cache', action='store_true', default=False,
                         help='Alias for --only-iter-dataset with clearer intent: load every selected history '
                              'and let the dataset write missing preprocessed history summaries before QA eval.')
+    parser.add_argument('--audit-history-cache', action='store_true', default=False,
+                        help='Print expected preprocessed history cache coverage for the selected QA prefix '
+                             'without loading histories or running QA.')
+    parser.add_argument('--require-history-cache', action='store_true', default=False,
+                        help='Before eval/precompute, abort if any selected history cache file is missing. '
+                             'Use this to prevent hidden online summarization in official runs.')
     parser.add_argument('--n-samples', type=int, default=None,
                         help='Use only the first n QA samples/questions from the dataset. '
                              'This is a debugging/pilot-run shortcut, not the TEACh |h| setting. '
@@ -306,6 +312,32 @@ def main():
         )
 
     dataset = dataset_cls.from_argparse_args(args)
+    if args.audit_history_cache or args.require_history_cache:
+        if not hasattr(dataset, 'audit_history_cache'):
+            parser.error(f'--audit-history-cache/--require-history-cache is not supported by {args.dataset}')
+        cache_records = dataset.audit_history_cache(n_samples=args.n_samples)
+        cached_count = sum(1 for record in cache_records if record['cached'])
+        missing_records = [record for record in cache_records if not record['cached']]
+        print('\nHistory cache audit')
+        print(f'Selected histories: {len(cache_records)}')
+        print(f'Cached histories: {cached_count}')
+        print(f'Missing histories: {len(missing_records)}')
+        for i, record in enumerate(cache_records):
+            status = 'cached' if record['cached'] else 'MISSING'
+            print(
+                f'{i:02d} {status} qa_start={record["first_selected_qa_index"]} '
+                f'qa_count={record["selected_qa_count"]} episodes={record["episode_count"]} '
+                f'{record["cache_file"]}'
+            )
+        if args.audit_history_cache:
+            return
+        if missing_records:
+            raise RuntimeError(
+                'Missing preprocessed history cache for selected samples; aborting to avoid '
+                'hidden online summarization. Run --audit-history-cache to inspect coverage or '
+                '--precompute-history-cache after explicitly approving the summarizer cost.'
+            )
+
     if args.n_samples:
         dataset = islice(dataset, args.n_samples)
 
