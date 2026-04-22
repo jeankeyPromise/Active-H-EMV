@@ -717,6 +717,11 @@ class SimplifiedCodingEMV:
                 else:
                     raise
             except BaseException as e:
+                if (isinstance(e, SyntaxError)
+                        and structured_fallback_answer
+                        and 'answer(' in code):
+                    print('[结构化回退] answer(...) 语法错误，返回结构化推荐答案')
+                    return structured_fallback_answer
                 traceback.print_exc()
                 error_message = None
                 for handler in self._error_handlers:

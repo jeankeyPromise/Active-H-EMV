@@ -315,6 +315,7 @@ class EMVerbalizationAPI:
         if not records:
             return []
 
+        location_patterns = _target_location_patterns(target_task)
         texts = [record['text'] for record in records]
         semantic_scores = [0.0] * len(records)
         if self._search_embedding_fn is not None:
@@ -324,12 +325,16 @@ class EMVerbalizationAPI:
 
         ranked = []
         for record, semantic_score in zip(records, semantic_scores):
+            location_evidence = _node_summary_text(record['node']) or record['text']
+            if location_patterns and not _matches_any_location_pattern(location_evidence, location_patterns):
+                continue
             lexical_score = _lexical_overlap(target_task, record['text'])
             summary_bonus = 0.05 if record['node'].__class__.__name__ == 'HigherLevelSummary' else 0.0
             # TEACh before/after QA asks for adjacent tasks, not raw goal steps and not multi-day blocks.
             # In the hierarchy used here, depth around 4 tends to correspond to task-sized summaries.
             task_level_bonus = max(0.0, 1.0 - abs(record['depth'] - 4) * 0.35) * 0.18
             score = 0.82 * semantic_score + 0.18 * lexical_score + summary_bonus + task_level_bonus
+            score += _all_task_target_adjustment(target_task, _node_summary_text(record['node']))
             ranked.append({**record, 'score': score})
         ranked.sort(key=lambda r: r['score'], reverse=True)
         return ranked[:max_candidates]
@@ -819,6 +824,43 @@ def _event_candidate_satisfies_constraints(
             return False
 
     return True
+
+
+def _target_location_patterns(target_text: str) -> list[str]:
+    lower = target_text.lower()
+    groups = [
+        (r'\b(?:chairs?|armchairs?)\b', r'\b(?:chair|chairs|armchair|armchairs)\b'),
+        (r'\bbed\b', r'\bbed\b'),
+        (r'\b(?:sofa|couch)\b', r'\b(?:sofa|couch)\b'),
+        (r'\bside\s+tables?\b', r'\bside\s+tables?\b'),
+        (r'\b(?:countertop|counter)\b', r'\b(?:countertop|counter)\b'),
+        (r'\bdressers?\b', r'\bdressers?\b'),
+        (r'\bcabinets?\b', r'\bcabinets?\b'),
+        (r'\b(?:fridge|refrigerator)\b', r'\b(?:fridge|refrigerator)\b'),
+        (r'\bsink\b', r'\bsink\b'),
+        (r'\bmicrowave\b', r'\bmicrowave\b'),
+        (r'\bstove\b', r'\bstove\b'),
+        (r'\btoaster\b', r'\btoaster\b'),
+        (r'\bcoffee\s*machine\b', r'\bcoffee\s*machine\b'),
+    ]
+    return [required for trigger, required in groups if re.search(trigger, lower)]
+
+
+def _matches_any_location_pattern(text: str, patterns: list[str]) -> bool:
+    lower = text.lower()
+    return any(re.search(pattern, lower) for pattern in patterns)
+
+
+def _all_task_target_adjustment(target_text: str, candidate_summary: str) -> float:
+    if not re.search(r'\ball\b', target_text.lower()):
+        return 0.0
+    lower = candidate_summary.lower()
+    adjustment = 0.0
+    if re.search(r'\b(?:all|both|three|four|complete|completed|finishing|gathered|collected)\b', lower):
+        adjustment += 0.14
+    if re.search(r'\b(?:first|second|third|another|one)\b', lower):
+        adjustment -= 0.18
+    return adjustment
 
 
 def _lexical_overlap(query: str, text: str) -> float:
