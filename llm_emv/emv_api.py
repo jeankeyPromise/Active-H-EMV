@@ -340,7 +340,10 @@ class EMVerbalizationAPI:
         return ranked[:max_candidates]
 
     def _rank_task_matches(self, query: str, max_matches: int):
-        tasks = _select_task_list_nodes(self._raw_history, max_tasks=80)
+        tasks = _dedupe_nodes([
+            *_select_task_list_nodes(self._raw_history, max_tasks=80),
+            *_select_task_lookup_nodes(self._raw_history, query, max_tasks=120),
+        ])
         if not tasks:
             return []
 
@@ -355,6 +358,9 @@ class EMVerbalizationAPI:
         for task, text, semantic_score in zip(tasks, texts, semantic_scores):
             lexical_score = _lexical_overlap(query, text)
             score = 0.82 * semantic_score + 0.18 * lexical_score
+            score += _all_task_target_adjustment(query, _node_summary_text(task))
+            if _task_lookup_candidate_satisfies_constraints(query, text):
+                score += 0.18
             if lexical_score < 0.18 and semantic_score < 0.38:
                 continue
             ranked.append({
@@ -680,6 +686,49 @@ def _select_task_list_nodes(root, max_tasks: int):
     return [candidate['node'] for candidate in selected]
 
 
+def _select_task_lookup_nodes(root, query: str, max_tasks: int):
+    candidates = []
+
+    def visit(node, depth=0):
+        children = _node_children(node)
+        node_range = getattr(node, 'range', None)
+        class_name = node.__class__.__name__
+        if (children and node_range is not None and hasattr(node, 'nl_summary')
+                and class_name not in {'GoalBasedSummary', 'EventBasedSummary'}):
+            start, end = node_range
+            duration_minutes = max((end - start).total_seconds() / 60.0, 0.0)
+            text = _node_text(node)
+            if 0.5 <= duration_minutes <= 360 and depth >= 2 and _task_lookup_candidate_satisfies_constraints(query, text):
+                lexical_score = _lexical_overlap(query, text)
+                if lexical_score >= 0.22:
+                    depth_score = max(0.0, 1.0 - abs(depth - 4) * 0.25)
+                    duration_score = 1.0 / (1.0 + abs(duration_minutes - 20.0) / 40.0)
+                    score = lexical_score + 0.18 * depth_score + 0.10 * duration_score
+                    candidates.append({
+                        'node': node,
+                        'score': score,
+                        'start': start,
+                    })
+        for child in children:
+            visit(child, depth + 1)
+
+    visit(root)
+    candidates.sort(key=lambda c: (c['score'], c['start']), reverse=True)
+    return [candidate['node'] for candidate in candidates[:max_tasks]]
+
+
+def _dedupe_nodes(nodes):
+    result = []
+    seen = set()
+    for node in nodes:
+        marker = id(node)
+        if marker in seen:
+            continue
+        seen.add(marker)
+        result.append(node)
+    return result
+
+
 def _time_overlap_ratio(a, b) -> float:
     overlap_start = max(a['start'], b['start'])
     overlap_end = min(a['end'], b['end'])
@@ -822,6 +871,60 @@ def _event_candidate_satisfies_constraints(
     for trigger_terms, required_terms in required_action_groups:
         if event_tokens & trigger_terms and not (text_tokens & required_terms):
             return False
+
+    return True
+
+
+def _task_lookup_candidate_satisfies_constraints(query: str, evidence_text: str) -> bool:
+    query_tokens = _content_tokens(query)
+    text_tokens = _content_tokens(evidence_text)
+    query_lower = query.lower()
+    evidence_lower = evidence_text.lower()
+
+    required_object_groups = [
+        ({'plant', 'houseplant'}, {'plant', 'houseplant'}),
+        ({'cup', 'mug', 'drinkware'}, {'cup', 'mug', 'drinkware'}),
+        ({'sandwich'}, {'sandwich'}),
+        ({'plate', 'dish'}, {'plate', 'dish'}),
+        ({'bowl'}, {'bowl'}),
+        ({'pan'}, {'pan'}),
+        ({'pot'}, {'pot'}),
+        ({'potato'}, {'potato'}),
+        ({'tomato'}, {'tomato'}),
+        ({'lettuce'}, {'lettuce'}),
+        ({'bread', 'toast'}, {'bread', 'toast'}),
+        ({'newspaper'}, {'newspaper'}),
+        ({'pencil'}, {'pencil'}),
+        ({'book'}, {'book'}),
+        ({'pillow'}, {'pillow'}),
+        ({'remote'}, {'remote'}),
+        ({'tissue'}, {'tissue'}),
+        ({'watch'}, {'watch'}),
+        ({'box'}, {'box'}),
+        ({'knife', 'butterknife'}, {'knife', 'butterknife'}),
+        ({'faucet'}, {'faucet'}),
+    ]
+    for trigger_terms, required_terms in required_object_groups:
+        if query_tokens & trigger_terms and not (text_tokens & required_terms):
+            return False
+
+    required_action_groups = [
+        ({'clean', 'wash', 'rinse'}, {'clean', 'wash', 'rin', 'rins'}),
+        ({'water'}, {'water', 'pour', 'fill', 'filled'}),
+        ({'slice'}, {'slice', 'slic', 'cut'}),
+        ({'cook', 'boil', 'microwave'}, {'cook', 'boil', 'microwave', 'stove'}),
+        ({'make', 'prepare', 'prepar'}, {'make', 'prepar', 'assemble', 'brew'}),
+        ({'put', 'place', 'move'}, {'put', 'place', 'plac', 'move', 'mov', 'set', 'organize', 'organiz'}),
+        ({'pick'}, {'pick', 'picked', 'retriev', 'retrieve'}),
+        ({'toggle'}, {'toggle', 'turn', 'turned'}),
+    ]
+    for trigger_terms, required_terms in required_action_groups:
+        if query_tokens & trigger_terms and not (text_tokens & required_terms):
+            return False
+
+    location_patterns = _target_location_patterns(query_lower)
+    if location_patterns and not _matches_any_location_pattern(evidence_lower, location_patterns):
+        return False
 
     return True
 
