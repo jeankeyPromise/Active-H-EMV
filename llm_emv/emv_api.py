@@ -156,7 +156,10 @@ class EMVerbalizationAPI:
             )
         lines.append(
             'Recommended answer: '
-            + '; '.join(_compact_task_phrase(match['node']) for match in matches[:3])
+            + '; '.join(
+                _compact_task_phrase(match['node'])
+                for match in matches[:_task_lookup_recommendation_limit(query)]
+            )
         )
         return '\n'.join(lines)
 
@@ -328,6 +331,8 @@ class EMVerbalizationAPI:
             location_evidence = _node_summary_text(record['node']) or record['text']
             if location_patterns and not _matches_any_location_pattern(location_evidence, location_patterns):
                 continue
+            if not _target_candidate_satisfies_constraints(target_task, location_evidence):
+                continue
             lexical_score = _lexical_overlap(target_task, record['text'])
             summary_bonus = 0.05 if record['node'].__class__.__name__ == 'HigherLevelSummary' else 0.0
             # TEACh before/after QA asks for adjacent tasks, not raw goal steps and not multi-day blocks.
@@ -335,6 +340,7 @@ class EMVerbalizationAPI:
             task_level_bonus = max(0.0, 1.0 - abs(record['depth'] - 4) * 0.35) * 0.18
             score = 0.82 * semantic_score + 0.18 * lexical_score + summary_bonus + task_level_bonus
             score += _all_task_target_adjustment(target_task, _node_summary_text(record['node']))
+            score += _event_count_adjustment(target_task, location_evidence)
             ranked.append({**record, 'score': score})
         ranked.sort(key=lambda r: r['score'], reverse=True)
         return ranked[:max_candidates]
@@ -482,12 +488,18 @@ class EMVerbalizationAPI:
             text_tokens = _content_tokens(evidence_text)
             if not _event_candidate_satisfies_constraints(event_tokens, text_tokens, event, evidence_text):
                 continue
+            if not _target_location_relation_matches(event, evidence_text):
+                continue
+            location_patterns = _target_location_patterns(event)
+            if location_patterns and not _matches_any_location_pattern(evidence_text, location_patterns):
+                continue
             lexical_score = _lexical_overlap(event, evidence_text)
             if lexical_score < 0.34 and semantic_score < 0.42:
                 continue
             depth_bonus = max(0.0, 1.0 - abs(record['depth'] - 5) * 0.25) * 0.12
             duration_bonus = 0.08 if record['duration_hours'] <= 3 else 0.0
             score = 0.68 * semantic_score + 0.32 * lexical_score + depth_bonus + duration_bonus
+            score += _event_count_adjustment(event, evidence_text)
             if score < 0.38:
                 continue
             event_date = record['node'].range[0].date()
@@ -499,6 +511,8 @@ class EMVerbalizationAPI:
                 'score': score,
                 'lexical_score': lexical_score,
                 'semantic_score': semantic_score,
+                'count_required': bool(_required_count_terms(event)),
+                'count_matched': _event_candidate_matches_count(event, evidence_text),
                 'date': event_date,
                 'days_ago': days_ago,
             }
@@ -848,7 +862,9 @@ def _event_candidate_satisfies_constraints(
         ({'cup', 'mug', 'drinkware'}, {'cup', 'mug', 'drinkware'}),
         ({'sandwich'}, {'sandwich'}),
         ({'plate', 'dish'}, {'plate', 'dish'}),
+        ({'bowl'}, {'bowl'}),
         ({'pan'}, {'pan'}),
+        ({'pot'}, {'pot'}),
         ({'potato'}, {'potato'}),
         ({'tomato'}, {'tomato'}),
         ({'lettuce'}, {'lettuce'}),
@@ -856,6 +872,11 @@ def _event_candidate_satisfies_constraints(
         ({'newspaper'}, {'newspaper'}),
         ({'pencil'}, {'pencil'}),
         ({'book'}, {'book'}),
+        ({'pillow'}, {'pillow'}),
+        ({'remote'}, {'remote'}),
+        ({'tissue'}, {'tissue'}),
+        ({'watch'}, {'watch'}),
+        ({'box'}, {'box'}),
     ]
     for trigger_terms, required_terms in required_object_groups:
         if event_tokens & trigger_terms and not (text_tokens & required_terms):
@@ -867,12 +888,97 @@ def _event_candidate_satisfies_constraints(
         ({'slice'}, {'slice', 'slic', 'cut'}),
         ({'cook', 'boil', 'microwave'}, {'cook', 'boil', 'microwave', 'stove'}),
         ({'make', 'prepare', 'prepar'}, {'make', 'prepar', 'assemble', 'brew'}),
+        ({'put', 'place', 'move'}, {'put', 'place', 'plac', 'move', 'mov', 'set', 'organize', 'organiz', 'collect', 'gather'}),
+        ({'pick'}, {'pick', 'picked', 'retriev', 'retrieve', 'collect', 'gather'}),
+        ({'toggle', 'open'}, {'toggle', 'turn', 'turned', 'open', 'opened'}),
     ]
     for trigger_terms, required_terms in required_action_groups:
         if event_tokens & trigger_terms and not (text_tokens & required_terms):
             return False
 
     return True
+
+
+def _target_candidate_satisfies_constraints(target_text: str, evidence_text: str) -> bool:
+    target_tokens = _content_tokens(target_text)
+    evidence_tokens = _content_tokens(evidence_text)
+    target_lower = target_text.lower()
+    evidence_lower = evidence_text.lower()
+
+    if not _event_candidate_satisfies_constraints(target_tokens, evidence_tokens, target_text, evidence_text):
+        return False
+    if not _target_location_relation_matches(target_text, evidence_text):
+        return False
+    if re.search(r'\ball\b.*\b(cup|cups|mug|mugs|drinkware|pot|pots|pan|pans)\b', target_lower):
+        object_pattern = r'\b(cup|cups|mug|mugs|drinkware|pot|pots|pan|pans)\b'
+        if not re.search(object_pattern, evidence_lower):
+            return False
+        if not re.search(r'\b(all|both|two|three|clean(?:ed|ing)?|wash(?:ed|ing)?|rins(?:ed|ing)?)\b', evidence_lower):
+            return False
+    return True
+
+
+def _target_location_relation_matches(target_text: str, evidence_text: str) -> bool:
+    lower = target_text.lower()
+    checks = [
+        (r'\btomato', r'\bbowl\b', 'tomato', 'bowl'),
+        (r'\btomato', r'\bplate\b', 'tomato', 'plate'),
+        (r'\bpotato', r'\bbowl\b', 'potato', 'bowl'),
+        (r'\bpotato', r'\bplate\b', 'potato', 'plate'),
+        (r'\blettuce', r'\bplate\b', 'lettuce', 'plate'),
+    ]
+    for object_trigger, location_trigger, object_word, location_word in checks:
+        if re.search(object_trigger, lower) and re.search(location_trigger, lower):
+            return _mentions_object_at_location(evidence_text, object_word, location_word)
+    return True
+
+
+def _mentions_object_at_location(text: str, object_word: str, location_word: str) -> bool:
+    lower = text.lower()
+    obj = rf'\b{object_word}\w*\b'
+    loc = rf'\b{location_word}\w*\b'
+    relation_patterns = [
+        rf'{obj}.{{0,80}}\b(?:in|into|inside|to|onto|on)\b.{{0,45}}{loc}',
+        rf'{loc}.{{0,45}}\b(?:with|containing|holding)\b.{{0,45}}{obj}',
+        rf'\b(?:place|placed|placing|put|transferred|transfer|serve|served|serving)\b.{{0,90}}{obj}.{{0,90}}{loc}',
+    ]
+    return any(re.search(pattern, lower) for pattern in relation_patterns)
+
+
+def _event_candidate_matches_count(event_text: str, evidence_text: str) -> bool:
+    required = _required_count_terms(event_text)
+    if not required:
+        return True
+    lower = evidence_text.lower()
+    return any(re.search(pattern, lower) for pattern in required)
+
+
+def _task_lookup_recommendation_limit(query: str) -> int:
+    lower = query.lower()
+    if re.search(r'\b(?:toggle|open|pick\s+up|pickup|place|put)\b', lower):
+        return 5
+    return 3
+
+
+def _event_count_adjustment(event_text: str, evidence_text: str) -> float:
+    required = _required_count_terms(event_text)
+    if not required:
+        return 0.0
+    lower = evidence_text.lower()
+    return 0.12 if any(re.search(pattern, lower) for pattern in required) else -0.08
+
+
+def _required_count_terms(text: str) -> list[str]:
+    lower = text.lower()
+    if re.search(r'\b1\s+slice', lower):
+        return []
+    if re.search(r'\b2\s+slice', lower):
+        return [r'\b(?:two|2)\s+(?:slice|slices)\b', r'\bboth\s+(?:slice|slices)\b']
+    if re.search(r'\b3\s+slice', lower):
+        return [r'\b(?:three|3)\s+(?:slice|slices)\b']
+    if re.search(r'\b5\s+slice', lower):
+        return [r'\b(?:five|5)\s+(?:slice|slices)\b']
+    return []
 
 
 def _task_lookup_candidate_satisfies_constraints(query: str, evidence_text: str) -> bool:
@@ -932,15 +1038,19 @@ def _task_lookup_candidate_satisfies_constraints(query: str, evidence_text: str)
 def _target_location_patterns(target_text: str) -> list[str]:
     lower = target_text.lower()
     groups = [
-        (r'\b(?:chairs?|armchairs?)\b', r'\b(?:chair|chairs|armchair|armchairs)\b'),
+        (r'\barmchairs?\b', r'\barmchairs?\b'),
+        (r'\bchairs?\b', r'\b(?:chair|chairs|armchair|armchairs)\b'),
         (r'\bbed\b', r'\bbed\b'),
         (r'\b(?:sofa|couch)\b', r'\b(?:sofa|couch)\b'),
         (r'\bside\s+tables?\b', r'\bside\s+tables?\b'),
         (r'\b(?:countertop|counter)\b', r'\b(?:countertop|counter)\b'),
         (r'\bdressers?\b', r'\bdressers?\b'),
+        (r'\bdrawers?\b', r'\bdrawers?\b'),
         (r'\bcabinets?\b', r'\bcabinets?\b'),
         (r'\b(?:fridge|refrigerator)\b', r'\b(?:fridge|refrigerator)\b'),
         (r'\bsink\b', r'\bsink\b'),
+        (r'\bplate\b', r'\bplate\b'),
+        (r'\bbowl\b', r'\bbowl\b'),
         (r'\bmicrowave\b', r'\bmicrowave\b'),
         (r'\bstove\b', r'\bstove\b'),
         (r'\btoaster\b', r'\btoaster\b'),
@@ -1152,6 +1262,12 @@ def _event_date_lookup_recommendation(matches, mode: str = 'days_ago') -> str:
     reliable_matches = [match for match in matches if match.get('lexical_score', 0.0) >= 0.34]
     if reliable_matches:
         matches = reliable_matches
+    count_matches = [
+        match for match in matches
+        if match.get('count_required') and match.get('count_matched')
+    ]
+    if count_matches:
+        matches = count_matches
 
     if mode == 'date':
         dates = sorted({match['date'] for match in matches})

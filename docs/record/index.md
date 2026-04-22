@@ -23,6 +23,7 @@
 | Phase 14 | `phase14_h50_cached_probe.md` | h=50 缓存前缀可行性预检 | 新增 history cache audit/require guard；h=50 n=10 cached probe valid=100%, `S_c=80%`, `T=2.25K`；暂不继续 n=60 |
 | Phase 15 | `phase15_h50_n20_cached_probe.md` | h=50 n=20 缓存前缀诊断 | n=20 valid=100%, `S_c=70%`, `S_p=25%`, `T=2.26K`；新增 answer 语法回退和 temporal 位置/整体任务约束 |
 | Phase 16 | `phase16_h50_n40_cached_probe.md` | h=50 n=40 缓存前缀诊断 | n=40 valid=100%, `S_c=55%`, `S_p=25%`, `T=2.26K`；修复 pillow/sofa task_lookup runaway，下一步收紧 temporal/event 约束 |
+| Phase 17 | `phase17_n40_precision_fixes.md` | n=40 暴露问题的精度修复 | 收紧 event/date 与 temporal target 约束；修复 tomato-bowl、armchair 多报；low-action 仍需 raw-action 辅助索引 |
 
 ## 固定实验口径
 
