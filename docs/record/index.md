@@ -21,6 +21,7 @@
 | Phase 12 | `phase12_week4_result_inventory.md` | 第 4 周正式结果盘点与论文主表草案 | 复算 h=50/h=100 正式主指标；新增 `scripts/evaluate_result.sh` 固化 smoke 后 correctness evaluation |
 | Phase 13 | `phase13_experiment_section_draft.md` | 论文实验章节草稿 | 将主表、h=15 诊断、三类案例和限制整理成可进入正文的实验章节 |
 | Phase 14 | `phase14_h50_cached_probe.md` | h=50 缓存前缀可行性预检 | 新增 history cache audit/require guard；h=50 n=10 cached probe valid=100%, `S_c=80%`, `T=2.25K`；暂不继续 n=60 |
+| Phase 15 | `phase15_h50_n20_cached_probe.md` | h=50 n=20 缓存前缀诊断 | n=20 valid=100%, `S_c=70%`, `S_p=25%`, `T=2.26K`；新增 answer 语法回退和 temporal 位置/整体任务约束 |
 
 ## 固定实验口径
 
