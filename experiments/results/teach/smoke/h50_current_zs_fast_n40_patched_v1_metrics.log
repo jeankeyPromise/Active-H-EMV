@@ -1,0 +1,19 @@
+
+Reading auto-eval from experiments/results/teach/smoke/h50_current_zs_fast_n40_patched_v1.gemini_2.5_pro-dd6f9e.auto_eval.json
+
+Broad Categories:
+          correct :  25 ( 62.5%)
+partially_correct :   7 ( 17.5%)
+            wrong :   8 ( 20.0%)
+
+Primary thesis metrics
+Total QA: 40
+Valid answer rate: 100.0% (40/40)
+Error/empty answer rate: 0.0% (0/40)
+S_c semantic correct: 62.5% (25/40)
+S_p partially correct: 17.5% (7/40)
+Wrong/no-answer: 20.0% (8/40)
+T prompt tokens per QA: 2.37K
+Completion tokens per QA: 0.29K
+Token cost per QA sample/question:  2374.1
+NOTE: This file has 40 QA samples. Standard TEACh |h| table results should use 100 QA samples (10 long histories x 10 questions).
