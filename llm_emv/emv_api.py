@@ -142,6 +142,27 @@ class EMVerbalizationAPI:
     @comment('For task-description questions, list task-sized summaries matching a query')
     @group('util')
     def task_lookup(self, query: str, max_matches: int = 8) -> str:
+        if _parse_low_action_query(query) is not None:
+            matches = _rank_action_task_matches(self._raw_history, query, max_matches=min(max_matches, 6))
+            lines = [f'Task lookup candidates for query={query!r} (matched by raw action target):']
+            if not matches:
+                lines.append('No matching raw action records found.')
+                lines.append('Recommended answer: I have no record of that.')
+                return '\n'.join(lines)
+            for rank, match in enumerate(matches, start=1):
+                lines.append(
+                    f'{rank}. score={match["score"]:.2f}; raw_matches={match["count"]}; '
+                    f'{_format_node_brief(match["node"], max_len=165)}'
+                )
+            lines.append(
+                'Recommended answer: '
+                + '; '.join(
+                    _compact_task_phrase(match['node'], max_len=110, allow_ellipsis=False)
+                    for match in matches[:5]
+                )
+            )
+            lines.append('Answer now with concise task-sized phrases; do not call action_lookup again.')
+            return '\n'.join(lines)
         matches = self._rank_task_matches(query, max_matches=max_matches)
         lines = [f'Task lookup candidates for query={query!r}:']
         if not matches:
@@ -161,6 +182,33 @@ class EMVerbalizationAPI:
                 for match in matches[:_task_lookup_recommendation_limit(query)]
             )
         )
+        return '\n'.join(lines)
+
+    @comment('For low-level action questions, map raw leaf actions back to task-sized summaries')
+    @group('util')
+    def action_lookup(self, query: str, max_matches: int = 6) -> str:
+        matches = _rank_action_task_matches(self._raw_history, query, max_matches=max_matches)
+        lines = [f'Action lookup candidates for query={query!r}:']
+        if not matches:
+            lines.append('No matching raw action records found.')
+            lines.append('Recommended answer: I have no record of that.')
+            return '\n'.join(lines)
+
+        for rank, match in enumerate(matches, start=1):
+            examples = '; '.join(match['examples'][:2])
+            lines.append(
+                f'{rank}. score={match["score"]:.2f}; raw_matches={match["count"]}; '
+                f'{_format_node_brief(match["node"], max_len=170)}; actions={examples}'
+            )
+        lines.append('Answer guidance: answer with concise task-sized phrases, not a transcript of every raw action.')
+        lines.append(
+            'Recommended answer: '
+            + '; '.join(
+                _compact_task_phrase(match['node'], max_len=110, allow_ellipsis=False)
+                for match in matches[:5]
+            )
+        )
+        lines.append('Answer now with concise task-sized phrases.')
         return '\n'.join(lines)
 
     @comment('For object yes/no questions, check whether task summaries mention the object')
@@ -349,6 +397,10 @@ class EMVerbalizationAPI:
         tasks = _dedupe_nodes([
             *_select_task_list_nodes(self._raw_history, max_tasks=80),
             *_select_task_lookup_nodes(self._raw_history, query, max_tasks=120),
+            *[
+                match['node']
+                for match in _rank_action_task_matches(self._raw_history, query, max_matches=40)
+            ],
         ])
         if not tasks:
             return []
@@ -731,6 +783,235 @@ def _select_task_lookup_nodes(root, query: str, max_tasks: int):
     return [candidate['node'] for candidate in candidates[:max_tasks]]
 
 
+def _rank_action_task_matches(root, query: str, max_matches: int):
+    intent = _parse_low_action_query(query)
+    if intent is None:
+        return []
+
+    task_records = {}
+
+    def visit(node, path):
+        children = _node_children(node)
+        next_path = [*path, node]
+        if not children:
+            text = _node_text(node)
+            score = _raw_action_match_score(intent, text)
+            if score <= 0:
+                return
+            task_node = _nearest_task_ancestor(path)
+            if task_node is None:
+                return
+            if intent['action'] == 'place':
+                source_objects = [obj for obj in intent.get('objects', []) if obj not in intent.get('targets', [])]
+                task_text = _node_summary_text(task_node).lower()
+                if source_objects and not any(_raw_action_mentions_object(task_text, obj) for obj in source_objects):
+                    return
+            record = task_records.setdefault(id(task_node), {
+                'node': task_node,
+                'score': 0.0,
+                'count': 0,
+                'examples': [],
+                'start': getattr(task_node, 'range', (datetime.min,))[0],
+            })
+            record['score'] += score
+            record['count'] += 1
+            if len(record['examples']) < 4:
+                record['examples'].append(_compact_raw_action(text))
+            return
+
+        for child in children:
+            visit(child, next_path)
+
+    visit(root, [])
+
+    ranked = []
+    for record in task_records.values():
+        summary = _node_summary_text(record['node'])
+        summary_bonus = 0.10 if _task_lookup_candidate_satisfies_constraints(query, _node_text(record['node'])) else 0.0
+        action_density = min(record['count'], 6) * 0.06
+        record['score'] = min(1.0, record['score'] / max(record['count'], 1) + action_density + summary_bonus)
+        if summary and _is_confirmation_summary(summary):
+            record['score'] -= 0.20
+        ranked.append(record)
+
+    ranked.sort(key=lambda r: (r['score'], r['count'], r['start']), reverse=True)
+    return ranked[:max_matches]
+
+
+def _nearest_task_ancestor(path):
+    for node in reversed(path):
+        children = _node_children(node)
+        node_range = getattr(node, 'range', None)
+        class_name = node.__class__.__name__
+        if not children or node_range is None or not hasattr(node, 'nl_summary'):
+            continue
+        if class_name in {'GoalBasedSummary', 'EventBasedSummary'}:
+            continue
+        duration_minutes = max((node_range[1] - node_range[0]).total_seconds() / 60.0, 0.0)
+        if 0.5 <= duration_minutes <= 360:
+            return node
+    return None
+
+
+def _parse_low_action_query(query: str):
+    lower = query.lower()
+    action = None
+    if re.search(r'\btoggle\s+on\b|\bturn\s+on\b|\bswitch\s+on\b', lower):
+        action = 'toggle_on'
+    elif re.search(r'\btoggle\s+off\b|\bturn\s+off\b|\bswitch\s+off\b', lower):
+        action = 'toggle_off'
+    elif re.search(r'\btoggle\b|\bturn\b|\bswitch\b', lower):
+        action = 'toggle'
+    elif re.search(r'\bopen\b', lower):
+        action = 'open'
+    elif re.search(r'\bpick\s+up\b|\bpickup\b|\bretrieve\b', lower):
+        action = 'pickup'
+    elif re.search(r'\bplace\b|\bput\b', lower):
+        action = 'place'
+    if action is None:
+        return None
+
+    object_aliases = [
+        ('faucet', [r'faucet']),
+        ('drawer', [r'drawer']),
+        ('cabinet', [r'cabinet']),
+        ('coffeemachine', [r'coffee\s*machine', r'coffeemachine']),
+        ('butterknife', [r'butter\s*knife', r'butterknife']),
+        ('knife', [r'knife']),
+        ('mug', [r'mug']),
+        ('cup', [r'cup']),
+        ('plate', [r'plate']),
+        ('bowl', [r'bowl']),
+        ('pot', [r'pot']),
+        ('pan', [r'pan']),
+        ('remote', [r'remote']),
+        ('tissue', [r'tissue', r'box']),
+        ('newspaper', [r'newspaper']),
+        ('book', [r'book']),
+        ('pillow', [r'pillow']),
+        ('sofa', [r'sofa', r'couch']),
+        ('bed', [r'bed']),
+        ('armchair', [r'armchair', r'chair']),
+        ('dresser', [r'dresser']),
+        ('sidetable', [r'side\s*table', r'sidetable']),
+        ('table', [r'table']),
+    ]
+    objects = []
+    for canonical, aliases in object_aliases:
+        if any(re.search(rf'\b{alias}s?\b', lower) for alias in aliases):
+            objects.append(canonical)
+    target_objects = []
+    for canonical, aliases in object_aliases:
+        if any(
+            re.search(rf'\b(?:on|in|into|onto|to)\s+(?:(?:the|any|one)\s+)?{alias}s?\b', lower)
+            for alias in aliases
+        ):
+            target_objects.append(canonical)
+    return {'action': action, 'objects': objects, 'targets': target_objects, 'query': lower}
+
+
+def _raw_action_match_score(intent, text: str) -> float:
+    lower = text.lower()
+    action = intent['action']
+    action_patterns = {
+        'toggle_on': [r'action:\s*toggleon\(', r'\btoggled?\s+(?:the\s+)?\w+\s+on\b', r'\bturn(?:ed)?\s+on\b'],
+        'toggle_off': [r'action:\s*toggleoff\(', r'\btoggled?\s+(?:the\s+)?\w+\s+off\b', r'\bturn(?:ed)?\s+off\b'],
+        'toggle': [r'action:\s*toggle(?:on|off)?\(', r'\btoggled?\b', r'\bturn(?:ed)?\s+(?:on|off)\b'],
+        'open': [r'action:\s*open\(', r'\bopened?\b'],
+        'pickup': [r'action:\s*pickup\(', r'\bpicked\s+up\b', r'\bretrieved?\b'],
+        'place': [r'action:\s*place\(', r'\bplaced?\b', r'\bput\b'],
+    }
+    if not any(re.search(pattern, lower) for pattern in action_patterns[action]):
+        return 0.0
+
+    target = _raw_action_target(lower, action)
+    if target is None and action in {'toggle_on', 'toggle_off', 'toggle', 'open', 'pickup', 'place'}:
+        return 0.0
+
+    score = 0.54
+    objects = intent.get('objects') or []
+    targets = intent.get('targets') or []
+    if action in {'toggle_on', 'toggle_off', 'toggle', 'open', 'pickup'} and objects:
+        matched_objects = sum(1 for obj in objects if _raw_action_mentions_object(target, obj))
+        if matched_objects == 0:
+            return 0.0
+        score += min(0.36, matched_objects * 0.24)
+    elif action == 'place':
+        if targets and not any(_raw_action_mentions_object(target, obj) for obj in targets):
+            return 0.0
+        source_objects = [obj for obj in objects if obj not in targets]
+        if source_objects and not any(_raw_action_mentions_object(lower, obj) for obj in source_objects):
+            return 0.0
+        if targets:
+            score += 0.26
+        if source_objects:
+            score += min(0.18, len(source_objects) * 0.10)
+    elif objects:
+        matched_objects = sum(1 for obj in objects if _raw_action_mentions_object(lower, obj))
+        if matched_objects == 0:
+            return 0.0
+        score += min(0.30, matched_objects * 0.18)
+    if re.search(r'<success>', lower):
+        score += 0.08
+    if action == 'toggle_on' and re.search(r'action:\s*toggleoff\(', lower):
+        score -= 0.25
+    if action == 'toggle_off' and re.search(r'action:\s*toggleon\(', lower):
+        score -= 0.25
+    return max(score, 0.0)
+
+
+def _raw_action_target(lower_text: str, action: str) -> str | None:
+    action_names = {
+        'toggle_on': ['toggleon'],
+        'toggle_off': ['toggleoff'],
+        'toggle': ['toggleon', 'toggleoff', 'toggle'],
+        'open': ['open'],
+        'pickup': ['pickup'],
+        'place': ['place'],
+    }[action]
+    pattern = '|'.join(action_names)
+    match = re.search(rf'action:\s*(?:{pattern})\(([^)]*)\)', lower_text)
+    if not match:
+        return None
+    return match.group(1).lower()
+
+
+def _raw_action_mentions_object(lower_text: str, obj: str) -> bool:
+    aliases = {
+        'faucet': [r'faucet'],
+        'drawer': [r'drawer'],
+        'cabinet': [r'cabinet'],
+        'coffeemachine': [r'coffee\s*machine', r'coffeemachine'],
+        'butterknife': [r'butter\s*knife', r'butterknife'],
+        'knife': [r'knife'],
+        'mug': [r'mug'],
+        'cup': [r'cup'],
+        'plate': [r'plate'],
+        'bowl': [r'bowl'],
+        'pot': [r'pot'],
+        'pan': [r'pan'],
+        'remote': [r'remote'],
+        'tissue': [r'tissue', r'box'],
+        'newspaper': [r'newspaper'],
+        'book': [r'book'],
+        'pillow': [r'pillow'],
+        'sofa': [r'sofa', r'couch'],
+        'bed': [r'bed'],
+        'armchair': [r'armchair', r'chair'],
+        'dresser': [r'dresser'],
+        'sidetable': [r'side\s*table', r'sidetable'],
+        'table': [r'table'],
+    }.get(obj, [re.escape(obj)])
+    return any(re.search(rf'\b{alias}(?:_\d+)?s?\b', lower_text) for alias in aliases)
+
+
+def _compact_raw_action(text: str, max_len: int = 90) -> str:
+    text = re.sub(r'\s+', ' ', text).strip()
+    if len(text) > max_len:
+        text = text[:max_len].rstrip() + '...'
+    return text
+
+
 def _dedupe_nodes(nodes):
     result = []
     seen = set()
@@ -805,9 +1086,22 @@ def _is_confirmation_summary(text: str) -> bool:
     ))
 
 
-def _compact_task_phrase(node, max_len: int = 120) -> str:
-    summary = _compact_summary(node, max_len=max_len)
+def _compact_task_phrase(node, max_len: int = 120, allow_ellipsis: bool = True) -> str:
+    summary = str(getattr(node, 'nl_summary', '') or _node_text(node)).strip()
+    summary = re.sub(r'\s+', ' ', summary)
     summary = re.sub(r'^(On|Later on|From) [^,]+,?\s+', '', summary, flags=re.IGNORECASE)
+    if len(summary) > max_len:
+        boundary = max(
+            summary.rfind('.', 0, max_len),
+            summary.rfind(';', 0, max_len),
+            summary.rfind(',', 0, max_len),
+        )
+        if boundary >= 45:
+            summary = summary[:boundary].rstrip()
+        else:
+            summary = summary[:max_len].rsplit(' ', 1)[0].rstrip()
+        if allow_ellipsis:
+            summary += '...'
     return summary
 
 
