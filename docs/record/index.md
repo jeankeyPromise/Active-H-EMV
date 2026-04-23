@@ -26,6 +26,7 @@
 | Phase 17 | `phase17_n40_precision_fixes.md` | n=40 暴露问题的精度修复 | 收紧 event/date 与 temporal target 约束；修复 tomato-bowl、armchair 多报；low-action 仍需 raw-action 辅助索引 |
 | Phase 18 | `phase18_h50_n40_patched_probe.md` | h=50 n=40 patched probe | n=40 valid=100%, `S_c=62.5%`, `S_p=17.5%`, `T=2.37K`；precision patch 净提升，瓶颈转向 low-action/raw-action 召回 |
 | Phase 19 | `phase19_raw_action_lookup_probe.md` | raw-action lookup 与 h=50 n=40 action probe | low-action targeted n=4 valid=100%, `S_c=25%`, `S_p=75%`, `T=2.16K`；n=40 action_v1 valid=100%, `S_c=55%`, `S_p=20%`, `T=2.31K`，未超过 Phase 18，已补 pillow/sofa v1.1 误路由 |
+| Phase 20 | `phase20_h50_action_v12_probe.md` | h=50 action v1.2 prompt probe | targeted n=5 valid=100%, `S_c=60%`, `T=2.08K`；n=40 valid=100%, `S_c=60%`, `S_p=20%`, `T=2.29K`，恢复 action_v1 退化但仍未超过 Phase 18 |
 
 ## 固定实验口径
 

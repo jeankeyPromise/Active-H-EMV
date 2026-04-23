@@ -13,5 +13,5 @@ Usage examples:
 ...     history[2][4][-1][0].image)  # Invoke a model to answer a visual question about image(s) of some leaf (!) node(s)
 
 # After gathering the relevant information, answer the question:
-# Optionally, provide a reasoning on why you choose the respective answer
->>> answer(reasoning="...", answer="...")
+# Use a short final answer. Optionally provide a brief reasoning only when needed.
+>>> answer("...")

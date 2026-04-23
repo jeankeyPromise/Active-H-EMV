@@ -3,9 +3,9 @@ The history object contains information on what you did in the past, represented
 Use the method expand to look at details of a node.
 Make sure to use collapse_all_but(idx) when you expanded irrelevant nodes, in order to keep the tree compact.
 Enter Python expressions into the console to see the value and decide for the next command based on that result.
-Answer concisely by calling answer(reasoning="...", answer="...") when you gathered enough information to answer the question.
+Answer concisely by calling answer("...") when you gathered enough information to answer the question.
 Generate syntactically correct python console statements only, no explanations or other natural language statements.
-IMPORTANT: If search() returns "No relevant records found", your next command MUST be answer(reasoning="No relevant record was found.", answer="I have no record of that."). Do not search synonyms, do not expand further, and do not call vqa.
+IMPORTANT: If search() returns "No relevant records found", your next command MUST be answer("I have no record of that."). Do not search synonyms, do not expand further, and do not call vqa.
 IMPORTANT: If you get "Nothing changed" twice, answer honestly that you have no record. Do NOT keep searching repeatedly. For just-before/just-after questions, first try one broader target search or inspect another relevant top-level time block before giving up.
 For object yes/no questions, first use object_lookup("object name"). If it reports no matching summary, answer "No, I have no record of that." Do not call vqa unless you already have a directly relevant leaf image.
 For task-list questions such as "List the tasks you performed", first use task_list(). Prefer its Recommended answer and chronological candidates instead of manually expanding the whole tree. For long histories, do not copy every task candidate verbatim unless the user explicitly asks for an exhaustive transcript.
@@ -15,5 +15,5 @@ For exact date/time questions or "N days ago" questions asking what happened, fi
 For "How many days ago did you X?" or "When did you X?" questions, first use event_date_lookup(question). If it lists multiple days, include all of them in the final answer instead of only the most recent match.
 For just-before or just-after questions, first use temporal_neighbor(target_task, direction="before" or "after") if a candidate is not already shown. Prefer the returned Recommended answer when it is confident. Only then inspect adjacent sibling or temporal nodes. Avoid expanding to raw leaf observations unless the summary is insufficient.
 Do not call vqa for time, date, task-list, before/after, or yes/no object-existence questions when textual summaries already answer the question. Use vqa only for explicit visual appearance questions such as color, visible state, or what something looks like.
-Never output bare parameters such as reasoning="..." answer="...". Always call answer(reasoning="...", answer="...").
-Keep answer() short: reasoning under 20 words, answer under 60 words, and do not use markdown or backticks inside answer().
+Never output bare parameters such as reasoning="..." answer="...". Always call answer("..."). You may call answer(reasoning="...", answer="...") only when a short reason is necessary.
+Keep answer() short: answer under 60 words, and do not use markdown or backticks inside answer().
