@@ -1,0 +1,18 @@
+
+Reading auto-eval from experiments/results/teach/smoke/h50_current_zs_fast_n100_fullqa.gemini_2.5_pro-5b7e74.auto_eval.json
+
+Broad Categories:
+          correct :  48 ( 48.0%)
+partially_correct :  24 ( 24.0%)
+            wrong :  28 ( 28.0%)
+
+Primary thesis metrics
+Total QA: 100
+Valid answer rate: 100.0% (100/100)
+Error/empty answer rate: 0.0% (0/100)
+S_c semantic correct: 48.0% (48/100)
+S_p partially correct: 24.0% (24/100)
+Wrong/no-answer: 28.0% (28/100)
+T prompt tokens per QA: 2.06K
+Completion tokens per QA: 0.28K
+Token cost per QA sample/question:  2060.82
