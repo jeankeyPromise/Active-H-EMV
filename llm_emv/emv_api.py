@@ -157,11 +157,14 @@ class EMVerbalizationAPI:
             lines.append(
                 'Recommended answer: '
                 + '; '.join(
-                    _compact_task_phrase(match['node'], max_len=110, allow_ellipsis=False)
-                    for match in matches[:5]
+                    _compact_task_phrase(match['node'], max_len=85, allow_ellipsis=False)
+                    for match in matches[:3]
                 )
             )
-            lines.append('Answer now with concise task-sized phrases; do not call action_lookup again.')
+            lines.append(
+                'Answer now with concise task-sized phrases from the Recommended answer; '
+                'do not add explanations or call action_lookup again.'
+            )
             return '\n'.join(lines)
         matches = self._rank_task_matches(query, max_matches=max_matches)
         lines = [f'Task lookup candidates for query={query!r}:']
@@ -204,11 +207,11 @@ class EMVerbalizationAPI:
         lines.append(
             'Recommended answer: '
             + '; '.join(
-                _compact_task_phrase(match['node'], max_len=110, allow_ellipsis=False)
-                for match in matches[:5]
+                _compact_task_phrase(match['node'], max_len=85, allow_ellipsis=False)
+                for match in matches[:3]
             )
         )
-        lines.append('Answer now with concise task-sized phrases.')
+        lines.append('Answer now with concise task-sized phrases from the Recommended answer.')
         return '\n'.join(lines)
 
     @comment('For object yes/no questions, check whether task summaries mention the object')
@@ -216,6 +219,12 @@ class EMVerbalizationAPI:
     def object_lookup(self, object_name: str, max_matches: int = 8) -> str:
         object_name = object_name.strip()
         matches = self._rank_object_matches(object_name, max_matches=max_matches)
+        query_tokens = _content_tokens(object_name)
+        if _object_query_requires_exact_mention(object_name, query_tokens):
+            matches = [
+                match for match in matches
+                if _object_text_mentions_query(_node_text(match['node']), object_name)
+            ]
         lines = [f'Object lookup for object={object_name!r}:']
         if not matches:
             lines.append('No task-sized summaries mention this object.')
@@ -435,15 +444,19 @@ class EMVerbalizationAPI:
         query_tokens = _content_tokens(object_name)
         if not query_tokens:
             return []
+        requires_exact_mention = _object_query_requires_exact_mention(object_name, query_tokens)
 
         ranked = []
         for task in _select_task_list_nodes(self._raw_history, max_tasks=80):
             text = _node_text(task)
             text_tokens = _content_tokens(text)
             overlap = len(query_tokens & text_tokens) / len(query_tokens)
-            if overlap <= 0:
+            exact_match = _object_text_mentions_query(text, object_name)
+            if requires_exact_mention and not exact_match:
                 continue
-            exact_bonus = 0.35 if re.search(rf'\b{re.escape(object_name.lower())}\b', text.lower()) else 0.0
+            if overlap <= 0 and not exact_match:
+                continue
+            exact_bonus = 0.35 if exact_match else 0.0
             score = min(1.0, overlap + exact_bonus)
             ranked.append({'node': task, 'score': score, 'overlap': overlap})
         ranked.sort(key=lambda r: (r['score'], getattr(r['node'], 'range', (datetime.min,))[0]), reverse=True)
@@ -1145,11 +1158,8 @@ def _event_candidate_satisfies_constraints(
         event_text: str = '',
         evidence_text: str = '',
 ) -> bool:
-    event_lower = event_text.lower()
-    evidence_lower = evidence_text.lower()
-    if re.search(r'\ball\b.*\b(cup|cups|mug|mugs|drinkware)\b', event_lower):
-        if not re.search(r'\bclean(?:ed|ing)?\s+(?:the\s+)?(?:cups|mugs)\b', evidence_lower):
-            return False
+    if not _clean_all_candidate_matches(event_text, evidence_text):
+        return False
 
     required_object_groups = [
         ({'plant', 'houseplant'}, {'plant', 'houseplant'}),
@@ -1202,6 +1212,8 @@ def _target_candidate_satisfies_constraints(target_text: str, evidence_text: str
     if not _event_candidate_satisfies_constraints(target_tokens, evidence_tokens, target_text, evidence_text):
         return False
     if not _target_location_relation_matches(target_text, evidence_text):
+        return False
+    if not _clean_all_candidate_matches(target_text, evidence_text):
         return False
     if re.search(r'\ball\b.*\b(cup|cups|mug|mugs|drinkware|pot|pots|pan|pans)\b', target_lower):
         object_pattern = r'\b(cup|cups|mug|mugs|drinkware|pot|pots|pan|pans)\b'
@@ -1281,6 +1293,9 @@ def _task_lookup_candidate_satisfies_constraints(query: str, evidence_text: str)
     query_lower = query.lower()
     evidence_lower = evidence_text.lower()
 
+    if not _clean_all_candidate_matches(query, evidence_text):
+        return False
+
     required_object_groups = [
         ({'plant', 'houseplant'}, {'plant', 'houseplant'}),
         ({'cup', 'mug', 'drinkware'}, {'cup', 'mug', 'drinkware'}),
@@ -1327,6 +1342,36 @@ def _task_lookup_candidate_satisfies_constraints(query: str, evidence_text: str)
         return False
 
     return True
+
+
+def _clean_all_candidate_matches(query_text: str, evidence_text: str) -> bool:
+    object_pattern = _clean_all_object_pattern(query_text)
+    if object_pattern is None:
+        return True
+
+    evidence_lower = evidence_text.lower()
+    if not re.search(object_pattern, evidence_lower):
+        return False
+    return bool(re.search(
+        r'\b(clean\w*|wash\w*|rins\w*|dirty|sink|faucet)\b',
+        evidence_lower,
+    ))
+
+
+def _clean_all_object_pattern(text: str) -> str | None:
+    lower = text.lower()
+    if not re.search(r'\ball\b', lower):
+        return None
+    groups = [
+        (r'\b(cup|cups|mug|mugs|drinkware)\b', r'\b(cup|cups|mug|mugs|drinkware)\b'),
+        (r'\b(pot|pots)\b', r'\b(pot|pots)\b'),
+        (r'\b(pan|pans)\b', r'\b(pan|pans)\b'),
+        (r'\b(plate|plates|dish|dishes)\b', r'\b(plate|plates|dish|dishes)\b'),
+    ]
+    for query_pattern, evidence_pattern in groups:
+        if re.search(query_pattern, lower):
+            return evidence_pattern
+    return None
 
 
 def _target_location_patterns(target_text: str) -> list[str]:
@@ -1393,6 +1438,25 @@ def _content_tokens(text: str) -> set[str]:
                 break
         result.add(token)
     return result
+
+
+def _object_text_mentions_query(text: str, object_name: str) -> bool:
+    normalized_query = object_name.strip().lower()
+    if not normalized_query:
+        return False
+    normalized_text = text.lower()
+    patterns = [rf'\b{re.escape(normalized_query)}\b']
+    if not normalized_query.endswith('s'):
+        patterns.append(rf'\b{re.escape(normalized_query)}s\b')
+    return any(re.search(pattern, normalized_text) for pattern in patterns)
+
+
+def _object_query_requires_exact_mention(object_name: str, query_tokens: set[str]) -> bool:
+    normalized_query = object_name.strip().lower()
+    if not normalized_query or len(query_tokens) != 1:
+        return False
+    token = next(iter(query_tokens))
+    return len(normalized_query) <= 2 or len(token) <= 2
 
 
 _MONTH_DATE_RE = (

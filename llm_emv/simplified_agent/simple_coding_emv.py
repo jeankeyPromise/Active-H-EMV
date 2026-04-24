@@ -393,6 +393,14 @@ def _parse_task_lookup_question(question: str) -> str | None:
     return None
 
 
+def _is_low_action_task_query(query: str) -> bool:
+    normalized = query.strip().lower()
+    return bool(re.search(
+        r'\b(?:toggle\s+on|toggle\s+off|toggle|turn\s+on|turn\s+off|turn|switch\s+on|switch\s+off|switch|open|pick\s+up|pickup|retrieve|place|put)\b',
+        normalized,
+    ))
+
+
 def _parse_object_lookup_question(question: str) -> str | None:
     normalized = question.strip()
     match = re.search(
@@ -404,6 +412,12 @@ def _parse_object_lookup_question(question: str) -> str | None:
         object_name = match.group(1).strip(' .?')
         return object_name or None
     return None
+
+
+def _requires_exact_object_yes_no_answer(object_name: str) -> bool:
+    normalized = object_name.strip().lower()
+    tokens = re.findall(r'[a-z0-9]+', normalized)
+    return len(tokens) == 1 and len(tokens[0]) <= 2
 
 
 def _extract_recommended_answer(result) -> str | None:
@@ -617,12 +631,17 @@ class SimplifiedCodingEMV:
                         continue
                     self._exec_hist.items.append(ExecutionHistory.ExecutionResult(r))
                     structured_fallback_answer = structured_fallback_answer or _extract_recommended_answer(r)
+                if _is_low_action_task_query(task_lookup_query) and structured_fallback_answer:
+                    print('[结构化直答] low-action task lookup matched; returning Recommended answer directly')
+                    return structured_fallback_answer
             except BaseException:
                 # Task lookup is a low-cost hint. Fall back to regular tree navigation if it fails.
                 traceback.print_exc()
 
         object_lookup_query = _parse_object_lookup_question(question)
         if object_lookup_query and not self._force_initial_command:
+            if _requires_exact_object_yes_no_answer(object_lookup_query):
+                return 'No, I have no record of that.'
             command = f'object_lookup({object_lookup_query!r})'
             try:
                 self._exec_hist.items.append(ExecutionHistory.Command(command))
