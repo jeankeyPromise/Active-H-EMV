@@ -1,0 +1,22 @@
+/home/user22303471/Project/Active-H-EMV/llm_emv/eval/metrics/llm_eval.py:28: LangChainDeprecationWarning: The class `HuggingFaceEmbeddings` was deprecated in LangChain 0.2.2 and will be removed in 1.0. An updated version of the class exists in the langchain-huggingface package and should be used instead. To use it run `pip install -U langchain-huggingface` and import as `from langchain_huggingface import HuggingFaceEmbeddings`.
+  embeddings = HuggingFaceEmbeddings(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading eval chain from llm_emv/config/llm_eval/gemini_2.5_pro.yaml
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 5285.91it/s]
+[1mMPNetModel LOAD REPORT[0m from: sentence-transformers/all-mpnet-base-v2
+Key                     | Status     |  | 
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loaded few-shot sample db of size 60
+
+
+Evaluating experiments/results/teach/smoke/h50_current_zs_fast_n100_fullqa.json 
+
+Tokens Used: 138171
+	Prompt Tokens: 123204
+	Completion Tokens: 14967
+Successful Requests: 100
+Total Cost (USD): $0.0
