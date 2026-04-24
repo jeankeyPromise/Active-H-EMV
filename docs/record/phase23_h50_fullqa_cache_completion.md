@@ -167,17 +167,23 @@ Runtime observations:
 
 ## Metrics
 
+Metric convention used here:
+
+- `S_c`: fully correct rate
+- `S_p`: at-least-partially-correct rate (`correct + partial`)
+
 Primary metrics from `scripts/evaluate_result.sh`:
 
 | Run | Total | Valid | `S_c` | `S_p` | Wrong/no-answer | `T` |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Phase 22 action v1.3 n=60 | 60 | 100% | 53.3% | 21.7% | 25.0% | 2.45K |
-| Phase 23 h=50 full QA | 100 | 100% | 48.0% | 24.0% | 28.0% | 2.06K |
+| Phase 22 action v1.3 n=60 | 60 | 100% | 53.3% | 75.0% | 25.0% | 2.45K |
+| Phase 23 h=50 full QA | 100 | 100% | 48.0% | 72.0% | 28.0% | 2.06K |
 
 Phase 23 breakdown:
 
 - `correct = 48/100`
 - `partially_correct = 24/100`
+- `at_least_partially_correct = 72/100`
 - `wrong = 28/100`
 - valid answer rate = `100.0%`
 - error/empty answer rate = `0.0%`
@@ -188,7 +194,7 @@ Phase 23 breakdown:
 This phase is a success on the thesis mainline for two reasons:
 
 1. We finally have a clean `h=50` full-QA run under explicit cache control, without hidden online summarization.
-2. The result is strong enough for the stated project goal: it is stable, fully runnable, and shows clear nontrivial semantic correctness (`S_c=48.0%`, `S_p=24.0%`) at a low token budget (`T=2.06K`).
+2. The result is strong enough for the stated project goal: it is stable, fully runnable, and shows clear nontrivial semantic correctness (`S_c=48.0%`, `S_p=72.0%`) at a low token budget (`T=2.06K`).
 
 Compared with the earlier `n=40`/`n=60` pilots:
 

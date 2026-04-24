@@ -71,11 +71,11 @@ conda run --no-capture-output -n active-h-emv python -m llm_emv.eval.metrics.cal
 
 | Scope | Method / Config | Result file | Auto-eval file | QA | Valid | `S_c` | `S_p` | Wrong / no-answer | `T` prompt K |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| \|h\|=50 formal | H-EMV baseline fs | `experiments/results/teach/h_emv_50.json` | `h_emv_50.gemini_2.5_pro-f60fb2.auto_eval.json` | 100 | 96.0% | 41.0 | 27.0 | 32.0 | 27.63 |
-| \|h\|=50 formal | Graph-H-EMV zs | `experiments/results/teach/h_emv_graph_aug_50_zs.json` | `h_emv_graph_aug_50_zs.gemini_2.5_pro-20bf9e.auto_eval.json` | 100 | 100.0% | 43.0 | 23.0 | 34.0 | 5.19 |
-| \|h\|=50 formal | Graph-H-EMV fs | `experiments/results/teach/h_emv_graph_aug_50_fs.json` | `h_emv_graph_aug_50_fs.gemini_2.5_pro-20bf9e.auto_eval.json` | 100 | 98.0% | 44.0 | 23.0 | 33.0 | 16.15 |
-| \|h\|=100 formal | H-EMV baseline zs | `experiments/results/teach/test_set/gemini_2.5_pro/zs/h_emv_gemini_2.5_pro_100.json` | `h_emv_gemini_2.5_pro_100.gemini_2.5_pro-3bb6e1.auto_eval.json` | 100 | 90.0% | 42.0 | 27.0 | 31.0 | 7.08 |
-| \|h\|=100 formal | H-EMV baseline fs | `experiments/results/teach/h_emv_gemini_2.5_pro_100_fs.json` | `h_emv_gemini_2.5_pro_100_fs.gemini_2.5_pro-f60fb2.auto_eval.json` | 100 | 95.0% | 38.0 | 21.0 | 41.0 | 29.85 |
+| \|h\|=50 formal | H-EMV baseline fs | `experiments/results/teach/h_emv_50.json` | `h_emv_50.gemini_2.5_pro-f60fb2.auto_eval.json` | 100 | 96.0% | 41.0 | 68.0 | 32.0 | 27.63 |
+| \|h\|=50 formal | Graph-H-EMV zs | `experiments/results/teach/h_emv_graph_aug_50_zs.json` | `h_emv_graph_aug_50_zs.gemini_2.5_pro-20bf9e.auto_eval.json` | 100 | 100.0% | 43.0 | 66.0 | 34.0 | 5.19 |
+| \|h\|=50 formal | Graph-H-EMV fs | `experiments/results/teach/h_emv_graph_aug_50_fs.json` | `h_emv_graph_aug_50_fs.gemini_2.5_pro-20bf9e.auto_eval.json` | 100 | 98.0% | 44.0 | 67.0 | 33.0 | 16.15 |
+| \|h\|=100 formal | H-EMV baseline zs | `experiments/results/teach/test_set/gemini_2.5_pro/zs/h_emv_gemini_2.5_pro_100.json` | `h_emv_gemini_2.5_pro_100.gemini_2.5_pro-3bb6e1.auto_eval.json` | 100 | 90.0% | 42.0 | 69.0 | 31.0 | 7.08 |
+| \|h\|=100 formal | H-EMV baseline fs | `experiments/results/teach/h_emv_gemini_2.5_pro_100_fs.json` | `h_emv_gemini_2.5_pro_100_fs.gemini_2.5_pro-f60fb2.auto_eval.json` | 100 | 95.0% | 38.0 | 59.0 | 41.0 | 29.85 |
 
 ## Thesis Main Table Draft
 
@@ -83,11 +83,11 @@ conda run --no-capture-output -n active-h-emv python -m llm_emv.eval.metrics.cal
 
 | Method | \|h\| | Shot | Valid | `S_c` | `S_p` | `T` prompt K | Suggested use |
 | --- | ---: | --- | ---: | ---: | ---: | ---: | --- |
-| H-EMV baseline | 50 | fs | 96.0% | 41.0 | 27.0 | 27.63 | baseline 对照 |
-| Graph-H-EMV | 50 | zs | 100.0% | 43.0 | 23.0 | 5.19 | 主推：低成本且正确率提升 |
-| Graph-H-EMV | 50 | fs | 98.0% | 44.0 | 23.0 | 16.15 | 消融：few-shot 对图增强略增正确率但成本变高 |
-| H-EMV baseline | 100 | zs | 90.0% | 42.0 | 27.0 | 7.08 | 长历史 baseline 趋势 |
-| H-EMV baseline | 100 | fs | 95.0% | 38.0 | 21.0 | 29.85 | few-shot 长历史反而更贵且不优 |
+| H-EMV baseline | 50 | fs | 96.0% | 41.0 | 68.0 | 27.63 | baseline 对照 |
+| Graph-H-EMV | 50 | zs | 100.0% | 43.0 | 66.0 | 5.19 | 主推：低成本且正确率提升 |
+| Graph-H-EMV | 50 | fs | 98.0% | 44.0 | 67.0 | 16.15 | 消融：few-shot 对图增强略增正确率但成本变高 |
+| H-EMV baseline | 100 | zs | 90.0% | 42.0 | 69.0 | 7.08 | 长历史 baseline 趋势 |
+| H-EMV baseline | 100 | fs | 95.0% | 38.0 | 59.0 | 29.85 | few-shot 长历史反而更贵且不优 |
 
 可写结论：
 
@@ -102,7 +102,7 @@ conda run --no-capture-output -n active-h-emv python -m llm_emv.eval.metrics.cal
 
 | Purpose | File | QA | Result |
 | --- | --- | ---: | --- |
-| h=15 Active-H-EMV diagnostic | `experiments/results/teach/smoke/task_tools_h15_n15.json` | 15 | valid=100%，`S_c=46.7%`，`S_p=20.0%`，`T=2.70K` |
+| h=15 Active-H-EMV diagnostic | `experiments/results/teach/smoke/task_tools_h15_n15.json` | 15 | valid=100%，`S_c=46.7%`，`S_p=66.7%`，`T=2.70K` |
 | h=15 `when did you X` fix | `experiments/results/teach/smoke/event_when_lookup_h15_tasks_to_exact_times_n1.json` | 1 | wrong -> correct，`T=1.72K` |
 | h=15 no-record object guard | `experiments/results/teach/smoke/object_lookup_h15_object_n1.json` | 1 | `armchair` 无记录时直接回答 “No, I have no record of that.” |
 | h=15 graph trace | `experiments/results/teach/traces/graph_trace_h15_direct_search.jsonl` | offline trace | 48 条 trace 中 9 条出现 `expanded_indices` |

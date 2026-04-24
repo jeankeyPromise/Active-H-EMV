@@ -16,20 +16,21 @@
 | Phase 7 | `phase7_completion_plan_implementation.md` | 毕设完成计划首批落地 | 新增 date/event lookup、VQA guard、记录规范；h=15 n=2 smoke T=1.79K |
 | Phase 8 | `phase8_graph_trace_and_cache_workflow.md` | 图检索案例日志与缓存预构建流程 | 新增 graph trace JSONL 与显式 history cache 预构建入口 |
 | Phase 9 | `phase9_h15_task_tools_diagnostics.md` | h=15 task tools 与稳定性诊断 | 新增 task_list/task_lookup/object_lookup；h=15 n=15 最终 15/15 有效，平均 prompt 2.51K |
-| Phase 10 | `phase10_h15_auto_eval_and_error_analysis.md` | h=15 n=15 自动语义评估与错误分析 | `S_c=46.7%`, `S_p=20.0%`, valid=100%, `T=2.70K`；下一步修 when/event 与 temporal ambiguity |
+| Phase 10 | `phase10_h15_auto_eval_and_error_analysis.md` | h=15 n=15 自动语义评估与错误分析 | `S_c=46.7%`, `S_p=66.7%`, valid=100%, `T=2.70K`；下一步修 when/event 与 temporal ambiguity |
 | Phase 11 | `phase11_when_event_lookup_fix.md` | `when did you X` 事件日期修复 | targeted sample 从 wrong 变 correct，`T=1.72K`，过滤 plant 误匹配 |
 | Phase 12 | `phase12_week4_result_inventory.md` | 第 4 周正式结果盘点与论文主表草案 | 复算 h=50/h=100 正式主指标；新增 `scripts/evaluate_result.sh` 固化 smoke 后 correctness evaluation |
 | Phase 13 | `phase13_experiment_section_draft.md` | 论文实验章节草稿 | 将主表、h=15 诊断、三类案例和限制整理成可进入正文的实验章节 |
 | Phase 14 | `phase14_h50_cached_probe.md` | h=50 缓存前缀可行性预检 | 新增 history cache audit/require guard；h=50 n=10 cached probe valid=100%, `S_c=80%`, `T=2.25K`；暂不继续 n=60 |
-| Phase 15 | `phase15_h50_n20_cached_probe.md` | h=50 n=20 缓存前缀诊断 | n=20 valid=100%, `S_c=70%`, `S_p=25%`, `T=2.26K`；新增 answer 语法回退和 temporal 位置/整体任务约束 |
-| Phase 16 | `phase16_h50_n40_cached_probe.md` | h=50 n=40 缓存前缀诊断 | n=40 valid=100%, `S_c=55%`, `S_p=25%`, `T=2.26K`；修复 pillow/sofa task_lookup runaway，下一步收紧 temporal/event 约束 |
+| Phase 15 | `phase15_h50_n20_cached_probe.md` | h=50 n=20 缓存前缀诊断 | n=20 valid=100%, `S_c=70%`, `S_p=95%`, `T=2.26K`；新增 answer 语法回退和 temporal 位置/整体任务约束 |
+| Phase 16 | `phase16_h50_n40_cached_probe.md` | h=50 n=40 缓存前缀诊断 | n=40 valid=100%, `S_c=55%`, `S_p=80%`, `T=2.26K`；修复 pillow/sofa task_lookup runaway，下一步收紧 temporal/event 约束 |
 | Phase 17 | `phase17_n40_precision_fixes.md` | n=40 暴露问题的精度修复 | 收紧 event/date 与 temporal target 约束；修复 tomato-bowl、armchair 多报；low-action 仍需 raw-action 辅助索引 |
-| Phase 18 | `phase18_h50_n40_patched_probe.md` | h=50 n=40 patched probe | n=40 valid=100%, `S_c=62.5%`, `S_p=17.5%`, `T=2.37K`；precision patch 净提升，瓶颈转向 low-action/raw-action 召回 |
-| Phase 19 | `phase19_raw_action_lookup_probe.md` | raw-action lookup 与 h=50 n=40 action probe | low-action targeted n=4 valid=100%, `S_c=25%`, `S_p=75%`, `T=2.16K`；n=40 action_v1 valid=100%, `S_c=55%`, `S_p=20%`, `T=2.31K`，未超过 Phase 18，已补 pillow/sofa v1.1 误路由 |
-| Phase 20 | `phase20_h50_action_v12_probe.md` | h=50 action v1.2 prompt probe | targeted n=5 valid=100%, `S_c=60%`, `T=2.08K`；n=40 valid=100%, `S_c=60%`, `S_p=20%`, `T=2.29K`，恢复 action_v1 退化但仍未超过 Phase 18 |
-| Phase 21 | `phase21_h50_action_v13_n20.md` | h=50 action v1.3 稳定性探针 | n=20 valid=100%, `S_c=60%`, `S_p=25%`, `T=2.35K`；clean-all 约束更稳，但未超过 Phase 15/18，当前适合作为诊断分支 |
-| Phase 22 | `phase22_h50_action_v13_n60_resume.md` | h=50 action v1.3 n=60 恢复完成 | 从 `46/60` partial 安全恢复到 `60/60`；valid=100%, `S_c=53.3%`, `S_p=21.7%`, `T=2.45K`；low-action 结构化直答护栏有效消除了 token runaway |
-| Phase 23 | `phase23_h50_fullqa_cache_completion.md` | h=50 全 QA cache 补齐与正式评测 | 先修复短对象 `cd` 路径，再将 `50ep` history cache 从 `6/10` 补齐到 `10/10`，最终 full-QA `100/100` 完成；valid=100%, `S_c=48.0%`, `S_p=24.0%`, `T=2.06K` |
+| Phase 18 | `phase18_h50_n40_patched_probe.md` | h=50 n=40 patched probe | n=40 valid=100%, `S_c=62.5%`, `S_p=80.0%`, `T=2.37K`；precision patch 净提升，瓶颈转向 low-action/raw-action 召回 |
+| Phase 19 | `phase19_raw_action_lookup_probe.md` | raw-action lookup 与 h=50 n=40 action probe | low-action targeted n=4 valid=100%, `S_c=25%`, `S_p=100%`, `T=2.16K`；n=40 action_v1 valid=100%, `S_c=55%`, `S_p=75%`, `T=2.31K`，未超过 Phase 18，已补 pillow/sofa v1.1 误路由 |
+| Phase 20 | `phase20_h50_action_v12_probe.md` | h=50 action v1.2 prompt probe | targeted n=5 valid=100%, `S_c=60%`, `T=2.08K`；n=40 valid=100%, `S_c=60%`, `S_p=80%`, `T=2.29K`，恢复 action_v1 退化但仍未超过 Phase 18 |
+| Phase 21 | `phase21_h50_action_v13_n20.md` | h=50 action v1.3 稳定性探针 | n=20 valid=100%, `S_c=60%`, `S_p=85%`, `T=2.35K`；clean-all 约束更稳，但未超过 Phase 15/18，当前适合作为诊断分支 |
+| Phase 22 | `phase22_h50_action_v13_n60_resume.md` | h=50 action v1.3 n=60 恢复完成 | 从 `46/60` partial 安全恢复到 `60/60`；valid=100%, `S_c=53.3%`, `S_p=75.0%`, `T=2.45K`；low-action 结构化直答护栏有效消除了 token runaway |
+| Phase 23 | `phase23_h50_fullqa_cache_completion.md` | h=50 全 QA cache 补齐与正式评测 | 先修复短对象 `cd` 路径，再将 `50ep` history cache 从 `6/10` 补齐到 `10/10`，最终 full-QA `100/100` 完成；valid=100%, `S_c=48.0%`, `S_p=72.0%`, `T=2.06K` |
+| Phase 24 | `phase24_h100_fullqa_cache_completion.md` | h=100 全 QA cache 补齐与正式评测 | 先将 `100ep` history cache 从 `0/10` 补齐到 `10/10`，再完成 full-QA `100/100`；valid=98.0%, `S_c=49.0%`, `S_p=75.0%`, `T=2.29K`，相对原文 `h=100` baseline 仍显著占优 |
 
 ## 固定实验口径
 
@@ -37,6 +38,7 @@
 - 标准 TEACh 表格每个 `|h|` 应跑满 10 段长历史 × 10 个问答 = 100 QA。
 - `--n-samples` 只用于 pilot/smoke 截断，不能把 `--n-samples 50` 写成标准 `|h|=50` 结果。
 - 论文主指标优先使用 `S_c`、`S_p`、`T`、valid answer rate。
+- 其中 `S_p` 表示“至少部分正确率”，即 `correct + partial`，不是“仅部分正确”。
 - BLEU/ROUGE/METEOR 只作为辅助表面指标，不作为本文核心有效性结论。
 
 ## 实验安全规则
