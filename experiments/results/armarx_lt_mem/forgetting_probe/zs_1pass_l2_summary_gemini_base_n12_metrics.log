@@ -1,0 +1,18 @@
+
+Reading auto-eval from experiments/results/armarx_lt_mem/forgetting_probe/zs_1pass_l2_summary_gemini_base_n12.gemini_2.5_pro-c0fc2d.auto_eval.json
+
+Broad Categories:
+correct :   3 ( 25.0%)
+  wrong :   9 ( 75.0%)
+
+Primary thesis metrics
+Total QA: 12
+Valid answer rate: 75.0% (9/12)
+Error/empty answer rate: 25.0% (3/12)
+S_c semantic correct: 25.0% (3/12)
+S_p partially correct: 0.0% (0/12)
+Wrong/no-answer: 75.0% (9/12)
+T prompt tokens per QA: 8.57K
+Completion tokens per QA: 0.14K
+Token cost per QA sample/question:  8571.5
+NOTE: This file has 12 QA samples. Standard TEACh |h| table results should use 100 QA samples (10 long histories x 10 questions).

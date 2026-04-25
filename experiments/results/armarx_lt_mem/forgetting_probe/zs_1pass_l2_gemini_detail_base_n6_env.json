@@ -1,0 +1,65 @@
+{
+  "config": {
+    "cfg": "armarx_lt_mem/zs_1pass_l2_gemini",
+    "output": "experiments/results/armarx_lt_mem/forgetting_probe/zs_1pass_l2_gemini_detail_base_n6_env.json",
+    "dataset": "simple",
+    "only_iter_dataset": "False",
+    "precompute_history_cache": "False",
+    "audit_history_cache": "False",
+    "require_history_cache": "False",
+    "n_samples": "6",
+    "enable_correction": "False",
+    "resume": "False",
+    "retry_errors": "False",
+    "checkpoint_file": "None",
+    "max_prompt_tokens_per_sample": "60000",
+    "max_average_prompt_tokens_per_sample": "60000.0",
+    "max_seconds_per_sample": "180",
+    "history_dir": "data/armarx_lt_mem",
+    "qa_file": "data/armarx_lt_mem/qa_forgetting_detail_probe_v1.json"
+  },
+  "code_commit": "c0fc2d8833e4babdd4c9fc879cf14b50c87074ee",
+  "results": {
+    "a7a-merged-req-at-time-1": {
+      "q_time": "2024/08/27 15:55:17",
+      "q": "What did you do at June 26 shortly after 8 PM?",
+      "gt": "Receive an object from a human, afterwards hand over the object to the human",
+      "hyp": " 26 shortly after 8 PM, I performed several actions:\n- I looked down at 20:19:12 and then up at 20:19:16.\n- I looked down again at 20:20:16 and left at 20:20:20.\n- I then looked ahead at 20:20:25.\n- From 20:21:25 to 20:22:57, I attempted to receive an object from a human using arm 1, but this action failed.\n- I then prepared for a HomePose from 20:23:09 to 20:23:23.\n- Finally, from 20:23:39 to 20:23:41, I attempted to receive an object from a human."
+    },
+    "a7a-merged-events-4": {
+      "q_time": "2024/08/27 16:47:39",
+      "q": "What did you do last on July 12?",
+      "gt": "I introduced myself",
+      "hyp": "find the last entry for July 12th in the history to determine my final"
+    },
+    "a7a-merged-action-detail-2": {
+      "q_time": "2024/08/27 16:19:01",
+      "q": "What objects did you detect when telling what you can see at June 26 ?",
+      "gt": "I detected an unknown object and asked the user to tell me its name",
+      "hyp": "ning:** I will scan the history for the date 2024/06/26 and look for the \"WhatCanYouSeeNow\" or \"WhatCanYouSee\" actions to identify the objects mentioned in my responses.\n\n**Answer:** On June 26, I detected an apple tea, milk, coffee filters, and an object I later learned was titled \"Advances in Robot Control.\""
+    },
+    "a7a-merged-objects-5": {
+      "q_time": "2024/08/27 17:01:59",
+      "q": "Which object was next to the soy milk last time you grasped it today in the afternoon?",
+      "gt": "Orange juice bottle",
+      "hyp": "###ERROR### Connection error."
+    },
+    "a7a-merged-events-1": {
+      "q_time": "2024/08/27 19:44:05",
+      "q": "How often did you successfully load the dishwasher?",
+      "gt": "4 times: at 2024/07/12 15:26, 07/13 13:46 and 14:54, 08/27 14:40",
+      "hyp": "ng:\nI searched my history for all instances of the \"LoadDishwasher\""
+    },
+    "a7a-merged-problems-3": {
+      "q_time": "2024/08/28 11:11:11",
+      "q": "What was the reason why you needed two attempts to grasp the milk yesterday shortly before 3pm?",
+      "gt": "Initially, the speech recognition was off, and I tried to grasp the 'Moog' which does not exist. The user had to repeat the command.",
+      "hyp": "The first attempt failed because I was initially trying to grasp an object called \"Moog\" before successfully grasping the milk on the second try."
+    }
+  },
+  "openai_costs": {
+    "cost": 0.0,
+    "prompt_tokens": 273957,
+    "completion_tokens": 1513
+  }
+}

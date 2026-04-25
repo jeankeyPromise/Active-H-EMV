@@ -32,6 +32,8 @@
 | Phase 23 | `phase23_h50_fullqa_cache_completion.md` | h=50 全量 QA 缓存补齐与正式评测 | 先修复短对象 `cd` 路径，再将 `50ep` history cache 从 `6/10` 补齐到 `10/10`，最终 full-QA `100/100` 完成；valid=100%, `S_c=48.0%`, `S_p=72.0%`, `T=2.06K` |
 | Phase 24 | `phase24_h100_fullqa_cache_completion.md` | h=100 全量 QA 缓存补齐与正式评测 | 先将 `100ep` history cache 从 `0/10` 补齐到 `10/10`，再完成 full-QA `100/100`；valid=98.0%, `S_c=49.0%`, `S_p=75.0%`, `T=2.29K`，相对原文 `h=100` 基线仍显著占优 |
 | Phase 25 | `phase25_armarx_forgetting_guarded_probe.md` | ARMARX 遗忘模块受控探测 | 遗忘模块已能压缩 ARMARX 记忆树；`ubpf_ultra` 将文件比例压到 `0.797`，但 one-pass prompt 仍高达 `220,648` tokens，说明遗忘应与层级检索配合评估，而不能只依赖 full-history flatten |
+| Phase 26 | `phase26_armarx_forgetting_prompt_stats.md` | ARMARX 遗忘模块格式化历史长度统计 | 在不新增 LLM 调用的前提下，统计 one-pass 格式化历史长度；`random_medium` 压到基线的 `98.73%`，`medium/aggressive` 为 `95.44%`，`ultra` 为 `94.61%`，再次说明遗忘有效但无法单独解决 one-pass flatten 的长上下文瓶颈 |
+| Phase 27 | `phase27_armarx_l2_detail_probe.md` | ARMARX L2 事件层细节题受控探测 | L2 事件层视图下 `base/random/medium/medium_graph/ultra` 的格式化输入完全一致；只跑 baseline 即可。细节题 `n=6` 上 valid=`83.3%`、`S_c=16.7%`、`T=45.66K`，说明仅保留到事件层不足以支撑大多数细节敏感 QA |
 
 ## 固定实验口径
 

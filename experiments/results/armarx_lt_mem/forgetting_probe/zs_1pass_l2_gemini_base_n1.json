@@ -1,0 +1,35 @@
+{
+  "config": {
+    "cfg": "armarx_lt_mem/zs_1pass_l2_gemini",
+    "output": "experiments/results/armarx_lt_mem/forgetting_probe/zs_1pass_l2_gemini_base_n1.json",
+    "dataset": "simple",
+    "only_iter_dataset": "False",
+    "precompute_history_cache": "False",
+    "audit_history_cache": "False",
+    "require_history_cache": "False",
+    "n_samples": "1",
+    "enable_correction": "False",
+    "resume": "False",
+    "retry_errors": "False",
+    "checkpoint_file": "None",
+    "max_prompt_tokens_per_sample": "30000",
+    "max_average_prompt_tokens_per_sample": "30000.0",
+    "max_seconds_per_sample": "90",
+    "history_dir": "data/armarx_lt_mem",
+    "qa_file": "data/armarx_lt_mem/qa_forgetting_probe_v1.json"
+  },
+  "code_commit": "c0fc2d8833e4babdd4c9fc879cf14b50c87074ee",
+  "results": {
+    "a7a-merged-explain-1": {
+      "q_time": "2024/08/28 13:44:43",
+      "q": "Describe what you did.",
+      "gt": "Over the past months, I performed various activities at 5 different days, including introducing myself, grasping the milk, receiving and handing over objects, loading the dishwasher, and engaging in dialog with the user.",
+      "hyp": "ning:** I have performed a wide range of tasks including navigating to various kitchen locations, identifying objects like milk and apple tea, and interacting with humans through introductions and object handovers. I also successfully loaded the dishwasher and practiced learning new objects and skills.\n\n**Answer:** My past actions include:\n*   **Interactions:** I introduced myself multiple times, waved at visitors, and engaged in several object handovers (both receiving and giving) with humans.\n*   **Object Manipulation:** I successfully grasped objects like milk and soy milk, though I had some failed attempts with other items. I also successfully performed the \"LoadDishwasher\" task several times.\n*   **Navigation:** I navigated between locations such as the home position, sideboard, and countertop, and performed relative movements like stepping back or turning.\n*   **Perception:** I scanned my environment to identify objects, successfully spotting items like apple tea, milk, vanilla cookies, and Nesquik.\n*   **Learning:** I learned a new object named \"Advances in Robot Control\" and attempted to learn about people."
+    }
+  },
+  "openai_costs": {
+    "cost": 0.0,
+    "prompt_tokens": 54784,
+    "completion_tokens": 223
+  }
+}

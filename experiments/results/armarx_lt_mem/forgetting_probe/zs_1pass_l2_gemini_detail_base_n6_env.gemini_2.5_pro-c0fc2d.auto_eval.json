@@ -1,0 +1,24 @@
+{
+  "config": "llm_emv/config/llm_eval/gemini_2.5_pro.yaml",
+  "code_commit": "c0fc2d8833e4babdd4c9fc879cf14b50c87074ee",
+  "results": {
+    "a7a-merged-req-at-time-1": {
+      "cat": "partially_correct_"
+    },
+    "a7a-merged-events-4": {
+      "cat": "no_answer"
+    },
+    "a7a-merged-action-detail-2": {
+      "cat": "wrong"
+    },
+    "a7a-merged-objects-5": {
+      "cat": "no_answer"
+    },
+    "a7a-merged-events-1": {
+      "cat": "no_answer"
+    },
+    "a7a-merged-problems-3": {
+      "cat": "correct_summarized"
+    }
+  }
+}

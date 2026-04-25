@@ -1,0 +1,65 @@
+{
+  "config": {
+    "cfg": "armarx_lt_mem/zs_1pass_l2_gemini",
+    "output": "experiments/results/armarx_lt_mem/forgetting_probe/zs_1pass_l2_gemini_detail_base_n6.json",
+    "dataset": "simple",
+    "only_iter_dataset": "False",
+    "precompute_history_cache": "False",
+    "audit_history_cache": "False",
+    "require_history_cache": "False",
+    "n_samples": "6",
+    "enable_correction": "False",
+    "resume": "False",
+    "retry_errors": "False",
+    "checkpoint_file": "None",
+    "max_prompt_tokens_per_sample": "60000",
+    "max_average_prompt_tokens_per_sample": "60000.0",
+    "max_seconds_per_sample": "180",
+    "history_dir": "data/armarx_lt_mem",
+    "qa_file": "data/armarx_lt_mem/qa_forgetting_detail_probe_v1.json"
+  },
+  "code_commit": "c0fc2d8833e4babdd4c9fc879cf14b50c87074ee",
+  "results": {
+    "a7a-merged-req-at-time-1": {
+      "q_time": "2024/08/27 15:55:17",
+      "q": "What did you do at June 26 shortly after 8 PM?",
+      "gt": "Receive an object from a human, afterwards hand over the object to the human",
+      "hyp": "###ERROR### 1 validation error for ChatOpenAI\n__root__\n  Did not find openai_api_key, please add an environment variable `OPENAI_API_KEY` which contains it, or pass `openai_api_key` as a named parameter. (type=value_error)"
+    },
+    "a7a-merged-events-4": {
+      "q_time": "2024/08/27 16:47:39",
+      "q": "What did you do last on July 12?",
+      "gt": "I introduced myself",
+      "hyp": "###ERROR### 1 validation error for ChatOpenAI\n__root__\n  Did not find openai_api_key, please add an environment variable `OPENAI_API_KEY` which contains it, or pass `openai_api_key` as a named parameter. (type=value_error)"
+    },
+    "a7a-merged-action-detail-2": {
+      "q_time": "2024/08/27 16:19:01",
+      "q": "What objects did you detect when telling what you can see at June 26 ?",
+      "gt": "I detected an unknown object and asked the user to tell me its name",
+      "hyp": "###ERROR### 1 validation error for ChatOpenAI\n__root__\n  Did not find openai_api_key, please add an environment variable `OPENAI_API_KEY` which contains it, or pass `openai_api_key` as a named parameter. (type=value_error)"
+    },
+    "a7a-merged-objects-5": {
+      "q_time": "2024/08/27 17:01:59",
+      "q": "Which object was next to the soy milk last time you grasped it today in the afternoon?",
+      "gt": "Orange juice bottle",
+      "hyp": "###ERROR### 1 validation error for ChatOpenAI\n__root__\n  Did not find openai_api_key, please add an environment variable `OPENAI_API_KEY` which contains it, or pass `openai_api_key` as a named parameter. (type=value_error)"
+    },
+    "a7a-merged-events-1": {
+      "q_time": "2024/08/27 19:44:05",
+      "q": "How often did you successfully load the dishwasher?",
+      "gt": "4 times: at 2024/07/12 15:26, 07/13 13:46 and 14:54, 08/27 14:40",
+      "hyp": "###ERROR### 1 validation error for ChatOpenAI\n__root__\n  Did not find openai_api_key, please add an environment variable `OPENAI_API_KEY` which contains it, or pass `openai_api_key` as a named parameter. (type=value_error)"
+    },
+    "a7a-merged-problems-3": {
+      "q_time": "2024/08/28 11:11:11",
+      "q": "What was the reason why you needed two attempts to grasp the milk yesterday shortly before 3pm?",
+      "gt": "Initially, the speech recognition was off, and I tried to grasp the 'Moog' which does not exist. The user had to repeat the command.",
+      "hyp": "###ERROR### 1 validation error for ChatOpenAI\n__root__\n  Did not find openai_api_key, please add an environment variable `OPENAI_API_KEY` which contains it, or pass `openai_api_key` as a named parameter. (type=value_error)"
+    }
+  },
+  "openai_costs": {
+    "cost": 0,
+    "prompt_tokens": 0,
+    "completion_tokens": 0
+  }
+}

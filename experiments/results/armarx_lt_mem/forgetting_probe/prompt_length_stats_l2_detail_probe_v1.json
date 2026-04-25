@@ -1,0 +1,745 @@
+{
+  "qa_file": "data/armarx_lt_mem/qa_forgetting_detail_probe_v1.json",
+  "history_dir": "data/armarx_lt_mem",
+  "settings": [
+    {
+      "setting": "base",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini"
+    },
+    {
+      "setting": "random_medium",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_random"
+    },
+    {
+      "setting": "medium",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_medium"
+    },
+    {
+      "setting": "medium_graph",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_medium_graph"
+    },
+    {
+      "setting": "ultra",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_ultra"
+    }
+  ],
+  "per_question": [
+    {
+      "sample_id": "a7a-merged-req-at-time-1",
+      "question": "What did you do at June 26 shortly after 8 PM?",
+      "question_type": "temporal_event",
+      "question_time": "2024-08-27 15:55:17",
+      "setting": "base",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152460,
+      "prompt_lines": 2300,
+      "prompt_words": 12522
+    },
+    {
+      "sample_id": "a7a-merged-events-4",
+      "question": "What did you do last on July 12?",
+      "question_type": "temporal_event",
+      "question_time": "2024-08-27 16:47:39",
+      "setting": "base",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152446,
+      "prompt_lines": 2300,
+      "prompt_words": 12519
+    },
+    {
+      "sample_id": "a7a-merged-action-detail-2",
+      "question": "What objects did you detect when telling what you can see at June 26 ?",
+      "question_type": "object_detail",
+      "question_time": "2024-08-27 16:19:01",
+      "setting": "base",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152484,
+      "prompt_lines": 2300,
+      "prompt_words": 12526
+    },
+    {
+      "sample_id": "a7a-merged-objects-5",
+      "question": "Which object was next to the soy milk last time you grasped it today in the afternoon?",
+      "question_type": "object_detail",
+      "question_time": "2024-08-27 17:01:59",
+      "setting": "base",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152493,
+      "prompt_lines": 2300,
+      "prompt_words": 12528
+    },
+    {
+      "sample_id": "a7a-merged-events-1",
+      "question": "How often did you successfully load the dishwasher?",
+      "question_type": "event_statistics",
+      "question_time": "2024-08-27 19:44:05",
+      "setting": "base",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152465,
+      "prompt_lines": 2300,
+      "prompt_words": 12519
+    },
+    {
+      "sample_id": "a7a-merged-problems-3",
+      "question": "What was the reason why you needed two attempts to grasp the milk yesterday shortly before 3pm?",
+      "question_type": "problem_analysis",
+      "question_time": "2024-08-28 11:11:11",
+      "setting": "base",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152502,
+      "prompt_lines": 2300,
+      "prompt_words": 12528
+    },
+    {
+      "sample_id": "a7a-merged-req-at-time-1",
+      "question": "What did you do at June 26 shortly after 8 PM?",
+      "question_type": "temporal_event",
+      "question_time": "2024-08-27 15:55:17",
+      "setting": "random_medium",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_random",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152460,
+      "prompt_lines": 2300,
+      "prompt_words": 12522
+    },
+    {
+      "sample_id": "a7a-merged-events-4",
+      "question": "What did you do last on July 12?",
+      "question_type": "temporal_event",
+      "question_time": "2024-08-27 16:47:39",
+      "setting": "random_medium",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_random",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152446,
+      "prompt_lines": 2300,
+      "prompt_words": 12519
+    },
+    {
+      "sample_id": "a7a-merged-action-detail-2",
+      "question": "What objects did you detect when telling what you can see at June 26 ?",
+      "question_type": "object_detail",
+      "question_time": "2024-08-27 16:19:01",
+      "setting": "random_medium",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_random",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152484,
+      "prompt_lines": 2300,
+      "prompt_words": 12526
+    },
+    {
+      "sample_id": "a7a-merged-objects-5",
+      "question": "Which object was next to the soy milk last time you grasped it today in the afternoon?",
+      "question_type": "object_detail",
+      "question_time": "2024-08-27 17:01:59",
+      "setting": "random_medium",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_random",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152493,
+      "prompt_lines": 2300,
+      "prompt_words": 12528
+    },
+    {
+      "sample_id": "a7a-merged-events-1",
+      "question": "How often did you successfully load the dishwasher?",
+      "question_type": "event_statistics",
+      "question_time": "2024-08-27 19:44:05",
+      "setting": "random_medium",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_random",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152465,
+      "prompt_lines": 2300,
+      "prompt_words": 12519
+    },
+    {
+      "sample_id": "a7a-merged-problems-3",
+      "question": "What was the reason why you needed two attempts to grasp the milk yesterday shortly before 3pm?",
+      "question_type": "problem_analysis",
+      "question_time": "2024-08-28 11:11:11",
+      "setting": "random_medium",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_random",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152502,
+      "prompt_lines": 2300,
+      "prompt_words": 12528
+    },
+    {
+      "sample_id": "a7a-merged-req-at-time-1",
+      "question": "What did you do at June 26 shortly after 8 PM?",
+      "question_type": "temporal_event",
+      "question_time": "2024-08-27 15:55:17",
+      "setting": "medium",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_medium",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152460,
+      "prompt_lines": 2300,
+      "prompt_words": 12522
+    },
+    {
+      "sample_id": "a7a-merged-events-4",
+      "question": "What did you do last on July 12?",
+      "question_type": "temporal_event",
+      "question_time": "2024-08-27 16:47:39",
+      "setting": "medium",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_medium",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152446,
+      "prompt_lines": 2300,
+      "prompt_words": 12519
+    },
+    {
+      "sample_id": "a7a-merged-action-detail-2",
+      "question": "What objects did you detect when telling what you can see at June 26 ?",
+      "question_type": "object_detail",
+      "question_time": "2024-08-27 16:19:01",
+      "setting": "medium",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_medium",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152484,
+      "prompt_lines": 2300,
+      "prompt_words": 12526
+    },
+    {
+      "sample_id": "a7a-merged-objects-5",
+      "question": "Which object was next to the soy milk last time you grasped it today in the afternoon?",
+      "question_type": "object_detail",
+      "question_time": "2024-08-27 17:01:59",
+      "setting": "medium",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_medium",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152493,
+      "prompt_lines": 2300,
+      "prompt_words": 12528
+    },
+    {
+      "sample_id": "a7a-merged-events-1",
+      "question": "How often did you successfully load the dishwasher?",
+      "question_type": "event_statistics",
+      "question_time": "2024-08-27 19:44:05",
+      "setting": "medium",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_medium",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152465,
+      "prompt_lines": 2300,
+      "prompt_words": 12519
+    },
+    {
+      "sample_id": "a7a-merged-problems-3",
+      "question": "What was the reason why you needed two attempts to grasp the milk yesterday shortly before 3pm?",
+      "question_type": "problem_analysis",
+      "question_time": "2024-08-28 11:11:11",
+      "setting": "medium",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_medium",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152502,
+      "prompt_lines": 2300,
+      "prompt_words": 12528
+    },
+    {
+      "sample_id": "a7a-merged-req-at-time-1",
+      "question": "What did you do at June 26 shortly after 8 PM?",
+      "question_type": "temporal_event",
+      "question_time": "2024-08-27 15:55:17",
+      "setting": "medium_graph",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_medium_graph",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152460,
+      "prompt_lines": 2300,
+      "prompt_words": 12522
+    },
+    {
+      "sample_id": "a7a-merged-events-4",
+      "question": "What did you do last on July 12?",
+      "question_type": "temporal_event",
+      "question_time": "2024-08-27 16:47:39",
+      "setting": "medium_graph",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_medium_graph",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152446,
+      "prompt_lines": 2300,
+      "prompt_words": 12519
+    },
+    {
+      "sample_id": "a7a-merged-action-detail-2",
+      "question": "What objects did you detect when telling what you can see at June 26 ?",
+      "question_type": "object_detail",
+      "question_time": "2024-08-27 16:19:01",
+      "setting": "medium_graph",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_medium_graph",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152484,
+      "prompt_lines": 2300,
+      "prompt_words": 12526
+    },
+    {
+      "sample_id": "a7a-merged-objects-5",
+      "question": "Which object was next to the soy milk last time you grasped it today in the afternoon?",
+      "question_type": "object_detail",
+      "question_time": "2024-08-27 17:01:59",
+      "setting": "medium_graph",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_medium_graph",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152493,
+      "prompt_lines": 2300,
+      "prompt_words": 12528
+    },
+    {
+      "sample_id": "a7a-merged-events-1",
+      "question": "How often did you successfully load the dishwasher?",
+      "question_type": "event_statistics",
+      "question_time": "2024-08-27 19:44:05",
+      "setting": "medium_graph",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_medium_graph",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152465,
+      "prompt_lines": 2300,
+      "prompt_words": 12519
+    },
+    {
+      "sample_id": "a7a-merged-problems-3",
+      "question": "What was the reason why you needed two attempts to grasp the milk yesterday shortly before 3pm?",
+      "question_type": "problem_analysis",
+      "question_time": "2024-08-28 11:11:11",
+      "setting": "medium_graph",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_medium_graph",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152502,
+      "prompt_lines": 2300,
+      "prompt_words": 12528
+    },
+    {
+      "sample_id": "a7a-merged-req-at-time-1",
+      "question": "What did you do at June 26 shortly after 8 PM?",
+      "question_type": "temporal_event",
+      "question_time": "2024-08-27 15:55:17",
+      "setting": "ultra",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_ultra",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152460,
+      "prompt_lines": 2300,
+      "prompt_words": 12522
+    },
+    {
+      "sample_id": "a7a-merged-events-4",
+      "question": "What did you do last on July 12?",
+      "question_type": "temporal_event",
+      "question_time": "2024-08-27 16:47:39",
+      "setting": "ultra",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_ultra",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152446,
+      "prompt_lines": 2300,
+      "prompt_words": 12519
+    },
+    {
+      "sample_id": "a7a-merged-action-detail-2",
+      "question": "What objects did you detect when telling what you can see at June 26 ?",
+      "question_type": "object_detail",
+      "question_time": "2024-08-27 16:19:01",
+      "setting": "ultra",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_ultra",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152484,
+      "prompt_lines": 2300,
+      "prompt_words": 12526
+    },
+    {
+      "sample_id": "a7a-merged-objects-5",
+      "question": "Which object was next to the soy milk last time you grasped it today in the afternoon?",
+      "question_type": "object_detail",
+      "question_time": "2024-08-27 17:01:59",
+      "setting": "ultra",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_ultra",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152493,
+      "prompt_lines": 2300,
+      "prompt_words": 12528
+    },
+    {
+      "sample_id": "a7a-merged-events-1",
+      "question": "How often did you successfully load the dishwasher?",
+      "question_type": "event_statistics",
+      "question_time": "2024-08-27 19:44:05",
+      "setting": "ultra",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_ultra",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152465,
+      "prompt_lines": 2300,
+      "prompt_words": 12519
+    },
+    {
+      "sample_id": "a7a-merged-problems-3",
+      "question": "What was the reason why you needed two attempts to grasp the milk yesterday shortly before 3pm?",
+      "question_type": "problem_analysis",
+      "question_time": "2024-08-28 11:11:11",
+      "setting": "ultra",
+      "cfg": "armarx_lt_mem/zs_1pass_l2_gemini_forget_ultra",
+      "history_chars": 152064,
+      "history_lines": 2288,
+      "history_words": 12459,
+      "prompt_chars": 152502,
+      "prompt_lines": 2300,
+      "prompt_words": 12528
+    }
+  ],
+  "summary_by_setting": {
+    "base": {
+      "overall": {
+        "count": 6,
+        "mean_prompt_chars": 152475,
+        "mean_prompt_words": 12523.7,
+        "mean_history_chars": 152064,
+        "mean_history_words": 12459,
+        "mean_prompt_char_delta_vs_base": 0,
+        "mean_prompt_char_ratio_vs_base": 1.0,
+        "max_prompt_chars": 152502,
+        "min_prompt_chars": 152446
+      },
+      "by_question_type": {
+        "event_statistics": {
+          "count": 1,
+          "mean_prompt_chars": 152465,
+          "mean_prompt_words": 12519,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152465,
+          "min_prompt_chars": 152465
+        },
+        "object_detail": {
+          "count": 2,
+          "mean_prompt_chars": 152488.5,
+          "mean_prompt_words": 12527,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152493,
+          "min_prompt_chars": 152484
+        },
+        "problem_analysis": {
+          "count": 1,
+          "mean_prompt_chars": 152502,
+          "mean_prompt_words": 12528,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152502,
+          "min_prompt_chars": 152502
+        },
+        "temporal_event": {
+          "count": 2,
+          "mean_prompt_chars": 152453,
+          "mean_prompt_words": 12520.5,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152460,
+          "min_prompt_chars": 152446
+        }
+      }
+    },
+    "medium": {
+      "overall": {
+        "count": 6,
+        "mean_prompt_chars": 152475,
+        "mean_prompt_words": 12523.7,
+        "mean_history_chars": 152064,
+        "mean_history_words": 12459,
+        "mean_prompt_char_delta_vs_base": 0,
+        "mean_prompt_char_ratio_vs_base": 1.0,
+        "max_prompt_chars": 152502,
+        "min_prompt_chars": 152446
+      },
+      "by_question_type": {
+        "event_statistics": {
+          "count": 1,
+          "mean_prompt_chars": 152465,
+          "mean_prompt_words": 12519,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152465,
+          "min_prompt_chars": 152465
+        },
+        "object_detail": {
+          "count": 2,
+          "mean_prompt_chars": 152488.5,
+          "mean_prompt_words": 12527,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152493,
+          "min_prompt_chars": 152484
+        },
+        "problem_analysis": {
+          "count": 1,
+          "mean_prompt_chars": 152502,
+          "mean_prompt_words": 12528,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152502,
+          "min_prompt_chars": 152502
+        },
+        "temporal_event": {
+          "count": 2,
+          "mean_prompt_chars": 152453,
+          "mean_prompt_words": 12520.5,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152460,
+          "min_prompt_chars": 152446
+        }
+      }
+    },
+    "medium_graph": {
+      "overall": {
+        "count": 6,
+        "mean_prompt_chars": 152475,
+        "mean_prompt_words": 12523.7,
+        "mean_history_chars": 152064,
+        "mean_history_words": 12459,
+        "mean_prompt_char_delta_vs_base": 0,
+        "mean_prompt_char_ratio_vs_base": 1.0,
+        "max_prompt_chars": 152502,
+        "min_prompt_chars": 152446
+      },
+      "by_question_type": {
+        "event_statistics": {
+          "count": 1,
+          "mean_prompt_chars": 152465,
+          "mean_prompt_words": 12519,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152465,
+          "min_prompt_chars": 152465
+        },
+        "object_detail": {
+          "count": 2,
+          "mean_prompt_chars": 152488.5,
+          "mean_prompt_words": 12527,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152493,
+          "min_prompt_chars": 152484
+        },
+        "problem_analysis": {
+          "count": 1,
+          "mean_prompt_chars": 152502,
+          "mean_prompt_words": 12528,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152502,
+          "min_prompt_chars": 152502
+        },
+        "temporal_event": {
+          "count": 2,
+          "mean_prompt_chars": 152453,
+          "mean_prompt_words": 12520.5,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152460,
+          "min_prompt_chars": 152446
+        }
+      }
+    },
+    "random_medium": {
+      "overall": {
+        "count": 6,
+        "mean_prompt_chars": 152475,
+        "mean_prompt_words": 12523.7,
+        "mean_history_chars": 152064,
+        "mean_history_words": 12459,
+        "mean_prompt_char_delta_vs_base": 0,
+        "mean_prompt_char_ratio_vs_base": 1.0,
+        "max_prompt_chars": 152502,
+        "min_prompt_chars": 152446
+      },
+      "by_question_type": {
+        "event_statistics": {
+          "count": 1,
+          "mean_prompt_chars": 152465,
+          "mean_prompt_words": 12519,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152465,
+          "min_prompt_chars": 152465
+        },
+        "object_detail": {
+          "count": 2,
+          "mean_prompt_chars": 152488.5,
+          "mean_prompt_words": 12527,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152493,
+          "min_prompt_chars": 152484
+        },
+        "problem_analysis": {
+          "count": 1,
+          "mean_prompt_chars": 152502,
+          "mean_prompt_words": 12528,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152502,
+          "min_prompt_chars": 152502
+        },
+        "temporal_event": {
+          "count": 2,
+          "mean_prompt_chars": 152453,
+          "mean_prompt_words": 12520.5,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152460,
+          "min_prompt_chars": 152446
+        }
+      }
+    },
+    "ultra": {
+      "overall": {
+        "count": 6,
+        "mean_prompt_chars": 152475,
+        "mean_prompt_words": 12523.7,
+        "mean_history_chars": 152064,
+        "mean_history_words": 12459,
+        "mean_prompt_char_delta_vs_base": 0,
+        "mean_prompt_char_ratio_vs_base": 1.0,
+        "max_prompt_chars": 152502,
+        "min_prompt_chars": 152446
+      },
+      "by_question_type": {
+        "event_statistics": {
+          "count": 1,
+          "mean_prompt_chars": 152465,
+          "mean_prompt_words": 12519,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152465,
+          "min_prompt_chars": 152465
+        },
+        "object_detail": {
+          "count": 2,
+          "mean_prompt_chars": 152488.5,
+          "mean_prompt_words": 12527,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152493,
+          "min_prompt_chars": 152484
+        },
+        "problem_analysis": {
+          "count": 1,
+          "mean_prompt_chars": 152502,
+          "mean_prompt_words": 12528,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152502,
+          "min_prompt_chars": 152502
+        },
+        "temporal_event": {
+          "count": 2,
+          "mean_prompt_chars": 152453,
+          "mean_prompt_words": 12520.5,
+          "mean_history_chars": 152064,
+          "mean_history_words": 12459,
+          "mean_prompt_char_delta_vs_base": 0,
+          "mean_prompt_char_ratio_vs_base": 1.0,
+          "max_prompt_chars": 152460,
+          "min_prompt_chars": 152446
+        }
+      }
+    }
+  }
+}
