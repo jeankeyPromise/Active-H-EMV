@@ -1,0 +1,52 @@
+{
+  "setting": "ubpf_medium",
+  "cfg": "armarx_lt_mem/full_gemini_forget_medium",
+  "input_history": "data/armarx_lt_mem/2024-a7a-merged-summary.pkl",
+  "output_history": "experiments/results/armarx_lt_mem/forgetting/ubpf_medium/2024-a7a-merged-summary.pkl",
+  "now_time": "2024-09-18 23:59:59",
+  "base": {
+    "file_size_bytes": 11000484,
+    "higher_summaries": 30,
+    "goals": 1057,
+    "events": 3602,
+    "scenes": 13185,
+    "relations": 24201,
+    "with_summary_override": 0,
+    "with_cached_summary": 0,
+    "forgetting_levels": {
+      "0": 3602
+    }
+  },
+  "after": {
+    "file_size_bytes": 8944621,
+    "higher_summaries": 30,
+    "goals": 1057,
+    "events": 3602,
+    "scenes": 10417,
+    "relations": 17620,
+    "with_summary_override": 1219,
+    "with_cached_summary": 1219,
+    "forgetting_levels": {
+      "0": 1244,
+      "1": 1139,
+      "2": 1219
+    }
+  },
+  "forgetting_stats": {
+    "total": 3602,
+    "level_0_full_retain": 1244,
+    "level_1_detail_removed": 1139,
+    "level_2_summary_only": 1219,
+    "immune_count": 145,
+    "effective_theta_1": 0.11999900000000002,
+    "effective_theta_2": 0.04799960000000001,
+    "retain_ratio": 0.3453636868406441,
+    "forgetting_ratio": 0.6546363131593559
+  },
+  "ratios": {
+    "file_size_ratio": 0.8131115867265477,
+    "scene_ratio": 0.790064467197573,
+    "relation_ratio": 0.7280690880542127,
+    "event_ratio": 1.0
+  }
+}

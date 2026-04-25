@@ -1,0 +1,35 @@
+{
+  "config": {
+    "cfg": "armarx_lt_mem/zs_1pass_flat_gemini_forget_aggressive",
+    "output": "experiments/results/armarx_lt_mem/forgetting_guarded/zs_1pass_gemini_forget_aggressive_n1.json",
+    "dataset": "simple",
+    "only_iter_dataset": "False",
+    "precompute_history_cache": "False",
+    "audit_history_cache": "False",
+    "require_history_cache": "False",
+    "n_samples": "1",
+    "enable_correction": "False",
+    "resume": "False",
+    "retry_errors": "False",
+    "checkpoint_file": "None",
+    "max_prompt_tokens_per_sample": "20000",
+    "max_average_prompt_tokens_per_sample": "20000.0",
+    "max_seconds_per_sample": "120",
+    "history_dir": "data/armarx_lt_mem",
+    "qa_file": "data/armarx_lt_mem/qa.json"
+  },
+  "code_commit": "8653626579861841d96ac59e888471217e45fa73",
+  "results": {
+    "a7a-merged-explain-1": {
+      "q_time": "2024/08/28 13:44:43",
+      "q": "Describe what you did.",
+      "gt": "Over the past months, I performed various activities at 5 different days, including introducing myself, grasping the milk, receiving and handing over objects, loading the dishwasher, and engaging in dialog with the user.",
+      "hyp": "performed my self-introduction multiple times, during which I waved and explained my capabilities. I also"
+    }
+  },
+  "openai_costs": {
+    "cost": 0.0,
+    "prompt_tokens": 228174,
+    "completion_tokens": 508
+  }
+}
