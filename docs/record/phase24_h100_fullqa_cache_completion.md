@@ -1,46 +1,46 @@
-# Phase 24: h=100 Full-QA Cache Completion and 100-QA Run
+# Phase 24: h=100 全量 QA 缓存补全与 100-QA 运行
 
-## Goal
+## 目标
 
-Push the Week 4 experiment mainline from the already-completed `h=50` full-QA result to `h=100`, while keeping the same operational discipline:
+在已完成的 `h=50` full-QA 结果基础上，把第 4 周实验主线推进到 `h=100`，同时保持相同的运行纪律：
 
-- explain and stabilize the cache workflow first;
-- fill all missing `100ep` multi-history caches before QA;
-- run full `100 QA` with cache-only execution;
-- immediately run correctness evaluation and record the final metrics for the thesis table.
+- 先解释并稳定 cache 工作流；
+- 在 QA 前补齐所有缺失的 `100ep` multi-history cache；
+- 使用仅 cache 的执行方式完成完整 `100 QA`；
+- 运行完成后立即进行正确性评估，并记录论文表格所需的最终指标。
 
-This phase is the first formal `h=100` full-QA result for the current Active-H-EMV branch.
+本阶段是当前 Active-H-EMV 分支上的首个正式 `h=100` full-QA 结果。
 
-## Cache Workflow
+## Cache 工作流
 
-Supporting write-up added:
+补充文档：
 
 - `docs/论文写作准备/cache原理说明.md`
 
-That document explains:
+该文档解释了：
 
-1. why multi-history cache exists;
-2. why missing cache silently triggers online summarization;
-3. why `--audit-history-cache` and `--require-history-cache` are necessary guardrails;
-4. why bounded per-history cache fill is safer than one monolithic precompute.
+1. 为什么需要 multi-history cache；
+2. 为什么缺失 cache 会悄悄触发在线 summarization；
+3. 为什么 `--audit-history-cache` 与 `--require-history-cache` 是必要护栏；
+4. 为什么逐 history、带边界的 cache 填充比一次性整体 precompute 更安全。
 
-## Cache Completion
+## 缓存补全
 
-Initial audit:
+初始审计：
 
 - selected histories: `10`
 - cached histories: `0`
 - missing histories: `10`
 
-Safe fill strategy:
+安全补全策略：
 
-- dataset: `data/teach/test_set_100.pkl`
-- config: `teach/simplified/full_graph_aug_zs_fast`
-- per-history bounded precompute using `--skip-first-n-episodes <ep>` and `--n-samples 10`
-- summarizer model: `gemini-2.5-pro`
-- summarizer prompt lightening: `few_shot_k=0`
+- 数据集：`data/teach/test_set_100.pkl`
+- 配置：`teach/simplified/full_graph_aug_zs_fast`
+- 通过 `--skip-first-n-episodes <ep>` 与 `--n-samples 10` 做逐 history 的有界 precompute
+- summarizer 模型：`gemini-2.5-pro`
+- summarizer prompt 轻量化：`few_shot_k=0`
 
-Representative command:
+代表性命令：
 
 ```bash
 set -a
@@ -58,22 +58,22 @@ conda run --no-capture-output -n active-h-emv python -m llm_emv.eval \
   --llm-summarizer-cfg "{'llm': {'model_name': 'gemini-2.5-pro', 'request_timeout': 120, 'max_retries': 5}, 'example_db_name': 'teach', 'few_shot_k': 0}"
 ```
 
-Final audit after completion:
+补全后的最终审计：
 
 - selected histories: `10`
 - cached histories: `10`
 - missing histories: `0`
 
-This confirms the `h=100` QA run did not need to fall back to online recursive summarization.
+这说明 `h=100` 的 QA 运行无需回退到在线递归 summarization。
 
-## Full-QA Run
+## Full-QA 运行
 
-Formal output:
+正式输出：
 
 - `experiments/results/teach/smoke/h100_current_zs_fast_n100_fullqa.json`
 - `experiments/results/teach/smoke/h100_current_zs_fast_n100_fullqa.jsonl`
 
-Initial guarded run command:
+初始带护栏运行命令：
 
 ```bash
 set -a
@@ -92,18 +92,18 @@ conda run --no-capture-output -n active-h-emv python -m llm_emv.eval \
   --max-seconds-per-sample 240
 ```
 
-During the long run, the experiment was resumed from checkpoint. The final completed result file records the resumed runtime config:
+在长时间运行过程中，实验曾从 checkpoint 继续恢复。最终完成的结果文件记录的恢复后运行配置为：
 
 - `resume=True`
 - `max_prompt_tokens_per_sample=25000`
 - `max_average_prompt_tokens_per_sample=7000`
 - `max_seconds_per_sample=240`
 
-This means the final `100/100` completion was achieved under cache-only execution, but with a slightly looser prompt-budget ceiling during resume so that `h=100` just-before/after and long date-retrieval questions could finish instead of being cut off too early.
+这意味着最终的 `100/100` 完成是在严格 cache-only 执行下达到的，但在恢复阶段稍微放宽了 prompt 预算上限，使 `h=100` 下的 just-before/after 和长距离日期检索问题能够完成，而不是过早被截断。
 
-## Evaluation
+## 评估
 
-Evaluation command:
+评估命令：
 
 ```bash
 set -a
@@ -113,35 +113,35 @@ PYTHON_BIN="conda run --no-capture-output -n active-h-emv python" \
   scripts/evaluate_result.sh experiments/results/teach/smoke/h100_current_zs_fast_n100_fullqa.json
 ```
 
-Generated evaluation artifacts:
+生成的评估产物：
 
 - `experiments/results/teach/smoke/h100_current_zs_fast_n100_fullqa.gemini_2.5_pro-5634d4.auto_eval.json`
 - `experiments/results/teach/smoke/h100_current_zs_fast_n100_fullqa_llm_eval.log`
 - `experiments/results/teach/smoke/h100_current_zs_fast_n100_fullqa_metrics.log`
 
-## Stability Outcome
+## 稳定性结果
 
-Final completion:
+最终完成情况：
 
-- final JSON result count: `100`
-- final checkpoint line count: `100`
+- 最终 JSON 结果数：`100`
+- 最终 checkpoint 行数：`100`
 
-Runtime observations:
+运行时观察：
 
-- no online `group and summarize` during QA
-- no `###ERROR###`
-- no empty-reply cascade
-- one observed sample-level timeout during an earlier partial run, but the completed resumed run still reached `100/100`
-- low-action structured direct answers continued to save token on some samples (`0 token` paths remained active)
+- QA 过程中未发生在线 `group and summarize`
+- 没有 `###ERROR###`
+- 没有空回复级联
+- 早期部分运行中观察到一次样本级 timeout，但补完后的续跑仍然达到了 `100/100`
+- 低层动作结构化直答仍然在部分样本中节省了 token（`0 token` 路径仍然有效）
 
-## Metrics
+## 指标
 
-Metric convention used here:
+此处采用的指标约定：
 
-- `S_c`: fully correct rate
-- `S_p`: at-least-partially-correct rate (`correct + partial`)
+- `S_c`：完全正确率
+- `S_p`：至少部分正确率（`correct + partial`）
 
-Primary metrics from `scripts/evaluate_result.sh`:
+来自 `scripts/evaluate_result.sh` 的主要指标：
 
 | Run | Total | Valid | `S_c` | `S_p` | Wrong/no-answer | `T` |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -149,54 +149,54 @@ Primary metrics from `scripts/evaluate_result.sh`:
 | Phase 23 `h=50` full QA | 100 | 100% | 48.0% | 72.0% | 28.0% | 2.06K |
 | Phase 24 `h=100` full QA | 100 | 98.0% | 49.0% | 75.0% | 25.0% | 2.29K |
 
-Phase 24 breakdown:
+Phase 24 细分结果：
 
 - `correct = 49/100`
 - `partially_correct = 26/100`
 - `at_least_partially_correct = 75/100`
 - `wrong = 25/100`
-- valid answer rate = `98.0%`
-- error/empty answer rate = `2.0%`
-- prompt tokens per QA = `2.29K`
-- completion tokens per QA = `0.36K`
+- 合法答案率 = `98.0%`
+- 错误/空答案率 = `2.0%`
+- 每个 QA 的 prompt tokens = `2.29K`
+- 每个 QA 的 completion tokens = `0.36K`
 
-## Interpretation
+## 解读
 
-This phase is a clear thesis-positive result.
+本阶段是一个明确利好论文的结果。
 
-Compared with the original paper's `h=100` full multimodal H-EMV row:
+与原论文 `h=100` full multimodal H-EMV 那一行相比：
 
-1. `S_c` improves from `34.0%` to `49.0%` (`+15` points).
-2. prompt-token cost drops from `10.4K` to `2.29K`.
-3. even with a small `2%` invalid/error rate, the overall semantic utility remains clearly stronger than the baseline.
+1. `S_c` 从 `34.0%` 提升到 `49.0%`（`+15` 个点）。
+2. prompt-token 成本从 `10.4K` 降到 `2.29K`。
+3. 即便存在 `2%` 的 invalid/error rate，整体语义效用仍明显强于原始基线。
 
-Compared with Phase 23:
+与 Phase 23 相比：
 
-- `h=100` maintains essentially the same semantic-correct level (`49.0%` vs `48.0%`) while handling a much longer history horizon;
-- `S_p` also remains strong (`75.0%` vs `72.0%`), meaning most questions are at least partially correct even at the longer history horizon;
-- token cost rises only modestly (`2.29K` vs `2.06K`);
-- the main new cost at `h=100` is runtime latency, especially for temporal-neighbor and long-range date questions.
+- 在更长 history 范围下，`h=100` 基本保持了相同级别的语义正确性（`49.0%` vs `48.0%`）；
+- `S_p` 也保持强势（`75.0%` vs `72.0%`），说明即使在更长 history 下，大多数问题仍至少部分正确；
+- token 成本只小幅上升（`2.29K` vs `2.06K`）；
+- `h=100` 新增的主要成本是运行时延，尤其体现在 temporal-neighbor 和长距离日期问题上。
 
-So the current system behavior at `h=100` is best described as:
+因此，当前系统在 `h=100` 下的行为最适合描述为：
 
-- already strong enough for the thesis claim against the original baseline;
-- operationally feasible with explicit cache control;
-- close to a practical bottleneck where more gain would likely require targeted precision work rather than simply pushing history longer.
+- 已足够支撑论文中相对于原始基线的主张；
+- 在显式 cache 控制下具备可运行性；
+- 已接近实际瓶颈，再想继续提升，可能需要针对性精度优化，而不是单纯继续拉长 history。
 
-## Conclusion
+## 结论
 
-For the thesis main table:
+对于论文主表：
 
-- keep **Phase 23** as the stable `h=50` full-QA point;
-- add **Phase 24** as the `h=100` full-QA point;
-- use Phase 24 to support the claim that the improved system continues to outperform the original H-EMV baseline even at the longest tested history length.
+- 保留 **Phase 23** 作为稳定的 `h=50` full-QA 结果点；
+- 增加 **Phase 24** 作为 `h=100` full-QA 结果点；
+- 使用 Phase 24 支撑“即使在测试的最长 history 长度下，改进后的系统仍优于原始 H-EMV 基线”的论点。
 
-## Next Step
+## 下一步
 
-The most sensible next move is not another larger run by default.
+默认情况下，最合理的下一步并不是再跑一个更大的实验。
 
-Instead:
+而是：
 
-1. fold Phase 23 and Phase 24 into the final thesis result table and discussion;
-2. select 2-3 representative `h=100` successful cases and 1-2 failure cases for qualitative analysis;
-3. only do more code changes if they target a very specific residual issue such as short-object yes/no precision or temporal-neighbor ambiguity.
+1. 将 Phase 23 和 Phase 24 合并进最终论文结果表与讨论中；
+2. 选取 2-3 个代表性的 `h=100` 成功案例，以及 1-2 个失败案例做定性分析；
+3. 只有在代码改动能够精确命中某个残余问题时，才继续推进，例如短对象 yes/no 精度或 temporal-neighbor 歧义。

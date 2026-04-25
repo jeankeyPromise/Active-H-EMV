@@ -26,11 +26,12 @@
 | Phase 17 | `phase17_n40_precision_fixes.md` | n=40 暴露问题的精度修复 | 收紧 event/date 与 temporal target 约束；修复 tomato-bowl、armchair 多报；low-action 仍需 raw-action 辅助索引 |
 | Phase 18 | `phase18_h50_n40_patched_probe.md` | h=50 n=40 patched probe | n=40 valid=100%, `S_c=62.5%`, `S_p=80.0%`, `T=2.37K`；precision patch 净提升，瓶颈转向 low-action/raw-action 召回 |
 | Phase 19 | `phase19_raw_action_lookup_probe.md` | raw-action lookup 与 h=50 n=40 action probe | low-action targeted n=4 valid=100%, `S_c=25%`, `S_p=100%`, `T=2.16K`；n=40 action_v1 valid=100%, `S_c=55%`, `S_p=75%`, `T=2.31K`，未超过 Phase 18，已补 pillow/sofa v1.1 误路由 |
-| Phase 20 | `phase20_h50_action_v12_probe.md` | h=50 action v1.2 prompt probe | targeted n=5 valid=100%, `S_c=60%`, `T=2.08K`；n=40 valid=100%, `S_c=60%`, `S_p=80%`, `T=2.29K`，恢复 action_v1 退化但仍未超过 Phase 18 |
-| Phase 21 | `phase21_h50_action_v13_n20.md` | h=50 action v1.3 稳定性探针 | n=20 valid=100%, `S_c=60%`, `S_p=85%`, `T=2.35K`；clean-all 约束更稳，但未超过 Phase 15/18，当前适合作为诊断分支 |
-| Phase 22 | `phase22_h50_action_v13_n60_resume.md` | h=50 action v1.3 n=60 恢复完成 | 从 `46/60` partial 安全恢复到 `60/60`；valid=100%, `S_c=53.3%`, `S_p=75.0%`, `T=2.45K`；low-action 结构化直答护栏有效消除了 token runaway |
-| Phase 23 | `phase23_h50_fullqa_cache_completion.md` | h=50 全 QA cache 补齐与正式评测 | 先修复短对象 `cd` 路径，再将 `50ep` history cache 从 `6/10` 补齐到 `10/10`，最终 full-QA `100/100` 完成；valid=100%, `S_c=48.0%`, `S_p=72.0%`, `T=2.06K` |
-| Phase 24 | `phase24_h100_fullqa_cache_completion.md` | h=100 全 QA cache 补齐与正式评测 | 先将 `100ep` history cache 从 `0/10` 补齐到 `10/10`，再完成 full-QA `100/100`；valid=98.0%, `S_c=49.0%`, `S_p=75.0%`, `T=2.29K`，相对原文 `h=100` baseline 仍显著占优 |
+| Phase 20 | `phase20_h50_action_v12_probe.md` | h=50 动作 v1.2 提示词探测 | 定向 n=5 valid=100%, `S_c=60%`, `T=2.08K`；n=40 valid=100%, `S_c=60%`, `S_p=80%`, `T=2.29K`，收复了 action_v1 的部分退化，但仍未超过 Phase 18 |
+| Phase 21 | `phase21_h50_action_v13_n20.md` | h=50 动作 v1.3 稳定性探测 | n=20 valid=100%, `S_c=60%`, `S_p=85%`, `T=2.35K`；`clean all` 约束更稳，但未超过 Phase 15/18，目前更适合作为诊断分支 |
+| Phase 22 | `phase22_h50_action_v13_n60_resume.md` | h=50 动作 v1.3 n=60 续跑完成 | 从 `46/60` 安全续跑到 `60/60`；valid=100%, `S_c=53.3%`, `S_p=75.0%`, `T=2.45K`；低层动作结构化直答护栏有效消除了 token runaway |
+| Phase 23 | `phase23_h50_fullqa_cache_completion.md` | h=50 全量 QA 缓存补齐与正式评测 | 先修复短对象 `cd` 路径，再将 `50ep` history cache 从 `6/10` 补齐到 `10/10`，最终 full-QA `100/100` 完成；valid=100%, `S_c=48.0%`, `S_p=72.0%`, `T=2.06K` |
+| Phase 24 | `phase24_h100_fullqa_cache_completion.md` | h=100 全量 QA 缓存补齐与正式评测 | 先将 `100ep` history cache 从 `0/10` 补齐到 `10/10`，再完成 full-QA `100/100`；valid=98.0%, `S_c=49.0%`, `S_p=75.0%`, `T=2.29K`，相对原文 `h=100` 基线仍显著占优 |
+| Phase 25 | `phase25_armarx_forgetting_guarded_probe.md` | ARMARX 遗忘模块受控探测 | 遗忘模块已能压缩 ARMARX 记忆树；`ubpf_ultra` 将文件比例压到 `0.797`，但 one-pass prompt 仍高达 `220,648` tokens，说明遗忘应与层级检索配合评估，而不能只依赖 full-history flatten |
 
 ## 固定实验口径
 
