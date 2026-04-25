@@ -1,0 +1,12 @@
+type: zs_one_pass
+prompt_name: teach
+history_levels: 0
+include_lowest_level_details: True
+prompt_cfg: null
+llm:
+  type: ChatOpenAI
+  model_name: gemini-2.5-pro
+  max_tokens: 512
+  temperature: 0.1
+  request_timeout: 45
+  max_retries: 2

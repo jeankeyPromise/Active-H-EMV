@@ -1,0 +1,6 @@
++include: full_gemini
+
+forgetting:
+  enabled: true
+  random_mode: true
+  random_forget_ratio: 0.50

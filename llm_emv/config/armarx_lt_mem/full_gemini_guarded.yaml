@@ -1,0 +1,15 @@
++include: full_gemini
+
+max_rounds: 6
+
+llm:
+  max_tokens: 512
+  request_timeout: 45
+
+question_vlm:
+  max_tokens: 32
+
+search:
+  filter_kwargs:
+    top_p: 0.15
+    min_cos_sim: 0.5

@@ -59,17 +59,6 @@ def setup_llm_emv(cfg_path='teach/simplified/full',
     cfg = load_config(full_cfg_path, ((None, ('base', 'loop_prevention', 'suffix')),
                                       ('simplified_coding',
                                        ('system', 'usage', 'user_question', 'history', 'final_try'))))
-
-    # 直接用一个 LLM 做一次性的 semi-flat QA（可能是把历史压平后问大模型）
-    # 返回的是已经绑定了 history 的偏函数 → 调用时只需要给问题即可                                
-    if cfg.get('type') == 'zs_one_pass':
-        model = ZeroShotOnePassSemiFlatQA(
-            instantiate_llm(cfg.pop('llm')), 
-            now_time=now_time, 
-            **cfg)
-        return partial(model, history)
-
-    vlm = _instantiate_vlm(cfg.pop('question_vlm', None))
     search_cfg = cfg.pop('search', None)
     eager_search_init = True
     if search_cfg is not None:
@@ -81,6 +70,17 @@ def setup_llm_emv(cfg_path='teach/simplified/full',
     forgetting_cfg = cfg.pop('forgetting', None)
     if forgetting_cfg is not None and forgetting_cfg.pop('enabled', False):
         history = apply_memory_consolidation(history, now_time, search_emb, forgetting_cfg)
+
+    # 直接用一个 LLM 做一次性的 semi-flat QA（可能是把历史压平后问大模型）
+    # 返回的是已经绑定了 history 的偏函数 → 调用时只需要给问题即可
+    if cfg.get('type') == 'zs_one_pass':
+        model = ZeroShotOnePassSemiFlatQA(
+            instantiate_llm(cfg.pop('llm')),
+            now_time=now_time,
+            **cfg)
+        return partial(model, history)
+
+    vlm = _instantiate_vlm(cfg.pop('question_vlm', None))
 
     # 图增强检索：构建记忆图（带缓存）
     graph_cfg = cfg.pop('graph_augment', None)

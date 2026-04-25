@@ -1,0 +1,9 @@
++include: zs_1pass_flat
+
+search:
+  embedding: all-mpnet-base-v2
+
+forgetting:
+  enabled: true
+  random_mode: true
+  random_forget_ratio: 0.50

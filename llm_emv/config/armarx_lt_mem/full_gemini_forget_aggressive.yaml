@@ -1,0 +1,12 @@
++include: full_gemini
+
+forgetting:
+  enabled: true
+  alpha: 0.3
+  beta: 0.3
+  gamma: 0.4
+  theta_1: 0.95
+  theta_2: 0.70
+  half_life: 3600
+  min_retain_ratio: 0.10
+  use_graph_centrality: false
