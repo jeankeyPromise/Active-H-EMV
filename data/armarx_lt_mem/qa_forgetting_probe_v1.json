@@ -1,0 +1,77 @@
+[
+  {
+    "id": "a7a-merged-explain-1",
+    "history": "2024-a7a-merged-summary",
+    "q": "Describe what you did.",
+    "a": "Over the past months, I performed various activities at 5 different days, including introducing myself, grasping the milk, receiving and handing over objects, loading the dishwasher, and engaging in dialog with the user."
+  },
+  {
+    "id": "a7a-merged-explain-3",
+    "history": "2024-a7a-merged-summary",
+    "q": "Explain briefly what you did at each day that you can remember.",
+    "a": "On June 26, I handed over and received objects multiple times, learned a new object, and engaged in dialog. On June 27, I navigated to multiple locations, introduced myself, and grasped the milk. On July 12, I described my surroundings, went to home pose, brought the milk, received and handed over objects, loaded the dishwasher, failed to learn a person, and introduced myself. On July 13, I performed introductions, navigated to various locations, handed over objects, loaded a dishwasher, analyzed surroundings, and performed grasping tasks. On August 27, I introduced myself, engaged in conversations, moved around, shaped my hands, and handled objects, with mixed success."
+  },
+  {
+    "id": "a7a-merged-req-at-time-1",
+    "history": "2024-a7a-merged-summary",
+    "q": "What did you do at June 26 shortly after 8 PM?",
+    "a": "Receive an object from a human, afterwards hand over the object to the human"
+  },
+  {
+    "id": "a7a-merged-events-4",
+    "history": "2024-a7a-merged-summary",
+    "q": "What did you do last on July 12?",
+    "a": "I introduced myself"
+  },
+  {
+    "id": "a7a-merged-events-5",
+    "history": "2024-a7a-merged-summary",
+    "q": "What did you do just after introducing yourself today before noon?",
+    "a": "I moved 1 meter backwards."
+  },
+  {
+    "id": "a7a-merged-action-detail-2",
+    "history": "2024-a7a-merged-summary",
+    "q": "What objects did you detect when telling what you can see at June 26 ?",
+    "a": "I detected an unknown object and asked the user to tell me its name"
+  },
+  {
+    "id": "a7a-merged-objects-5",
+    "history": "2024-a7a-merged-summary",
+    "q": "Which object was next to the soy milk last time you grasped it today in the afternoon?",
+    "q_time": "2024-08-27 17:01:59",
+    "a": "Orange juice bottle"
+  },
+  {
+    "id": "a7a-merged-objects-7",
+    "history": "2024-a7a-merged-summary",
+    "q": "What color was the milk packaging that you grasped yesterday around 3 PM?",
+    "q_time": "2024-08-28 12:02:33",
+    "a": "green, white and blue"
+  },
+  {
+    "id": "a7a-merged-events-1",
+    "history": "2024-a7a-merged-summary",
+    "q": "How often did you successfully load the dishwasher?",
+    "a": "4 times: at 2024/07/12 15:26, 07/13 13:46 and 14:54, 08/27 14:40"
+  },
+  {
+    "id": "a7a-merged-events-6",
+    "history": "2024-a7a-merged-summary",
+    "q": "How many times did you introduce yourself?",
+    "a": "6 times: Once on June 26 and July 12, twice on July 13 and August 27, each"
+  },
+  {
+    "id": "a7a-merged-problems-1",
+    "history": "2024-a7a-merged-summary",
+    "q": "Did you have any problems during the demo on July 12?",
+    "a": "I did not finish bringing the milk to the human at 15:11, and I failed to learn a new person at 15:46"
+  },
+  {
+    "id": "a7a-merged-problems-3",
+    "history": "2024-a7a-merged-summary",
+    "q": "What was the reason why you needed two attempts to grasp the milk yesterday shortly before 3pm?",
+    "q_time": "2024-08-28 11:11:11",
+    "a": "Initially, the speech recognition was off, and I tried to grasp the 'Moog' which does not exist. The user had to repeat the command."
+  }
+]

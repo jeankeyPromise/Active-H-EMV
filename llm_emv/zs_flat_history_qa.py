@@ -82,10 +82,12 @@ class ZeroShotOnePassSemiFlatQA:
                  now_time: datetime = None,
                  history_levels: Literal[0, 1, 2] = 2,
                  include_lowest_level_details=False,
+                 include_event_details_under_summaries=True,
                  **kwargs):
         super().__init__()
         assert history_levels in [0, 1, 2], str(history_levels)
         self.include_lowest_level_details = include_lowest_level_details
+        self.include_event_details_under_summaries = include_event_details_under_summaries
         self.now_time = now_time or datetime.now()
         self.history_levels = history_levels
         self.llm = llm
@@ -138,14 +140,15 @@ class ZeroShotOnePassSemiFlatQA:
         for l2_summary in find_all_parents_of_predefined_summary_nodes(history):
             range_str = format_datetime_range(*l2_summary.range)
             history_str += range_str + ': ' + l2_summary.nl_summary + '\n'
-            for goal in l2_summary.children:
+            for goal in _iter_goals_in_higher_summary(l2_summary):
                 range_str = format_datetime_range(*goal.range)
                 history_str += ' - ' + range_str + ': ' + goal.nl_summary.splitlines()[0] + '\n'
-                for event in goal.events:
-                    if self.include_lowest_level_details:
-                        history_str += ' -- ' + indent_following_lines(event.nl_summary, 4) + '\n'
-                    else:
-                        history_str += ' -- ' + event.nl_summary.splitlines()[0] + '\n'
+                if self.include_event_details_under_summaries:
+                    for event in goal.events:
+                        if self.include_lowest_level_details:
+                            history_str += ' -- ' + indent_following_lines(event.nl_summary, 4) + '\n'
+                        else:
+                            history_str += ' -- ' + event.nl_summary.splitlines()[0] + '\n'
         return history_str
 
     def __call__(self, history: HigherLevelSummary, question: str):
@@ -195,3 +198,11 @@ def _iter_events(h: Union[HigherLevelSummary, GoalBasedSummary]):
                 yield c
             else:
                 yield from _iter_events(c)
+
+
+def _iter_goals_in_higher_summary(h: HigherLevelSummary):
+    for child in h.children:
+        if isinstance(child, GoalBasedSummary):
+            yield child
+        elif isinstance(child, HigherLevelSummary):
+            yield from _iter_goals_in_higher_summary(child)
