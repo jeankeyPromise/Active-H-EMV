@@ -1,0 +1,397 @@
+{
+  "base_history": "data/armarx_lt_mem/2024-a7a-merged-summary.pkl",
+  "settings": {
+    "base": "data/armarx_lt_mem/2024-a7a-merged-summary.pkl",
+    "random_medium": "experiments/results/armarx_lt_mem/forgetting/random_medium/2024-a7a-merged-summary.pkl",
+    "medium": "experiments/results/armarx_lt_mem/forgetting/ubpf_medium/2024-a7a-merged-summary.pkl",
+    "medium_graph": "experiments/results/armarx_lt_mem/forgetting/ubpf_medium_graph/2024-a7a-merged-summary.pkl",
+    "ultra": "experiments/results/armarx_lt_mem/forgetting/ubpf_ultra/2024-a7a-merged-summary.pkl"
+  },
+  "thresholds": {
+    "rich_scene_threshold": 15,
+    "rich_relation_threshold": 60,
+    "selected_rich_base_events": 117
+  },
+  "probe_events": {
+    "base": {
+      "unknown_object_scan": {
+        "related_qa_id": "a7a-merged-action-detail-2",
+        "description": "WhatCanYouSee question around the unknown-object answer on June 26.",
+        "timestamp": "2024-06-26 19:51:45.929737",
+        "action": "WhatCanYouSee",
+        "action_state": "Succeeded",
+        "forgetting_level": 0,
+        "scenes": 1,
+        "relations": 0,
+        "objects": 0,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: WhatCanYouSee <Succeeded>."
+      },
+      "moog_failure": {
+        "related_qa_id": "a7a-merged-problems-3",
+        "description": "First failed attempt caused by grasping 'Moog'.",
+        "timestamp": "2024-08-27 14:55:25.549708",
+        "action": "GraspNamedObjectWithinReach",
+        "action_state": "Failed",
+        "forgetting_level": 0,
+        "scenes": 3,
+        "relations": 18,
+        "objects": 48,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: GraspNamedObjectWithinReach(objectName=Moog) <Failed>"
+      },
+      "soy_milk_predefined_grasp": {
+        "related_qa_id": "a7a-merged-objects-5",
+        "description": "Relation-rich soy-milk grasping process right before the successful milk grasp.",
+        "timestamp": "2024-08-27 14:56:06.336850",
+        "action": "Grasping::KnownObject::PredefinedGrasp",
+        "action_state": "Succeeded",
+        "forgetting_level": 0,
+        "scenes": 47,
+        "relations": 282,
+        "objects": 752,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>"
+      },
+      "dishwasher_success": {
+        "related_qa_id": "a7a-merged-events-1",
+        "description": "Successful dishwasher loading event on Aug 27.",
+        "timestamp": "2024-08-27 14:40:55.459712",
+        "action": "LoadDishwasher",
+        "action_state": "Succeeded",
+        "forgetting_level": 0,
+        "scenes": 1,
+        "relations": 5,
+        "objects": 14,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: LoadDishwasher(open=True, dishwasherLocation=mobile-dishwasher/OpenDishwasher:0) <Succeeded>"
+      }
+    },
+    "random_medium": {
+      "unknown_object_scan": {
+        "related_qa_id": "a7a-merged-action-detail-2",
+        "description": "WhatCanYouSee question around the unknown-object answer on June 26.",
+        "timestamp": "2024-06-26 19:51:45.929737",
+        "action": "WhatCanYouSee",
+        "action_state": "Succeeded",
+        "forgetting_level": 0,
+        "scenes": 1,
+        "relations": 0,
+        "objects": 0,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: WhatCanYouSee <Succeeded>."
+      },
+      "moog_failure": {
+        "related_qa_id": "a7a-merged-problems-3",
+        "description": "First failed attempt caused by grasping 'Moog'.",
+        "timestamp": "2024-08-27 14:55:25.549708",
+        "action": "GraspNamedObjectWithinReach",
+        "action_state": "Failed",
+        "forgetting_level": 0,
+        "scenes": 3,
+        "relations": 18,
+        "objects": 48,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: GraspNamedObjectWithinReach(objectName=Moog) <Failed>"
+      },
+      "soy_milk_predefined_grasp": {
+        "related_qa_id": "a7a-merged-objects-5",
+        "description": "Relation-rich soy-milk grasping process right before the successful milk grasp.",
+        "timestamp": "2024-08-27 14:56:06.336850",
+        "action": "Grasping::KnownObject::PredefinedGrasp",
+        "action_state": "Succeeded",
+        "forgetting_level": 1,
+        "scenes": 47,
+        "relations": 282,
+        "objects": 752,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>"
+      },
+      "dishwasher_success": {
+        "related_qa_id": "a7a-merged-events-1",
+        "description": "Successful dishwasher loading event on Aug 27.",
+        "timestamp": "2024-08-27 14:40:55.459712",
+        "action": "LoadDishwasher",
+        "action_state": "Succeeded",
+        "forgetting_level": 0,
+        "scenes": 1,
+        "relations": 5,
+        "objects": 14,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: LoadDishwasher(open=True, dishwasherLocation=mobile-dishwasher/OpenDishwasher:0) <Succeeded>"
+      }
+    },
+    "medium": {
+      "unknown_object_scan": {
+        "related_qa_id": "a7a-merged-action-detail-2",
+        "description": "WhatCanYouSee question around the unknown-object answer on June 26.",
+        "timestamp": "2024-06-26 19:51:45.929737",
+        "action": "WhatCanYouSee",
+        "action_state": "Succeeded",
+        "forgetting_level": 1,
+        "scenes": 1,
+        "relations": 0,
+        "objects": 0,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: WhatCanYouSee <Succeeded>."
+      },
+      "moog_failure": {
+        "related_qa_id": "a7a-merged-problems-3",
+        "description": "First failed attempt caused by grasping 'Moog'.",
+        "timestamp": "2024-08-27 14:55:25.549708",
+        "action": "GraspNamedObjectWithinReach",
+        "action_state": "Failed",
+        "forgetting_level": 0,
+        "scenes": 3,
+        "relations": 18,
+        "objects": 48,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: GraspNamedObjectWithinReach(objectName=Moog) <Failed>"
+      },
+      "soy_milk_predefined_grasp": {
+        "related_qa_id": "a7a-merged-objects-5",
+        "description": "Relation-rich soy-milk grasping process right before the successful milk grasp.",
+        "timestamp": "2024-08-27 14:56:06.336850",
+        "action": "Grasping::KnownObject::PredefinedGrasp",
+        "action_state": "Succeeded",
+        "forgetting_level": 2,
+        "scenes": 1,
+        "relations": 0,
+        "objects": 16,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": true,
+        "summary_head": "Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>"
+      },
+      "dishwasher_success": {
+        "related_qa_id": "a7a-merged-events-1",
+        "description": "Successful dishwasher loading event on Aug 27.",
+        "timestamp": "2024-08-27 14:40:55.459712",
+        "action": "LoadDishwasher",
+        "action_state": "Succeeded",
+        "forgetting_level": 1,
+        "scenes": 1,
+        "relations": 5,
+        "objects": 14,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: LoadDishwasher(open=True, dishwasherLocation=mobile-dishwasher/OpenDishwasher:0) <Succeeded>"
+      }
+    },
+    "medium_graph": {
+      "unknown_object_scan": {
+        "related_qa_id": "a7a-merged-action-detail-2",
+        "description": "WhatCanYouSee question around the unknown-object answer on June 26.",
+        "timestamp": "2024-06-26 19:51:45.929737",
+        "action": "WhatCanYouSee",
+        "action_state": "Succeeded",
+        "forgetting_level": 1,
+        "scenes": 1,
+        "relations": 0,
+        "objects": 0,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: WhatCanYouSee <Succeeded>."
+      },
+      "moog_failure": {
+        "related_qa_id": "a7a-merged-problems-3",
+        "description": "First failed attempt caused by grasping 'Moog'.",
+        "timestamp": "2024-08-27 14:55:25.549708",
+        "action": "GraspNamedObjectWithinReach",
+        "action_state": "Failed",
+        "forgetting_level": 0,
+        "scenes": 3,
+        "relations": 18,
+        "objects": 48,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: GraspNamedObjectWithinReach(objectName=Moog) <Failed>"
+      },
+      "soy_milk_predefined_grasp": {
+        "related_qa_id": "a7a-merged-objects-5",
+        "description": "Relation-rich soy-milk grasping process right before the successful milk grasp.",
+        "timestamp": "2024-08-27 14:56:06.336850",
+        "action": "Grasping::KnownObject::PredefinedGrasp",
+        "action_state": "Succeeded",
+        "forgetting_level": 1,
+        "scenes": 47,
+        "relations": 282,
+        "objects": 752,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>"
+      },
+      "dishwasher_success": {
+        "related_qa_id": "a7a-merged-events-1",
+        "description": "Successful dishwasher loading event on Aug 27.",
+        "timestamp": "2024-08-27 14:40:55.459712",
+        "action": "LoadDishwasher",
+        "action_state": "Succeeded",
+        "forgetting_level": 1,
+        "scenes": 1,
+        "relations": 5,
+        "objects": 14,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: LoadDishwasher(open=True, dishwasherLocation=mobile-dishwasher/OpenDishwasher:0) <Succeeded>"
+      }
+    },
+    "ultra": {
+      "unknown_object_scan": {
+        "related_qa_id": "a7a-merged-action-detail-2",
+        "description": "WhatCanYouSee question around the unknown-object answer on June 26.",
+        "timestamp": "2024-06-26 19:51:45.929737",
+        "action": "WhatCanYouSee",
+        "action_state": "Succeeded",
+        "forgetting_level": 1,
+        "scenes": 1,
+        "relations": 0,
+        "objects": 0,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: WhatCanYouSee <Succeeded>."
+      },
+      "moog_failure": {
+        "related_qa_id": "a7a-merged-problems-3",
+        "description": "First failed attempt caused by grasping 'Moog'.",
+        "timestamp": "2024-08-27 14:55:25.549708",
+        "action": "GraspNamedObjectWithinReach",
+        "action_state": "Failed",
+        "forgetting_level": 0,
+        "scenes": 3,
+        "relations": 18,
+        "objects": 48,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: GraspNamedObjectWithinReach(objectName=Moog) <Failed>"
+      },
+      "soy_milk_predefined_grasp": {
+        "related_qa_id": "a7a-merged-objects-5",
+        "description": "Relation-rich soy-milk grasping process right before the successful milk grasp.",
+        "timestamp": "2024-08-27 14:56:06.336850",
+        "action": "Grasping::KnownObject::PredefinedGrasp",
+        "action_state": "Succeeded",
+        "forgetting_level": 2,
+        "scenes": 1,
+        "relations": 0,
+        "objects": 16,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": true,
+        "summary_head": "Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>"
+      },
+      "dishwasher_success": {
+        "related_qa_id": "a7a-merged-events-1",
+        "description": "Successful dishwasher loading event on Aug 27.",
+        "timestamp": "2024-08-27 14:40:55.459712",
+        "action": "LoadDishwasher",
+        "action_state": "Succeeded",
+        "forgetting_level": 1,
+        "scenes": 1,
+        "relations": 5,
+        "objects": 14,
+        "images_present": 0,
+        "sound_present": 0,
+        "asr_scenes": 0,
+        "has_summary_override": false,
+        "summary_head": "Action: LoadDishwasher(open=True, dishwasherLocation=mobile-dishwasher/OpenDishwasher:0) <Succeeded>"
+      }
+    }
+  },
+  "rich_event_aggregate": {
+    "base": {
+      "matched_events": 117,
+      "forgetting_level_counts": {
+        "0": 117
+      },
+      "mean_scenes_per_event": 47.31,
+      "mean_relations_per_event": 145.44
+    },
+    "random_medium": {
+      "matched_events": 117,
+      "forgetting_level_counts": {
+        "0": 102,
+        "1": 6,
+        "2": 9
+      },
+      "mean_scenes_per_event": 45.01,
+      "mean_relations_per_event": 137.2
+    },
+    "medium": {
+      "matched_events": 117,
+      "forgetting_level_counts": {
+        "0": 71,
+        "1": 23,
+        "2": 23
+      },
+      "mean_scenes_per_event": 39.74,
+      "mean_relations_per_event": 112.63
+    },
+    "medium_graph": {
+      "matched_events": 117,
+      "forgetting_level_counts": {
+        "0": 71,
+        "1": 36,
+        "2": 10
+      },
+      "mean_scenes_per_event": 43.89,
+      "mean_relations_per_event": 130.22
+    },
+    "ultra": {
+      "matched_events": 117,
+      "forgetting_level_counts": {
+        "0": 66,
+        "1": 27,
+        "2": 24
+      },
+      "mean_scenes_per_event": 39.58,
+      "mean_relations_per_event": 111.82
+    }
+  }
+}

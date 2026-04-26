@@ -1,0 +1,42 @@
+{
+  "probe": {
+    "probe_id": "objects_5_local_latest_scene",
+    "description": "Use the latest scene of the soy-milk grasping process as a local low-level detail view.",
+    "question": "Which object was next to the soy milk last time you grasped it today in the afternoon?",
+    "ground_truth": "Orange juice bottle"
+  },
+  "results": {
+    "base": {
+      "history_path": "data/armarx_lt_mem/2024-a7a-merged-summary.pkl",
+      "matched_event_timestamp": "2024-08-27 14:56:06.336850",
+      "forgetting_level": 0,
+      "prompt_chars": 983,
+      "context": "Matched event range: 2024-08-27 14:55:43.886634 -> 2024-08-27 14:56:06.336850\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 0\nScene count in event: 47\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nOrangeJuice, CoffeeFilters2, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nRusk is in sink of mobile-kitchen-counter\nArmar7 is inFrontOf countertop",
+      "answer": "The soy milk was on the mobile-kitchen-counter along with OrangeJuice, CoffeeFilters2, and SoftCakeOrange."
+    },
+    "medium": {
+      "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_medium/2024-a7a-merged-summary.pkl",
+      "matched_event_timestamp": "2024-08-27 14:56:06.336850",
+      "forgetting_level": 2,
+      "prompt_chars": 825,
+      "context": "Matched event range: 2024-08-27 14:56:06.336850 -> 2024-08-27 14:56:06.336850\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 2\nScene count in event: 1\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop",
+      "answer": "The provided memory snippet does not contain enough evidence to answer the question."
+    },
+    "medium_graph": {
+      "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_medium_graph/2024-a7a-merged-summary.pkl",
+      "matched_event_timestamp": "2024-08-27 14:56:06.336850",
+      "forgetting_level": 1,
+      "prompt_chars": 983,
+      "context": "Matched event range: 2024-08-27 14:55:43.886634 -> 2024-08-27 14:56:06.336850\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 1\nScene count in event: 47\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nOrangeJuice, CoffeeFilters2, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nRusk is in sink of mobile-kitchen-counter\nArmar7 is inFrontOf countertop",
+      "answer": "The provided snippet does not contain enough evidence to determine which specific object was next to the soy milk."
+    },
+    "ultra": {
+      "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_ultra/2024-a7a-merged-summary.pkl",
+      "matched_event_timestamp": "2024-08-27 14:56:06.336850",
+      "forgetting_level": 2,
+      "prompt_chars": 825,
+      "context": "Matched event range: 2024-08-27 14:56:06.336850 -> 2024-08-27 14:56:06.336850\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 2\nScene count in event: 1\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop",
+      "answer": "The provided memory snippet does not contain information about which object was next to the soy milk."
+    }
+  }
+}

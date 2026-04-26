@@ -1,0 +1,264 @@
+{
+  "probes": {
+    "objects5_neighbor_orangejuice": {
+      "description": "Original benchmark question about the object next to soy milk in the last afternoon grasp.",
+      "question": "Which object was next to the soy milk last time you grasped it today in the afternoon?",
+      "ground_truth": "Orange juice bottle",
+      "results_by_setting": {
+        "base": {
+          "history_path": "data/armarx_lt_mem/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:56:06.336850",
+          "forgetting_level": 0,
+          "prompt_chars": 966,
+          "answer": "The provided snippet is insufficient to determine which specific object was next to the soy milk, as multiple objects (OrangeJuice, CoffeeFilters2, and SoftCakeOrange) were on the same counter.",
+          "normalized_answer": "the provided snippet is insufficient to determine which specific object was next to the soy milk, as multiple objects (orangejuice, coffeefilters2, and softcakeorange) were on the same counter.",
+          "context": "Matched event range: 2024-08-27 14:55:43.886634 -> 2024-08-27 14:56:06.336850\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 0\nScene count in event: 47\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nOrangeJuice, CoffeeFilters2, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nRusk is in sink of mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        },
+        "random_medium": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/random_medium/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:56:06.336850",
+          "forgetting_level": 1,
+          "prompt_chars": 966,
+          "answer": "The provided snippet does not specify which object was next to the soy milk, only that it was on the mobile-kitchen-counter with orange juice, coffee filters, and soft cake.",
+          "normalized_answer": "the provided snippet does not specify which object was next to the soy milk, only that it was on the mobile-kitchen-counter with orange juice, coffee filters, and soft cake.",
+          "context": "Matched event range: 2024-08-27 14:55:43.886634 -> 2024-08-27 14:56:06.336850\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 1\nScene count in event: 47\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nOrangeJuice, CoffeeFilters2, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nRusk is in sink of mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        },
+        "medium": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_medium/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:56:06.336850",
+          "forgetting_level": 2,
+          "prompt_chars": 808,
+          "answer": "The provided memory snippet does not specify which object was next to the soy milk.",
+          "normalized_answer": "the provided memory snippet does not specify which object was next to the soy milk.",
+          "context": "Matched event range: 2024-08-27 14:56:06.336850 -> 2024-08-27 14:56:06.336850\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 2\nScene count in event: 1\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop"
+        },
+        "medium_graph": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_medium_graph/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:56:06.336850",
+          "forgetting_level": 1,
+          "prompt_chars": 966,
+          "answer": "OrangeJuice, CoffeeFilters2, and SoftCakeOrange were on the mobile-kitchen-counter with the soy milk.",
+          "normalized_answer": "orangejuice, coffeefilters2, and softcakeorange were on the mobile-kitchen-counter with the soy milk.",
+          "context": "Matched event range: 2024-08-27 14:55:43.886634 -> 2024-08-27 14:56:06.336850\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 1\nScene count in event: 47\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nOrangeJuice, CoffeeFilters2, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nRusk is in sink of mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        },
+        "ultra": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_ultra/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:56:06.336850",
+          "forgetting_level": 2,
+          "prompt_chars": 808,
+          "answer": "The provided memory snippet does not specify which object was next to the soy milk.",
+          "normalized_answer": "the provided memory snippet does not specify which object was next to the soy milk.",
+          "context": "Matched event range: 2024-08-27 14:56:06.336850 -> 2024-08-27 14:56:06.336850\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 2\nScene count in event: 1\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop"
+        }
+      }
+    },
+    "softcake_counter_1437": {
+      "description": "Custom yes/no probe on relation preservation in the 14:37 soy-milk grasp scene.",
+      "question": "Was SoftCakeOrange on the same mobile-kitchen-counter as the soy milk during that grasp?",
+      "ground_truth": "yes",
+      "results_by_setting": {
+        "base": {
+          "history_path": "data/armarx_lt_mem/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:37:13.006139",
+          "forgetting_level": 0,
+          "prompt_chars": 979,
+          "answer": "yes",
+          "normalized_answer": "yes",
+          "context": "Matched event range: 2024-08-27 14:36:50.656026 -> 2024-08-27 14:37:13.006139\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 0\nScene count in event: 47\nLatest scene graph:\nVisual observation: hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nCoffeeFilters2 is in sink of mobile-kitchen-counter\nRusk, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        },
+        "random_medium": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/random_medium/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:37:13.006139",
+          "forgetting_level": 1,
+          "prompt_chars": 979,
+          "answer": "yes",
+          "normalized_answer": "yes",
+          "context": "Matched event range: 2024-08-27 14:36:50.656026 -> 2024-08-27 14:37:13.006139\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 1\nScene count in event: 47\nLatest scene graph:\nVisual observation: hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nCoffeeFilters2 is in sink of mobile-kitchen-counter\nRusk, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        },
+        "medium": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_medium/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:37:13.006139",
+          "forgetting_level": 2,
+          "prompt_chars": 834,
+          "answer": "insufficient",
+          "normalized_answer": "insufficient",
+          "context": "Matched event range: 2024-08-27 14:37:13.006139 -> 2024-08-27 14:37:13.006139\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 2\nScene count in event: 1\nLatest scene graph:\nVisual observation: hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop"
+        },
+        "medium_graph": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_medium_graph/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:37:13.006139",
+          "forgetting_level": 1,
+          "prompt_chars": 979,
+          "answer": "yes",
+          "normalized_answer": "yes",
+          "context": "Matched event range: 2024-08-27 14:36:50.656026 -> 2024-08-27 14:37:13.006139\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 1\nScene count in event: 47\nLatest scene graph:\nVisual observation: hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nCoffeeFilters2 is in sink of mobile-kitchen-counter\nRusk, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        },
+        "ultra": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_ultra/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:37:13.006139",
+          "forgetting_level": 2,
+          "prompt_chars": 834,
+          "answer": "insufficient",
+          "normalized_answer": "insufficient",
+          "context": "Matched event range: 2024-08-27 14:37:13.006139 -> 2024-08-27 14:37:13.006139\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 2\nScene count in event: 1\nLatest scene graph:\nVisual observation: hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop"
+        }
+      }
+    },
+    "rusk_sink_1456": {
+      "description": "Custom yes/no probe on sink relation preservation in the 14:56 soy-milk grasp scene.",
+      "question": "Was Rusk in the sink of the mobile-kitchen-counter during that grasp?",
+      "ground_truth": "yes",
+      "results_by_setting": {
+        "base": {
+          "history_path": "data/armarx_lt_mem/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:56:06.336850",
+          "forgetting_level": 0,
+          "prompt_chars": 986,
+          "answer": "yes",
+          "normalized_answer": "yes",
+          "context": "Matched event range: 2024-08-27 14:55:43.886634 -> 2024-08-27 14:56:06.336850\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 0\nScene count in event: 47\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nOrangeJuice, CoffeeFilters2, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nRusk is in sink of mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        },
+        "random_medium": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/random_medium/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:56:06.336850",
+          "forgetting_level": 1,
+          "prompt_chars": 986,
+          "answer": "yes",
+          "normalized_answer": "yes",
+          "context": "Matched event range: 2024-08-27 14:55:43.886634 -> 2024-08-27 14:56:06.336850\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 1\nScene count in event: 47\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nOrangeJuice, CoffeeFilters2, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nRusk is in sink of mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        },
+        "medium": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_medium/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:56:06.336850",
+          "forgetting_level": 2,
+          "prompt_chars": 828,
+          "answer": "insufficient",
+          "normalized_answer": "insufficient",
+          "context": "Matched event range: 2024-08-27 14:56:06.336850 -> 2024-08-27 14:56:06.336850\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 2\nScene count in event: 1\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop"
+        },
+        "medium_graph": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_medium_graph/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:56:06.336850",
+          "forgetting_level": 1,
+          "prompt_chars": 986,
+          "answer": "yes",
+          "normalized_answer": "yes",
+          "context": "Matched event range: 2024-08-27 14:55:43.886634 -> 2024-08-27 14:56:06.336850\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 1\nScene count in event: 47\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nOrangeJuice, CoffeeFilters2, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nRusk is in sink of mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        },
+        "ultra": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_ultra/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:56:06.336850",
+          "forgetting_level": 2,
+          "prompt_chars": 828,
+          "answer": "insufficient",
+          "normalized_answer": "insufficient",
+          "context": "Matched event range: 2024-08-27 14:56:06.336850 -> 2024-08-27 14:56:06.336850\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 2\nScene count in event: 1\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop"
+        }
+      }
+    },
+    "armar7_infront_counter_noon": {
+      "description": "Custom yes/no probe on robot-to-location relation in the noon soy-milk grasp scene.",
+      "question": "Was Armar7 in front of the countertop during that noon grasp?",
+      "ground_truth": "yes",
+      "results_by_setting": {
+        "base": {
+          "history_path": "data/armarx_lt_mem/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 12:08:39.727176",
+          "forgetting_level": 0,
+          "prompt_chars": 839,
+          "answer": "yes",
+          "normalized_answer": "yes",
+          "context": "Matched event range: 2024-08-27 12:08:18.027056 -> 2024-08-27 12:08:39.727176\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 0\nScene count in event: 45\nLatest scene graph:\nVisual observation: hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nsoy-milk is on mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        },
+        "random_medium": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/random_medium/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 12:08:39.727176",
+          "forgetting_level": 2,
+          "prompt_chars": 769,
+          "answer": "insufficient",
+          "normalized_answer": "insufficient",
+          "context": "Matched event range: 2024-08-27 12:08:39.727176 -> 2024-08-27 12:08:39.727176\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 2\nScene count in event: 1\nLatest scene graph:\nVisual observation: hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop"
+        },
+        "medium": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_medium/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 12:08:39.727176",
+          "forgetting_level": 2,
+          "prompt_chars": 769,
+          "answer": "insufficient",
+          "normalized_answer": "insufficient",
+          "context": "Matched event range: 2024-08-27 12:08:39.727176 -> 2024-08-27 12:08:39.727176\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 2\nScene count in event: 1\nLatest scene graph:\nVisual observation: hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop"
+        },
+        "medium_graph": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_medium_graph/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 12:08:39.727176",
+          "forgetting_level": 1,
+          "prompt_chars": 839,
+          "answer": "yes",
+          "normalized_answer": "yes",
+          "context": "Matched event range: 2024-08-27 12:08:18.027056 -> 2024-08-27 12:08:39.727176\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 1\nScene count in event: 45\nLatest scene graph:\nVisual observation: hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nsoy-milk is on mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        },
+        "ultra": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_ultra/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 12:08:39.727176",
+          "forgetting_level": 2,
+          "prompt_chars": 769,
+          "answer": "insufficient",
+          "normalized_answer": "insufficient",
+          "context": "Matched event range: 2024-08-27 12:08:39.727176 -> 2024-08-27 12:08:39.727176\nEvent summary: Action: Grasping::KnownObject::PredefinedGrasp(object=soy-milk) <Succeeded>\nForgetting level: 2\nScene count in event: 1\nLatest scene graph:\nVisual observation: hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop"
+        }
+      }
+    },
+    "moog_failure_control": {
+      "description": "Control probe: important failure evidence should remain available across settings.",
+      "question": "Did the first grasp attempt fail because the target object was 'Moog'?",
+      "ground_truth": "yes",
+      "results_by_setting": {
+        "base": {
+          "history_path": "data/armarx_lt_mem/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:55:25.549708",
+          "forgetting_level": 0,
+          "prompt_chars": 972,
+          "answer": "insufficient",
+          "normalized_answer": "insufficient",
+          "context": "Matched event range: 2024-08-27 14:55:25.499403 -> 2024-08-27 14:55:25.549708\nEvent summary: Action: GraspNamedObjectWithinReach(objectName=Moog) <Failed>\nForgetting level: 0\nScene count in event: 3\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nOrangeJuice, CoffeeFilters2, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nRusk is in sink of mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        },
+        "random_medium": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/random_medium/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:55:25.549708",
+          "forgetting_level": 0,
+          "prompt_chars": 972,
+          "answer": "insufficient",
+          "normalized_answer": "insufficient",
+          "context": "Matched event range: 2024-08-27 14:55:25.499403 -> 2024-08-27 14:55:25.549708\nEvent summary: Action: GraspNamedObjectWithinReach(objectName=Moog) <Failed>\nForgetting level: 0\nScene count in event: 3\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nOrangeJuice, CoffeeFilters2, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nRusk is in sink of mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        },
+        "medium": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_medium/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:55:25.549708",
+          "forgetting_level": 0,
+          "prompt_chars": 972,
+          "answer": "insufficient",
+          "normalized_answer": "insufficient",
+          "context": "Matched event range: 2024-08-27 14:55:25.499403 -> 2024-08-27 14:55:25.549708\nEvent summary: Action: GraspNamedObjectWithinReach(objectName=Moog) <Failed>\nForgetting level: 0\nScene count in event: 3\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nOrangeJuice, CoffeeFilters2, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nRusk is in sink of mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        },
+        "medium_graph": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_medium_graph/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:55:25.549708",
+          "forgetting_level": 0,
+          "prompt_chars": 972,
+          "answer": "insufficient",
+          "normalized_answer": "insufficient",
+          "context": "Matched event range: 2024-08-27 14:55:25.499403 -> 2024-08-27 14:55:25.549708\nEvent summary: Action: GraspNamedObjectWithinReach(objectName=Moog) <Failed>\nForgetting level: 0\nScene count in event: 3\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nOrangeJuice, CoffeeFilters2, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nRusk is in sink of mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        },
+        "ultra": {
+          "history_path": "experiments/results/armarx_lt_mem/forgetting/ubpf_ultra/2024-a7a-merged-summary.pkl",
+          "matched_event_timestamp": "2024-08-27 14:55:25.549708",
+          "forgetting_level": 0,
+          "prompt_chars": 972,
+          "answer": "insufficient",
+          "normalized_answer": "insufficient",
+          "context": "Matched event range: 2024-08-27 14:55:25.499403 -> 2024-08-27 14:55:25.549708\nEvent summary: Action: GraspNamedObjectWithinReach(objectName=Moog) <Failed>\nForgetting level: 0\nScene count in event: 3\nLatest scene graph:\nVisual observation: OrangeJuice, hund-table-120x80, talo-you-q-160x80, talo-you-q-160x80, talo-you-q-160x80, CoffeeFilters2, Rusk, SoftCakeOrange, controltable, table, mobile-dishwasher, mobile-fridge, mobile-kitchen-counter, soy-milk, Armar7, countertop\nOrangeJuice, CoffeeFilters2, SoftCakeOrange, soy-milk are on mobile-kitchen-counter\nRusk is in sink of mobile-kitchen-counter\nArmar7 is inFrontOf countertop"
+        }
+      }
+    }
+  }
+}
