@@ -34,6 +34,9 @@
 | Phase 25 | `phase25_armarx_forgetting_guarded_probe.md` | ARMARX 遗忘模块受控探测 | 遗忘模块已能压缩 ARMARX 记忆树；`ubpf_ultra` 将文件比例压到 `0.797`，但 one-pass prompt 仍高达 `220,648` tokens，说明遗忘应与层级检索配合评估，而不能只依赖 full-history flatten |
 | Phase 26 | `phase26_armarx_forgetting_prompt_stats.md` | ARMARX 遗忘模块格式化历史长度统计 | 在不新增 LLM 调用的前提下，统计 one-pass 格式化历史长度；`random_medium` 压到基线的 `98.73%`，`medium/aggressive` 为 `95.44%`，`ultra` 为 `94.61%`，再次说明遗忘有效但无法单独解决 one-pass flatten 的长上下文瓶颈 |
 | Phase 27 | `phase27_armarx_l2_detail_probe.md` | ARMARX L2 事件层细节题受控探测 | L2 事件层视图下 `base/random/medium/medium_graph/ultra` 的格式化输入完全一致；只跑 baseline 即可。细节题 `n=6` 上 valid=`83.3%`、`S_c=16.7%`、`T=45.66K`，说明仅保留到事件层不足以支撑大多数细节敏感 QA |
+| Phase 28 | `phase28_armarx_evidence_audit.md` | ARMARX 遗忘模块关键证据保真审计 | 在零新增 LLM token 下审计 question-local evidence；`medium_graph` 比 `medium/ultra` 更能保留 relation-rich 过程事件。117 个高细节密度事件上，`mean relations` 分别为 `130.22` vs `112.63/111.82`，说明图中心性版本更保守、更利于细节保真 |
+| Phase 29 | `phase29_armarx_local_detail_probe.md` | ARMARX 局部低层细节视图单题探测 | 以 `a7a-merged-objects-5` 为单题 probe，只给局部最新 scene graph；`base` 已能回答出包含 `OrangeJuice` 的关系性线索，而 `medium/ultra` 因 relations 被清空而直接拒答，说明局部低层视图能把遗忘差异真实传递到 QA |
+| Phase 30 | `phase30_armarx_local_detail_slice.md` | ARMARX 局部低层细节切片实验 | 5 个超小局部 probe 继续验证机制；在前 4 个 relation-sensitive probe 上，`base=4/4`、`random_medium=3/4`、`medium=0/4`、`medium_graph=4/4`、`ultra=0/4`，说明 `medium_graph` 对细节保真明显优于 `medium/ultra`，且随机遗忘表现不稳定 |
 
 ## 固定实验口径
 
