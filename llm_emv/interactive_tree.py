@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, date
 from functools import cached_property
 from itertools import chain
@@ -10,6 +11,10 @@ from lmp.repl.semantic_hint_error import SemanticHintError
 PRETTY_PRINT = False
 USE_DASH_IN_SIMPLIFIED_REPR = False
 INDENT_SIZE = 2
+
+
+def _faiss_debug_enabled() -> bool:
+    return os.environ.get("LLM_EMV_FAISS_DEBUG", "").lower() in {"1", "true", "yes", "on"}
 
 
 def _overlaps_date(query: date, date_range: Tuple[datetime, datetime]):
@@ -426,7 +431,8 @@ def search_similarity_to_filter_fn(
     if _use_faiss and _embedding_fn is not None:
         try:
             from .faiss_search import create_faiss_search_filter_fn
-            print(f'[FAISS] 使用 FAISS 加速搜索，索引类型: {_faiss_index_type}')
+            if _faiss_debug_enabled():
+                print(f'[FAISS] 使用 FAISS 加速搜索，索引类型: {_faiss_index_type}')
             return create_faiss_search_filter_fn(
                 embedding_fn=_embedding_fn,
                 dim=_embedding_dim,

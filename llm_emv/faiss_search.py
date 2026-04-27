@@ -12,9 +12,19 @@ FAISS 向量索引加速模块
 - 大数据集 (>100k): ~50-100x 加速 (使用 HNSW 或 PQ 索引)
 """
 
+import os
 import numpy as np
 from typing import List, Dict, Any, Callable, Optional, Tuple
 import torch
+
+
+def _faiss_debug_enabled() -> bool:
+    return os.environ.get("LLM_EMV_FAISS_DEBUG", "").lower() in {"1", "true", "yes", "on"}
+
+
+def _faiss_log(message: str) -> None:
+    if _faiss_debug_enabled():
+        print(message)
 
 # 尝试导入 faiss，如果失败则提供回退方案
 try:
@@ -22,8 +32,8 @@ try:
     FAISS_AVAILABLE = True
 except ImportError:
     FAISS_AVAILABLE = False
-    print("[警告] FAISS 未安装，将使用 PyTorch 暴力搜索作为回退方案")
-    print("       安装 FAISS: pip install faiss-cpu  (或 faiss-gpu)")
+    _faiss_log("[警告] FAISS 未安装，将使用 PyTorch 暴力搜索作为回退方案")
+    _faiss_log("       安装 FAISS: pip install faiss-cpu  (或 faiss-gpu)")
 
 
 class FAISSIndex:
@@ -129,7 +139,7 @@ class FAISSIndex:
         if not FAISS_AVAILABLE:
             return
             
-        print(f"[FAISS] 构建索引，节点数: {len(nodes)}, 索引类型: {self.index_type}")
+        _faiss_log(f"[FAISS] 构建索引，节点数: {len(nodes)}, 索引类型: {self.index_type}")
         
         all_embeddings = []
         all_mappings = []
@@ -161,7 +171,7 @@ class FAISSIndex:
             all_embeddings.append(embeddings.cpu().numpy())
         
         if not all_embeddings:
-            print("[FAISS] 警告: 没有可索引的嵌入")
+            _faiss_log("[FAISS] 警告: 没有可索引的嵌入")
             return
         
         # 合并所有嵌入
@@ -175,18 +185,18 @@ class FAISSIndex:
         # 训练索引（IVF 需要训练）
         if self.index_type == "ivf":
             if all_embeddings_np.shape[0] >= self.nlist:
-                print(f"[FAISS] 训练 IVF 索引...")
+                _faiss_log(f"[FAISS] 训练 IVF 索引...")
                 self.index.train(all_embeddings_np)
             else:
                 # 数据太少，改用 flat
-                print(f"[FAISS] 数据量 ({all_embeddings_np.shape[0]}) 小于聚类数 ({self.nlist})，使用 Flat 索引")
+                _faiss_log(f"[FAISS] 数据量 ({all_embeddings_np.shape[0]}) 小于聚类数 ({self.nlist})，使用 Flat 索引")
                 self.index = faiss.IndexFlatIP(self.dim)
         
         # 添加向量
         self.index.add(all_embeddings_np)
         self.is_trained = True
         
-        print(f"[FAISS] 索引构建完成，总向量数: {self.index.ntotal}")
+        _faiss_log(f"[FAISS] 索引构建完成，总向量数: {self.index.ntotal}")
     
     def search(
         self,
@@ -284,7 +294,7 @@ def create_faiss_search_filter_fn(
         
         # 检查是否需要重建索引（items 变化时）
         if faiss_index is None or cached_items is not items:
-            print(f"[FAISS] 构建新索引...")
+            _faiss_log(f"[FAISS] 构建新索引...")
             faiss_index = FAISSIndex(dim=dim, index_type=index_type)
             faiss_index.build_from_nodes(items, embedding_fn)
             cached_items = items

@@ -9,6 +9,12 @@ from lmp.repl.code_execution import ReplExecutionEnvironment
 
 def _safe_run(lmp, command):
     try:
+        if isinstance(command, dict):
+            if command.get('type') == 'dialog':
+                command = command.get('text', '')
+            else:
+                print(f'Unsupported trigger type: {command.get("type")!r}')
+                return
         lmp(command)
     except BaseException as e:
         if isinstance(e, KeyboardInterrupt):
