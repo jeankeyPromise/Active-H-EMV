@@ -1,5 +1,6 @@
 import datetime
 import os
+import pickle
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
 from pathlib import Path
@@ -22,6 +23,7 @@ from .zs_flat_history_qa import ZeroShotOnePassSemiFlatQA
 _embedding_model_cache = {}
 _embedding_cache_store = {}
 _search_cache_write_executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix='search-emb-cache-writer')
+_forgetting_cache: dict = {}
 
 
 class _DatetimePackageNamespace:
@@ -69,7 +71,7 @@ def setup_llm_emv(cfg_path='teach/simplified/full',
     # ===== 记忆巩固（遗忘机制）=====
     forgetting_cfg = cfg.pop('forgetting', None)
     if forgetting_cfg is not None and forgetting_cfg.pop('enabled', False):
-        history = apply_memory_consolidation(history, now_time, search_emb, forgetting_cfg)
+        history = apply_memory_consolidation_cached(history, now_time, search_emb, forgetting_cfg)
 
     # 直接用一个 LLM 做一次性的 semi-flat QA（可能是把历史压平后问大模型）
     # 返回的是已经绑定了 history 的偏函数 → 调用时只需要给问题即可
@@ -179,8 +181,15 @@ def create_search_embedding_and_cfg(search_cfg: Optional[dict]):
         cache = torch.load(cache_file, map_location=embedding_model.device) if cache_file.is_file() else {}
         _embedding_cache_store[cache_key] = cache
 
+    get_embedding_dim = getattr(embedding_model, 'get_embedding_dimension', None)
+    embedding_dim = (
+        get_embedding_dim()
+        if callable(get_embedding_dim)
+        else embedding_model.get_sentence_embedding_dimension()
+    )
+
     def _embed_cached(texts: Tuple[str, ...]):
-        result = torch.empty(len(texts), embedding_model.get_sentence_embedding_dimension(),
+        result = torch.empty(len(texts), embedding_dim,
                              device=embedding_model.device)
         todo_texts, todo_indices = [], []
         for i, text in enumerate(texts):
@@ -223,7 +232,7 @@ def create_search_embedding_and_cfg(search_cfg: Optional[dict]):
         filter_kwargs['_use_faiss'] = True
         filter_kwargs['_faiss_index_type'] = faiss_index_type
         filter_kwargs['_embedding_fn'] = _embed
-        filter_kwargs['_embedding_dim'] = embedding_model.get_sentence_embedding_dimension()
+        filter_kwargs['_embedding_dim'] = embedding_dim
         print(f'[配置] 启用 FAISS 加速，索引类型: {faiss_index_type}')
     
     return _embed, filter_kwargs
@@ -271,6 +280,26 @@ def _graph_cfg_cache_key(graph_cfg: dict):
         for k, v in sorted(graph_cfg.items())
         if k != 'causal_llm'
     )
+
+
+def _forgetting_cfg_cache_key(forgetting_cfg: dict):
+    return tuple((k, repr(v)) for k, v in sorted(forgetting_cfg.items()))
+
+
+def apply_memory_consolidation_cached(history: HigherLevelSummary, now_time, embedding_fn, forgetting_cfg: dict):
+    cache_key = (
+        _history_structural_cache_key(history),
+        now_time.isoformat() if isinstance(now_time, datetime.datetime) else repr(now_time),
+        _forgetting_cfg_cache_key(forgetting_cfg),
+    )
+    cached_history_bytes = _forgetting_cache.get(cache_key)
+    if cached_history_bytes is not None:
+        print('[Forgetting] 命中缓存')
+        return pickle.loads(cached_history_bytes)
+
+    history = apply_memory_consolidation(history, now_time, embedding_fn, forgetting_cfg)
+    _forgetting_cache[cache_key] = pickle.dumps(history)
+    return history
 
 
 def create_memory_graph_cached(history: HigherLevelSummary, embedding_fn, graph_cfg: dict):

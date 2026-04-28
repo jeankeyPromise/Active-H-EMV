@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import re
 import signal
 import traceback
@@ -249,7 +250,7 @@ def main():
     from langchain_community.cache import SQLiteCache
     import langchain.globals
     langchain.globals.set_llm_cache(SQLiteCache(database_path="langchain-cache.db"))
-    langchain.globals.set_verbose(True)
+    langchain.globals.set_verbose(os.environ.get('LLM_EMV_VERBOSE', '').lower() in {'1', 'true', 'yes', 'on'})
 
     _dataset_classes = {
         'teach-dechant': TeachDeChantDataset,

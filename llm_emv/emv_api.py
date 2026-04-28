@@ -1,3 +1,6 @@
+
+
+
 import re
 from datetime import date, datetime, timedelta
 from functools import partial
@@ -1575,6 +1578,12 @@ def _date_lookup_recommendation(matches, target: date | datetime, precision: str
     return ' '.join(unique_summaries)
 
 
+def _format_resolved_date(target: date | datetime, precision: str) -> str:
+    if isinstance(target, datetime):
+        return target.strftime('%Y/%m/%d %H:%M:%S')
+    return target.strftime('%Y/%m/%d')
+
+
 def _parse_event_date_query(query: str, now: datetime) -> tuple[str, date] | None:
     today = _parse_today_date(query) or (now.date() if now is not None else None)
     if today is None:
@@ -1646,9 +1655,3 @@ def _event_date_lookup_recommendation(matches, mode: str = 'days_ago') -> str:
     if len(days) == 1:
         return fmt(days[0])
     return ' and '.join(fmt(day_count) for day_count in days)
-
-
-def _format_resolved_date(target: date | datetime, precision: str) -> str:
-    if precision == 'datetime':
-        return target.strftime('%Y/%m/%d %H:%M:%S')
-    return target.strftime('%Y/%m/%d')
