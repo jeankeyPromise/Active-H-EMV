@@ -198,14 +198,21 @@ def apply_forgetting_level_2(event: EventBasedSummary) -> None:
 
     修改是 in-place 的。
     """
-    # 在压缩前缓存 nl_summary（避免压缩后丢失信息）
-    if not hasattr(event, '_cached_nl_summary'):
+    # 在压缩前缓存一份可直接用于显示/检索的摘要。
+    # 这里仅保留 _summary_override 一份，避免把同一段文本同时存到
+    # _cached_nl_summary 和 _summary_override 中，抵消 Level 2 的序列化收益。
+    summary_text = getattr(event, '_summary_override', None)
+    if not summary_text:
+        summary_text = getattr(event, '_cached_nl_summary', None)
+    if not summary_text:
         try:
-            event._cached_nl_summary = event.nl_summary
+            summary_text = event.nl_summary
         except (IndexError, AttributeError):
-            event._cached_nl_summary = ''
-    if event._cached_nl_summary:
-        event._summary_override = event._cached_nl_summary
+            summary_text = ''
+    if summary_text:
+        event._summary_override = summary_text
+    if hasattr(event, '_cached_nl_summary'):
+        delattr(event, '_cached_nl_summary')
 
     # 只保留最后一个场景
     if len(event.scenes) > 1:
@@ -215,7 +222,13 @@ def apply_forgetting_level_2(event: EventBasedSummary) -> None:
     last_scene = event.scenes[0]
     last_scene.raw.image = None
     last_scene.raw.sound = None
-    last_scene.relations = []  # 关系列表也可以清空
+    last_scene.relations = []
+    last_scene.objects = []
+
+    # 文本信息已浓缩进 _summary_override，避免继续携带冗余字段。
+    event.audio_description = None
+    event.action_parameter_summary = None
+    last_scene.raw.asr_recognition = None
 
     # 标记遗忘级别
     event._forgetting_level = 2

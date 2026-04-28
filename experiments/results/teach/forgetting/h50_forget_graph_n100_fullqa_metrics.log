@@ -1,0 +1,18 @@
+
+Reading auto-eval from experiments/results/teach/forgetting/h50_forget_graph_n100_fullqa.gemini_2.5_pro-573e41.auto_eval.json
+
+Broad Categories:
+          correct :  45 ( 45.0%)
+partially_correct :  23 ( 23.0%)
+            wrong :  32 ( 32.0%)
+
+Primary thesis metrics
+Total QA: 100
+Valid answer rate: 99.0% (99/100)
+Error/empty answer rate: 1.0% (1/100)
+S_c semantic correct: 45.0% (45/100)
+S_p partially correct: 23.0% (23/100)
+Wrong/no-answer: 32.0% (32/100)
+T prompt tokens per QA: 1.95K
+Completion tokens per QA: 0.39K
+Token cost per QA sample/question:  1949.12

@@ -1,0 +1,275 @@
+{
+  "cfg": "teach/simplified/full_graph_aug_zs_fast_forget_l2probe",
+  "qa_file": "data/teach/test_set_50.pkl",
+  "teach_base": "dataset/TEACh",
+  "selected_histories": 2,
+  "selected_qas": 20,
+  "aggregate": {
+    "base": {
+      "count": 2,
+      "total": {
+        "file_size_bytes": 14672563,
+        "higher_summaries": 647,
+        "goals": 2075,
+        "events": 10545,
+        "scenes": 11727,
+        "relations": 92670,
+        "with_summary_override": 0,
+        "with_cached_summary": 0,
+        "forgetting_levels": {
+          "0": 10545
+        }
+      },
+      "mean": {
+        "file_size_bytes": 7336281.5,
+        "higher_summaries": 323.5,
+        "goals": 1037.5,
+        "events": 5272.5,
+        "scenes": 5863.5,
+        "relations": 46335.0,
+        "with_summary_override": 0.0,
+        "with_cached_summary": 0.0
+      }
+    },
+    "after": {
+      "count": 2,
+      "total": {
+        "file_size_bytes": 15298843,
+        "higher_summaries": 647,
+        "goals": 2075,
+        "events": 10545,
+        "scenes": 10899,
+        "relations": 46649,
+        "with_summary_override": 6391,
+        "with_cached_summary": 6391,
+        "forgetting_levels": {
+          "0": 1230,
+          "1": 2924,
+          "2": 6391
+        }
+      },
+      "mean": {
+        "file_size_bytes": 7649421.5,
+        "higher_summaries": 323.5,
+        "goals": 1037.5,
+        "events": 5272.5,
+        "scenes": 5449.5,
+        "relations": 23324.5,
+        "with_summary_override": 3195.5,
+        "with_cached_summary": 3195.5
+      }
+    },
+    "ratios": {
+      "file_size_ratio": 1.0426837492536238,
+      "scene_ratio": 0.9293937068303914,
+      "relation_ratio": 0.5033883673249163,
+      "event_ratio": 1.0
+    }
+  },
+  "per_history": [
+    {
+      "history_index": 0,
+      "trial_ids": [
+        "6c24abb778c24a7c_704a",
+        "977b52faf01e6c05_d71f",
+        "01c1b8aa1820aa0b_adaf",
+        "32918ea00b69d9fe_38ff",
+        "cdf30defa61245ba_5590",
+        "2513b9a8d8ae5129_ab38",
+        "7337be5c30b1b5d1_874c",
+        "57862376ad3394a1_c9dc",
+        "32fe2fa7cc43fbc3_b8f3",
+        "0de4b62afcd06138_45f2",
+        "a966ba0c6e0d463d_ce88",
+        "25ef88cce38adfbc_1740",
+        "7504548a0dd7baf8_b148",
+        "064a69cb5d40b41f_9c2e",
+        "a690a35743c855aa_4c00",
+        "4b813e7c9bc088d0_1ce1",
+        "e4909f617bc99db4_4ab8",
+        "03379f213dfbda39_79a2",
+        "c49a96282ec09e90_5bfa",
+        "a2d31b84a569e568_fb03",
+        "88ddc0cbf1a23687_43ea",
+        "b36a8d73976068a3_6afd",
+        "c02445dd7a5b6f26_d92a",
+        "a76099fbab67c9da_4d48",
+        "c6c5c151b7b8e770_38db",
+        "60d26ec0f9c4757e_425d",
+        "9539c0004762d6a8_2eee",
+        "b2fde7ee4eb1c40f_1f95",
+        "c2ffd6a81bfe2613_f91c",
+        "81b10da74f7ac9ff_15c8",
+        "6ccc8b815fbc093a_e921",
+        "5aa3cbd322d4f163_402a",
+        "52e190f2e5f3b790_edbb",
+        "71392179ff5e728f_d7fe",
+        "4e893adaff5699af_ab4f",
+        "6f4aca312776de7b_97f3",
+        "4e88e46c6584bd85_21d2",
+        "eef61c8f3cdd8280_c537",
+        "bfb3e4eaf7ba458f_81db",
+        "af3fc77ab8313235_5b72",
+        "dbb41344c474217f_ee0e",
+        "498d06abfb7e9487_5c19",
+        "36492265af47de94_a352",
+        "9c97a83f60095487_02d9",
+        "0d1a67f82b3b5854_d74d",
+        "2f8d482d22e56fdd_410e",
+        "5c12b219bbb5bc07_6008",
+        "4aafdc038df138e8_58f0",
+        "474a8460bc35eb12_20d0",
+        "0f0664338151d4ac_5c06"
+      ],
+      "selected_qa_count": 10,
+      "q_time": "2023/08/04 15:24:47",
+      "base": {
+        "file_size_bytes": 6774339,
+        "higher_summaries": 291,
+        "goals": 1008,
+        "events": 4933,
+        "scenes": 5454,
+        "relations": 43793,
+        "with_summary_override": 0,
+        "with_cached_summary": 0,
+        "forgetting_levels": {
+          "0": 4933
+        }
+      },
+      "after": {
+        "file_size_bytes": 7130402,
+        "higher_summaries": 291,
+        "goals": 1008,
+        "events": 4933,
+        "scenes": 5107,
+        "relations": 23097,
+        "with_summary_override": 2941,
+        "with_cached_summary": 2941,
+        "forgetting_levels": {
+          "0": 578,
+          "1": 1414,
+          "2": 2941
+        }
+      },
+      "forgetting_stats": {
+        "total": 4933,
+        "level_0_full_retain": 578,
+        "level_1_detail_removed": 1414,
+        "level_2_summary_only": 2941,
+        "immune_count": 578,
+        "effective_theta_1": 0.55,
+        "effective_theta_2": 0.3,
+        "retain_ratio": 0.1171700790593959,
+        "forgetting_ratio": 0.8828299209406041
+      },
+      "ratios": {
+        "file_size_ratio": 1.0525605524022343,
+        "scene_ratio": 0.9363769710304364,
+        "relation_ratio": 0.5274130568812367,
+        "event_ratio": 1.0
+      }
+    },
+    {
+      "history_index": 1,
+      "trial_ids": [
+        "e336199e4aca573c_4d32",
+        "85ec788c6b00fb0d_14d1",
+        "ad2e4eb0b24a5940_9c9d",
+        "50bc3abf986ccabb_7071",
+        "915fdf90f4bc33cd_6c72",
+        "1fd74046ded8f9d1_42a3",
+        "cb0e41e1b364ad27_9a72",
+        "4b7b1a5b7f3d19ae_1413",
+        "cce21676357b2d20_b27c",
+        "01c1b8aa1820aa0b_adaf",
+        "b8f22271faff678f_dce6",
+        "4fc54b735d3f45a6_b7b4",
+        "e8f7cd03e3683657_4d70",
+        "84d6411d0710d918_5b3c",
+        "04ae108b77699c0f_2453",
+        "b53c115c99ca34dd_5e2b",
+        "b63078c7b3e28f59_355d",
+        "c6f7828bc5640531_1604",
+        "c7cc40993ef8468b_3e7b",
+        "0b161c6f709cde89_4c30",
+        "fef7c3fc3990d2e8_518b",
+        "e85d1457c7af9ad4_4960",
+        "9e23434a16a146b5_7f9a",
+        "41b067f2ce6f3fef_8ee6",
+        "9539c0004762d6a8_fe91",
+        "a2b0269334c60e48_2cb5",
+        "464fb2558d308797_4110",
+        "d8034826803791df_10bf",
+        "88f8ad0d2d356270_bb95",
+        "491169530040eb68_c8b0",
+        "e035a44ebae9d3fd_c842",
+        "c02445dd7a5b6f26_86bd",
+        "8150a936da2df63d_2451",
+        "3ebbcf3c3aed7c9e_5813",
+        "1e8fb21f2b41b0b0_db8b",
+        "a451af83aeece675_117b",
+        "140e54aadad74d20_222f",
+        "e455dbf27ecaf413_8484",
+        "c6c5c151b7b8e770_38db",
+        "18f6da623ba658a2_aa07",
+        "612f99763b6978b6_0c1a",
+        "09d537bcc73a42fc_52e8",
+        "5ab41ea72487ce0f_e5be",
+        "0d1a67f82b3b5854_d74d",
+        "0d600126a7947365_cac4",
+        "2b5a33d4908ee77d_20f6",
+        "a82cd949493bada0_ffe5",
+        "b2815444299854b0_d30e",
+        "5026400c43e20c2d_d3fc",
+        "85ec788c6b00fb0d_49ba"
+      ],
+      "selected_qa_count": 10,
+      "q_time": "2023/12/14 18:25:57",
+      "base": {
+        "file_size_bytes": 7898224,
+        "higher_summaries": 356,
+        "goals": 1067,
+        "events": 5612,
+        "scenes": 6273,
+        "relations": 48877,
+        "with_summary_override": 0,
+        "with_cached_summary": 0,
+        "forgetting_levels": {
+          "0": 5612
+        }
+      },
+      "after": {
+        "file_size_bytes": 8168441,
+        "higher_summaries": 356,
+        "goals": 1067,
+        "events": 5612,
+        "scenes": 5792,
+        "relations": 23552,
+        "with_summary_override": 3450,
+        "with_cached_summary": 3450,
+        "forgetting_levels": {
+          "0": 652,
+          "1": 1510,
+          "2": 3450
+        }
+      },
+      "forgetting_stats": {
+        "total": 5612,
+        "level_0_full_retain": 652,
+        "level_1_detail_removed": 1510,
+        "level_2_summary_only": 3450,
+        "immune_count": 652,
+        "effective_theta_1": 0.55,
+        "effective_theta_2": 0.3,
+        "retain_ratio": 0.11617961511047754,
+        "forgetting_ratio": 0.8838203848895224
+      },
+      "ratios": {
+        "file_size_ratio": 1.0342123748326206,
+        "scene_ratio": 0.9233221743982146,
+        "relation_ratio": 0.4818626347770935,
+        "event_ratio": 1.0
+      }
+    }
+  ]
+}

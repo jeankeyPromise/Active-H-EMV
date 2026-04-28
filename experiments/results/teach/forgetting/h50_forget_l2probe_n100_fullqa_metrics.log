@@ -1,0 +1,18 @@
+
+Reading auto-eval from experiments/results/teach/forgetting/h50_forget_l2probe_n100_fullqa.gemini_2.5_pro-573e41.auto_eval.json
+
+Broad Categories:
+          correct :  46 ( 46.0%)
+partially_correct :  23 ( 23.0%)
+            wrong :  31 ( 31.0%)
+
+Primary thesis metrics
+Total QA: 100
+Valid answer rate: 100.0% (100/100)
+Error/empty answer rate: 0.0% (0/100)
+S_c semantic correct: 46.0% (46/100)
+S_p partially correct: 23.0% (23/100)
+Wrong/no-answer: 31.0% (31/100)
+T prompt tokens per QA: 1.98K
+Completion tokens per QA: 0.39K
+Token cost per QA sample/question:  1984.55

@@ -1,0 +1,19 @@
+
+Reading auto-eval from experiments/results/teach/forgetting/h50_forget_graph_n20_probe.gemini_2.5_pro-573e41.auto_eval.json
+
+Broad Categories:
+          correct :  12 ( 60.0%)
+partially_correct :   4 ( 20.0%)
+            wrong :   4 ( 20.0%)
+
+Primary thesis metrics
+Total QA: 20
+Valid answer rate: 100.0% (20/20)
+Error/empty answer rate: 0.0% (0/20)
+S_c semantic correct: 60.0% (12/20)
+S_p partially correct: 20.0% (4/20)
+Wrong/no-answer: 20.0% (4/20)
+T prompt tokens per QA: 2.13K
+Completion tokens per QA: 0.43K
+Token cost per QA sample/question:  2134.65
+NOTE: This file has 20 QA samples. Standard TEACh |h| table results should use 100 QA samples (10 long histories x 10 questions).

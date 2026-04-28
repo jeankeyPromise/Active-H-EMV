@@ -1,0 +1,101 @@
+{
+  "config": {
+    "cfg": "armarx_lt_mem/zs_1pass_l2_summary_gemini",
+    "output": "experiments/results/armarx_lt_mem/forgetting_probe/zs_1pass_l2_summary_gemini_ultra_hist_n12.json",
+    "dataset": "simple",
+    "only_iter_dataset": "False",
+    "precompute_history_cache": "False",
+    "audit_history_cache": "False",
+    "require_history_cache": "False",
+    "n_samples": "12",
+    "enable_correction": "False",
+    "resume": "False",
+    "retry_errors": "False",
+    "checkpoint_file": "None",
+    "max_prompt_tokens_per_sample": "12000",
+    "max_average_prompt_tokens_per_sample": "12000.0",
+    "max_seconds_per_sample": "120",
+    "history_dir": "experiments/results/armarx_lt_mem/forgetting/ubpf_ultra",
+    "qa_file": "data/armarx_lt_mem/qa_forgetting_probe_v1.json"
+  },
+  "code_commit": "573e41fe2d0d3632076de88f69ae72623b5ad38c",
+  "results": {
+    "a7a-merged-explain-1": {
+      "q_time": "2024/08/28 13:44:43",
+      "q": "Describe what you did.",
+      "gt": "Over the past months, I performed various activities at 5 different days, including introducing myself, grasping the milk, receiving and handing over objects, loading the dishwasher, and engaging in dialog with the user.",
+      "hyp": "rmed a variety of tasks including navigating to different locations, interacting with objects by handing them over, receiving them, grasping them, and loading them into a dishwasher. I also introduced myself, scanned my surroundings, and performed various hand and head movements."
+    },
+    "a7a-merged-explain-3": {
+      "q_time": "2024/08/27 17:19:42",
+      "q": "Explain briefly what you did at each day that you can remember.",
+      "gt": "On June 26, I handed over and received objects multiple times, learned a new object, and engaged in dialog. On June 27, I navigated to multiple locations, introduced myself, and grasped the milk. On July 12, I described my surroundings, went to home pose, brought the milk, received and handed over objects, loaded the dishwasher, failed to learn a person, and introduced myself. On July 13, I performed introductions, navigated to various locations, handed over objects, loaded a dishwasher, analyzed surroundings, and performed grasping tasks. On August 27, I introduced myself, engaged in conversations, moved around, shaped my hands, and handled objects, with mixed success.",
+      "hyp": "ning:** I have records of my activities spanning several days between June 26, 2024, and August 27, 2024, involving navigation, object manipulation, and human interaction.\n\n**Answer:**\n- **2024/06/26:** I practiced handing over and receiving objects, stated my identity, navigated to the sideboard, and performed object learning.\n- **2024/06/27:** I navigated between \"home\" and the kitchen, introduced myself to humans, and grasped a milk carton.\n- **2024/07/12:** I identified various kitchen items, brought milk to a human, and loaded the dishwasher.\n- **2024/07/13:** I performed multiple introductions, navigated frequently, handed over milk, and loaded the dishwasher several times.\n- **2024/08/27:** I spent the day navigating the kitchen, performing hand gestures, attempting to grasp milk and other objects, and loading the dishwasher."
+    },
+    "a7a-merged-req-at-time-1": {
+      "q_time": "2024/08/27 15:55:17",
+      "q": "What did you do at June 26 shortly after 8 PM?",
+      "gt": "Receive an object from a human, afterwards hand over the object to the human",
+      "hyp": "ning:** On June 26, shortly after 8:00 PM, I performed several object-related tasks including receiving and handing over objects, as well as adjusting my hand shape and posture.\n\n**Answer:** I received an object from a human (20:00 - 20:03), handed over an object (20:03 - 20:04), shaped my hand into a platform (20:04), and received another object (20:07 - 20:08)."
+    },
+    "a7a-merged-events-4": {
+      "q_time": "2024/08/27 16:47:39",
+      "q": "What did you do last on July 12?",
+      "gt": "I introduced myself",
+      "hyp": "ning:** On July 12, I performed several tasks including bringing objects to a human, navigating to the sideboard, and loading the dishwasher. My final recorded action for that day was an introduction.\n\n**Answer:** My last action on July 12 was an introduction, which took place between 16:08 and 16:12."
+    },
+    "a7a-merged-events-5": {
+      "q_time": "2024/08/27 20:41:42",
+      "q": "What did you do just after introducing yourself today before noon?",
+      "gt": "I moved 1 meter backwards.",
+      "hyp": "ng:\nI will look for actions on today's date, August 2"
+    },
+    "a7a-merged-action-detail-2": {
+      "q_time": "2024/08/27 16:19:01",
+      "q": "What objects did you detect when telling what you can see at June 26 ?",
+      "gt": "I detected an unknown object and asked the user to tell me its name",
+      "hyp": "ng: I am looking for the \"WhatCanYouSee\" or \"WhatCan"
+    },
+    "a7a-merged-objects-5": {
+      "q_time": "2024/08/27 17:01:59",
+      "q": "Which object was next to the soy milk last time you grasped it today in the afternoon?",
+      "gt": "Orange juice bottle",
+      "hyp": "ng: I have no record of successfully grasping soy milk today. The last time I looked at"
+    },
+    "a7a-merged-objects-7": {
+      "q_time": "2024/08/28 12:02:33",
+      "q": "What color was the milk packaging that you grasped yesterday around 3 PM?",
+      "gt": "green, white and blue",
+      "hyp": "ning:** On 2024/08/27, I performed several grasping actions involving milk, but the history does not specify the color of the packaging for any of the objects I interacted with.\n\n**Answer:** The history does not contain information about the color of the milk packaging."
+    },
+    "a7a-merged-events-1": {
+      "q_time": "2024/08/27 19:44:05",
+      "q": "How often did you successfully load the dishwasher?",
+      "gt": "4 times: at 2024/07/12 15:26, 07/13 13:46 and 14:54, 08/27 14:40",
+      "hyp": "ning:** I successfully completed the \"LoadDishwasher\" task on three separate occasions, while three other attempts failed.\n\n**Answer:** I successfully loaded the dishwasher 3 times."
+    },
+    "a7a-merged-events-6": {
+      "q_time": "2024/08/27 15:08:13",
+      "q": "How many times did you introduce yourself?",
+      "gt": "6 times: Once on June 26 and July 12, twice on July 13 and August 27, each",
+      "hyp": "ning:** I reviewed the history for the \"Introduction\" task and identified instances where I introduced myself to humans across several days.\n\n**Answer:** I introduced myself 11 times."
+    },
+    "a7a-merged-problems-1": {
+      "q_time": "2024/08/27 16:46:34",
+      "q": "Did you have any problems during the demo on July 12?",
+      "gt": "I did not finish bringing the milk to the human at 15:11, and I failed to learn a new person at 15:46",
+      "hyp": "ng:\nI am checking the history for July 12, 2024."
+    },
+    "a7a-merged-problems-3": {
+      "q_time": "2024/08/28 11:11:11",
+      "q": "What was the reason why you needed two attempts to grasp the milk yesterday shortly before 3pm?",
+      "gt": "Initially, the speech recognition was off, and I tried to grasp the 'Moog' which does not exist. The user had to repeat the command.",
+      "hyp": "The first attempt failed because I tried to grasp an object named \"Moog\" instead of the milk."
+    }
+  },
+  "openai_costs": {
+    "cost": 0.0,
+    "prompt_tokens": 137147,
+    "completion_tokens": 2821
+  }
+}

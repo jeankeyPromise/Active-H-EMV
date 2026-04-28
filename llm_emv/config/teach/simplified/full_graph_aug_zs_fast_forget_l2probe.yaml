@@ -1,0 +1,72 @@
+type: simplified_coding
+max_rounds: 15
+llm:
+  type: ChatOpenAI
+  model_name: gemini-2.5-pro
+  max_tokens: 768
+  temperature: 0.1
+  request_timeout: 120
+  max_retries: 5
+question_vlm:
+  type: ChatOpenAI
+  model_name: gemini-2.5-pro
+  max_tokens: 64
+  temperature: 0.3
+  request_timeout: 60
+  max_retries: 2
+prompt_cfg:
+  system: system_zero_shot
+  usage: usage
+  user_question: user_question
+  history: history
+  final_try: final
+  db: []
+  retrieval:
+    top_k: 0
+search:
+  embedding: all-mpnet-base-v2
+  use_faiss: true
+  faiss_index_type: flat
+  eager_init: false
+  filter_kwargs:
+    top_p: 0.3
+    min_cos_sim: 0.4
+
+forgetting:
+  enabled: true
+  alpha: 0.3
+  beta: 0.3
+  gamma: 0.4
+  theta_1: 0.55
+  theta_2: 0.30
+  half_life: 1800
+  min_retain_ratio: 0.10
+  use_graph_centrality: true
+
+graph_augment:
+  enable_temporal: true
+  enable_co_object: true
+  enable_co_location: false
+  enable_similar_action: true
+  similar_action_threshold: 0.85
+  enable_causal: false
+  alpha: 0.65
+  beta: 0.30
+  gamma: 0.05
+  max_neighbors: 6
+  max_seed_events_per_item: 2
+  adaptive_edge_selection: true
+  trace_file: null
+
+api:
+  include_groups:
+    - dialog
+    - util
+    - tools
+  include_names:
+    - history
+    - answer
+exclude_imports:
+  - history
+  - wait_for_trigger
+  - say

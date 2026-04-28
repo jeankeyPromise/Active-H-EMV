@@ -116,6 +116,9 @@ class EventBasedSummary:  # L2
 
     @property
     def nl_summary(self):
+        override = getattr(self, '_summary_override', None)
+        if override:
+            return override
         action = self.latest_raw.current_action
         action_state = self.latest_raw.current_action_state
         graph = self.latest_scene.nl_graph_summary
@@ -135,6 +138,9 @@ class EventBasedSummary:  # L2
 
     @property
     def index_content(self) -> List[str]:
+        override = getattr(self, '_summary_override', None)
+        if override:
+            return [override]
         return list(chain(*(s.index_content for s in self.scenes))) + [self.audio_description,
                                                                        self.action_parameter_summary]
 

@@ -1,0 +1,151 @@
+{
+  "results": {
+    "medium_graph": {
+      "a7a-merged-explain-1": {
+        "label": "CORRECT",
+        "valid": true
+      },
+      "a7a-merged-explain-3": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-req-at-time-1": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-events-4": {
+        "label": "CORRECT",
+        "valid": true
+      },
+      "a7a-merged-events-5": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-action-detail-2": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-objects-5": {
+        "label": "WRONG",
+        "valid": true
+      },
+      "a7a-merged-objects-7": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-events-1": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-events-6": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-problems-1": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-problems-3": {
+        "label": "PARTIAL",
+        "valid": true
+      }
+    },
+    "ultra": {
+      "a7a-merged-explain-1": {
+        "label": "CORRECT",
+        "valid": true
+      },
+      "a7a-merged-explain-3": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-req-at-time-1": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-events-4": {
+        "label": "CORRECT",
+        "valid": true
+      },
+      "a7a-merged-events-5": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-action-detail-2": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-objects-5": {
+        "label": "WRONG",
+        "valid": true
+      },
+      "a7a-merged-objects-7": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-events-1": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-events-6": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-problems-1": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-problems-3": {
+        "label": "PARTIAL",
+        "valid": true
+      }
+    }
+  },
+  "summary": {
+    "base": {
+      "total": 12,
+      "valid": 9,
+      "valid_rate": 0.75,
+      "S_c": 0.25,
+      "S_p": 0.25,
+      "counts": {
+        "CORRECT": 3,
+        "PARTIAL": 0,
+        "WRONG": 9
+      },
+      "prompt_tokens_per_qa": 8571.5,
+      "completion_tokens_per_qa": 144.08333333333334,
+      "judge_source": "existing_auto_eval"
+    },
+    "medium_graph": {
+      "total": 12,
+      "valid": 12,
+      "valid_rate": 1.0,
+      "S_c": 0.16666666666666666,
+      "S_p": 0.9166666666666666,
+      "counts": {
+        "CORRECT": 2,
+        "PARTIAL": 9,
+        "WRONG": 1
+      },
+      "prompt_tokens_per_qa": 11428.916666666666,
+      "completion_tokens_per_qa": 207.0,
+      "judge_source": "retrying_semantic_judge"
+    },
+    "ultra": {
+      "total": 12,
+      "valid": 12,
+      "valid_rate": 1.0,
+      "S_c": 0.16666666666666666,
+      "S_p": 0.9166666666666666,
+      "counts": {
+        "CORRECT": 2,
+        "PARTIAL": 9,
+        "WRONG": 1
+      },
+      "prompt_tokens_per_qa": 11428.916666666666,
+      "completion_tokens_per_qa": 235.08333333333334,
+      "judge_source": "retrying_semantic_judge"
+    }
+  }
+}

@@ -2,7 +2,7 @@
   embeddings = HuggingFaceEmbeddings(
 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
 Loading eval chain from llm_emv/config/llm_eval/gemini_2.5_pro.yaml
-Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6167.36it/s]
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 6486.78it/s]
 [1mMPNetModel LOAD REPORT[0m from: sentence-transformers/all-mpnet-base-v2
 Key                     | Status     |  | 
 ------------------------+------------+--+-
@@ -13,10 +13,10 @@ Notes:
 Loaded few-shot sample db of size 60
 
 
-Evaluating experiments/results/teach/smoke/h50_current_zs_fast_n100_fullqa.json 
+Evaluating experiments/results/teach/forgetting/h50_forget_l2probe_n20_probe_v2.json 
 
-Tokens Used: 138383
-	Prompt Tokens: 123171
-	Completion Tokens: 15212
-Successful Requests: 100
+Tokens Used: 28515
+	Prompt Tokens: 24321
+	Completion Tokens: 4194
+Successful Requests: 20
 Total Cost (USD): $0.0

@@ -37,6 +37,12 @@
 | Phase 28 | `phase28_armarx_evidence_audit.md` | ARMARX 遗忘模块关键证据保真审计 | 在零新增 LLM token 下审计 question-local evidence；`medium_graph` 比 `medium/ultra` 更能保留 relation-rich 过程事件。117 个高细节密度事件上，`mean relations` 分别为 `130.22` vs `112.63/111.82`，说明图中心性版本更保守、更利于细节保真 |
 | Phase 29 | `phase29_armarx_local_detail_probe.md` | ARMARX 局部低层细节视图单题探测 | 以 `a7a-merged-objects-5` 为单题 probe，只给局部最新 scene graph；`base` 已能回答出包含 `OrangeJuice` 的关系性线索，而 `medium/ultra` 因 relations 被清空而直接拒答，说明局部低层视图能把遗忘差异真实传递到 QA |
 | Phase 30 | `phase30_armarx_local_detail_slice.md` | ARMARX 局部低层细节切片实验 | 5 个超小局部 probe 继续验证机制；在前 4 个 relation-sensitive probe 上，`base=4/4`、`random_medium=3/4`、`medium=0/4`、`medium_graph=4/4`、`ultra=0/4`，说明 `medium_graph` 对细节保真明显优于 `medium/ultra`，且随机遗忘表现不稳定 |
+| Phase 32 | `phase32_armarx_forgetting_accuracy_probe.md` | ARMARX 遗忘模块准确率受控探测 | `L2 summary` 视图下 12 题 probe 显示：遗忘后系统仍能稳定作答，`medium_graph` 比 `ultra` 的部分正确率更高；细节类问题最先退化 |
+| Phase 33 | `phase33_teach_h50_forgetting_n20_probe.md` | TEACh `|h|=50` 遗忘主线 n=20 预跑 | 在真实分层检索管线上，`Base / Forget+Graph / Ultra` 前 20 题输出逐项一致；`Forget+Graph` 已带来约 `5.5%` 的 pickle 压缩，`Ultra` 约 `6.3%`，当前压缩主要停留在 `Level 1` |
+| Phase 34 | `phase34_teach_h50_forget_graph_full100.md` | TEACh `|h|=50` Forget+Graph full 100/100 正式对齐 | `Forget+Graph` 已完成 full `100/100`；与现有正式基线答案 `100/100` 完全一致，同时在 10 段长 history 上带来约 `5.26%` 的 pickle 压缩；当前不再优先扩展 `Ultra full 100/100` |
+| Phase 35 | `phase35_teach_h50_l2_probe.md` | TEACh `|h|=50` Level 2 参数探测 | 将 `min_retain_ratio` 调到 `0.10` 后，`L2` 约占事件总数 `60%`，scene 比降到 `0.929`、relation 比降到 `0.503`；`n=20` 上最终答案与 Base 仍逐条一致，但当前 `Level 2` 表示会让 pickle 反而增大到 `104.3%`，说明实现层仍需优化 |
+| Phase 36 | `phase36_teach_forgetting_pickle_accuracy_tradeoff.md` | TEACh 遗忘模块的 pickle 压缩-准确率权衡验证 | 修正 `Level 2` 表示后，`Forget+Graph` 在 full `100/100` 上以 `5.26%` pickle 压缩保持 `100/100` 相同答案；更激进的 `Level 2 probe` 在 `n=20` 上将 pickle 压到 `65.69%`，同时答案仍 `20/20` 一致 |
+| Phase 37 | `phase37_teach_h50_l2probe_full100.md` | TEACh `|h|=50` 修正后 Level 2 配置的 full 100/100 验证 | 修正后的 `Level 2` 在 full `100/100` 上将 pickle 压到 `68.30%`，scene 比 `0.9288`、relation 比 `0.4917`；与正式基线及 `Forget+Graph` 的最终答案均 `100/100` 逐条一致 |
 
 ## 固定实验口径
 

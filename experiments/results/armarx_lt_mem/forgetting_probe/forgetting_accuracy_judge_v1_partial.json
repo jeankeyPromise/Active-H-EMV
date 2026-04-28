@@ -1,0 +1,105 @@
+{
+  "results": {
+    "medium_graph": {
+      "a7a-merged-explain-1": {
+        "label": "CORRECT",
+        "valid": true
+      },
+      "a7a-merged-explain-3": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-req-at-time-1": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-events-4": {
+        "label": "CORRECT",
+        "valid": true
+      },
+      "a7a-merged-events-5": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-action-detail-2": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-objects-5": {
+        "label": "WRONG",
+        "valid": true
+      },
+      "a7a-merged-objects-7": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-events-1": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-events-6": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-problems-1": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-problems-3": {
+        "label": "PARTIAL",
+        "valid": true
+      }
+    },
+    "ultra": {
+      "a7a-merged-explain-1": {
+        "label": "CORRECT",
+        "valid": true
+      },
+      "a7a-merged-explain-3": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-req-at-time-1": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-events-4": {
+        "label": "CORRECT",
+        "valid": true
+      },
+      "a7a-merged-events-5": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-action-detail-2": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-objects-5": {
+        "label": "WRONG",
+        "valid": true
+      },
+      "a7a-merged-objects-7": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-events-1": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-events-6": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-problems-1": {
+        "label": "PARTIAL",
+        "valid": true
+      },
+      "a7a-merged-problems-3": {
+        "label": "PARTIAL",
+        "valid": true
+      }
+    }
+  },
+  "summary": {}
+}
