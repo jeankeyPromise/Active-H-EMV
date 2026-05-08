@@ -43,6 +43,7 @@
 | Phase 35 | `phase35_teach_h50_l2_probe.md` | TEACh `|h|=50` Level 2 参数探测 | 将 `min_retain_ratio` 调到 `0.10` 后，`L2` 约占事件总数 `60%`，scene 比降到 `0.929`、relation 比降到 `0.503`；`n=20` 上最终答案与 Base 仍逐条一致，但当前 `Level 2` 表示会让 pickle 反而增大到 `104.3%`，说明实现层仍需优化 |
 | Phase 36 | `phase36_teach_forgetting_pickle_accuracy_tradeoff.md` | TEACh 遗忘模块的 pickle 压缩-准确率权衡验证 | 修正 `Level 2` 表示后，`Forget+Graph` 在 full `100/100` 上以 `5.26%` pickle 压缩保持 `100/100` 相同答案；更激进的 `Level 2 probe` 在 `n=20` 上将 pickle 压到 `65.69%`，同时答案仍 `20/20` 一致 |
 | Phase 37 | `phase37_teach_h50_l2probe_full100.md` | TEACh `|h|=50` 修正后 Level 2 配置的 full 100/100 验证 | 修正后的 `Level 2` 在 full `100/100` 上将 pickle 压到 `68.30%`，scene 比 `0.9288`、relation 比 `0.4917`；与正式基线及 `Forget+Graph` 的最终答案均 `100/100` 逐条一致 |
+| Phase 38 | `phase38_correction_experiment.md` | GRAF-Mem 反馈修正模块系统评测 | `|h|=5` Smoke 验证全链路正常；`|h|=50` 两组对比：共享 history 协议本身导致 40% 答案差异；Answer Judge 0 次 WRONG 判定致修正管线从未触发；建议转向合成错误注入机制验证 |
 
 ## 固定实验口径
 
