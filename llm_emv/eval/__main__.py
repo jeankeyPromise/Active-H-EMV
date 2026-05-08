@@ -369,14 +369,14 @@ def main():
 
     if args.enable_correction:
         correction_fn = _create_correction_fn(args.cfg)
+        answer_judge_fn = _create_answer_judge_fn(args.cfg) if correction_fn else None
         if correction_fn:
-            answer_judge_fn = _create_answer_judge_fn(args.cfg)
             print('\n[Correction] 启用模拟反馈修正协议\n')
-            result = run_evaluation_with_correction(
-                partial(run_model, args.cfg), dataset, correction_fn, answer_judge_fn)
         else:
-            print('\n[Correction] 配置中未找到 correction 块，回退到标准评测\n')
-            result = run_evaluation(partial(run_model, args.cfg), dataset)
+            print('\n[Correction] 共享 history 对照模式（无修正）\n')
+        # 始终使用共享 history 协议；correction_fn=None 时跳过修正但保持共享行为
+        result = run_evaluation_with_correction(
+            partial(run_model, args.cfg), dataset, correction_fn, answer_judge_fn)
         _write_output_json(args.output, args, {
             r.sample_id: _sample_result_dict(
                 r.sample_id, r.question_time, r.question, r.answer, r.hypothesis)
