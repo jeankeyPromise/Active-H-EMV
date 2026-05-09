@@ -45,6 +45,7 @@
 | Phase 37 | `phase37_teach_h50_l2probe_full100.md` | TEACh `|h|=50` 修正后 Level 2 配置的 full 100/100 验证 | 修正后的 `Level 2` 在 full `100/100` 上将 pickle 压到 `68.30%`，scene 比 `0.9288`、relation 比 `0.4917`；与正式基线及 `Forget+Graph` 的最终答案均 `100/100` 逐条一致 |
 | Phase 38 | `phase38_correction_experiment.md` | GRAF-Mem 反馈修正模块系统评测 | `|h|=5` Smoke 验证全链路正常；`|h|=50` 两组对比：共享 history 协议本身导致 40% 答案差异；Answer Judge 0 次 WRONG 判定致修正管线从未触发；建议转向合成错误注入机制验证 |
 | Phase 40 | `phase40_correction_injection.md` | GRAF-Mem 反馈修正模块受控错误注入验证 | 向 HigherLevelSummary 手工注入 object_swap 错误；LLM 修正质量 100% 成功（fridge→cabinet）；定位算法正确找到与错误语义匹配的底层节点但高层节点因递归索引信号稀释排名较低；传播检测召回率为 0（注入场景与算法假设不匹配） |
+| Phase 41 | `phase41_l2_propagation.md` | L2 层传播检测受控验证 | 在同 Goal 连续 22 帧中向 5 帧注入 Toaster→Microwave 误识别；修复 skipping bug 后召回率 100%（4/4），精确率 28.6%（10 假阳性来自同场景未注入帧但无实际危害）；证明传播检测在匹配其设计假设时完全有效 |
 
 ## 固定实验口径
 

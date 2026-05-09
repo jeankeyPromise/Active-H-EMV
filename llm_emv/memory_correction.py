@@ -389,8 +389,9 @@ def detect_error_propagation(
 
             neighbor = all_events[neighbor_idx]
 
-            # 跳过已修正的节点
-            if hasattr(neighbor, '_summary_override'):
+            # 跳过已经过修正管线处理的节点（同时有 _summary_override 和 _original_summary）
+            # 仅注入错误但未修正的节点（只有 _summary_override）不应跳过
+            if hasattr(neighbor, '_summary_override') and hasattr(neighbor, '_original_summary'):
                 continue
 
             # 计算邻居摘要与原始错误摘要的相似度

@@ -1,0 +1,100 @@
+{
+  "experiment": "l2_propagation_detection",
+  "error_type": "visual_perception_error",
+  "timestamp": "2026-05-09T19:26:45.541335",
+  "config": {
+    "old_word": "Toaster",
+    "new_word": "Microwave",
+    "n_inject": 5,
+    "inject_start": 3,
+    "max_hops": 7,
+    "similarity_threshold": 0.5
+  },
+  "goal_info": {
+    "n_frames": 22,
+    "n_with_target_object": 22,
+    "target_object": "Toaster",
+    "frame_actions": [
+      "Say(\"done next?\")",
+      "Noop",
+      "TurnRight()",
+      "TurnRight()",
+      "Noop",
+      "Say(\"where is the plate\")",
+      "TurnRight()",
+      "PanLeft()",
+      "PanLeft()",
+      "Forward()",
+      "Forward()",
+      "Forward()",
+      "Forward()",
+      "Forward()",
+      "Forward()",
+      "PanLeft()",
+      "PanLeft()",
+      "PanLeft()",
+      "PanLeft()",
+      "PanLeft()",
+      "PanLeft()",
+      "Pickup(Plate)"
+    ]
+  },
+  "injection": {
+    "n_injected": 5,
+    "injected_frame_indices": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "propagation": {
+    "n_injected_others": 4,
+    "n_detected": 4,
+    "n_suspicious_total": 14,
+    "recall": 1.0,
+    "precision": 0.2857142857142857,
+    "f1": 0.4444444444444445,
+    "missed_frames": [],
+    "false_positive_count": 10
+  },
+  "localization": {
+    "question": "What appliance was on the counter?",
+    "wrong_answer": "The Microwave was on the counter.",
+    "correct_answer": "The Toaster was on the counter.",
+    "injected_ranks": {},
+    "top5": [
+      {
+        "rank": 1,
+        "suspicion": 0.5732,
+        "node_type": "EventBasedSummary",
+        "is_injected": false
+      },
+      {
+        "rank": 2,
+        "suspicion": 0.5727,
+        "node_type": "EventBasedSummary",
+        "is_injected": false
+      },
+      {
+        "rank": 3,
+        "suspicion": 0.5658,
+        "node_type": "EventBasedSummary",
+        "is_injected": false
+      },
+      {
+        "rank": 4,
+        "suspicion": 0.5658,
+        "node_type": "EventBasedSummary",
+        "is_injected": false
+      },
+      {
+        "rank": 5,
+        "suspicion": 0.5658,
+        "node_type": "EventBasedSummary",
+        "is_injected": false
+      }
+    ]
+  }
+}
