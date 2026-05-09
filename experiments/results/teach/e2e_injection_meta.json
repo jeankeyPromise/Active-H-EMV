@@ -1,0 +1,37 @@
+[
+  {
+    "idx": 0,
+    "depth": 3,
+    "original": "Upon receiving the instruction to make a sandwich, I first prepared the bread by slicing and toasting it. I then prepared the other ingredients by slicing lettuce and a tomato. After washing a plate, ",
+    "injected": "Upon receiving the instruction to make a sandwich, I first prepared the bread by slicing and toasting it. I then prepared the other ingredients by slicing lettuce and a tomato. After washing a plate, ",
+    "kw": "task was complete"
+  },
+  {
+    "idx": 1,
+    "depth": 3,
+    "original": "The user asked me to water the plant. I filled a cup with water at the sink, watered the houseplant, and confirmed the task was finished.",
+    "injected": "The user asked me to water the plant. I filled a cup with water at the sink, watered the houseplant, and could NOT confirm FAILED: the task was done was finished.",
+    "kw": "confirmed the task"
+  },
+  {
+    "idx": 2,
+    "depth": 3,
+    "original": "I watered a houseplant with a bowl of water as instructed, placed the empty bowl on the countertop, and received confirmation that the task was complete.",
+    "injected": "I watered a houseplant with a bowl of water as instructed, placed the empty bowl on the countertop, and FAILED: received confirmation that the task was NOT completed and I could not finish it.",
+    "kw": "task was complete"
+  },
+  {
+    "idx": 3,
+    "depth": 3,
+    "original": "I placed a book on the bed as instructed and received confirmation from the user that the task was complete.",
+    "injected": "I placed a book on the bed as instructed and FAILED: received confirmation from the user that the task was NOT completed and I could not finish it.",
+    "kw": "task was complete"
+  },
+  {
+    "idx": 4,
+    "depth": 3,
+    "original": "I prepared a sliced tomato in a bowl. I retrieved a bowl, sliced a tomato with a knife, placed the slices in the bowl, and received confirmation from the user.",
+    "injected": "I prepared a sliced tomato in a bowl. I retrieved a bowl, sliced a tomato with a knife, placed the slices in the bowl, and did NOT receive confirmation and the task remained unfinished from the user.",
+    "kw": "received confirmation"
+  }
+]
