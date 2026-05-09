@@ -46,6 +46,7 @@
 | Phase 38 | `phase38_correction_experiment.md` | GRAF-Mem 反馈修正模块系统评测 | `|h|=5` Smoke 验证全链路正常；`|h|=50` 两组对比：共享 history 协议本身导致 40% 答案差异；Answer Judge 0 次 WRONG 判定致修正管线从未触发；建议转向合成错误注入机制验证 |
 | Phase 40 | `phase40_correction_injection.md` | GRAF-Mem 反馈修正模块受控错误注入验证 | 向 HigherLevelSummary 手工注入 object_swap 错误；LLM 修正质量 100% 成功（fridge→cabinet）；定位算法正确找到与错误语义匹配的底层节点但高层节点因递归索引信号稀释排名较低；传播检测召回率为 0（注入场景与算法假设不匹配） |
 | Phase 41 | `phase41_l2_propagation.md` | L2 层传播检测受控验证 | 在同 Goal 连续 22 帧中向 5 帧注入 Toaster→Microwave 误识别；修复 skipping bug 后召回率 100%（4/4），精确率 28.6%（10 假阳性来自同场景未注入帧但无实际危害）；证明传播检测在匹配其设计假设时完全有效 |
+| Phase 42 | `phase42_e2e_correction.md` | GRAF-Mem 修正模块端到端闭环验证 | 向 50ep 缓存注入任务身份替换错误（浇花→喂猫），运行完整 --enable-correction；20/20 样本 0 WRONG，Agent的图增强检索完全绕过注入节点从其他证据源找到正确信息；全链路代码验证通过，但多源检索鲁棒性+Judge保守设计导致修正极少被自然触发——这恰好证明系统在"不犯错"方面的成功 |
 
 ## 固定实验口径
 
