@@ -1,0 +1,100 @@
+{
+  "experiment": "correction_injection",
+  "cache_file": "dataset/TEACh/preprocessed_histories/valid_unseen-multi/50ep-8ff5291f2e02216cc14877f3841c5033.pkl",
+  "error_type": "object_swap",
+  "timestamp": "2026-05-09T12:52:35.870239",
+  "injection": {
+    "primary_summary_original": "I located and retrieved a loaf of bread from the lower cabinet and placed it on the countertop.",
+    "primary_summary_injected": "I located and retrieved a loaf of bread from the lower fridge and placed it on the countertop.",
+    "error_desc": "将 \"cabinet\" 替换为 \"fridge\"（物体混淆）",
+    "error_kwargs": {
+      "old_word": "cabinet",
+      "new_word": "fridge"
+    },
+    "n_sibling_injections": 2,
+    "total_injected_nodes": 3
+  },
+  "test_qa": {
+    "question": "What did you retrieved the bread from?",
+    "wrong_answer": "I retrieved the bread from the fridge.",
+    "correct_answer": "I retrieved the bread from the cabinet."
+  },
+  "localization": {
+    "total_candidates": 6232,
+    "suspects_returned": 10,
+    "injected_node_rank": null,
+    "injected_node_found": false,
+    "top5": [
+      {
+        "rank": 1,
+        "node_type": "EventBasedSummary",
+        "suspicion": 0.5762,
+        "is_injected": false,
+        "summary_preview": "Action: Noop <success>\nSpeech: Bread is inside fridge."
+      },
+      {
+        "rank": 2,
+        "node_type": "GoalBasedSummary",
+        "suspicion": 0.5762,
+        "is_injected": false,
+        "summary_preview": "Goal: Open(Fridge)\nVisual observation: Fridge\nSpeech:\n2023-07-17 14:26:41.659855: We need to make a "
+      },
+      {
+        "rank": 3,
+        "node_type": "HigherLevelSummary",
+        "suspicion": 0.5695,
+        "is_injected": false,
+        "summary_preview": "I began the task by retrieving a butter knife from the garbage can as instructed, then used it to sl"
+      },
+      {
+        "rank": 4,
+        "node_type": "GoalBasedSummary",
+        "suspicion": 0.5695,
+        "is_injected": false,
+        "summary_preview": "Goal: Pickup(ButterKnife)\nVisual observation: Fork_1, CounterTop_0, Sink, Knife, GarbageCan, PepperS"
+      },
+      {
+        "rank": 5,
+        "node_type": "EventBasedSummary",
+        "suspicion": 0.5695,
+        "is_injected": false,
+        "summary_preview": "Action: Noop <success>\nVisual observation: Tomato_1, CellPhone_0, Plate_0, Egg_0, Spoon, Chair_0, Ch"
+      }
+    ],
+    "injected_node_absolute_rank": 2097,
+    "injected_node_suspicion": 0.4998
+  },
+  "correction_quality": {
+    "skipped": true
+  },
+  "propagation": {
+    "total_suspicious": 2,
+    "injected_detected": 0,
+    "total_injected_others": 2,
+    "recall": 0.0,
+    "precision": 0.0,
+    "f1": 0.0,
+    "suspicious_details": [
+      {
+        "node_type": "HigherLevelSummary",
+        "similarity": 0.815,
+        "reason": "结构邻近：同父下后方第1个sibling，相似度=0.815",
+        "is_injected": false,
+        "summary_preview": "I picked up a knife and sliced the bread on the countertop."
+      },
+      {
+        "node_type": "HigherLevelSummary",
+        "similarity": 0.672,
+        "reason": "结构邻近：同父下后方第2个sibling，相似度=0.672",
+        "is_injected": false,
+        "summary_preview": "I placed one slice of bread into the toaster and turned it on to toast."
+      }
+    ]
+  },
+  "end_to_end": {
+    "injected_history_path": "experiments/results/teach/correction_injection_v4.injected_history.pkl",
+    "n_injected_nodes": 3,
+    "n_test_questions": 1,
+    "command": "python3 -m llm_emv.eval --cfg teach/simplified/full_graph_aug_correction --enable-correction ..."
+  }
+}
