@@ -68,6 +68,8 @@ if hasattr(neighbor, '_summary_override') and hasattr(neighbor, '_original_summa
 | 帧 6 (TurnRight) | 0.962 | ✓ 是注入节点 |
 | 帧 7 (PanLeft) | 0.756 | ✓ 是注入节点 |
 
+
+
 ### 假阳性分析
 
 10 个假阳性来自同一 Goal 中的**未注入帧**（帧 0–2、8–10 以及更早的帧）。这些帧与源节点共享几乎完全相同的视觉观察（同一场景、同一批物体如 Bread_1_Sliced_6 等），相似度在 0.71–0.95 之间。
