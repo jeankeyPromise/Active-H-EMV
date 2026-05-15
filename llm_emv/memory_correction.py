@@ -26,6 +26,7 @@
    — 修正后的 history 传递给后续问题（模拟反馈闭环）
 """
 
+import math
 import re
 from datetime import datetime
 from collections import defaultdict
@@ -151,6 +152,440 @@ def _collect_events_with_parent_goals(
     return results
 
 
+def _collect_all_summary_nodes(node: Any) -> List[Any]:
+    """递归收集所有带摘要的层级节点（L2/L3/L4+）"""
+    results = []
+    if isinstance(node, EventBasedSummary):
+        results.append(node)
+    elif isinstance(node, GoalBasedSummary):
+        if getattr(node, 'nl_summary', None):
+            results.append(node)
+        for event in node.events:
+            results.extend(_collect_all_summary_nodes(event))
+    elif isinstance(node, HigherLevelSummary):
+        if getattr(node, 'nl_summary', None):
+            results.append(node)
+        for child in node.children:
+            results.extend(_collect_all_summary_nodes(child))
+    return results
+
+
+def _collect_summary_context(
+        node: Any,
+        parent: Any = None,
+        storage: Optional[List[Dict[str, Any]]] = None,
+) -> List[Dict[str, Any]]:
+    """
+    收集所有摘要节点及其树结构上下文（父/子节点）。
+    """
+    if storage is None:
+        storage = []
+
+    if isinstance(node, EventBasedSummary):
+        storage.append({
+            'node': node,
+            'parent': parent,
+            'children': [],
+            'depth_label': 'L2',
+        })
+    elif isinstance(node, GoalBasedSummary):
+        children = list(getattr(node, 'events', []) or [])
+        if getattr(node, 'nl_summary', None):
+            storage.append({
+                'node': node,
+                'parent': parent,
+                'children': children,
+                'depth_label': 'L3',
+            })
+        for child in children:
+            _collect_summary_context(child, node, storage)
+    elif isinstance(node, HigherLevelSummary):
+        children = list(getattr(node, 'children', []) or [])
+        if getattr(node, 'nl_summary', None):
+            storage.append({
+                'node': node,
+                'parent': parent,
+                'children': children,
+                'depth_label': 'L4+',
+            })
+        for child in children:
+            _collect_summary_context(child, node, storage)
+    return storage
+
+
+def _get_node_timestamp(node: Any) -> Optional[datetime]:
+    """提取节点近似时间戳"""
+    if isinstance(node, EventBasedSummary):
+        latest_raw = getattr(node, 'latest_raw', None)
+        return getattr(latest_raw, 'timestamp', None)
+    node_range = getattr(node, 'range', None)
+    if node_range and len(node_range) > 0:
+        return node_range[0]
+    return None
+
+
+def _normalize_phrase(text: str) -> str:
+    text = (text or '').strip().lower()
+    text = re.sub(r'[`"\']', '', text)
+    text = re.sub(r'[^a-z0-9_\-\s]', ' ', text)
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text
+
+
+def _strip_leading_determiners(text: str) -> str:
+    return re.sub(r'^(the|a|an|this|that|it)\s+', '', text.strip(), flags=re.IGNORECASE)
+
+
+def _extract_relation_from_question(question: str) -> str:
+    q = question.lower()
+    patterns = [
+        (r'\bwhere\b.*\bfrom\b', 'retrieved_from'),
+        (r'\bwhere\b.*\bput\b', 'placed_at'),
+        (r'\bwhere\b', 'located_at'),
+        (r'\bwhen\b', 'time_of_event'),
+        (r'\bwhat task\b', 'task_identity'),
+        (r'\bwhat did\b.*\bretrieve\b', 'retrieved_object'),
+        (r'\bwhat\b.*\bfrom\b', 'source_container'),
+    ]
+    for pattern, label in patterns:
+        if re.search(pattern, q):
+            return label
+    tokens = re.findall(r'[a-z]+', q)
+    return '_'.join(tokens[:3]) if tokens else 'unknown_relation'
+
+
+def _extract_entity_from_question(question: str) -> str:
+    q = question.strip()
+    patterns = [
+        r'retrieve(?:d)?\s+(?:the\s+)?(.+?)\s+from\b',
+        r'get\s+(?:the\s+)?(.+?)\s+from\b',
+        r'put\s+(?:the\s+)?(.+?)\s+(?:in|on|into|onto|at)\b',
+        r'what task did you do just before\s+(.+?)\??$',
+    ]
+    for pattern in patterns:
+        m = re.search(pattern, q, flags=re.IGNORECASE)
+        if m:
+            return _normalize_phrase(_strip_leading_determiners(m.group(1)))
+
+    # 回退：找 question 中最后一个 the/a/an 之后的短语
+    m = re.search(r'\b(?:the|a|an)\s+([a-zA-Z0-9_\-\s]+?)(?:\?|$)', q)
+    if m:
+        return _normalize_phrase(_strip_leading_determiners(m.group(1)))
+    return ''
+
+
+def _extract_value_from_answer(answer: str) -> str:
+    answer = (answer or '').strip()
+    patterns = [
+        r'\bfrom\s+(?:the\s+)?([a-zA-Z0-9_\-\s]+?)(?:[.?!,]|$)',
+        r'\bin\s+(?:the\s+)?([a-zA-Z0-9_\-\s]+?)(?:[.?!,]|$)',
+        r'\bon\s+(?:the\s+)?([a-zA-Z0-9_\-\s]+?)(?:[.?!,]|$)',
+        r'\bat\s+(?:the\s+)?([a-zA-Z0-9_\-\s]+?)(?:[.?!,]|$)',
+    ]
+    for pattern in patterns:
+        m = re.search(pattern, answer, flags=re.IGNORECASE)
+        if m:
+            return _normalize_phrase(_strip_leading_determiners(m.group(1)))
+
+    # 回退：取最后一个内容词块
+    tokens = re.findall(r'[a-zA-Z0-9_\-]+', answer.lower())
+    if not tokens:
+        return ''
+    stop = {'i', 'it', 'was', 'is', 'the', 'a', 'an', 'from', 'in', 'on', 'at', 'to', 'retrieved'}
+    content = [t for t in tokens if t not in stop]
+    return _normalize_phrase(' '.join(content[-3:])) if content else _normalize_phrase(tokens[-1])
+
+
+def _extract_feedback_anchor(question: str, wrong_answer: str, correct_answer: str) -> Dict[str, str]:
+    """从反馈中抽取纠错事实四元组 z=(e, r, v_wrong, v_correct)"""
+    entity = _extract_entity_from_question(question)
+    relation = _extract_relation_from_question(question)
+    wrong_value = _extract_value_from_answer(wrong_answer)
+    correct_value = _extract_value_from_answer(correct_answer)
+    return {
+        'entity': entity,
+        'relation': relation,
+        'wrong_value': wrong_value,
+        'correct_value': correct_value,
+    }
+
+
+def _anchor_match_strength(text: str, anchor: str) -> float:
+    """
+    节点文本对锚点的词面匹配强度。
+    """
+    anchor = _normalize_phrase(anchor)
+    if not anchor:
+        return 0.0
+    haystack = _normalize_phrase(text)
+    if not haystack:
+        return 0.0
+    if anchor in haystack:
+        return 1.0
+    anchor_tokens = set(anchor.split())
+    text_tokens = set(haystack.split())
+    if not anchor_tokens:
+        return 0.0
+    overlap = len(anchor_tokens & text_tokens) / len(anchor_tokens)
+    return overlap
+
+
+def _sigmoid_scaled(x: float) -> float:
+    return 1.0 / (1.0 + math.exp(-10.0 * x))
+
+
+def _expand_vertical_chains(
+    candidate_ids: set,
+    context_entries: List[Dict[str, Any]],
+    anchor: Dict[str, str],
+    min_anchor_match: float = 0.3,
+) -> set:
+    """
+    Enhance candidate set by traversing vertical chains.
+
+    For each candidate node, traverse up to root and down to leaves,
+    adding all nodes on the vertical chain with sufficient anchor match.
+    This addresses the gap where L2 source nodes may be structurally
+    distant from L4+ nodes identified by topic retrieval alone.
+    """
+    entry_by_id = {id(item['node']): item for item in context_entries}
+    expanded = set(candidate_ids)
+
+    for nid in list(candidate_ids):
+        if nid not in entry_by_id:
+            continue
+
+        # Traverse upward (ancestors) — linear chain, always efficient
+        current_entry = entry_by_id[nid]
+        while current_entry['parent'] is not None:
+            parent = current_entry['parent']
+            parent_id = id(parent)
+            if parent_id not in expanded:
+                parent_summary = get_effective_summary(parent)
+                match_score = max(
+                    _anchor_match_strength(parent_summary, anchor.get('entity', '')),
+                    _anchor_match_strength(parent_summary, anchor.get('wrong_value', '')),
+                    _anchor_match_strength(parent_summary, anchor.get('correct_value', '')),
+                )
+                if match_score >= min_anchor_match:
+                    expanded.add(parent_id)
+            current_entry = entry_by_id.get(parent_id)
+            if current_entry is None:
+                break
+
+        # Traverse downward — depth-limited DFS, only follow anchor-matched branches
+        _dfs_vertical_chain(
+            entry_by_id[nid], entry_by_id, expanded, anchor, min_anchor_match,
+            depth=0, max_depth=8,
+        )
+
+    return expanded
+
+
+def _dfs_vertical_chain(
+    entry: Dict[str, Any],
+    entry_by_id: Dict[int, Dict[str, Any]],
+    expanded: set,
+    anchor: Dict[str, str],
+    min_anchor_match: float,
+    depth: int,
+    max_depth: int,
+) -> None:
+    """DFS that only follows anchor-matched children (vertical chain)."""
+    if depth >= max_depth:
+        return
+    for child in entry['children']:
+        child_id = id(child)
+        if child_id in expanded:
+            # Already in set, but still follow its children (they might not be)
+            child_entry = entry_by_id.get(child_id)
+            if child_entry:
+                _dfs_vertical_chain(child_entry, entry_by_id, expanded,
+                                    anchor, min_anchor_match, depth + 1, max_depth)
+            continue
+
+        child_summary = get_effective_summary(child)
+        match_score = max(
+            _anchor_match_strength(child_summary, anchor.get('entity', '')),
+            _anchor_match_strength(child_summary, anchor.get('wrong_value', '')),
+            _anchor_match_strength(child_summary, anchor.get('correct_value', '')),
+        )
+        if match_score >= min_anchor_match:
+            expanded.add(child_id)
+            child_entry = entry_by_id.get(child_id)
+            if child_entry:
+                _dfs_vertical_chain(child_entry, entry_by_id, expanded,
+                                    anchor, min_anchor_match, depth + 1, max_depth)
+
+
+def localize_error_with_details(
+        history: HigherLevelSummary,
+        question: str,
+        wrong_answer: str,
+        correct_answer: str,
+        embedding_fn: Callable[[List[str]], torch.Tensor],
+        top_k: int = 3,
+        candidate_pool_size: int = 40,
+        tau: float = 86400.0,
+        question_time: Optional[datetime] = None,
+        enable_vertical_chain: bool = False,
+) -> List[Dict[str, Any]]:
+    """
+    反馈锚定的逆向定位算法（带详细分项分数）。
+
+    返回每个候选节点的完整打分信息，供实验与调试使用。
+
+    Args:
+        enable_vertical_chain: If True, expand candidate set by traversing
+            full ancestor/descendant chains to improve L2 source coverage.
+    """
+    context_entries = _collect_summary_context(history)
+    if not context_entries:
+        return []
+
+    if question_time is None:
+        # 回退：使用全树中最晚的一个可用时间作为提问时刻近似
+        timestamps = [ts for ts in (_get_node_timestamp(item['node']) for item in context_entries) if ts is not None]
+        question_time = max(timestamps) if timestamps else None
+
+    anchor = _extract_feedback_anchor(question, wrong_answer, correct_answer)
+    entity = anchor['entity']
+    relation = anchor['relation']
+    wrong_value = anchor['wrong_value']
+    correct_value = anchor['correct_value']
+
+    p_topic = f"{entity} {relation} {question}".strip()
+    p_wrong = f"{entity} {relation} {wrong_value}".strip()
+    p_correct = f"{entity} {relation} {correct_value}".strip()
+
+    query_embs = embedding_fn([p_topic or question, p_wrong or wrong_answer, p_correct or correct_answer])
+    topic_emb = query_embs[0:1]
+    wrong_emb = query_embs[1:2]
+    correct_emb = query_embs[2:3]
+
+    # Step 1: 候选生成（因果约束 + 主题粗检索）
+    eligible_entries = []
+    for entry in context_entries:
+        node = entry['node']
+        if hasattr(node, '_summary_override') and hasattr(node, '_original_summary'):
+            continue
+        ts = _get_node_timestamp(node)
+        if question_time is not None and ts is not None and ts > question_time:
+            continue
+        texts = get_effective_index_content(node)
+        if not texts:
+            continue
+        node_emb = embedding_fn(texts)
+        topic_sim = util.cos_sim(node_emb, topic_emb).max().item()
+        eligible_entries.append((entry, texts, node_emb, topic_sim))
+
+    if not eligible_entries:
+        return []
+
+    eligible_entries.sort(key=lambda x: x[3], reverse=True)
+    seed_entries = eligible_entries[:min(candidate_pool_size, len(eligible_entries))]
+
+    entry_by_node_id = {id(item['node']): item for item in context_entries}
+    candidate_ids = set()
+    for entry, _, _, _ in seed_entries:
+        candidate_ids.add(id(entry['node']))
+        parent = entry['parent']
+        if parent is not None and id(parent) in entry_by_node_id:
+            candidate_ids.add(id(parent))
+        for child in entry['children']:
+            if id(child) in entry_by_node_id:
+                candidate_ids.add(id(child))
+
+    if enable_vertical_chain:
+        candidate_ids = _expand_vertical_chains(candidate_ids, context_entries, anchor)
+
+    candidate_entries = []
+    for entry, texts, node_emb, topic_sim in eligible_entries:
+        if id(entry['node']) in candidate_ids:
+            candidate_entries.append((entry, texts, node_emb, topic_sim))
+
+    fact_cache: Dict[int, float] = {}
+    breakdowns: List[Dict[str, Any]] = []
+    for entry, texts, node_emb, topic_sim in candidate_entries:
+        node = entry['node']
+        error_sim = util.cos_sim(node_emb, wrong_emb).max().item()
+        correct_sim = util.cos_sim(node_emb, correct_emb).max().item()
+        s_fact = _sigmoid_scaled(error_sim - correct_sim)
+        fact_cache[id(node)] = s_fact
+
+        ts = _get_node_timestamp(node)
+        if question_time is not None and ts is not None:
+            delta = abs((question_time - ts).total_seconds())
+            s_temp = math.exp(-delta / tau)
+        else:
+            s_temp = 0.5
+
+        effective_summary = get_effective_summary(node)
+        match_entity = _anchor_match_strength(effective_summary, entity)
+        match_relation = _anchor_match_strength(effective_summary, relation)
+        match_value = max(
+            _anchor_match_strength(effective_summary, wrong_value),
+            _anchor_match_strength(effective_summary, correct_value),
+        )
+        s_anchor = (0.4 * match_entity + 0.4 * match_relation + 0.2 * match_value) / 1.0
+
+        level_score = {'L2': 1.0, 'L3': 0.7, 'L4+': 0.4}.get(entry['depth_label'], 0.4)
+        neighbor_fact = 0.0
+        structural_neighbors = []
+        parent = entry['parent']
+        if parent is not None and id(parent) in fact_cache:
+            structural_neighbors.append(fact_cache[id(parent)])
+        for child in entry['children']:
+            if id(child) in fact_cache:
+                structural_neighbors.append(fact_cache[id(child)])
+        if structural_neighbors:
+            neighbor_fact = max(structural_neighbors)
+        s_struct = 0.6 * level_score + 0.4 * neighbor_fact
+
+        suspicion = 0.35 * s_fact + 0.30 * s_temp + 0.20 * s_anchor + 0.15 * s_struct
+        breakdowns.append({
+            'node': node,
+            'suspicion': suspicion,
+            'scores': {
+                'fact': s_fact,
+                'temp': s_temp,
+                'anchor': s_anchor,
+                'struct': s_struct,
+                'topic': topic_sim,
+                'error_sim': error_sim,
+                'correct_sim': correct_sim,
+            },
+            'depth_label': entry['depth_label'],
+            'timestamp': ts,
+            'anchor': anchor,
+        })
+
+    # 第二遍更新 S_struct，确保引用到所有候选节点的 fact 分数
+    for item in breakdowns:
+        node = item['node']
+        entry = entry_by_node_id[id(node)]
+        level_score = {'L2': 1.0, 'L3': 0.7, 'L4+': 0.4}.get(entry['depth_label'], 0.4)
+        structural_neighbors = []
+        parent = entry['parent']
+        if parent is not None and id(parent) in fact_cache:
+            structural_neighbors.append(fact_cache[id(parent)])
+        for child in entry['children']:
+            if id(child) in fact_cache:
+                structural_neighbors.append(fact_cache[id(child)])
+        neighbor_fact = max(structural_neighbors) if structural_neighbors else 0.0
+        s_struct = 0.6 * level_score + 0.4 * neighbor_fact
+        item['scores']['struct'] = s_struct
+        item['suspicion'] = (
+            0.35 * item['scores']['fact']
+            + 0.30 * item['scores']['temp']
+            + 0.20 * item['scores']['anchor']
+            + 0.15 * s_struct
+        )
+
+    breakdowns.sort(key=lambda x: x['suspicion'], reverse=True)
+    return breakdowns[:top_k]
+
+
 # =============================================================================
 # 错误定位 (Error Localization)
 # =============================================================================
@@ -162,65 +597,19 @@ def localize_error(
         correct_answer: str,
         embedding_fn: Callable[[List[str]], torch.Tensor],
         top_k: int = 3,
-) -> List[Tuple[EventBasedSummary, float]]:
+) -> List[Tuple[Any, float]]:
     """
-    定位最可能导致错误回答的记忆节点。
-
-    策略：
-    1. 构造"错误特征查询" = question + wrong_answer
-    2. 构造"正确特征查询" = question + correct_answer
-    3. 对每个事件节点：
-       - 计算与错误特征的相似度 (error_sim)
-       - 计算与正确特征的相似度 (correct_sim)
-       - 嫌疑度 = error_sim × 0.6 + (1 - correct_sim) × 0.4
-         高嫌疑 = 与错误信息相关 + 与正确信息不相关
-
-    Args:
-        history: 记忆树
-        question: 问题
-        wrong_answer: 错误答案
-        correct_answer: 正确答案
-        embedding_fn: 嵌入函数
-        top_k: 返回最可疑的前 k 个节点
-
-    Returns:
-        按嫌疑度降序排列的 [(节点, 嫌疑度)] 列表
+    兼容接口：返回最可疑的前 k 个节点。
     """
-    events = _collect_all_events(history)
-    if not events:
-        return []
-
-    # 构造查询 embeddings
-    error_query = f"{question} {wrong_answer}"
-    correct_query = f"{question} {correct_answer}"
-    query_embs = embedding_fn([error_query, correct_query])  # (2, dim)
-    error_emb = query_embs[0:1]   # (1, dim)
-    correct_emb = query_embs[1:2]  # (1, dim)
-
-    results = []
-    for event in events:
-        # 跳过已经修正过的节点（避免重复修正）
-        if hasattr(event, '_summary_override'):
-            continue
-
-        texts = get_effective_index_content(event)
-        if not texts:
-            continue
-
-        node_emb = embedding_fn(texts)  # (M, dim)
-
-        # 与错误特征的最大相似度
-        error_sim = util.cos_sim(node_emb, error_emb).max().item()
-        # 与正确特征的最大相似度
-        correct_sim = util.cos_sim(node_emb, correct_emb).max().item()
-
-        # 嫌疑度：与错误信息高度相关 + 与正确信息不太相关
-        suspicion = error_sim * 0.6 + (1.0 - correct_sim) * 0.4
-
-        results.append((event, suspicion))
-
-    results.sort(key=lambda x: x[1], reverse=True)
-    return results[:top_k]
+    detailed = localize_error_with_details(
+        history=history,
+        question=question,
+        wrong_answer=wrong_answer,
+        correct_answer=correct_answer,
+        embedding_fn=embedding_fn,
+        top_k=top_k,
+    )
+    return [(item['node'], item['suspicion']) for item in detailed]
 
 
 # =============================================================================
@@ -417,6 +806,120 @@ def detect_error_propagation(
     return suspicious
 
 
+def detect_vertical_propagation(
+    corrected_node: Any,
+    history: HigherLevelSummary,
+    embedding_fn: Callable[[List[str]], torch.Tensor],
+    similarity_threshold: float = 0.65,
+) -> List[Tuple[Any, float, str]]:
+    """
+    Detect vertical error propagation along the tree structure.
+
+    Unlike horizontal propagation (which checks temporal neighbors),
+    this traverses the tree's vertical structure:
+    - Upward: check ancestor nodes for same-source error
+    - Downward: check descendant nodes for same-source error
+
+    This addresses cross-level error propagation (L2→L3→L4+).
+    """
+    original = getattr(corrected_node, '_original_summary', None)
+    if not original:
+        return []
+
+    error_emb = embedding_fn([original])
+
+    context_entries = _collect_summary_context(history)
+    entry_by_id = {id(item['node']): item for item in context_entries}
+
+    node_entry = entry_by_id.get(id(corrected_node))
+    if not node_entry:
+        return []
+
+    suspicious = []
+
+    # === Upward traversal (ancestors) ===
+    current = node_entry
+    depth = 0
+    while current['parent'] is not None and depth < 10:
+        parent = current['parent']
+        parent_id = id(parent)
+        parent_entry = entry_by_id.get(parent_id)
+
+        if hasattr(parent, '_summary_override') and hasattr(parent, '_original_summary'):
+            if parent_entry:
+                current = parent_entry
+                depth += 1
+                continue
+            else:
+                break
+
+        parent_summary = get_effective_summary(parent)
+        parent_emb = embedding_fn([parent_summary])
+        sim = util.cos_sim(parent_emb, error_emb).item()
+
+        if sim >= similarity_threshold:
+            direction = f"vertical_up_depth{depth + 1}"
+            suspicious.append((parent, sim, direction))
+            parent._correction_hint = {
+                'source_node_type': 'vertical_propagation',
+                'corrected_node_id': id(corrected_node),
+                'similarity_to_error': sim,
+                'original_error': original[:200],
+                'direction': 'upward',
+                'depth': depth + 1,
+            }
+
+        if parent_entry:
+            current = parent_entry
+            depth += 1
+        else:
+            break
+
+    # === Downward traversal (descendants) ===
+    queue = [(child, 1) for child in node_entry['children']]
+    visited = {id(corrected_node)}
+
+    while queue:
+        child, depth = queue.pop(0)
+        child_id = id(child)
+
+        if child_id in visited:
+            continue
+        visited.add(child_id)
+
+        if hasattr(child, '_summary_override') and hasattr(child, '_original_summary'):
+            child_entry = entry_by_id.get(child_id)
+            if child_entry:
+                for grandchild in child_entry['children']:
+                    if id(grandchild) not in visited:
+                        queue.append((grandchild, depth + 1))
+            continue
+
+        child_summary = get_effective_summary(child)
+        child_emb = embedding_fn([child_summary])
+        sim = util.cos_sim(child_emb, error_emb).item()
+
+        if sim >= similarity_threshold:
+            direction = f"vertical_down_depth{depth}"
+            suspicious.append((child, sim, direction))
+            child._correction_hint = {
+                'source_node_type': 'vertical_propagation',
+                'corrected_node_id': id(corrected_node),
+                'similarity_to_error': sim,
+                'original_error': original[:200],
+                'direction': 'downward',
+                'depth': depth,
+            }
+
+        child_entry = entry_by_id.get(child_id)
+        if child_entry:
+            for grandchild in child_entry['children']:
+                if id(grandchild) not in visited:
+                    queue.append((grandchild, depth + 1))
+
+    return suspicious
+
+
 def auto_propagate_correction(
         corrected_node: EventBasedSummary,
         suspicious_nodes: List[Tuple[EventBasedSummary, float, str]],
@@ -448,8 +951,8 @@ def auto_propagate_correction(
 
         neighbor_summary = get_effective_summary(neighbor)
 
+        llm_succeeded = False
         if correction_llm:
-            # 用 LLM 进行类比修正
             from langchain_core.messages import HumanMessage, SystemMessage
 
             prompt = (
@@ -468,15 +971,18 @@ def auto_propagate_correction(
                     HumanMessage(content=prompt),
                 ])
                 new_summary = response.content.strip()
-                if new_summary and len(new_summary) > 10:
+                if new_summary and len(new_summary) > 10 and new_summary != neighbor_summary:
                     apply_summary_override(
                         neighbor, new_summary,
                         source=f"propagated from corrected node (sim={sim:.3f})"
                     )
                     count += 1
+                    llm_succeeded = True
             except Exception as e:
                 print(f'[Correction] 传播修正 LLM 调用失败: {e}')
-        else:
+
+        # Fallback: text replacement when LLM unavailable or failed
+        if not llm_succeeded:
             # 简单文本替换：从原始→修正中提取差异，应用到邻居
             # 提取差异词对
             orig_words = set(original.lower().split())
@@ -504,7 +1010,372 @@ def auto_propagate_correction(
 
 
 # =============================================================================
-# 修正管线主函数
+# Stage 2: Candidate verification and minimal correction
+# =============================================================================
+
+def _llm_verify_and_correct(
+    node: Any,
+    candidate: Dict[str, Any],
+    question: str,
+    wrong_answer: str,
+    correct_answer: str,
+    anchor: Dict[str, str],
+    correction_llm: Any,
+) -> Optional[str]:
+    """
+    LLM-based verification + minimal correction for a single candidate node.
+
+    First asks the LLM to verify whether the node carries the corrected fact,
+    then generates a minimal correction if needed.
+    """
+    from langchain_core.messages import HumanMessage, SystemMessage
+
+    current_summary = get_effective_summary(node)
+    depth_label = candidate.get('depth_label', 'L4+')
+
+    system_prompt = (
+        "You are verifying whether a robot's memory node needs correction "
+        "based on user feedback. IMPORTANT: A node may contain the 'wrong value' word "
+        "in a DIFFERENT context that is actually correct (e.g., a real fridge in the room). "
+        "Only flag a node if it specifically expresses the INCORRECT CLAIM — the claim that "
+        "combines the entity, relation, AND wrong value together.\n\n"
+        "First, determine if this node contains or expresses the incorrect claim. "
+        "If it does, generate a MINIMAL correction — only modify the specific incorrect part, "
+        "keep everything else unchanged. Do NOT add explanations or commentary.\n\n"
+        "Output format:\n"
+        "VERDICT: YES (needs correction) or NO (does not need correction)\n"
+        "CORRECTED: <the corrected summary text, only if VERDICT is YES>"
+    )
+
+    user_prompt = (
+        f"Feedback fact to check (the INCORRECT CLAIM is that '{anchor.get('entity', '')}' "
+        f"has '{anchor.get('relation', '')}' = '{anchor.get('wrong_value', '')}', "
+        f"but the correct value should be '{anchor.get('correct_value', '')}'):\n\n"
+        f"Node type: {depth_label}\n"
+        f"Current summary:\n{current_summary}\n\n"
+        f"Original question: {question}\n"
+        f"Wrong answer given: {wrong_answer}\n"
+        f"Correct answer expected: {correct_answer}\n\n"
+        f"CRITICAL: Does this node specifically express the INCORRECT CLAIM that "
+        f"'{anchor.get('entity', '')}' was '{anchor.get('relation', '')}' "
+        f"from/in '{anchor.get('wrong_value', '')}'? "
+        f"Or does it merely mention '{anchor.get('wrong_value', '')}' in an unrelated context "
+        f"(e.g., a real '{anchor.get('wrong_value', '')}' appliance in the room)?\n\n"
+        f"Answer YES only if the node expresses the full incorrect claim. "
+        f"If the node just happens to contain the word '{anchor.get('wrong_value', '')}' "
+        f"in a different, actually-correct context, answer NO.\n\n"
+        f"If YES, provide the corrected summary."
+    )
+
+    try:
+        response = correction_llm.invoke([
+            SystemMessage(content=system_prompt),
+            HumanMessage(content=user_prompt),
+        ])
+        text = response.content.strip()
+
+        verdict_match = re.search(r'VERDICT:\s*(YES|NO)', text, re.IGNORECASE)
+        if not verdict_match or verdict_match.group(1).upper() == 'NO':
+            return None
+
+        corrected_match = re.search(r'CORRECTED:\s*(.+?)(?:\n\S|$)', text, re.DOTALL)
+        if corrected_match:
+            corrected_text = corrected_match.group(1).strip()
+            if corrected_text and len(corrected_text) > 10 and corrected_text != current_summary:
+                apply_summary_override(node, corrected_text,
+                    source=f"Stage2: LLM verified | "
+                           f"suspicion={candidate.get('suspicion', 0):.3f}")
+                return corrected_text
+
+        # Fallback: if CORRECTED tag missing but verdict was YES
+        if 'CORRECTED:' not in text:
+            lines = text.split('\n')
+            for i, line in enumerate(lines):
+                if 'VERDICT:' in line.upper() and i + 1 < len(lines):
+                    potential = lines[i + 1].strip()
+                    if len(potential) > 10 and potential != current_summary:
+                        apply_summary_override(node, potential,
+                            source=f"Stage2: LLM verified | "
+                                   f"suspicion={candidate.get('suspicion', 0):.3f}")
+                        return potential
+
+        return None
+    except Exception as e:
+        print(f'[Stage2] LLM verification failed: {e}')
+        return None
+
+
+def verify_and_correct_candidates(
+    candidate_set: List[Dict[str, Any]],
+    question: str,
+    wrong_answer: str,
+    correct_answer: str,
+    anchor: Dict[str, str],
+    correction_llm: Any = None,
+    max_corrections: int = 5,
+    max_verification_attempts: int = 20,
+    min_suspicion: float = 0.3,
+) -> List[Any]:
+    """
+    Stage 2: Candidate verification and minimal correction.
+
+    For each candidate in the sorted candidate set, verify whether it
+    carries the corrected fact, and if so, apply minimal correction.
+
+    Args:
+        max_verification_attempts: Max number of candidates to try verifying
+            (limits LLM calls when C is large).
+    Returns R: list of verified and corrected nodes.
+    """
+    verified_nodes = []
+    attempts = 0
+
+    for candidate in sorted(candidate_set, key=lambda x: x['suspicion'], reverse=True):
+        if len(verified_nodes) >= max_corrections:
+            break
+        if attempts >= max_verification_attempts:
+            break
+
+        node = candidate['node']
+        suspicion = candidate['suspicion']
+
+        if suspicion < min_suspicion:
+            continue
+
+        # Skip already-corrected nodes
+        if hasattr(node, '_summary_override') and hasattr(node, '_original_summary'):
+            continue
+
+        if correction_llm:
+            result = _llm_verify_and_correct(
+                node, candidate, question, wrong_answer, correct_answer,
+                anchor, correction_llm,
+            )
+            attempts += 1
+            if result:
+                verified_nodes.append(node)
+        else:
+            corrected = _simple_text_correction(node, wrong_answer, correct_answer)
+            attempts += 1
+            if corrected and corrected != get_effective_summary(node):
+                apply_summary_override(node, corrected,
+                    source=f"Stage2: text-replace | suspicion={suspicion:.3f}")
+                verified_nodes.append(node)
+
+    return verified_nodes
+
+
+# =============================================================================
+# Enhanced candidate set generation (Stage 1 with vertical chain)
+# =============================================================================
+
+def generate_candidate_set(
+    history: HigherLevelSummary,
+    question: str,
+    wrong_answer: str,
+    correct_answer: str,
+    embedding_fn: Callable[[List[str]], torch.Tensor],
+    candidate_pool_size: int = 40,
+    tau: float = 86400.0,
+    question_time: Optional[datetime] = None,
+    enable_vertical_chain: bool = True,
+) -> List[Dict[str, Any]]:
+    """
+    Stage 1 enhanced: Generate local candidate set C with vertical chain expansion.
+
+    Wraps localize_error_with_details() with vertical chain expansion enabled,
+    returning the full candidate set (not limited to top_k).
+
+    Returns:
+        List of candidate dicts sorted by suspicion score (descending).
+    """
+    return localize_error_with_details(
+        history=history,
+        question=question,
+        wrong_answer=wrong_answer,
+        correct_answer=correct_answer,
+        embedding_fn=embedding_fn,
+        top_k=min(candidate_pool_size * 3, 200),
+        candidate_pool_size=candidate_pool_size,
+        tau=tau,
+        question_time=question_time,
+        enable_vertical_chain=enable_vertical_chain,
+    )
+
+
+# =============================================================================
+# Enhanced correction pipeline v2 (C→R two-stage with dual propagation)
+# =============================================================================
+
+def correction_pipeline_v2(
+    history: HigherLevelSummary,
+    question: str,
+    wrong_answer: str,
+    correct_answer: str,
+    embedding_fn: Callable[[List[str]], torch.Tensor],
+    correction_llm: Any = None,
+    max_corrections: int = 5,
+    candidate_pool_size: int = 40,
+    enable_vertical_chain: bool = True,
+    enable_horizontal_propagation: bool = True,
+    enable_vertical_propagation: bool = True,
+    horizontal_max_hops: int = 7,
+    horizontal_similarity_threshold: float = 0.7,
+    vertical_similarity_threshold: float = 0.65,
+    auto_propagate: bool = True,
+    auto_propagate_threshold: float = 0.8,
+) -> Dict[str, Any]:
+    """
+    Enhanced correction pipeline with C→R two-stage architecture.
+
+    Stage 1: Generate local candidate set C with vertical chain expansion
+    Stage 2: LLM verification + minimal correction → confirmed set R
+    Stage 3a: Horizontal propagation detection (temporal neighbors)
+    Stage 3b: Vertical propagation detection (tree ancestors/descendants)
+    Stage 4: Auto propagation for high-confidence candidates
+
+    Returns:
+        Detailed statistics dict with per-stage metrics.
+    """
+    stats = {
+        'stage1': {'candidate_set_size': 0},
+        'stage2': {'verified_count': 0, 'corrected_count': 0},
+        'stage3a': {'horizontal_detections': 0},
+        'stage3b': {'vertical_detections': 0},
+        'stage4': {'horizontal_propagations': 0, 'vertical_propagations': 0},
+        'total_corrections': 0,
+        'corrected_nodes': [],
+    }
+
+    print(f'[Correction-v2] === Starting enhanced C→R pipeline ===')
+    print(f'[Correction-v2] Q: "{question[:80]}..."')
+    print(f'[Correction-v2] Wrong: "{wrong_answer[:60]}..." → Correct: "{correct_answer[:60]}..."')
+
+    # ================================================================
+    # Stage 1: Candidate set generation with vertical chain expansion
+    # ================================================================
+    candidate_set = generate_candidate_set(
+        history=history,
+        question=question,
+        wrong_answer=wrong_answer,
+        correct_answer=correct_answer,
+        embedding_fn=embedding_fn,
+        candidate_pool_size=candidate_pool_size,
+        enable_vertical_chain=enable_vertical_chain,
+    )
+    stats['stage1']['candidate_set_size'] = len(candidate_set)
+    print(f'[Correction-v2] Stage1: |C| = {len(candidate_set)}')
+
+    if not candidate_set:
+        print('[Correction-v2] Stage1: empty candidate set, aborting')
+        return stats
+
+    # Log C composition
+    depth_counts = defaultdict(int)
+    for c in candidate_set[:20]:
+        depth_counts[c.get('depth_label', '?')] += 1
+    print(f'[Correction-v2] Stage1: C depth distribution (top20) = {dict(depth_counts)}')
+
+    # ================================================================
+    # Stage 2: Verification + minimal correction → R
+    # ================================================================
+    anchor = _extract_feedback_anchor(question, wrong_answer, correct_answer)
+    verified_nodes = verify_and_correct_candidates(
+        candidate_set=candidate_set,
+        question=question,
+        wrong_answer=wrong_answer,
+        correct_answer=correct_answer,
+        anchor=anchor,
+        correction_llm=correction_llm,
+        max_corrections=max_corrections,
+        max_verification_attempts=20,
+    )
+    stats['stage2']['verified_count'] = len(verified_nodes)
+    stats['stage2']['corrected_count'] = len(verified_nodes)
+    stats['total_corrections'] += len(verified_nodes)
+    stats['corrected_nodes'].extend([
+        {'depth': getattr(n, '__class__', n).__name__,
+         'summary_preview': get_effective_summary(n)[:100]}
+        for n in verified_nodes
+    ])
+    print(f'[Correction-v2] Stage2: |R| = {len(verified_nodes)}')
+
+    # ================================================================
+    # Stage 3 & 4: Propagation detection and auto correction
+    # ================================================================
+    for node in verified_nodes:
+        # Stage 3a: Horizontal propagation
+        if enable_horizontal_propagation:
+            horizontal_suspicious = detect_error_propagation(
+                node, history, embedding_fn,
+                max_hops=horizontal_max_hops,
+                similarity_threshold=horizontal_similarity_threshold,
+            )
+            stats['stage3a']['horizontal_detections'] += len(horizontal_suspicious)
+
+            if auto_propagate and horizontal_suspicious:
+                prop_count = auto_propagate_correction(
+                    node, horizontal_suspicious, correction_llm
+                )
+                stats['stage4']['horizontal_propagations'] += prop_count
+                stats['total_corrections'] += prop_count
+                if prop_count:
+                    print(f'[Correction-v2] Stage4a: {prop_count} horizontal propagations')
+
+        # Stage 3b: Vertical propagation (NEW)
+        if enable_vertical_propagation:
+            vertical_suspicious = detect_vertical_propagation(
+                node, history, embedding_fn,
+                similarity_threshold=vertical_similarity_threshold,
+            )
+            stats['stage3b']['vertical_detections'] += len(vertical_suspicious)
+
+            if auto_propagate and vertical_suspicious:
+                from langchain_core.messages import HumanMessage, SystemMessage
+
+                high_conf = [(n, s, r) for n, s, r in vertical_suspicious
+                           if s >= auto_propagate_threshold]
+                original = getattr(node, '_original_summary', '')
+                corrected_text = getattr(node, '_summary_override', '')
+
+                for neighbor, sim, reason in high_conf:
+                    if correction_llm and original and corrected_text:
+                        neighbor_summary = get_effective_summary(neighbor)
+                        prompt = (
+                            f"A memory correction was made to a node:\n"
+                            f"  Original: {original}\n"
+                            f"  Corrected: {corrected_text}\n\n"
+                            f"This {'ancestor' if 'up' in reason else 'descendant'} "
+                            f"may have the same error:\n"
+                            f"  {neighbor_summary}\n\n"
+                            f"Apply the same type of correction. Output ONLY corrected text."
+                        )
+                        try:
+                            response = correction_llm.invoke([
+                                SystemMessage(content="Propagate memory correction. Output only corrected text."),
+                                HumanMessage(content=prompt),
+                            ])
+                            new_summary = response.content.strip()
+                            if new_summary and len(new_summary) > 10:
+                                apply_summary_override(
+                                    neighbor, new_summary,
+                                    source=f"vertical_propagation (sim={sim:.3f}, {reason})"
+                                )
+                                stats['stage4']['vertical_propagations'] += 1
+                                stats['total_corrections'] += 1
+                        except Exception:
+                            pass
+
+                if high_conf:
+                    print(f'[Correction-v2] Stage4b: {len(high_conf)} vertical propagations '
+                          f'(detected {len(vertical_suspicious)} total)')
+
+    print(f'[Correction-v2] === Pipeline complete: {stats["total_corrections"]} total corrections ===')
+    return stats
+
+
+# =============================================================================
+# 修正管线主函数 (original, kept for backward compatibility)
 # =============================================================================
 
 def correction_pipeline(
