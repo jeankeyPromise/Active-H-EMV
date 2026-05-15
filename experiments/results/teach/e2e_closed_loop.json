@@ -1,0 +1,135 @@
+{
+  "experiment": "e2e_closed_loop_v2",
+  "timestamp": "2026-05-15T17:27:26.116003",
+  "setup": {
+    "candidate_pool_size": 8,
+    "question": "Where did you retrieve the bread from?",
+    "wrong_answer": "I retrieved it from the fridge.",
+    "correct_answer": "I retrieved it from the cabinet."
+  },
+  "stage1_candidate_set": {
+    "c_basic_size": 19,
+    "c_enhanced_size": 147,
+    "target_in_C_basic": true,
+    "target_in_C_enhanced": true,
+    "target_rank_basic": 9,
+    "target_rank_enhanced": 118,
+    "c_enhanced_top10": [
+      {
+        "rank": 1,
+        "depth": "L2",
+        "suspicion": 0.7257,
+        "summary": "Action: TurnRight() <success>\nVisual observation: Cabinet_0, CounterTop_1, Knife_0, Toaster, Fridge, Bread_1, agent hand\nBread_1, Toaster are in/on Co"
+      },
+      {
+        "rank": 2,
+        "depth": "L2",
+        "suspicion": 0.7255,
+        "summary": "Action: PanRight() <success>\nVisual observation: Bread_1, CounterTop_1, Drawer_1, Drawer_2, Cabinet_4, Cabinet_5, Toaster, SaltShaker, Fridge, Cup [fi"
+      },
+      {
+        "rank": 3,
+        "depth": "L2",
+        "suspicion": 0.7255,
+        "summary": "Action: PanRight() <success>\nVisual observation: Bread_1, CounterTop_1, Cabinet_4, Cabinet_5, Toaster, SaltShaker, Fridge, agent hand, Floor\nFridge is"
+      },
+      {
+        "rank": 4,
+        "depth": "L2",
+        "suspicion": 0.7255,
+        "summary": "Action: PanRight() <success>\nVisual observation: Bread_1, Cabinet_0, CounterTop_1, Cabinet_4, Toaster, Fridge, agent hand, Floor\nFridge is in/on Floor"
+      },
+      {
+        "rank": 5,
+        "depth": "L2",
+        "suspicion": 0.7255,
+        "summary": "Action: Forward() <success>\nVisual observation: Bread_1, Cabinet_0, CounterTop_1, Cabinet_4, Toaster, SaltShaker, Fridge, agent hand\nBread_1 is inside"
+      },
+      {
+        "rank": 6,
+        "depth": "L2",
+        "suspicion": 0.7255,
+        "summary": "Action: Forward() <success>\nVisual observation: Bread_1, Cabinet_0, CounterTop_1, Cabinet_4, Toaster, Fridge, agent hand\nBread_1 is inside agent hand."
+      },
+      {
+        "rank": 7,
+        "depth": "L2",
+        "suspicion": 0.7255,
+        "summary": "Action: PanRight() <failure>\nVisual observation: Bread_1, Cabinet_0, CounterTop_1, Cabinet_4, Toaster, Fridge, agent hand\nBread_1 is inside agent hand"
+      },
+      {
+        "rank": 8,
+        "depth": "L2",
+        "suspicion": 0.7255,
+        "summary": "Action: Backward() <success>\nVisual observation: Bread_1, Cabinet_0, CounterTop_1, Cabinet_4, Toaster, SaltShaker, Fridge, agent hand\nBread_1 is insid"
+      },
+      {
+        "rank": 9,
+        "depth": "L2",
+        "suspicion": 0.7255,
+        "summary": "Action: Backward() <success>\nVisual observation: Bread_1, Cabinet_0, CounterTop_1, Cabinet_4, Toaster, Fridge, agent hand\nBread_1 is inside agent hand"
+      },
+      {
+        "rank": 10,
+        "depth": "L2",
+        "suspicion": 0.7255,
+        "summary": "Action: TurnRight() <success>\nVisual observation: Bread_1, Fridge, agent hand\nBread_1 is inside agent hand."
+      }
+    ]
+  },
+  "stage2_correction": {
+    "target_verified_and_corrected": true,
+    "original_summary": "I located and retrieved a loaf of bread from the lower cabinet and placed it on the countertop.",
+    "injected_summary": "I located and retrieved a loaf of bread from the lower fridge and placed it on the countertop.",
+    "final_summary": "I located and retrieved a loaf of bread from the lower cabinet and placed it on the countertop.",
+    "correction_verified": true
+  },
+  "stage3_4_propagation": {
+    "horizontal_detections": 0,
+    "vertical_detections": 0,
+    "total_propagated": 0
+  },
+  "answer_verification": {
+    "enabled": true,
+    "pre_correction": {
+      "Where did you retrieve the bread from?": {
+        "answer": "From the lower fridge.",
+        "contains_fridge": true,
+        "contains_cabinet": false
+      },
+      "What container did you take the bread out of?": {
+        "answer": "The lower fridge.",
+        "contains_fridge": true,
+        "contains_cabinet": false
+      },
+      "Did you use a toaster?": {
+        "answer": "Yes, I put a slice of bread in the toaster.",
+        "contains_fridge": false,
+        "contains_cabinet": false
+      }
+    },
+    "post_correction": {
+      "Where did you retrieve the bread from?": {
+        "answer": "From the lower cabinet.",
+        "contains_fridge": false,
+        "contains_cabinet": true
+      },
+      "What container did you take the bread out of?": {
+        "answer": "I took the bread out of the lower cabinet.",
+        "contains_fridge": false,
+        "contains_cabinet": true
+      },
+      "Did you use a toaster?": {
+        "answer": "Yes, I put a slice of bread in the toaster.",
+        "contains_fridge": false,
+        "contains_cabinet": false
+      }
+    }
+  },
+  "verdict": {
+    "stage1_target_in_C": true,
+    "stage2_target_corrected": true,
+    "answer_improved": true,
+    "closed_loop_complete": true
+  }
+}

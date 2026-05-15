@@ -1,0 +1,118 @@
+{
+  "experiment": "vertical_chain_verification",
+  "timestamp": "2026-05-15T17:53:06.930510",
+  "question": "Where did you retrieve the bread from?",
+  "wrong_answer": "I retrieved it from the fridge.",
+  "correct_answer": "I retrieved it from the cabinet.",
+  "chain_injections": {
+    "L4+": {
+      "original": "I located and retrieved a loaf of bread from the lower cabinet and placed it on the countertop.",
+      "injected": "I located and retrieved a loaf of bread from the lower fridge and placed it on the countertop."
+    },
+    "L3": {
+      "original": "Goal: Open(Cabinet_2)\nVisual observation: Pan_1, StoveBurner_1, StoveBurner_2, Cabinet_1, StoveBurner_3, Cabinet_2, CounterTop_2, StoveKnob_0 [toggled], StoveKnob_1, CoffeeMachine, Microwave [toggled]",
+      "injected": "Goal: Open(fridge_2)\nVisual observation: Pan_1, StoveBurner_1, StoveBurner_2, fridge_1, StoveBurner_3, fridge_2, CounterTop_2, StoveKnob_0 [toggled], StoveKnob_1, CoffeeMachine, Microwave [toggled], P"
+    },
+    "L2": {
+      "original": "Action: Say(\"where is the bread\") <success>\nVisual observation: Cabinet_2, CounterTop_2, CoffeeMachine, Mug [dirty, filled]\nCoffeeMachine, Mug are in/on CounterTop_2.",
+      "injected": "Action: Say(\"where is the bread\") <success>\nVisual observation: fridge_2, CounterTop_2, CoffeeMachine, Mug [dirty, filled]\nCoffeeMachine, Mug are in/on CounterTop_2."
+    }
+  },
+  "experiment_2_candidate_comparison": {
+    "original": {
+      "c_size": 25
+    },
+    "enhanced": {
+      "c_size": 1221
+    },
+    "targets": {
+      "L4+": {
+        "in_C_original": true,
+        "in_C_enhanced": true,
+        "rank_original": 8,
+        "rank_enhanced": 951,
+        "improved": false,
+        "in_R": true,
+        "correction_success": true
+      },
+      "L3": {
+        "in_C_original": true,
+        "in_C_enhanced": true,
+        "rank_original": 10,
+        "rank_enhanced": 1101,
+        "improved": false,
+        "in_R": true,
+        "correction_success": true
+      },
+      "L2": {
+        "in_C_original": false,
+        "in_C_enhanced": true,
+        "rank_original": null,
+        "rank_enhanced": 661,
+        "improved": true,
+        "in_R": true,
+        "correction_success": true
+      }
+    }
+  },
+  "experiment_3_vertical_propagation": {
+    "upward_detections": [],
+    "downward_detections": [
+      {
+        "direction": "vertical_down_depth1",
+        "similarity": 0.6774,
+        "node_type": "EventBasedSummary",
+        "summary_preview": "Action: Forward() <success>\nVisual observation: Pan_1, StoveBurner_2, Cabinet_1, Cabinet_2, CounterT"
+      },
+      {
+        "direction": "vertical_down_depth1",
+        "similarity": 0.719,
+        "node_type": "EventBasedSummary",
+        "summary_preview": "Action: Forward() <success>\nVisual observation: Pan_1, StoveBurner_0, StoveBurner_1, StoveBurner_2, "
+      },
+      {
+        "direction": "vertical_down_depth1",
+        "similarity": 0.7165,
+        "node_type": "EventBasedSummary",
+        "summary_preview": "Action: Forward() <success>\nVisual observation: Pan_1, StoveBurner_1, StoveBurner_2, Cabinet_1, Stov"
+      },
+      {
+        "direction": "vertical_down_depth1",
+        "similarity": 0.6631,
+        "node_type": "EventBasedSummary",
+        "summary_preview": "Action: TurnLeft() <success>\nVisual observation: Pan_1, StoveBurner_0, StoveBurner_1, StoveBurner_2,"
+      },
+      {
+        "direction": "vertical_down_depth1",
+        "similarity": 0.6685,
+        "node_type": "EventBasedSummary",
+        "summary_preview": "Action: TurnRight() <success>\nVisual observation: Pan_1, StoveBurner_0, StoveBurner_1, StoveBurner_2"
+      },
+      {
+        "direction": "vertical_down_depth1",
+        "similarity": 0.6806,
+        "node_type": "EventBasedSummary",
+        "summary_preview": "Action: Backward() <success>\nVisual observation: Pan_1, StoveBurner_1, StoveBurner_2, Cabinet_1, Cab"
+      },
+      {
+        "direction": "vertical_down_depth1",
+        "similarity": 0.7337,
+        "node_type": "EventBasedSummary",
+        "summary_preview": "Action: Noop <success>\nVisual observation: Pan_1, StoveBurner_1, StoveBurner_2, Cabinet_1, StoveBurn"
+      },
+      {
+        "direction": "vertical_down_depth1",
+        "similarity": 0.7455,
+        "node_type": "EventBasedSummary",
+        "summary_preview": "Action: Open(Cabinet_2) <success>\nVisual observation: Pan_1, StoveBurner_1, StoveBurner_2, Cabinet_1"
+      }
+    ]
+  },
+  "summary": {
+    "L2_improved_by_vertical_chain": true,
+    "L3_improved_by_vertical_chain": false,
+    "L2_in_R": true,
+    "L3_in_R": true,
+    "L4_in_R": true
+  }
+}

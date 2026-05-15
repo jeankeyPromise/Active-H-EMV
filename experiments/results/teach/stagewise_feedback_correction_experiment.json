@@ -1,0 +1,104 @@
+{
+  "experiment": "stagewise_feedback_correction",
+  "timestamp": "2026-05-15T14:55:35.328131",
+  "candidate_pool_size": 5,
+  "question": "Where did you retrieve the bread from?",
+  "wrong_answer": "I retrieved it from the fridge.",
+  "correct_answer": "I retrieved it from the cabinet.",
+  "question_time": "2023-07-13T12:37:46.776114",
+  "stage1": {
+    "candidate_set_size": 15,
+    "top10": [
+      {
+        "rank": 1,
+        "depth": "L3",
+        "suspicion": 0.6845,
+        "summary": "Goal: Place(CounterTop_1)\nVisual observation: Bread_1, Cabinet_0, CounterTop_1, Drawer_1, Drawer_2, Cabinet_4, Cabinet_5, Toaster, SaltShaker, Cup [filled], agent hand\nSaltShaker, "
+      },
+      {
+        "rank": 2,
+        "depth": "L4+",
+        "suspicion": 0.6244,
+        "summary": "From July 13th to August 4th, I consistently performed a variety of daily kitchen and household tasks, including preparing diverse meals like toast, sandwiches, cooked potatoes, sa"
+      },
+      {
+        "rank": 3,
+        "depth": "L4+",
+        "suspicion": 0.6244,
+        "summary": "From July 13th to July 21st, I performed various daily kitchen and household tasks, including preparing meals such as toast, sandwiches, and cooked potatoes, watering houseplants, "
+      },
+      {
+        "rank": 4,
+        "depth": "L3",
+        "suspicion": 0.6039,
+        "summary": "Goal: Close(Cabinet_2)\nVisual observation: Pan_1, Bread_1, StoveBurner_1, StoveBurner_2, Cabinet_1, StoveBurner_3, Cabinet_2 [open], CounterTop_2, StoveKnob_0 [toggled], StoveKnob_"
+      },
+      {
+        "rank": 5,
+        "depth": "L3",
+        "suspicion": 0.5925,
+        "summary": "Goal: Pickup(Bread_1)\nVisual observation: Pan_1, Statue_2, Bread_1, StoveBurner_1, StoveBurner_2, Cabinet_1, StoveBurner_3, Cabinet_2 [open], CounterTop_2, StoveKnob_0 [toggled], S"
+      },
+      {
+        "rank": 6,
+        "depth": "L4+",
+        "suspicion": 0.5904,
+        "summary": "I located and retrieved a loaf of bread from the lower cabinet and placed it on the countertop."
+      },
+      {
+        "rank": 7,
+        "depth": "L3",
+        "suspicion": 0.5535,
+        "summary": "Goal: Open(Cabinet_2)\nVisual observation: Pan_1, StoveBurner_1, StoveBurner_2, Cabinet_1, StoveBurner_3, Cabinet_2, CounterTop_2, StoveKnob_0 [toggled], StoveKnob_1, CoffeeMachine,"
+      },
+      {
+        "rank": 8,
+        "depth": "L4+",
+        "suspicion": 0.5259,
+        "summary": "I placed the clean plate on the countertop, took the toasted bread out of the toaster, and placed it on the plate to complete the task."
+      },
+      {
+        "rank": 9,
+        "depth": "L4+",
+        "suspicion": 0.5251,
+        "summary": "I picked up a knife and sliced the bread on the countertop."
+      },
+      {
+        "rank": 10,
+        "depth": "L4+",
+        "suspicion": 0.5191,
+        "summary": "I placed one slice of bread into the toaster and turned it on to toast."
+      }
+    ]
+  },
+  "stage2": {
+    "verified_and_corrected_size": 1,
+    "verified_nodes": [
+      {
+        "depth": "L4+",
+        "suspicion": 0.5904,
+        "summary": "I located and retrieved a loaf of bread from the lower cabinet and placed it on the countertop."
+      }
+    ]
+  },
+  "targets": {
+    "L2": {
+      "in_C": false,
+      "rank_in_C": null,
+      "in_R": false,
+      "correction_success": false,
+      "original_summary": "Action: Say(\"where is the bread\") <success>\nVisual observation: Cabinet_2, CounterTop_2, CoffeeMachine, Mug [dirty, filled]\nCoffeeMachine, Mug are in/on CounterTop_2.",
+      "injected_summary": "Action: Say(\"where is the bread\") <success>\nVisual observation: fridge_2, CounterTop_2, CoffeeMachine, Mug [dirty, filled]\nCoffeeMachine, Mug are in/on CounterTop_2.",
+      "final_summary": "Action: Say(\"where is the bread\") <success>\nVisual observation: fridge_2, CounterTop_2, CoffeeMachine, Mug [dirty, filled]\nCoffeeMachine, Mug are in/on CounterTop_2."
+    },
+    "L4+": {
+      "in_C": true,
+      "rank_in_C": 6,
+      "in_R": true,
+      "correction_success": true,
+      "original_summary": "I located and retrieved a loaf of bread from the lower cabinet and placed it on the countertop.",
+      "injected_summary": "I located and retrieved a loaf of bread from the lower fridge and placed it on the countertop.",
+      "final_summary": "I located and retrieved a loaf of bread from the lower cabinet and placed it on the countertop."
+    }
+  }
+}

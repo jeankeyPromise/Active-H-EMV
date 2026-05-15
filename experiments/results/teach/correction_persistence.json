@@ -1,0 +1,48 @@
+{
+  "experiment": "correction_persistence",
+  "timestamp": "2026-05-15T16:12:44.402502",
+  "node_type": "HigherLevelSummary",
+  "non_invasiveness": {
+    "nl_summary_unchanged": true,
+    "correction_attrs_are_instance_only": true
+  },
+  "reversibility": {
+    "reversible": true,
+    "original_restored": true,
+    "differs_from_override": true
+  },
+  "deepcopy_survival": {
+    "summary_override_survived": true,
+    "original_summary_survived": true,
+    "correction_source_survived": true,
+    "all_three_survived": true
+  },
+  "pickle_survival": {
+    "summary_override_survived": true,
+    "original_summary_survived": true,
+    "correction_source_survived": true,
+    "all_three_survived": true
+  },
+  "index_retrievability": {
+    "override_in_index_content": true,
+    "semantic_retrievable": true,
+    "self_similarity": 0.8944
+  },
+  "traceability": {
+    "has_correction_source": true,
+    "correction_source": "persistence_test: cabinet→sideboard",
+    "has_original_backup": true,
+    "override_differs_from_original": true,
+    "audit_trail_complete": true
+  },
+  "verdict": {
+    "all_passed": true,
+    "three_principles_verified": {
+      "non_invasive": true,
+      "reversible": true,
+      "traceable": true
+    },
+    "serialization_robust": true,
+    "index_retrievable": true
+  }
+}

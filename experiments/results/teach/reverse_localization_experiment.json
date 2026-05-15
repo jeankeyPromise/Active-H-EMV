@@ -1,0 +1,127 @@
+{
+  "experiment": "reverse_localization",
+  "timestamp": "2026-05-15T13:01:27.313058",
+  "cache_file": "dataset/TEACh/preprocessed_histories/valid_unseen-multi/50ep-8ff5291f2e02216cc14877f3841c5033.pkl",
+  "question": "Where did you retrieve the bread from?",
+  "wrong_answer": "I retrieved it from the fridge.",
+  "correct_answer": "I retrieved it from the cabinet.",
+  "question_time": "2023-07-13T12:37:46.776114",
+  "targets": {
+    "L2": {
+      "type": "EventBasedSummary",
+      "timestamp": "2023-07-13T10:37:46.776114",
+      "original_summary": "Action: Say(\"where is the bread\") <success>\nVisual observation: Cabinet_2, CounterTop_2, CoffeeMachine, Mug [dirty, filled]\nCoffeeMachine, Mug are in/on CounterTop_2.",
+      "injected_summary": "Action: Say(\"where is the bread\") <success>\nVisual observation: fridge_2, CounterTop_2, CoffeeMachine, Mug [dirty, filled]\nCoffeeMachine, Mug are in/on CounterTop_2.",
+      "new_rank": 71,
+      "old_rank": 3321,
+      "rank_improvement": 3250,
+      "ablation_ranks": {
+        "full": 71,
+        "-S_temp": 71,
+        "-S_anchor": 107,
+        "-S_struct": 63,
+        "S_fact_only": 114
+      }
+    },
+    "L4+": {
+      "type": "HigherLevelSummary",
+      "timestamp": "2023-07-13T10:37:05.792049",
+      "original_summary": "I located and retrieved a loaf of bread from the lower cabinet and placed it on the countertop.",
+      "injected_summary": "I located and retrieved a loaf of bread from the lower fridge and placed it on the countertop.",
+      "new_rank": 118,
+      "old_rank": 12,
+      "rank_improvement": -106,
+      "ablation_ranks": {
+        "full": 118,
+        "-S_temp": 116,
+        "-S_anchor": 133,
+        "-S_struct": 50,
+        "S_fact_only": 75
+      }
+    }
+  },
+  "top5_new": [
+    {
+      "rank": 1,
+      "score": 0.7256,
+      "type": "L2",
+      "fact": 0.5829,
+      "temp": 0.922,
+      "anchor": 0.6,
+      "struct": 0.8332,
+      "summary": "Action: TurnRight() <success>\nVisual observation: Cabinet_0, CounterTop_1, Knife_0, Toaster, Fridge, Bread_1, agent hand\nBread_1, Toaster are in/on CounterTop_1"
+    },
+    {
+      "rank": 2,
+      "score": 0.7254,
+      "type": "L2",
+      "fact": 0.5829,
+      "temp": 0.9214,
+      "anchor": 0.6,
+      "struct": 0.8332,
+      "summary": "Action: PanRight() <success>\nVisual observation: Bread_1, CounterTop_1, Drawer_1, Drawer_2, Cabinet_4, Cabinet_5, Toaster, SaltShaker, Fridge, Cup [filled], age"
+    },
+    {
+      "rank": 3,
+      "score": 0.7254,
+      "type": "L2",
+      "fact": 0.5829,
+      "temp": 0.9214,
+      "anchor": 0.6,
+      "struct": 0.8332,
+      "summary": "Action: PanRight() <success>\nVisual observation: Bread_1, CounterTop_1, Cabinet_4, Cabinet_5, Toaster, SaltShaker, Fridge, agent hand, Floor\nFridge is in/on Flo"
+    },
+    {
+      "rank": 4,
+      "score": 0.7254,
+      "type": "L2",
+      "fact": 0.5829,
+      "temp": 0.9214,
+      "anchor": 0.6,
+      "struct": 0.8332,
+      "summary": "Action: PanRight() <success>\nVisual observation: Bread_1, Cabinet_0, CounterTop_1, Cabinet_4, Toaster, Fridge, agent hand, Floor\nFridge is in/on Floor\nBread_1 i"
+    },
+    {
+      "rank": 5,
+      "score": 0.7254,
+      "type": "L2",
+      "fact": 0.5829,
+      "temp": 0.9214,
+      "anchor": 0.6,
+      "struct": 0.8332,
+      "summary": "Action: Forward() <success>\nVisual observation: Bread_1, Cabinet_0, CounterTop_1, Cabinet_4, Toaster, SaltShaker, Fridge, agent hand\nBread_1 is inside agent han"
+    }
+  ],
+  "top5_old": [
+    {
+      "rank": 1,
+      "score": 0.5682,
+      "type": "EventBasedSummary",
+      "summary": "Action: Noop <success>\nSpeech: Bread is inside fridge."
+    },
+    {
+      "rank": 2,
+      "score": 0.5682,
+      "type": "GoalBasedSummary",
+      "summary": "Goal: Open(Fridge)\nVisual observation: Fridge\nSpeech:\n2023-07-17 14:26:41.659855: We need to make a slice of toast\n2023-07-17 14:27:21.188468: Bread is inside f"
+    },
+    {
+      "rank": 3,
+      "score": 0.565,
+      "type": "HigherLevelSummary",
+      "summary": "On July 17th, I microwaved and sliced a potato, made two slices of toast, and located three credit cards."
+    },
+    {
+      "rank": 4,
+      "score": 0.565,
+      "type": "HigherLevelSummary",
+      "summary": "I made toast by slicing bread and toasting two slices. I initially looked for a plate in the fridge, but with the user's guidance, I found one in the upper cabi"
+    },
+    {
+      "rank": 5,
+      "score": 0.565,
+      "type": "HigherLevelSummary",
+      "summary": "I started making toast by retrieving bread and a knife from the fridge, slicing the bread, and then toasting one slice as per user clarification."
+    }
+  ]
+}

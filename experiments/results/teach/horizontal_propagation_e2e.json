@@ -1,0 +1,218 @@
+{
+  "experiment": "horizontal_propagation_e2e",
+  "timestamp": "2026-05-15T17:33:52.413197",
+  "setup": {
+    "total_frames": 22,
+    "injected_frames": "3-7 (5 frames)",
+    "source_frame": 3,
+    "error_type": "Toaster→Microwave"
+  },
+  "propagation_detection": {
+    "total_detections": 14,
+    "true_positives": 4,
+    "false_positives": 10,
+    "recall": 0.8,
+    "precision": 0.2857,
+    "f1": 0.4211,
+    "details": [
+      {
+        "frame_index": 2,
+        "similarity": 0.9533,
+        "reason": "时间前方第1个事件，与原错误摘要相似度=0.953",
+        "is_injected": false,
+        "is_true_positive": false
+      },
+      {
+        "frame_index": 4,
+        "similarity": 0.767,
+        "reason": "时间后方第1个事件，与原错误摘要相似度=0.767",
+        "is_injected": true,
+        "is_true_positive": true
+      },
+      {
+        "frame_index": 1,
+        "similarity": 0.7826,
+        "reason": "时间前方第2个事件，与原错误摘要相似度=0.783",
+        "is_injected": false,
+        "is_true_positive": false
+      },
+      {
+        "frame_index": 5,
+        "similarity": 0.8121,
+        "reason": "时间后方第2个事件，与原错误摘要相似度=0.812",
+        "is_injected": true,
+        "is_true_positive": true
+      },
+      {
+        "frame_index": 0,
+        "similarity": 0.8119,
+        "reason": "时间前方第3个事件，与原错误摘要相似度=0.812",
+        "is_injected": false,
+        "is_true_positive": false
+      },
+      {
+        "frame_index": 6,
+        "similarity": 0.9615,
+        "reason": "时间后方第3个事件，与原错误摘要相似度=0.961",
+        "is_injected": true,
+        "is_true_positive": true
+      },
+      {
+        "frame_index": null,
+        "similarity": 0.8053,
+        "reason": "时间前方第4个事件，与原错误摘要相似度=0.805",
+        "is_injected": false,
+        "is_true_positive": false
+      },
+      {
+        "frame_index": 7,
+        "similarity": 0.7557,
+        "reason": "时间后方第4个事件，与原错误摘要相似度=0.756",
+        "is_injected": true,
+        "is_true_positive": true
+      },
+      {
+        "frame_index": null,
+        "similarity": 0.7459,
+        "reason": "时间前方第5个事件，与原错误摘要相似度=0.746",
+        "is_injected": false,
+        "is_true_positive": false
+      },
+      {
+        "frame_index": 8,
+        "similarity": 0.71,
+        "reason": "时间后方第5个事件，与原错误摘要相似度=0.710",
+        "is_injected": false,
+        "is_true_positive": false
+      },
+      {
+        "frame_index": null,
+        "similarity": 0.7369,
+        "reason": "时间前方第6个事件，与原错误摘要相似度=0.737",
+        "is_injected": false,
+        "is_true_positive": false
+      },
+      {
+        "frame_index": 9,
+        "similarity": 0.8008,
+        "reason": "时间后方第6个事件，与原错误摘要相似度=0.801",
+        "is_injected": false,
+        "is_true_positive": false
+      },
+      {
+        "frame_index": null,
+        "similarity": 0.7886,
+        "reason": "时间前方第7个事件，与原错误摘要相似度=0.789",
+        "is_injected": false,
+        "is_true_positive": false
+      },
+      {
+        "frame_index": 10,
+        "similarity": 0.797,
+        "reason": "时间后方第7个事件，与原错误摘要相似度=0.797",
+        "is_injected": false,
+        "is_true_positive": false
+      }
+    ],
+    "false_positive_analysis": [
+      {
+        "frame": 2,
+        "similarity": 0.9533
+      },
+      {
+        "frame": 1,
+        "similarity": 0.7826
+      },
+      {
+        "frame": 0,
+        "similarity": 0.8119
+      },
+      {
+        "frame": null,
+        "similarity": 0.8053
+      },
+      {
+        "frame": null,
+        "similarity": 0.7459
+      },
+      {
+        "frame": 8,
+        "similarity": 0.71
+      },
+      {
+        "frame": null,
+        "similarity": 0.7369
+      },
+      {
+        "frame": 9,
+        "similarity": 0.8008
+      },
+      {
+        "frame": null,
+        "similarity": 0.7886
+      },
+      {
+        "frame": 10,
+        "similarity": 0.797
+      }
+    ]
+  },
+  "propagation_correction": {
+    "auto_propagated_count": 2,
+    "frame_results": {
+      "frame_3": {
+        "contains_microwave": false,
+        "contains_toaster": true,
+        "corrected": true
+      },
+      "frame_4": {
+        "contains_microwave": true,
+        "contains_toaster": false,
+        "corrected": false
+      },
+      "frame_5": {
+        "contains_microwave": true,
+        "contains_toaster": true,
+        "corrected": false
+      },
+      "frame_6": {
+        "contains_microwave": true,
+        "contains_toaster": true,
+        "corrected": false
+      },
+      "frame_7": {
+        "contains_microwave": true,
+        "contains_toaster": false,
+        "corrected": false
+      }
+    }
+  },
+  "answer_verification": {
+    "enabled": true,
+    "results": {
+      "What appliance was on the counter?": {
+        "answer": "microwave",
+        "contains_microwave": true,
+        "contains_toaster": false,
+        "correct": false
+      },
+      "Did you see a toaster or a microwave?": {
+        "answer": "I saw a microwave.",
+        "contains_microwave": true,
+        "contains_toaster": false,
+        "correct": false
+      },
+      "What kitchen appliances were visible?": {
+        "answer": "Based on my observations, I saw a StoveBurner, Sink, Faucet, microwave, and Fridge.",
+        "contains_microwave": true,
+        "contains_toaster": false,
+        "correct": false
+      }
+    }
+  },
+  "verdict": {
+    "recall_100pct": false,
+    "all_injected_corrected": false,
+    "answers_correct": false
+  }
+}
