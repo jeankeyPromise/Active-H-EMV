@@ -1,0 +1,93 @@
+{
+  "experiment": "multi_signal_localization",
+  "error_type": "object_swap",
+  "timestamp": "2026-05-15T10:45:49.410813",
+  "new_algorithm": {
+    "injected_rank": null,
+    "in_top_k": false,
+    "top_k": 10,
+    "top5_details": [
+      {
+        "rank": 1,
+        "suspicion": 0.7329,
+        "type": "L2",
+        "sem": 0.8184,
+        "temp": 0.3517,
+        "acc": 1.0,
+        "den": 1.0,
+        "is_injected": false
+      },
+      {
+        "rank": 2,
+        "suspicion": 0.7329,
+        "type": "L2",
+        "sem": 0.8184,
+        "temp": 0.3517,
+        "acc": 1.0,
+        "den": 1.0,
+        "is_injected": false
+      },
+      {
+        "rank": 3,
+        "suspicion": 0.7329,
+        "type": "L2",
+        "sem": 0.8184,
+        "temp": 0.3517,
+        "acc": 1.0,
+        "den": 1.0,
+        "is_injected": false
+      },
+      {
+        "rank": 4,
+        "suspicion": 0.7329,
+        "type": "L2",
+        "sem": 0.8184,
+        "temp": 0.3517,
+        "acc": 1.0,
+        "den": 1.0,
+        "is_injected": false
+      },
+      {
+        "rank": 5,
+        "suspicion": 0.7329,
+        "type": "L2",
+        "sem": 0.8184,
+        "temp": 0.3517,
+        "acc": 1.0,
+        "den": 1.0,
+        "is_injected": false
+      }
+    ]
+  },
+  "old_algorithm": {
+    "injected_rank": null,
+    "in_top_k": false
+  },
+  "ablation": {
+    "full (4-signal)": {
+      "rank": 1123,
+      "total_nodes": 6232,
+      "in_top_k": false
+    },
+    "−S_temp (no time)": {
+      "rank": 1679,
+      "total_nodes": 6232,
+      "in_top_k": false
+    },
+    "−S_access (no agent trace)": {
+      "rank": 5585,
+      "total_nodes": 6232,
+      "in_top_k": false
+    },
+    "−S_density (no depth pref)": {
+      "rank": 839,
+      "total_nodes": 6232,
+      "in_top_k": false
+    },
+    "S_sem only (old algo)": {
+      "rank": 2528,
+      "total_nodes": 6232,
+      "in_top_k": false
+    }
+  }
+}
