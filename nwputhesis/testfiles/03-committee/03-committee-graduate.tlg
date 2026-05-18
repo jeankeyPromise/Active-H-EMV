@@ -1,0 +1,1426 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+Package fontspec Info: 
+(fontspec)             Font family 'SimHei(1)' created for font 'SimHei' with options [Ligatures=TeX,Script={CJK},AutoFakeBold={4},AutoFakeSlant={0.167}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.: <->"SimHei/OT:script=hani;language=dflt;mapping=tex-text;"
+(fontspec)             - 'bold' (b/n) with NFSS spec.: <->"SimHei/OT:script=hani;language=dflt;embolden=4;mapping=tex-text;"
+(fontspec)             - 'italic' (m/it) with NFSS spec.: <->"SimHei/OT:script=hani;language=dflt;slant=0.167;mapping=tex-text;"
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.: <->"SimHei/OT:script=hani;language=dflt;embolden=4;slant=0.167;mapping=tex-text;"
+Package fontspec Info: 
+(fontspec)             Font family 'SimSun(1)' created for font 'SimSun' with options [Ligatures=TeX,Script={CJK},AutoFakeBold={4},AutoFakeSlant={0.167}].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.: <->"SimSun/OT:script=hani;language=dflt;mapping=tex-text;"
+(fontspec)             - 'bold' (b/n) with NFSS spec.: <->"SimSun/OT:script=hani;language=dflt;embolden=4;mapping=tex-text;"
+(fontspec)             - 'italic' (m/it) with NFSS spec.: <->"SimSun/OT:script=hani;language=dflt;slant=0.167;mapping=tex-text;"
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.: <->"SimSun/OT:script=hani;language=dflt;embolden=4;slant=0.167;mapping=tex-text;"
+LaTeX Font Info:    Calculating math sizes for size <14> on input line ....
+LaTeX Font Info:    Trying to load font information for U+msa on input line ....
+LaTeX Font Info:    Trying to load font information for U+msb on input line ....
+Completed box being shipped out [1]
+\vbox(722.98453+0.0)x454.106
+.\hbox(0.0+0.0)x0.0
+..\special{pdf:docinfo<</Title()/Subject()/Creator(LaTeX with hyperref)/Author()\ETC.}
+.\hbox(0.0+0.0)x0.0
+..\kern -72.26999
+..\vbox(0.0+0.0)x0.0, glue set 72.26999fil
+...\kern -72.26999
+...\hbox(0.0+0.0)x0.0
+....\hbox(0.0+0.0)x0.0, glue set 72.26999fil, shifted 72.26999
+.....\kern -72.26999
+.....\special{pdf:obj @pgfcolorspaces <<>>}
+.....\special{pdf:put @resources << /ColorSpace @pgfcolorspaces >>}
+.....\special{pdf:put @pgfcolorspaces <<  /pgfprgb [/Pattern /DeviceRGB]  >>}
+.....\glue 0.0 plus 1.0fil minus 1.0fil
+....\hbox(0.0+0.0)x0.0, shifted 845.04684
+.....\kern 0.0
+.....\glue 0.0 plus 1.0fil minus 1.0fil
+....\glue 0.0 plus 1.0fil minus 1.0fil
+...\glue 0.0 plus 1.0fil minus 1.0fil
+.\vbox(0.0+0.0)x0.0, glue set 32.58647fil
+..\kern 0.0
+..\kern -31.58273
+..\kern -1.00374
+..\hbox(0.0+0.0)x0.0, glue set 2.14185fil
+...\kern 0.0
+...\kern -1.1381
+...\kern -1.00374
+...\special{pdf:dest (page.1) [@thispage /XYZ @xpos @ypos null]}
+...\penalty 10000
+...\glue 0.0 plus 1.0fil minus 1.0fil
+..\glue 0.0 plus 1.0fil minus 1.0fil
+.\glue(\lineskip) 0.0
+.\vbox(722.98453+0.0)x454.106
+..\glue -31.58273
+..\vbox(754.56726+0.0)x455.24411, shifted -1.1381
+...\vbox(28.45274+0.0)x455.24411, glue set 28.45274fil
+....\glue 0.0 plus 1.0fil
+....\hbox(0.0+0.0)x455.24411
+.....\special{color push gray 0}
+.....\hbox(0.0+0.0)x455.24411
+.....\special{color pop}
+...\glue 3.1298
+...\glue(\lineskip) 0.0
+...\vbox(700.50723+0.0)x455.24411, glue set 93.75331fil
+....\write-{}
+....\special{color push gray 0}
+....\special{pdf:majorversion 1}
+....\special{pdf:minorversion 7}
+....\special{pdf:minorversion 7}
+....\special{pdf:docview<</OpenAction[@page1/FitH]/PageMode/UseOutlines/ViewerPref\ETC.}
+....\special{pdf:dest (Doc-Start) [@thispage /XYZ @xpos @ypos null]}
+....\write-{}
+....\glue(\topskip) 0.0
+....\hbox(13.25+1.74998)x455.24411, glue set 107.62206fil
+.....\glue(\leftskip) 0.0 plus 1.0fil
+.....\hbox(0.0+0.0)x0.0
+......\glue 0.0
+......\glue 0.0
+......\glue -5.0
+......\hbox(0.0+0.0)x0.0
+.......\special{color push gray 0}
+.......\special{color pop}
+......\glue 5.0
+.....\penalty 0
+.....\TU/SimHei(1)/m/n/16 学
+.....\glue 0.0 plus 2.30405
+.....\TU/SimHei(1)/m/n/16 位
+.....\glue 0.0 plus 2.30405
+.....\TU/SimHei(1)/m/n/16 论
+.....\glue 0.0 plus 2.30405
+.....\TU/SimHei(1)/m/n/16 文
+.....\glue 0.0 plus 2.30405
+.....\TU/SimHei(1)/m/n/16 评
+.....\glue 0.0 plus 2.30405
+.....\TU/SimHei(1)/m/n/16 阅
+.....\glue 0.0 plus 2.30405
+.....\TU/SimHei(1)/m/n/16 人
+.....\glue 0.0 plus 2.30405
+.....\TU/SimHei(1)/m/n/16 和
+.....\glue 0.0 plus 2.30405
+.....\TU/SimHei(1)/m/n/16 答
+.....\glue 0.0 plus 2.30405
+.....\TU/SimHei(1)/m/n/16 辩
+.....\glue 0.0 plus 2.30405
+.....\TU/SimHei(1)/m/n/16 委
+.....\glue 0.0 plus 2.30405
+.....\TU/SimHei(1)/m/n/16 员
+.....\glue 0.0 plus 2.30405
+.....\TU/SimHei(1)/m/n/16 会
+.....\glue 0.0 plus 2.30405
+.....\TU/SimHei(1)/m/n/16 名
+.....\glue 0.0 plus 2.30405
+.....\TU/SimHei(1)/m/n/16 单
+.....\kern -0.00017
+.....\kern 0.00017
+.....\penalty 10000
+.....\glue(\parfillskip) 0.0
+.....\glue(\rightskip) 0.0 plus 1.0fil
+....\glue 23.99994
+....\glue 0.0
+....\glue 7.56004
+....\glue 0.0
+....\glue(\parskip) 0.0
+....\glue(\parskip) 0.0
+....\glue(\baselineskip) 11.8562
+....\hbox(11.59375+1.53123)x455.24411
+.....\glue(\leftskip) 0.0 plus 1.0fil
+.....\hbox(0.0+0.0)x0.0
+.....\hbox(11.59375+1.53123)x455.24411, glue set 164.62206fil
+......\glue 0.0 plus 1.0fil minus 1.0fil
+......\TU/SimHei(1)/m/n/14 学
+......\glue 0.0 plus 2.01604
+......\TU/SimHei(1)/m/n/14 位
+......\glue 0.0 plus 2.01604
+......\TU/SimHei(1)/m/n/14 论
+......\glue 0.0 plus 2.01604
+......\TU/SimHei(1)/m/n/14 文
+......\glue 0.0 plus 2.01604
+......\TU/SimHei(1)/m/n/14 评
+......\glue 0.0 plus 2.01604
+......\TU/SimHei(1)/m/n/14 阅
+......\glue 0.0 plus 2.01604
+......\TU/SimHei(1)/m/n/14 人
+......\glue 0.0 plus 2.01604
+......\TU/SimHei(1)/m/n/14 名
+......\glue 0.0 plus 2.01604
+......\TU/SimHei(1)/m/n/14 单
+......\kern -0.00017
+......\kern 0.00017
+......\glue 0.0 plus 1.0fil minus 1.0fil
+.....\penalty 10000
+.....\glue(\parfillskip) 0.0
+.....\glue(\rightskip) 0.0 plus 1.0fil
+....\glue 7.56004
+....\glue 0.0
+....\glue(\parskip) 0.0
+....\glue(\parskip) 0.0
+....\glue(\lineskip) 1.0
+....\hbox(106.3995+99.39949)x455.24411, glue set 10.38522fil
+.....\glue(\leftskip) 0.0 plus 1.0fil
+.....\hbox(0.0+0.0)x0.0
+.....\hbox(106.3995+99.39949)x434.47368
+......\mathon
+......\vbox(106.3995+99.39949)x434.47368
+.......\hbox(20.57982+8.82004)x434.47368
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x105.5599
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x105.5599
+..........\hbox(20.57982+8.82004)x105.5599, glue set 40.77995fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/b/n/12 姓
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 名
+...........\kern 0.0
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x80.52135
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x80.52135
+..........\hbox(20.57982+8.82004)x80.52135, glue set 28.26068fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/b/n/12 职
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 称
+...........\kern 0.0
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x248.39243
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x248.39243
+..........\hbox(20.57982+8.82004)x248.39243, glue set 100.19621fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/b/n/12 工
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 作
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 单
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 位
+...........\kern 0.0
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+.......\glue(\lineskip) 0.0
+.......\hbox(20.57982+8.82004)x434.47368
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x105.5599
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x105.5599
+..........\hbox(20.57982+8.82004)x105.5599, glue set 28.77995fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 全
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 盲
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 评
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 阅
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x80.52135
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x80.52135
+..........\hbox(20.57982+8.82004)x80.52135, glue set 34.26068fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 无
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x248.39243
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x248.39243
+..........\hbox(20.57982+8.82004)x248.39243, glue set 118.19621fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 无
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+.......\glue(\lineskip) 0.0
+.......\hbox(20.57982+8.82004)x434.47368
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x105.5599
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x105.5599
+..........\hbox(20.57982+8.82004)x105.5599, glue set 28.77995fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 全
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 盲
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 评
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 阅
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x80.52135
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x80.52135
+..........\hbox(20.57982+8.82004)x80.52135, glue set 34.26068fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 无
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x248.39243
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x248.39243
+..........\hbox(20.57982+8.82004)x248.39243, glue set 118.19621fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 无
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+.......\glue(\lineskip) 0.0
+.......\hbox(20.57982+8.82004)x434.47368
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x105.5599
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x105.5599
+..........\hbox(20.57982+8.82004)x105.5599, glue set 52.77995fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x80.52135
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x80.52135
+..........\hbox(20.57982+8.82004)x80.52135, glue set 40.26068fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x248.39243
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x248.39243
+..........\hbox(20.57982+8.82004)x248.39243, glue set 124.19621fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+.......\glue(\lineskip) 0.0
+.......\hbox(20.57982+8.82004)x434.47368
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x105.5599
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x105.5599
+..........\hbox(20.57982+8.82004)x105.5599, glue set 52.77995fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x80.52135
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x80.52135
+..........\hbox(20.57982+8.82004)x80.52135, glue set 40.26068fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x248.39243
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x248.39243
+..........\hbox(20.57982+8.82004)x248.39243, glue set 124.19621fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+.......\glue(\lineskip) 0.0
+.......\hbox(20.57982+8.82004)x434.47368
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x105.5599
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x105.5599
+..........\hbox(20.57982+8.82004)x105.5599, glue set 52.77995fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x80.52135
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x80.52135
+..........\hbox(20.57982+8.82004)x80.52135, glue set 40.26068fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x248.39243
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x248.39243
+..........\hbox(20.57982+8.82004)x248.39243, glue set 124.19621fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+.......\glue(\lineskip) 0.0
+.......\hbox(20.57982+8.82004)x434.47368
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x105.5599
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x105.5599
+..........\hbox(20.57982+8.82004)x105.5599, glue set 52.77995fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+......\mathoff
+.....\penalty 10000
+.....\glue(\parfillskip) 0.0
+.....\glue(\rightskip) 0.0 plus 1.0fil
+....\glue 23.99994
+....\glue 0.0
+....\glue 7.56004
+....\glue 0.0
+....\glue(\parskip) 0.0
+....\glue(\parskip) 0.0
+....\glue(\lineskip) 1.0
+....\hbox(11.59375+1.53123)x455.24411
+.....\glue(\leftskip) 0.0 plus 1.0fil
+.....\hbox(0.0+0.0)x0.0
+.....\hbox(11.59375+1.53123)x455.24411, glue set 178.62206fil
+......\glue 0.0 plus 1.0fil minus 1.0fil
+......\TU/SimHei(1)/m/n/14 答
+......\glue 0.0 plus 2.01604
+......\TU/SimHei(1)/m/n/14 辩
+......\glue 0.0 plus 2.01604
+......\TU/SimHei(1)/m/n/14 委
+......\glue 0.0 plus 2.01604
+......\TU/SimHei(1)/m/n/14 员
+......\glue 0.0 plus 2.01604
+......\TU/SimHei(1)/m/n/14 会
+......\glue 0.0 plus 2.01604
+......\TU/SimHei(1)/m/n/14 名
+......\glue 0.0 plus 2.01604
+......\TU/SimHei(1)/m/n/14 单
+......\kern -0.00017
+......\kern 0.00017
+......\glue 0.0 plus 1.0fil minus 1.0fil
+.....\penalty 10000
+.....\glue(\parfillskip) 0.0
+.....\glue(\rightskip) 0.0 plus 1.0fil
+....\glue 7.56004
+....\glue 0.0
+....\glue(\parskip) 0.0
+....\glue(\parskip) 0.0
+....\glue(\lineskip) 1.0
+....\hbox(135.79936+128.79935)x455.24411, glue set 7.96698fil
+.....\glue(\leftskip) 0.0 plus 1.0fil
+.....\hbox(0.0+0.0)x0.0
+.....\hbox(135.79936+128.79935)x439.31015
+......\mathon
+......\vbox(135.79936+128.79935)x439.31015
+.......\hbox(20.57982+8.82004)x439.31015
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x106.9822
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x106.9822
+..........\hbox(20.57982+8.82004)x106.9822, glue set 29.4911fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/b/n/12 答
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 辩
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 日
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 期
+...........\kern 0.0
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x76.25317, glue set 117.33194fil
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.00002
+.........\TU/TimesNewRoman(0)/m/n/12 20XX
+.........\glue 3.0 plus 1.49849 minus 1.00099
+.........\TU/SimSun(1)/m/n/12 年
+.........\glue 3.0 plus 1.49849 minus 1.00099
+.........\TU/TimesNewRoman(0)/m/n/12 X
+.........\glue 3.0 plus 1.49849 minus 1.00099
+.........\TU/SimSun(1)/m/n/12 月
+.........\glue 3.0 plus 1.49849 minus 1.00099
+.........\TU/TimesNewRoman(0)/m/n/12 X
+.........\glue 3.0 plus 1.49849 minus 1.00099
+.........\TU/SimSun(1)/m/n/12 日
+.........\kern -0.00017
+.........\kern 0.00017
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+.........\hbox(0.0+0.0)x0.0
+........\glue(\tabskip) 0.0
+........\hbox(0.0+0.0)x64.01869
+........\glue(\tabskip) 0.0
+........\hbox(0.0+0.0)x192.05609
+........\glue(\tabskip) 0.0
+.......\glue(\lineskip) 0.0
+.......\hbox(20.57982+8.82004)x439.31015
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x106.9822
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x106.9822
+..........\hbox(20.57982+8.82004)x106.9822, glue set 23.4911fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/b/n/12 答
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 辩
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 委
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 员
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 会
+...........\kern 0.0
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x76.25317
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x76.25317
+..........\hbox(20.57982+8.82004)x76.25317, glue set 26.12659fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/b/n/12 姓
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 名
+...........\kern 0.0
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x64.01869
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x64.01869
+..........\hbox(20.57982+8.82004)x64.01869, glue set 20.00935fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/b/n/12 职
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 称
+...........\kern 0.0
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x192.05609
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x192.05609
+..........\hbox(20.57982+8.82004)x192.05609, glue set 72.02805fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/b/n/12 工
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 作
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 单
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 位
+...........\kern 0.0
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+.......\glue(\lineskip) 0.0
+.......\hbox(20.57982+8.82004)x439.31015
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x106.9822
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x106.9822
+..........\hbox(20.57982+8.82004)x106.9822, glue set 41.4911fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/b/n/12 主
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 席
+...........\kern 0.0
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x76.25317
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x76.25317
+..........\hbox(20.57982+8.82004)x76.25317, glue set 25.12756fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/TimesNewRoman(0)/m/n/12 XXX
+...........\kern -0.0002
+...........\kern 0.0002
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x64.01869
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x64.01869
+..........\hbox(20.57982+8.82004)x64.01869, glue set 20.00935fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 教
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 授
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x192.05609
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x192.05609
+..........\hbox(20.57982+8.82004)x192.05609, glue set 60.02805fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 西
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 北
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 工
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 业
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 大
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 学
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+.......\glue(\lineskip) 0.0
+.......\hbox(20.57982+8.82004)x439.31015
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x106.9822
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x106.9822
+..........\hbox(20.57982+8.82004)x106.9822, glue set 41.4911fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/b/n/12 委
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 员
+...........\kern 0.0
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x76.25317
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x76.25317
+..........\hbox(20.57982+8.82004)x76.25317, glue set 25.12756fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/TimesNewRoman(0)/m/n/12 XXX
+...........\kern -0.0002
+...........\kern 0.0002
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x64.01869
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x64.01869
+..........\hbox(20.57982+8.82004)x64.01869, glue set 20.00935fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 教
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 授
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x192.05609
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x192.05609
+..........\hbox(20.57982+8.82004)x192.05609, glue set 60.02805fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 西
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 北
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 工
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 业
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 大
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 学
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+.......\glue(\lineskip) 0.0
+.......\hbox(20.57982+8.82004)x439.31015
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x106.9822
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x106.9822
+..........\hbox(20.57982+8.82004)x106.9822, glue set 41.4911fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/b/n/12 委
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 员
+...........\kern 0.0
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x76.25317
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x76.25317
+..........\hbox(20.57982+8.82004)x76.25317, glue set 25.12756fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/TimesNewRoman(0)/m/n/12 XXX
+...........\kern -0.0002
+...........\kern 0.0002
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x64.01869
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x64.01869
+..........\hbox(20.57982+8.82004)x64.01869, glue set 20.00935fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 教
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 授
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x192.05609
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x192.05609
+..........\hbox(20.57982+8.82004)x192.05609, glue set 60.02805fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 西
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 北
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 工
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 业
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 大
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 学
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+.......\glue(\lineskip) 0.0
+.......\hbox(20.57982+8.82004)x439.31015
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x106.9822
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x106.9822
+..........\hbox(20.57982+8.82004)x106.9822, glue set 41.4911fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/b/n/12 委
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 员
+...........\kern 0.0
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x76.25317
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x76.25317
+..........\hbox(20.57982+8.82004)x76.25317, glue set 25.12756fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/TimesNewRoman(0)/m/n/12 XXX
+...........\kern -0.0002
+...........\kern 0.0002
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x64.01869
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x64.01869
+..........\hbox(20.57982+8.82004)x64.01869, glue set 20.00935fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 教
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 授
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x192.05609
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x192.05609
+..........\hbox(20.57982+8.82004)x192.05609, glue set 60.02805fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 西
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 北
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 工
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 业
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 大
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 学
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+.......\glue(\lineskip) 0.0
+.......\hbox(20.57982+8.82004)x439.31015
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x106.9822
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x106.9822
+..........\hbox(20.57982+8.82004)x106.9822, glue set 41.4911fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/b/n/12 委
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 员
+...........\kern 0.0
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x76.25317
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x76.25317
+..........\hbox(20.57982+8.82004)x76.25317, glue set 25.12756fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/TimesNewRoman(0)/m/n/12 XXX
+...........\kern -0.0002
+...........\kern 0.0002
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x64.01869
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x64.01869
+..........\hbox(20.57982+8.82004)x64.01869, glue set 20.00935fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 教
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 授
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x192.05609
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x192.05609
+..........\hbox(20.57982+8.82004)x192.05609, glue set 60.02805fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 西
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 北
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 工
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 业
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 大
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 学
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+.......\glue(\lineskip) 0.0
+.......\hbox(20.57982+8.82004)x439.31015
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x106.9822
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x106.9822
+..........\hbox(20.57982+8.82004)x106.9822, glue set 41.4911fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/b/n/12 秘
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/b/n/12 书
+...........\kern 0.0
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x76.25317
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x76.25317
+..........\hbox(20.57982+8.82004)x76.25317, glue set 25.12756fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/TimesNewRoman(0)/m/n/12 XXX
+...........\kern -0.0002
+...........\kern 0.0002
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x64.01869
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x64.01869
+..........\hbox(20.57982+8.82004)x64.01869, glue set 20.00935fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 讲
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 师
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x192.05609
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x192.05609
+..........\hbox(20.57982+8.82004)x192.05609, glue set 60.02805fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\glue 0.0
+...........\TU/SimSun(1)/m/n/12 西
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 北
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 工
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 业
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 大
+...........\glue 0.0 plus 1.60004
+...........\TU/SimSun(1)/m/n/12 学
+...........\kern -0.00017
+...........\kern 0.00017
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+.......\glue(\lineskip) 0.0
+.......\hbox(20.57982+8.82004)x439.31015
+........\glue(\tabskip) 0.0
+........\hbox(20.57982+8.82004)x106.9822
+.........\rule(20.57982+8.82004)x0.0
+.........\glue 0.0
+.........\vbox(20.57982+8.82004)x106.9822
+..........\hbox(20.57982+8.82004)x106.9822, glue set 53.4911fil
+...........\glue(\leftskip) 0.0 plus 1.0fil
+...........\hbox(0.0+0.0)x0.0
+...........\rule(20.57982+*)x0.0
+...........\penalty 10000
+...........\rule(0.0+8.82004)x0.0
+...........\penalty 10000
+...........\glue(\parfillskip) 0.0
+...........\glue(\rightskip) 0.0 plus 1.0fil
+.........\glue 0.0 plus 1.0fil
+.........\glue 0.0
+........\glue(\tabskip) 0.0
+......\mathoff
+.....\penalty 10000
+.....\glue(\parfillskip) 0.0
+.....\glue(\rightskip) 0.0 plus 1.0fil
+....\penalty -51
+....\glue 2.0 plus 1.0 minus 1.0
+....\glue 0.0 plus 1.0fil
+....\glue 0.0
+....\glue 0.0 plus 0.0001fil
+...\glue(\baselineskip) 22.47748
+...\hbox(0.0+0.0)x455.24411
+....\special{color push gray 0}
+....\hbox(0.0+0.0)x455.24411
+....\special{color pop}
+.\kern -722.98453
+.\hbox(0.0+0.0)x0.0
+..\kern -72.26999
+..\vbox(0.0+0.0)x0.0, glue set 72.26999fil
+...\kern -72.26999
+...\hbox(0.0+0.0)x0.0
+....\hbox(0.0+0.0)x0.0, shifted 845.04684
+.....\kern 0.0
+.....\glue 0.0 plus 1.0fil minus 1.0fil
+....\glue 0.0 plus 1.0fil minus 1.0fil
+...\glue 0.0 plus 1.0fil minus 1.0fil
+.\kern 722.98453
+.\kern 0.0
+.\kern 0.0
+Completed box being shipped out [2]
+\vbox(722.98453+0.0)x454.106
+.\hbox(0.0+0.0)x0.0
+..\kern -72.26999
+..\vbox(0.0+0.0)x0.0, glue set 72.26999fil
+...\kern -72.26999
+...\hbox(0.0+0.0)x0.0
+....\hbox(0.0+0.0)x0.0, glue set 72.26999fil, shifted 72.26999
+.....\kern -72.26999
+.....\special{pdf:put @resources << /ColorSpace @pgfcolorspaces >>}
+.....\glue 0.0 plus 1.0fil minus 1.0fil
+....\hbox(0.0+0.0)x0.0, shifted 845.04684
+.....\kern 0.0
+.....\glue 0.0 plus 1.0fil minus 1.0fil
+....\glue 0.0 plus 1.0fil minus 1.0fil
+...\glue 0.0 plus 1.0fil minus 1.0fil
+.\vbox(0.0+0.0)x0.0, glue set 32.58647fil
+..\kern 0.0
+..\kern -31.58273
+..\kern -1.00374
+..\hbox(0.0+0.0)x0.0, glue set 2.14185fil
+...\kern 0.0
+...\kern -1.1381
+...\kern -1.00374
+...\special{pdf:dest (page.2) [@thispage /XYZ @xpos @ypos null]}
+...\penalty 10000
+...\glue 0.0 plus 1.0fil minus 1.0fil
+..\glue 0.0 plus 1.0fil minus 1.0fil
+.\glue(\lineskip) 0.0
+.\vbox(722.98453+0.0)x454.106
+..\glue -31.58273
+..\vbox(754.56726+0.0)x455.24411, shifted -1.1381
+...\vbox(28.45274+0.0)x455.24411, glue set 28.45274fil
+....\glue 0.0 plus 1.0fil
+....\hbox(0.0+0.0)x455.24411
+.....\special{color push gray 0}
+.....\hbox(0.0+0.0)x455.24411
+.....\special{color pop}
+...\glue 3.1298
+...\glue(\lineskip) 0.0
+...\vbox(700.50723+0.0)x0.0, glue set 690.43349fil
+....\write-{}
+....\glue(\topskip) 10.0
+....\hbox(0.0+0.0)x0.0
+....\glue 0.0 plus 1.0fil
+....\glue 0.0
+....\glue 0.0 plus 0.0001fil
+...\glue(\baselineskip) 22.47748
+...\hbox(0.0+0.0)x455.24411
+....\special{color push gray 0}
+....\hbox(0.0+0.0)x455.24411
+....\special{color pop}
+.\kern -722.98453
+.\hbox(0.0+0.0)x0.0
+..\kern -72.26999
+..\vbox(0.0+0.0)x0.0, glue set 72.26999fil
+...\kern -72.26999
+...\hbox(0.0+0.0)x0.0
+....\hbox(0.0+0.0)x0.0, shifted 845.04684
+.....\kern 0.0
+.....\glue 0.0 plus 1.0fil minus 1.0fil
+....\glue 0.0 plus 1.0fil minus 1.0fil
+...\glue 0.0 plus 1.0fil minus 1.0fil
+.\kern 722.98453
+.\kern 0.0

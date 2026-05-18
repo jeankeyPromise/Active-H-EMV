@@ -1,0 +1,3 @@
+[submodule "fonts"]
+	path = fonts
+	url = https://github.com/1195343015/nwputhesis-fonts

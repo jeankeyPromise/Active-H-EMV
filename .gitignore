@@ -38,6 +38,34 @@ Makefile
 *.dylib
 moc_*
 
+# LaTeX build artifacts
+*.aux
+*.log
+*.xdv
+*.toc
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.out
+*.nav
+*.snm
+*.vrb
+*.lof
+*.lot
+*.glo
+*.ist
+*.acn
+*.thm
+*.idx
+*.nlo
+*.hd
+*.bbl-SAVE-ERROR
+*.synctex(busy)
+
 # eclipse stuff
 .project
 .pydevproject

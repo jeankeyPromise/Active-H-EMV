@@ -1,0 +1,52 @@
+# Normalize text files to LF
+* text=auto
+*.tex text eol=lf
+*.cls text eol=lf
+*.def text eol=lf
+*.bib text eol=lf
+*.bst text eol=lf
+*.lua text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.sh text eol=lf
+*.tlg text eol=lf
+*.tcx text eol=lf
+Makefile text eol=lf
+
+# Treat binary assets as binary
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.otf binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+*.docx binary
+
+# Development files
+.github/ export-ignore
+.gitignore export-ignore
+.gitattributes export-ignore
+.gitmodules export-ignore
+fonts/ export-ignore
+
+# Docs
+CONTRIBUTING.md export-ignore
+
+# Build outputs and helper files
+build/ export-ignore
+testfiles/ export-ignore
+build.lua export-ignore
+*.aux export-ignore
+*.bbl export-ignore
+*.blg export-ignore
+*.fdb_latexmk export-ignore
+*.fls export-ignore
+*.log export-ignore
+*.nlo export-ignore
+*.synctex.gz export-ignore
+*.thm export-ignore
+*.toc export-ignore

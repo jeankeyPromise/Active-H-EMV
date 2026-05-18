@@ -1,0 +1,60 @@
+% 个人信息设置
+\ifbachelor{\input{content/thesis/undergraduate/info}}{\input{content/thesis/graduate/info}}
+\ifbachelor{\addbibresource{content/thesis/undergraduate/reference.bib}}{\addbibresource{content/thesis/graduate/reference.bib}}
+\ifgraduate{\addbibresource{content/thesis/graduate/accomplishments.bib}}{}
+
+\begin{document}
+
+\frontmatter
+
+% 封皮页及标题页
+\maketitle
+
+% 答辩委员会（仅硕博）
+\ifgraduate{\input{content/thesis/graduate/committee}}{}
+
+% 摘要
+\ifbachelor{\input{content/thesis/undergraduate/abstract}}{\input{content/thesis/graduate/abstract}}
+
+% 目录
+\tableofcontents
+
+% 图目录和表目录（学校模板未要求）
+\ifgraduate{
+    \listoffigures
+    \listoftables
+}{}
+
+\mainmatter
+
+% 各章节
+\ifbachelor{
+    \input{content/thesis/undergraduate/chapters}
+}{
+    \input{content/thesis/graduate/chapters}
+}
+
+% 参考文献
+\printbibliography
+
+% 附录（研究生在致谢之前）
+\ifgraduate{\input{content/thesis/graduate/appendix}}{}
+
+\backmatter
+
+% 致谢
+\ifbachelor{\input{content/thesis/undergraduate/acknowledgements}}{\input{content/thesis/graduate/acknowledgements}}
+
+% 毕业设计小结（仅本科）
+\ifbachelor{\input{content/thesis/undergraduate/designsummary}}{}
+
+% 附录（仅本科，在致谢之后）
+\ifbachelor{\input{content/thesis/undergraduate/appendix}}{}
+
+% 参加科研情况（仅硕博）
+\ifgraduate{\input{content/thesis/graduate/accomplishments}}{}
+
+% 知识产权与原创性声明（仅硕博）
+\ifgraduate{\includepdf[pages=-]{content/figures/研究生学位论文使用授权声明.pdf}}{}
+
+\end{document}

@@ -1,0 +1,33 @@
+%% 摘要
+
+% 中文摘要
+\begin{abstract}
+随着大语言模型与多模态感知技术的快速发展，服务机器人正从实验室演示走向长期、连续的家庭和工业部署。在此过程中，情景记忆语言化（Episodic Memory Verbalization, EMV）——将原始多模态经验流转化为自然语言问答的能力——成为提升人机交互信任感的关键技术。然而，长期部署中的记忆系统面临三个根本性技术张力：检索效率与不断增长的历史长度之间的矛盾、持续写入新记忆导致的存储膨胀、以及感知和理解偏差一旦写入便无法修正的持久化污染。
+
+针对上述挑战，本文提出 \textbf{GRAF-Mem}（Graph-Retrieval and Adaptive Forgetting Memory），一个在层级记忆树骨架上集成图增强检索、效用引导遗忘和反馈驱动修正的主动式长期记忆框架。GRAF-Mem 的三个模块共享同一个事件关联图数据结构：检索利用图边做邻居扩展以提升召回率，遗忘利用图中心性做重要性评分以指导选择性压缩，修正利用图邻居做传播检测以扩大修复覆盖面。
+
+在检索层面，本文提出从 L2 事件节点自动派生包含时间、物体、位置、动作和因果五类语义边的事件关联图，以及"语义种子召回→图邻居扩展→联合重排"的三阶段图增强检索流水线，配合七种结构化检索工具与执行护栏。在 TEACh 数据集 |h|=100 设置下，GRAF-Mem 达到语义完全正确率 49.0\%、部分正确率 75.0\%、平均 prompt token 消耗仅 2.29K，相比基线正确率提升 15 个百分点、token 成本降低 78\%。
+
+在存储层面，本文提出基于多维效用的渐进式遗忘，综合新近性（艾宾浩斯指数衰减）、语义独特性和多信号重要性（用户对话、动作异常、目标变化、图度中心性）对每个事件节点计算连续效用值，按双阈值划分执行三级渐进压缩。在 TEACh |h|=50 上，保守配置以 5.26\% 的树结构压缩保持 100/100 答案逐条一致；强压缩配置将关系数削减 50.83\%、超 61\% 事件进入仅保留高层摘要的 Level 2，且同样保持全部答案一致。在 ARMARX 真实机器人数据上，图中心性引导遗忘实现了从"删多少"到"选择性遗忘"的质变验证。
+
+在维护层面，本文提出四阶段反馈驱动记忆修正管线——反馈锚定的逆向错误定位、LLM 辅助最小化修正、传播检测与自动传播——以及基于 Python 运行时动态属性的摘要覆盖机制，以非侵入、可逆、可追溯的方式实现记忆修正。在受控错误注入范式下，LLM 修正 100\% 成功，传播检测达到 100\% 召回率，端到端闭环验证确认了从用户反馈到答案改善的完整链路。
+
+GRAF-Mem 将长期情景记忆从静态的"存下来、搜得到"推进为主动的"维护好、可更新"，为服务机器人在数月甚至数年的长期部署中维持高效、经济、可靠的情景记忆问答提供了系统性的技术方案。
+\keywordslist{情景记忆语言化, 检索增强生成, 事件关联图, 渐进式遗忘, 反馈驱动记忆修正, 服务机器人}
+\end{abstract}
+
+% 英文摘要
+\begin{engabstract}
+As large language models and multimodal perception technologies advance rapidly, service robots are transitioning from laboratory demonstrations to long-term, continuous deployment in homes and industries. In this process, Episodic Memory Verbalization (EMV) — the ability to convert raw multimodal experience streams into natural language question answering — has become a key technology for enhancing human-robot interaction trust. However, long-term deployment memory systems face three fundamental technical tensions: the contradiction between retrieval efficiency and ever-growing history length, storage inflation from continuous memory writing, and persistent contamination from perception and understanding errors that, once written, cannot be corrected.
+
+To address these challenges, this thesis proposes \textbf{GRAF-Mem} (Graph-Retrieval and Adaptive Forgetting Memory), a proactive long-term memory framework that integrates graph-enhanced retrieval, utility-guided forgetting, and feedback-driven correction on the skeleton of a hierarchical memory tree. The three modules share a common event correlation graph data structure: retrieval uses graph edges for neighbor expansion to improve recall, forgetting uses graph centrality for importance scoring to guide selective compression, and correction uses graph neighbors for propagation detection to extend repair coverage.
+
+For retrieval, this thesis proposes automatically deriving event correlation graphs with five semantic edge types (temporal, co-object, co-location, similar-action, and causal) from L2 event nodes, along with a three-stage graph-enhanced retrieval pipeline (semantic seed recall → graph neighbor expansion → joint re-ranking) complemented by seven structured retrieval tools and execution safeguards. On the TEACh dataset with |h|=100, GRAF-Mem achieves S\textsubscript{c}=49.0\%, S\textsubscript{p}=75.0\%, and T=2.29K, improving semantic correctness by 15 percentage points and reducing token cost by 78\% compared to the baseline.
+
+For storage, this thesis proposes utility-guided progressive forgetting that integrates recency (Ebbinghaus exponential decay), semantic uniqueness, and multi-signal importance (user dialogue, action anomaly, goal transition, graph degree centrality) to compute continuous utility values for each event node, with three-level progressive compression governed by dual thresholds. On TEACh |h|=50, the conservative configuration achieves exact answer consistency on 100/100 QA pairs with 5.26\% tree structure compression; the aggressive configuration reduces relations by 50.83\% with over 61\% of events entering summary-only Level 2 while maintaining identical answers across all questions. On ARMARX real-robot data, graph-centrality-guided forgetting demonstrates the qualitative shift from "how much to delete" to "what to selectively forget."
+
+For maintenance, this thesis proposes a four-stage feedback-driven memory correction pipeline — feedback-anchored reverse error localization, LLM-assisted minimal correction, propagation detection, and automatic propagation — together with a summary override mechanism based on Python runtime dynamic attributes, enabling non-intrusive, reversible, and traceable memory correction. Under controlled error injection, LLM correction achieves 100\% success, propagation detection reaches 100\% recall, and end-to-end closed-loop verification confirms the complete chain from user feedback to answer improvement.
+
+GRAF-Mem advances long-term episodic memory from passive "store and retrieve" to proactive "maintain and update," providing a systematic technical solution for service robots to sustain efficient, economical, and reliable episodic memory QA over months and years of continuous deployment.
+\engkeywordslist{Episodic Memory Verbalization, Retrieval-Augmented Generation, Event Correlation Graph, Progressive Forgetting, Feedback-Driven Memory Correction, Service Robots}
+\end{engabstract}
