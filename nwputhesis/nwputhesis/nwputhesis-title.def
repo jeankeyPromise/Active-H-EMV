@@ -240,7 +240,7 @@
     {
       \renewcommand{\arraystretch}{1}
       \setlength{\extrarowheight}{10pt}
-      \begin{tabular}[b]{@{}c@{}>{\centering\arraybackslash}p{12cm}@{}}
+      \begin{tabular}[b]{@{}c@{}>{\centering\arraybackslash}p{14cm}@{}}
         \makebox[\nwpuBachelorTitleLabelWidth][c]{题\ 目}
         & \mdseries \tl_use:N \l__nwpu_bachelor_title_line_a_tl
         \tabularnewline \cline{2-2}

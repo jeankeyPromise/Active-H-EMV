@@ -136,7 +136,7 @@
   \cs_new:Npn \nwpuChapterAfterSkip    { 17pt }             % 本科章标题后距
   \cs_new:Npn \nwpuSectionBeforeSkip   { \baselineskip }    % 本科节标题前距
   \cs_new:Npn \nwpuSectionAfterSkip    { 2pt }              % 本科节标题后距
-  \cs_new:Npn \nwpuSubsecBeforeSkip    { 3pt }              % 本科小节标题前距
+  \cs_new:Npn \nwpuSubsecBeforeSkip    { \baselineskip }   % 本科小节标题前距
   \cs_new:Npn \nwpuSubsecAfterSkip     { -1pt }             % 本科小节标题后距
 } {
   \cs_new:Npn \nwpuChapterBeforeSkip   { -4pt }              % 研究生章标题前距
@@ -231,7 +231,7 @@
 
 %%=== 本科封面尺寸 =======================================================
 \cs_new:Npn \nwpuBachelorLogoWidth { 9cm }                 % 本科封面校徽宽度
-\cs_new:Npn \nwpuBachelorTitleUnderlineWidth { 12cm }        % 本科封面题目下划线宽度
+\cs_new:Npn \nwpuBachelorTitleUnderlineWidth { 14cm }        % 本科封面题目下划线宽度
 \cs_new:Npn \nwpuBachelorInfoUnderlineWidth { 7cm }       % 本科封面专业/姓名等下划线宽度
 \cs_new:Npn \nwpuBachelorTitleGap { 0cm }                 % 本科封面”题目”和下划线间距
 \cs_new:Npn \nwpuBachelorTitleLabelWidth { 3em }            % 本科封面”题目”标签列宽
