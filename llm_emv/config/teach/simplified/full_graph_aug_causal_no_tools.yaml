@@ -1,0 +1,29 @@
++include: full_graph_aug_zs_fast
+graph_augment:
+  enable_temporal: true
+  enable_co_object: true
+  enable_co_location: true
+  enable_similar_action: true
+  similar_action_threshold: 0.85
+  enable_causal: true
+  causal_llm:
+    type: ChatOpenAI
+    model_name: gemini-2.5-pro
+    max_tokens: 16
+    temperature: 0
+    request_timeout: 15
+    max_retries: 1
+  alpha: 0.65
+  beta: 0.30
+  gamma: 0.05
+  max_neighbors: 6
+  max_seed_events_per_item: 2
+  adaptive_edge_selection: true
+prompt_cfg:
+  system: system_zero_shot_no_tools
+api:
+  include_groups:
+    - dialog
+  include_names:
+    - history
+    - answer

@@ -1,0 +1,44 @@
+type: simplified_coding
+max_rounds: 15
+llm:
+  type: ChatOpenAI
+  model_name: gemini-2.5-pro
+  max_tokens: 768
+  temperature: 0.1
+  request_timeout: 120
+  max_retries: 5
+question_vlm:
+  type: ChatOpenAI
+  model_name: gemini-2.5-pro
+  max_tokens: 64
+  temperature: 0.3
+  request_timeout: 60
+  max_retries: 2
+prompt_cfg:
+  system: system_zero_shot_no_tools
+  usage: usage
+  user_question: user_question
+  history: history
+  final_try: final
+  db: []
+  retrieval:
+    top_k: 0
+search:
+  embedding: all-mpnet-base-v2
+  use_faiss: true
+  faiss_index_type: flat
+  eager_init: false
+  filter_kwargs:
+    top_p: 0.3
+    min_cos_sim: 0.4
+
+api:
+  include_groups:
+    - dialog
+  include_names:
+    - history
+    - answer
+exclude_imports:
+  - history
+  - wait_for_trigger
+  - say

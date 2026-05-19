@@ -1,0 +1,9 @@
++include: full_graph_aug_zs_fast
+prompt_cfg:
+  system: system_zero_shot_no_tools
+api:
+  include_groups:
+    - dialog
+  include_names:
+    - history
+    - answer
