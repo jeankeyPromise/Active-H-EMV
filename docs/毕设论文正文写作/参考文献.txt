@@ -1,0 +1,39 @@
+[1] Bärmann L，Peller-Konrad F，Constantin S，等．Deep episodic memory for verbalization of robot experience[J]．IEEE Robotics and Automation Letters，2021，6(3)：5808-5815．
+
+[2] Rosenthal S，Selvaraj S P，Veloso M．Verbalization: Narration of autonomous robot experience[A]．见：Proceedings of the Twenty-Fifth International Joint Conference on Artificial Intelligence[C]．New York：IJCAI Organization，2016：862-868．
+
+[3] Zhu Q，Perera V，Wächter M，等．Autonomous narration of humanoid robot kitchen task experience[A]．见：2017 IEEE-RAS 17th International Conference on Humanoid Robotics[C]．Piscataway：IEEE，2017：633-640．
+
+[4] DeChant C，Bauer D．Toward robots that learn to summarize their actions in natural language: a set of tasks[A]．见：Proceedings of the Fifth Conference on Robot Learning[C]．London：PMLR，2021：1467-1477．
+
+[5] Tulving E．Episodic and semantic memory[M]．New York：Academic Press，1972：381-403．
+
+[6] DeChant C，Akinola I，Bauer D．Learning to summarize and answer questions about a virtual robot’s past actions[J]．Autonomous Robots，2023，47(5)：673-694．
+
+[7] Liu N F，Lin K，Hewitt J，等．Lost in the middle: How language models use long contexts[J]．Transactions of the Association for Computational Linguistics，2024，12：157-173．
+
+[8] Gemini Team．Gemini 1.5: Unlocking multimodal understanding across millions of tokens of context[EB/OL]．2024[2026-05-18]．[https://arxiv.org/abs/2403.05530．](https://arxiv.org/abs/2403.05530．)
+
+[9] Hsieh C P，Sun S，Kriman S，等．RULER: What’s the real context size of your long-context language models?[EB/OL]．2024[2026-05-18]．[https://arxiv.org/abs/2404.06654．](https://arxiv.org/abs/2404.06654．)
+
+[10] Liu Z，Bahety A，Song S．REFLECT: Summarizing robot experiences for failure explanation and correction[A]．见：Proceedings of the 7th Conference on Robot Learning[C]．Atlanta：PMLR，2023：1548-1568．
+
+[11] Xie Q，Min S Y，Ji P，等．Embodied-RAG: General non-parametric embodied memory for retrieval and generation[EB/OL]．2025[2026-05-18]．[https://arxiv.org/abs/2501.12310．](https://arxiv.org/abs/2501.12310．)
+
+[12] Edge D，Trinh H，Cheng N，等．From local to global: A graph RAG approach to query-focused summarization[EB/OL]．2025[2026-05-18]．[https://arxiv.org/abs/2404.16130．](https://arxiv.org/abs/2404.16130．)
+
+[13] Plewnia J，Peller-Konrad F，Asfour T．Forgetting in robotic episodic long-term memory[A]．见：2024 IEEE International Conference on Robotics and Automation[C]．Piscataway：IEEE，2024：12543-12550．
+
+[14] Islam M M，Ho N，Yang X，等．Video ReCap: Recursive captioning of hour-long videos[A]．见：Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition[C]．Seattle：IEEE，2024：18174-18184．
+
+[15] Balazevic I，Shi Y，Papalampidi P，等．Memory consolidation enables long-context video understanding[A]．见：Proceedings of the 41st International Conference on Machine Learning[C]．Vienna：PMLR，2024．
+
+[16] Padmakumar A，Thomason J，Shrivastava A，等．TEACh: Task-driven embodied agents that chat[J]．Proceedings of the AAAI Conference on Artificial Intelligence，2022，36(2)：2017-2025．
+
+[17] Grauman K，Westbury A，Byrne E，等．Ego4D: Around the world in 3,000 hours of egocentric video[A]．见：Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition[C]．New Orleans：IEEE，2022：18995-19012．
+
+[18] Asfour T，Dillmann R，Vahrenkamp N，等．The Karlsruhe ARMAR humanoid robot family[M]．Cham：Springer，2017：1-32．
+
+[19] Bärmann L，Waibel A．Where did I leave my keys? Episodic-memory-based QA on egocentric videos[A]．见：Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops[C]．New Orleans：IEEE，2022：156-157．
+
+[20] Wang L，Ma C，Feng X，等．A survey on large language model based autonomous agents[J]．Frontiers of Computer Science，2024，18(6)：186345．
