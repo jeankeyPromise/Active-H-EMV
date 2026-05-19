@@ -107,7 +107,9 @@ def _load_eval_chain_from_cfg(eval_cfg_file: Path) -> Runnable[dict, str]:
 def llm_eval(eval_cfg_file: Path, result_file: Path, eval_chain: Runnable[dict, str]):
     result_data = json.loads(result_file.read_text())
     samples = [dict(key=k, **v) for k, v in result_data['results'].items()]
-    categories = eval_chain.batch(samples)
+    # Serial evaluation is slower but avoids sporadic batch-time parser/model issues
+    # observed with concurrent OpenAI-compatible responses in this environment.
+    categories = [eval_chain.invoke(sample) for sample in samples]
     result_map = {
         sample['key']: {'cat': cat}
         for sample, cat in zip(samples, categories)

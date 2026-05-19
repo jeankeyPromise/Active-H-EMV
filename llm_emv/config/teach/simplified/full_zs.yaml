@@ -1,4 +1,4 @@
-+include: full_qwen
++include: full_gemini_2.5_pro_zs
 prompt_cfg:
   system: system_zero_shot
   db: [ ]

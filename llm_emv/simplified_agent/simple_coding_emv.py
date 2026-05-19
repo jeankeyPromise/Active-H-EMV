@@ -582,6 +582,7 @@ class SimplifiedCodingEMV:
         self._exec_hist.items.clear()
         self._exec_hist.items.append(ExecutionHistory.ExecutionResult(question))
         structured_fallback_answer = None
+        available_api_names = set(dir(self.code_execution_env.namespace.api))
 
         if self._force_initial_command:
             self._exec_hist.items.append(ExecutionHistory.Command(self._force_initial_command))
@@ -593,7 +594,7 @@ class SimplifiedCodingEMV:
                 structured_fallback_answer = structured_fallback_answer or _extract_recommended_answer(r)
 
         temporal_query = _parse_temporal_adjacency_question(question)
-        if temporal_query and not self._force_initial_command:
+        if temporal_query and not self._force_initial_command and 'temporal_neighbor' in available_api_names:
             target, direction = temporal_query
             command = f'temporal_neighbor({target!r}, direction={direction!r})'
             try:
@@ -609,7 +610,7 @@ class SimplifiedCodingEMV:
                 traceback.print_exc()
 
         date_lookup_query = _parse_date_lookup_question(question)
-        if date_lookup_query and not self._force_initial_command:
+        if date_lookup_query and not self._force_initial_command and 'date_lookup' in available_api_names:
             command = f'date_lookup({date_lookup_query!r})'
             try:
                 self._exec_hist.items.append(ExecutionHistory.Command(command))
@@ -624,7 +625,7 @@ class SimplifiedCodingEMV:
                 traceback.print_exc()
 
         event_date_lookup_query = _parse_event_date_lookup_question(question)
-        if event_date_lookup_query and not self._force_initial_command:
+        if event_date_lookup_query and not self._force_initial_command and 'event_date_lookup' in available_api_names:
             command = f'event_date_lookup({event_date_lookup_query!r})'
             try:
                 self._exec_hist.items.append(ExecutionHistory.Command(command))
@@ -638,7 +639,7 @@ class SimplifiedCodingEMV:
                 # Event-date lookup is a low-cost hint. Fall back to regular tree navigation if parsing fails.
                 traceback.print_exc()
 
-        if _is_task_list_question(question) and not self._force_initial_command:
+        if _is_task_list_question(question) and not self._force_initial_command and 'task_list' in available_api_names:
             command = 'task_list()'
             try:
                 self._exec_hist.items.append(ExecutionHistory.Command(command))
@@ -653,7 +654,7 @@ class SimplifiedCodingEMV:
                 traceback.print_exc()
 
         task_lookup_query = _parse_task_lookup_question(question)
-        if task_lookup_query and not self._force_initial_command:
+        if task_lookup_query and not self._force_initial_command and 'task_lookup' in available_api_names:
             command = f'task_lookup({task_lookup_query!r})'
             try:
                 self._exec_hist.items.append(ExecutionHistory.Command(command))
@@ -671,7 +672,7 @@ class SimplifiedCodingEMV:
                 traceback.print_exc()
 
         object_lookup_query = _parse_object_lookup_question(question)
-        if object_lookup_query and not self._force_initial_command:
+        if object_lookup_query and not self._force_initial_command and 'object_lookup' in available_api_names:
             if _requires_exact_object_yes_no_answer(object_lookup_query):
                 return 'No, I have no record of that.'
             command = f'object_lookup({object_lookup_query!r})'
@@ -689,10 +690,12 @@ class SimplifiedCodingEMV:
 
         dishwasher_items_query = _parse_dishwasher_items_question(question)
         if dishwasher_items_query and not self._force_initial_command:
-            for command in (
-                f'task_lookup({dishwasher_items_query!r})',
-                "history.search('dishwasher')",
-            ):
+            for command in tuple(
+                    cmd for cmd in (
+                        f'task_lookup({dishwasher_items_query!r})' if 'task_lookup' in available_api_names else None,
+                        "history.search('dishwasher')",
+                    )
+                    if cmd is not None):
                 try:
                     self._exec_hist.items.append(ExecutionHistory.Command(command))
                     results = self.code_execution_env(command)
