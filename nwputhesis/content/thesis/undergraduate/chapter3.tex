@@ -183,8 +183,8 @@ w_{\mathrm{co\_object}}(E_i, E_j) = \frac{|O(E_i) \cap O(E_j)|}{|O(E_i) \cup O(E
 
 \textbf{评测指标}：
 \begin{itemize}
-\item \textbf{S\textsubscript{c}（Semantic Correctness，完全正确率）}：回答在语义上完全命中标准答案的比例，由独立于 Agent 的大语言模型裁判（LLM Judge，Gemini-2.5-Pro）判定为 CORRECT 的比例
-\item \textbf{S\textsubscript{p}（Semantic Partial，至少部分正确率）}：回答至少抓住关键事实的比例，即 Judge 判定为 CORRECT 或 PARTIAL 的比例
+\item \textbf{$S_c$（Semantic Correctness，完全正确率）}：回答在语义上完全命中标准答案的比例，由独立于 Agent 的大语言模型裁判（LLM Judge，Gemini-2.5-Pro）判定为 CORRECT 的比例
+\item \textbf{$S_p$（Semantic Partial，至少部分正确率）}：回答至少抓住关键事实的比例，即 Judge 判定为 CORRECT 或 PARTIAL 的比例
 \item \textbf{T（每题平均 prompt token）}：每个 QA 的平均 prompt token 消耗量，衡量检索和问答的上下文成本
 \end{itemize}
 
@@ -194,18 +194,15 @@ w_{\mathrm{co\_object}}(E_i, E_j) = \frac{|O(E_i) \cap O(E_j)|}{|O(E_i) \cup O(E
 \centering
 \caption{TEACh 长历史问答主结果}
 \label{tab:3-1}
-\begin{tabular}{|l|c|c|c|c|}
-\hline
-实验设置 & $|h|$ & S\textsubscript{c} & S\textsubscript{p} & T（每题平均 prompt token） \\
-\hline
+\begin{tabular}{lcccc}
+\toprule
+实验设置 & $|h|$ & $S_c$ & $S_p$ & $T$（每题平均 prompt token） \\
+\midrule
 H-EMV baseline (ICL=1) & 50 & 37.0\% & 68.0\% & 10.2K \\
-\hline
 \textbf{GRAF-Mem} & \textbf{50} & \textbf{48.0\%} & \textbf{72.0\%} & \textbf{2.06K} \\
-\hline
 H-EMV baseline (ICL=1) & 100 & 34.0\% & 62.0\% & 10.4K \\
-\hline
 \textbf{GRAF-Mem} & \textbf{100} & \textbf{49.0\%} & \textbf{75.0\%} & \textbf{2.29K} \\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
@@ -213,24 +210,23 @@ H-EMV baseline (ICL=1) & 100 & 34.0\% & 62.0\% & 10.4K \\
 \centering
 \caption{GRAF-Mem 相对参考对照的优势量化}
 \label{tab:3-2}
-\begin{tabular}{|l|c|c|c|}
-\hline
-对比项 & $\Delta$S\textsubscript{c} & $\Delta$S\textsubscript{p} & $\Delta$T \\
-\hline
+\begin{tabular}{lccc}
+\toprule
+对比项 & $\Delta S_c$ & $\Delta S_p$ & $\Delta T$ \\
+\midrule
 $|h|=50$ GRAF-Mem vs Baseline & +11.0 pp & +4.0 pp & \textbf{$-$79.8\%} \\
-\hline
 $|h|=100$ GRAF-Mem vs Baseline & +15.0 pp & +13.0 pp & \textbf{$-$78.0\%} \\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
 从表 3-1 和表 3-2 可以得出三个关键观察：
 
-\textbf{（1）语义正确率显著提升。}在 $|h|=50$ 设置下，S\textsubscript{c} 从 37.0\% 提升至 48.0\%（+11.0 个百分点）；在更长的 $|h|=100$ 设置下，提升更为显著：S\textsubscript{c} 从 34.0\% 提升至 49.0\%（+15.0 个百分点），S\textsubscript{p} 从 62.0\% 提升至 75.0\%（+13.0 个百分点）。GRAF-Mem 不仅在整体上优于参考对照，而且随着历史长度的增加，优势反而扩大。参考对照在 $|h|$ 从 50 增至 100 时 S\textsubscript{c} 下降了 3 个百分点（37\%→34\%），而 GRAF-Mem 基本持平（48\%→49\%）。
+\textbf{（1）语义正确率显著提升。}在 $|h|=50$ 设置下，$S_c$ 从 37.0\% 提升至 48.0\%（+11.0 个百分点）；在更长的 $|h|=100$ 设置下，提升更为显著：$S_c$ 从 34.0\% 提升至 49.0\%（+15.0 个百分点），$S_p$ 从 62.0\% 提升至 75.0\%（+13.0 个百分点）。GRAF-Mem 不仅在整体上优于参考对照，而且随着历史长度的增加，优势反而扩大。参考对照在 $|h|$ 从 50 增至 100 时 $S_c$ 下降了 3 个百分点（37\%→34\%），而 GRAF-Mem 基本持平（48\%→49\%）。
 
 \textbf{（2）token 成本大幅降低。}在两个设置下，GRAF-Mem 的平均 prompt token 消耗均约为 2.1K–2.3K，仅为参考对照的 20\% 左右，降低约 78\%–80\%。H-EMV 的 10.2K–10.4K prompt tokens 中包含大量将完整历史直接拼接成超长提示词后的展开内容和在线搜索上下文，而 GRAF-Mem 的预处理缓存体系将这部分成本完全剥离。更值得注意的是，token 成本的降低并不以牺牲准确率为代价，恰恰相反，在更低的 token 预算下取得了更高的语义正确率。
 
-\textbf{（3）对历史长度变化的敏感度较低。}当历史长度从 50 个 episode 翻倍到 100 个 episode 时，GRAF-Mem 的 S\textsubscript{c} 仅从 48.0\% 变为 49.0\%（+1.0 pp），T 仅从 2.06K 增至 2.29K（+11.2\%）。而参考对照在相同翻倍下 S\textsubscript{c} 下降了 3.0 pp，T 反而微增（10.2K→10.4K，+2.0\%）。这说明图增强检索和结构化工具在一定程度上\textbf{抵消了历史增长带来的检索难度}：事件图的横向扩展和工具的精确命中使得 Agent 不需要在更大的树中盲目搜索更多节点。
+\textbf{（3）对历史长度变化的敏感度较低。}当历史长度从 50 个 episode 翻倍到 100 个 episode 时，GRAF-Mem 的 $S_c$ 仅从 48.0\% 变为 49.0\%（+1.0 pp），T 仅从 2.06K 增至 2.29K（+11.2\%）。而参考对照在相同翻倍下 $S_c$ 下降了 3.0 pp，T 反而微增（10.2K→10.4K，+2.0\%）。这说明图增强检索和结构化工具在一定程度上\textbf{抵消了历史增长带来的检索难度}：事件图的横向扩展和工具的精确命中使得 Agent 不需要在更大的树中盲目搜索更多节点。
 
 \subsection{消融实验}
 
@@ -248,11 +244,11 @@ $|h|=100$ GRAF-Mem vs Baseline & +15.0 pp & +13.0 pp & \textbf{$-$78.0\%} \\
 
 从图 3-4 可以看出：
 
-\textbf{（1）完整图结构带来最好的整体性能。}full graph 相比 baseline 的 S\textsubscript{c} 从 36.0\% 提升到 42.0\%（+6.0 个百分点），S\textsubscript{p} 从 56.0\% 提升到 65.0\%（+9.0 个百分点）。与此同时，平均 prompt token 仅从 4.57K 小幅增加到 4.76K，说明图扩展带来的上下文开销是可控的，而准确率收益更为明显。
+\textbf{（1）完整图结构带来最好的整体性能。}full graph 相比 baseline 的 $S_c$ 从 36.0\% 提升到 42.0\%（+6.0 个百分点），$S_p$ 从 56.0\% 提升到 65.0\%（+9.0 个百分点）。与此同时，平均 prompt token 仅从 4.57K 小幅增加到 4.76K，说明图扩展带来的上下文开销是可控的，而准确率收益更为明显。
 
-\textbf{（2）时间边主要增强局部时序推理。}temporal-only 虽然不如 full graph 全面，但已经将 S\textsubscript{c} / S\textsubscript{p} 提升到 38.0\% / 61.0\%，且 T 下降到 4.41K。结合题型分布来看，它在 \texttt{right after}、\texttt{right before} 这类时序题上的提升最明显，说明时间相邻边对"前后发生了什么"类问题具有直接贡献。
+\textbf{（2）时间边主要增强局部时序推理。}temporal-only 虽然不如 full graph 全面，但已经将 $S_c$ / $S_p$ 提升到 38.0\% / 61.0\%，且 T 下降到 4.41K。结合题型分布来看，它在 \texttt{right after}、\texttt{right before} 这类时序题上的提升最明显，说明时间相邻边对"前后发生了什么"类问题具有直接贡献。
 
-\textbf{（3）物体边主要增强实体关联召回。}object-only 将 S\textsubscript{c} / S\textsubscript{p} 提升到 39.0\% / 59.0\%，在三种单一边设置中表现最好。它在 \texttt{object yes/no}、\texttt{where else} 这类物体关联题上的提升最明显，说明共享物体边更擅长把同一实体跨事件的证据串联起来。
+\textbf{（3）物体边主要增强实体关联召回。}object-only 将 $S_c$ / $S_p$ 提升到 39.0\% / 59.0\%，在三种单一边设置中表现最好。它在 \texttt{object yes/no}、\texttt{where else} 这类物体关联题上的提升最明显，说明共享物体边更擅长把同一实体跨事件的证据串联起来。
 
 综合来看，时间边提供顺序约束，物体边提供实体桥接，而 full graph 将二者与空间和动作关联一起整合，因此在总体上取得最佳结果。这也说明第三章的图增强检索并不是依赖单一关系，而是依赖多种横向语义信号的互补。
 
@@ -272,4 +268,4 @@ GRAF-Mem 相对参考对照的双重优势，即语义正确率更高、token �
 
 本章针对层级记忆树纵向检索在横向语义关联上的不足（RQ1），提出了事件关联图构建和图增强检索流水线。事件关联图从 L2 事件节点自动派生，包含五种语义边（时间相邻、共享物体、共位置、相似动作、因果），每种边均有明确的构建算法和密度控制策略。图增强检索通过"语义种子召回→图邻居扩展→联合重排"三阶段流水线将横向关联信号嵌入检索链路，重排公式中 $\alpha \cdot \text{语义项} + \beta \cdot \text{图贡献项} + \gamma \cdot \text{深度奖励项}$ 的三项加权设计确保了语义相关性始终主导排序。结构化检索工具将记忆树中的任务、物体、日期等结构信息暴露为七种可调用工具，配合预处理缓存和执行护栏，将 Agent 在长历史上的搜索行为从自由探索转变为结构化命中。
 
-在 TEACh 数据集上的实验结果表明，GRAF-Mem 在 $|h|=100$ 设置下达到 S\textsubscript{c}=49.0\%、S\textsubscript{p}=75.0\%、T=2.29K，相比参考对照 S\textsubscript{c} 提升 15 个百分点、token 成本降低 78\%。更值得注意的是，在 $|h|$ 从 50 翻倍到 100 时 GRAF-Mem 的 S\textsubscript{c} 基本持平，说明图增强检索在一定程度上抵消了历史增长带来的检索难度。消融实验进一步表明，时间边和物体边分别对时序题与物体关联题贡献最明显，而 full graph 通过多种边类型互补取得最佳整体性能。机制分析表明，这一双重优势来自事件图的横向扩展、结构化工具的精确命中以及缓存与上限控制的协同。
+在 TEACh 数据集上的实验结果表明，GRAF-Mem 在 $|h|=100$ 设置下达到 $S_c$=49.0\%、$S_p$=75.0\%、T=2.29K，相比参考对照 $S_c$ 提升 15 个百分点、token 成本降低 78\%。更值得注意的是，在 $|h|$ 从 50 翻倍到 100 时 GRAF-Mem 的 $S_c$ 基本持平，说明图增强检索在一定程度上抵消了历史增长带来的检索难度。消融实验进一步表明，时间边和物体边分别对时序题与物体关联题贡献最明显，而 full graph 通过多种边类型互补取得最佳整体性能。机制分析表明，这一双重优势来自事件图的横向扩展、结构化工具的精确命中以及缓存与上限控制的协同。

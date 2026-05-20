@@ -198,24 +198,18 @@ Judge 的设计遵循安全优先的保守原则：仅当判定为 WRONG 时触�
 \centering
 \caption{阶段式错误定位与修正结果（含垂直链扩展对比）}
 \label{tab:5-1}
-\begin{tabular}{|l|c|c|}
-\hline
+\begin{tabular}{lcc}
+\toprule
 指标 & 不启用垂直链扩展 & 启用垂直链扩展 \\
-\hline
+\midrule
 阶段一候选集大小 $|C|$ & 25 & 1221 \\
-\hline
 L2 注入节点是否进入 $C$ & \textbf{否} & \textbf{是} (rank=661) \\
-\hline
 L3 注入节点是否进入 $C$ & 是 (rank=10) & 是 (rank=1101) \\
-\hline
 L4+ 注入节点是否进入 $C$ & 是 (rank=8) & 是 (rank=951) \\
-\hline
 L2 是否进入 $R$ 并修正成功 & 否 & \textbf{是} \\
-\hline
 L3 是否进入 $R$ 并修正成功 & 是 & 是 \\
-\hline
 L4+ 是否进入 $R$ 并修正成功 & 是 & 是 \\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
@@ -245,18 +239,15 @@ L4+ 是否进入 $R$ 并修正成功 & 是 & 是 \\
 \centering
 \caption{传播检测结果（L2 连续帧注入）}
 \label{tab:5-2}
-\begin{tabular}{|l|c|c|}
-\hline
+\begin{tabular}{lcc}
+\toprule
 检测帧（与源帧的距离） & 相似度 & 是否为注入节点 \\
-\hline
+\midrule
 帧 4（+1, Noop） & 0.767 & \checkmark 真阳性 \\
-\hline
 帧 5（+2, Say） & 0.812 & \checkmark 真阳性 \\
-\hline
 帧 6（+3, TurnRight） & 0.962 & \checkmark 真阳性 \\
-\hline
 帧 7（+4, PanLeft） & 0.756 & \checkmark 真阳性 \\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
@@ -264,16 +255,14 @@ L4+ 是否进入 $R$ 并修正成功 & 是 & 是 \\
 \centering
 \caption{传播检测汇总指标}
 \label{tab:5-2b}
-\begin{tabular}{|l|c|}
-\hline
+\begin{tabular}{lc}
+\toprule
 汇总指标 & 数值 \\
-\hline
+\midrule
 召回率（Recall） & \textbf{4/4 = 100.0\%} \\
-\hline
 精确率（Precision） & 4/14 = 28.6\% \\
-\hline
 F1 & 0.444 \\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
@@ -289,14 +278,13 @@ F1 & 0.444 \\
 \centering
 \caption{垂直传播检测结果（L3 注入节点为源）}
 \label{tab:5-3}
-\begin{tabular}{|l|c|c|c|}
-\hline
+\begin{tabular}{lccc}
+\toprule
 方向 & 检测数 & 相似度范围 & 节点类型 \\
-\hline
+\midrule
 向下（L3→L2 子孙） & 8 & 0.663–0.746 & EventBasedSummary \\
-\hline
 向上（L3→L4+ 祖先） & 0 & — & — \\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
@@ -318,18 +306,17 @@ F1 & 0.444 \\
 
 \begin{table}[htbp]
 \centering
+\small
 \caption{端到端闭环：修正前后 Agent 答案对比}
 \label{tab:5-4}
-\begin{tabular}{|p{5.5cm}|p{5cm}|p{5cm}|}
-\hline
+\begin{tabular}{p{4.3cm}p{3.6cm}p{3.6cm}}
+\toprule
 问题 & 修正前答案 & 修正后答案 \\
-\hline
+\midrule
 Where did you retrieve the bread from? & \textbf{"From the lower fridge."} \ding{55} & \textbf{"From the lower cabinet."} \ding{51} \\
-\hline
 What container did you take the bread out of? & \textbf{"The lower fridge."} \ding{55} & \textbf{"I took the bread out of the lower cabinet."} \ding{51} \\
-\hline
 Did you use a toaster? (对照) & "Yes, I put a slice of bread in the toaster." \ding{51} & "Yes, I put a slice of bread in the toaster." \ding{51} (无变化) \\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
@@ -349,24 +336,20 @@ Did you use a toaster? (对照) & "Yes, I put a slice of bread in the toaster." 
 
 \begin{table}[htbp]
 \centering
+\small
 \caption{修正持久性测试结果}
 \label{tab:5-5}
-\begin{tabular}{|l|c|p{7cm}|}
-\hline
+\begin{tabular}{lcp{6cm}}
+\toprule
 测试维度 & 结果 & 关键证据 \\
-\hline
+\midrule
 非侵入性 & \ding{51} PASS & \texttt{nl\_summary} 保持原始值（含 "cabinet"），\texttt{\_summary\_override} 为 "sideboard" \\
-\hline
 可逆性 & \ding{51} PASS & 删除 \texttt{\_summary\_override} 后有效摘要恢复为 \texttt{\_original\_summary} \\
-\hline
 可追溯性 & \ding{51} PASS & \texttt{\_correction\_source = "persistence\_test: cabinet→sideboard"} \\
-\hline
 deepcopy 存活 & \ding{51} PASS & \texttt{\_summary\_override}、\texttt{\_original\_summary}、\texttt{\_correction\_source} 三者完全保留 \\
-\hline
 pickle 存活 & \ding{51} PASS & 同上，序列化往返后三者完全保留 \\
-\hline
 索引可检索性 & \ding{51} PASS & 修正文本自相似度 = 0.894，嵌入后可被语义搜索召回 \\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
