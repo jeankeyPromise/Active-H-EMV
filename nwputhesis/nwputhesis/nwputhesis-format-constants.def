@@ -244,7 +244,7 @@
 
 %%=== 本科封面字体 =======================================================
 \cs_new_protected:Npn \nwpuBachelorDocTitleFont { \fSong \fontsize{\nwpuFontPointChuhao}{\nwpuLineHeightChuhao}\selectfont } % 本科封面文档标题字体
-\cs_new_protected:Npn \nwpuBachelorTitleFont { \fHei\bfseries \fontsize{\nwpuFontPointSanhao}{\nwpuLineHeightSanhao}\selectfont } % 本科封面题目行字体
+\cs_new_protected:Npn \nwpuBachelorTitleFont { \fHei\bfseries \fontsize{15pt}{22pt}\selectfont } % 本科封面题目行字体
 \cs_new_protected:Npn \nwpuBachelorInfoFont { \fSong \fontsize{\nwpuFontPointSihao}{\nwpuLineHeightSihao}\selectfont } % 本科封面信息行字体
 
 %%=== 评阅人与答辩委员会页尺寸 ===========================================
