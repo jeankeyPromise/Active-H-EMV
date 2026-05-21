@@ -88,21 +88,14 @@ w_{\mathrm{co\_object}}(E_i, E_j) = \frac{|O(E_i) \cap O(E_j)|}{|O(E_i) \cup O(E
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth]{图3-2 事件关联图构建流程.png}
-    \caption{事件关联图构建流程}
-    \label{fig:chapter3-graph-construction}
+    \includegraphics[width=\textwidth]{图3-3 检索流水线图.png}
+    \caption{图增强检索三阶段流水线}
+    \label{fig:chapter3-pipeline}
 \end{figure}
 
 \section{图增强检索流水线}
 
 图增强检索在 智能体执行 \texttt{history.search(query)} 时被触发，将原本的纯文本相似度 top-k 返回替换为经过图扩展和联合重排后的结果列表。整个流水线包含三个阶段。
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=\textwidth]{图3-3 检索流水线图.png}
-    \caption{图增强检索三阶段流水线}
-    \label{fig:chapter3-pipeline}
-\end{figure}
 
 \subsection{阶段一：语义种子召回}
 

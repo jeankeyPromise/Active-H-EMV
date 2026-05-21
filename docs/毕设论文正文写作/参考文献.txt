@@ -1,39 +1,119 @@
-[1] Bärmann L，Peller-Konrad F，Constantin S，等．Deep episodic memory for verbalization of robot experience[J]．IEEE Robotics and Automation Letters，2021，6(3)：5808-5815．
+[1] Bärmann L, DeChant C, Plewnia J, et al. Episodic memory verbalization using hierarchical representations of life-long robot experience[C]//2025 IEEE-RAS 24th International Conference on Humanoid Robots. IEEE, 2025: 783-790.
 
-[2] Rosenthal S，Selvaraj S P，Veloso M．Verbalization: Narration of autonomous robot experience[A]．见：Proceedings of the Twenty-Fifth International Joint Conference on Artificial Intelligence[C]．New York：IJCAI Organization，2016：862-868．
+[2] Tulving E. Elements of Episodic Memory[M]. Oxford: Oxford University Press, 1983.
 
-[3] Zhu Q，Perera V，Wächter M，等．Autonomous narration of humanoid robot kitchen task experience[A]．见：2017 IEEE-RAS 17th International Conference on Humanoid Robotics[C]．Piscataway：IEEE，2017：633-640．
+[3] Ebbinghaus H. Memory: A Contribution to Experimental Psychology[M]. New York: Teachers College, Columbia University, 1913.
 
-[4] DeChant C，Bauer D．Toward robots that learn to summarize their actions in natural language: a set of tasks[A]．见：Proceedings of the Fifth Conference on Robot Learning[C]．London：PMLR，2021：1467-1477．
+[4] McClelland J L, McNaughton B L, O’Reilly R C. Why there are complementary learning systems in the hippocampus and neocortex[J]. Psychological Review, 1995, 102(3): 419-457.
 
-[5] Tulving E．Episodic and semantic memory[M]．New York：Academic Press，1972：381-403．
+[5] Nadel L, Moscovitch M. Memory consolidation, retrograde amnesia and the hippocampal complex[J]. Current Opinion in Neurobiology, 1997, 7(2): 217-227.
 
-[6] DeChant C，Akinola I，Bauer D．Learning to summarize and answer questions about a virtual robot’s past actions[J]．Autonomous Robots，2023，47(5)：673-694．
+[6] Squire L R, Wixted J T. The cognitive neuroscience of human memory since H.M.[J]. Annual Review of Neuroscience, 2011, 34: 259-288.
 
-[7] Liu N F，Lin K，Hewitt J，等．Lost in the middle: How language models use long contexts[J]．Transactions of the Association for Computational Linguistics，2024，12：157-173．
+[7] Winocur G, Moscovitch M. Memory transformation and systems consolidation[J]. Journal of the International Neuropsychological Society, 2011, 17(5): 766-780.
 
-[8] Gemini Team．Gemini 1.5: Unlocking multimodal understanding across millions of tokens of context[EB/OL]．2024[2026-05-18]．[https://arxiv.org/abs/2403.05530．](https://arxiv.org/abs/2403.05530．)
+[8] Conway M A. Episodic memories[J]. Neuropsychologia, 2009, 47(11): 2305-2313.
 
-[9] Hsieh C P，Sun S，Kriman S，等．RULER: What’s the real context size of your long-context language models?[EB/OL]．2024[2026-05-18]．[https://arxiv.org/abs/2404.06654．](https://arxiv.org/abs/2404.06654．)
+[9] Freeman L C. Centrality in social networks conceptual clarification[J]. Social Networks, 1978, 1(3): 215-239.
 
-[10] Liu Z，Bahety A，Song S．REFLECT: Summarizing robot experiences for failure explanation and correction[A]．见：Proceedings of the 7th Conference on Robot Learning[C]．Atlanta：PMLR，2023：1548-1568．
+[10] Newman M E J. Networks: An Introduction[M]. Oxford: Oxford University Press, 2010.
 
-[11] Xie Q，Min S Y，Ji P，等．Embodied-RAG: General non-parametric embodied memory for retrieval and generation[EB/OL]．2025[2026-05-18]．[https://arxiv.org/abs/2501.12310．](https://arxiv.org/abs/2501.12310．)
+[11] Tenorth M, Beetz M. KnowRob—Knowledge processing for autonomous personal robots[C]//2009 IEEE/RSJ International Conference on Intelligent Robots and Systems. IEEE, 2009: 4261-4266.
 
-[12] Edge D，Trinh H，Cheng N，等．From local to global: A graph RAG approach to query-focused summarization[EB/OL]．2025[2026-05-18]．[https://arxiv.org/abs/2404.16130．](https://arxiv.org/abs/2404.16130．)
+[12] Waibel M, Beetz M, D’Andrea R, et al. RoboEarth—A World Wide Web for robots[J]. IEEE Robotics & Automation Magazine, 2011, 18(2): 69-82.
 
-[13] Plewnia J，Peller-Konrad F，Asfour T．Forgetting in robotic episodic long-term memory[A]．见：2024 IEEE International Conference on Robotics and Automation[C]．Piscataway：IEEE，2024：12543-12550．
+[13] Asfour T, Regenstein K, Azad P, et al. ARMAR-III: An integrated humanoid platform for sensory-motor control[C]//2006 6th IEEE-RAS International Conference on Humanoid Robots. IEEE, 2006: 169-175.
 
-[14] Islam M M，Ho N，Yang X，等．Video ReCap: Recursive captioning of hour-long videos[A]．见：Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition[C]．Seattle：IEEE，2024：18174-18184．
+[14] Vahrenkamp N, Wächter M, Kröhnert M, et al. The robot software framework ArmarX[J]. Information Technology, 2015, 57(2): 99-111.
 
-[15] Balazevic I，Shi Y，Papalampidi P，等．Memory consolidation enables long-context video understanding[A]．见：Proceedings of the 41st International Conference on Machine Learning[C]．Vienna：PMLR，2024．
+[15] Rosenthal S, Selvaraj S P, Veloso M. Verbalization: Narration of autonomous robot experience[C]//Proceedings of the Twenty-Fifth International Joint Conference on Artificial Intelligence. AAAI Press, 2016: 862-868.
 
-[16] Padmakumar A，Thomason J，Shrivastava A，等．TEACh: Task-driven embodied agents that chat[J]．Proceedings of the AAAI Conference on Artificial Intelligence，2022，36(2)：2017-2025．
+[16] Zhu Q, Perera V, Wächter M, et al. Autonomous narration of humanoid robot kitchen task experience[C]//2017 IEEE-RAS 17th International Conference on Humanoid Robotics. IEEE, 2017: 390-397.
 
-[17] Grauman K，Westbury A，Byrne E，等．Ego4D: Around the world in 3,000 hours of egocentric video[A]．见：Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition[C]．New Orleans：IEEE，2022：18995-19012．
+[17] Sigalas M, Maniadakis M, Trahanias P E. Time-aware long-term episodic memory for recurring HRI[C]//Companion of the 2017 ACM/IEEE International Conference on Human-Robot Interaction. ACM, 2017: 285-286.
 
-[18] Asfour T，Dillmann R，Vahrenkamp N，等．The Karlsruhe ARMAR humanoid robot family[M]．Cham：Springer，2017：1-32．
+[18] Rothfuss J, Ferreira F, Aksoy E E, et al. Deep episodic memory: Encoding, recalling, and predicting episodic experiences for robot action execution[J]. IEEE Robotics and Automation Letters, 2018, 3(4): 4007-4014.
 
-[19] Bärmann L，Waibel A．Where did I leave my keys? Episodic-memory-based QA on egocentric videos[A]．见：Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops[C]．New Orleans：IEEE，2022：156-157．
+[19] Bärmann L, Peller-Konrad F, Constantin S, et al. Deep episodic memory for verbalization of robot experience[J]. IEEE Robotics and Automation Letters, 2021, 6(3): 5808-5815.
 
-[20] Wang L，Ma C，Feng X，等．A survey on large language model based autonomous agents[J]．Frontiers of Computer Science，2024，18(6)：186345．
+[20] Liu Z, Bahety A, Song S. REFLECT: Summarizing robot experiences for failure explanation and correction[C]//Conference on Robot Learning. PMLR, 2023.
+
+[21] Anwar A, Welsh J, Biswas J, et al. ReMEmbR: Building and reasoning over long-horizon spatio-temporal memory for robot navigation[C]//2025 IEEE International Conference on Robotics and Automation. IEEE, 2025: 2838-2845.
+
+[22] Tulving E. Episodic and semantic memory[M]//Tulving E, Donaldson W. Organization of Memory. New York: Academic Press, 1972: 381-403.
+
+[23] Plewnia J, Asfour T. Combining episodic memory and LLMs for the verbalization of robot experiences[C]//2025 IEEE-RAS 24th International Conference on Humanoid Robots. IEEE, 2025: 531-538.
+
+[24] Kolve E, Mottaghi R, Han W, et al. AI2-THOR: An interactive 3D environment for visual AI[J]. arXiv preprint arXiv:1712.05474, 2017.
+
+[25] Shridhar M, Thomason J, Gordon D, et al. ALFRED: A benchmark for interpreting grounded instructions for everyday tasks[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. IEEE, 2020: 10740-10749.
+
+[26] Savva M, Kadian A, Maksymets O, et al. Habitat: A platform for embodied AI research[C]//Proceedings of the IEEE/CVF International Conference on Computer Vision. IEEE, 2019: 9339-9347.
+
+[27] Padmakumar A, Thomason J, Shrivastava A, et al. TEACh: Task-driven embodied agents that chat[C]//Proceedings of the AAAI Conference on Artificial Intelligence. AAAI Press, 2022, 36(2): 2017-2025.
+
+[28] Ahn M, Brohan A, Brown N, et al. Do as I can, not as I say: Grounding language in robotic affordances[C]//Conference on Robot Learning. PMLR, 2022: 287-318.
+
+[29] Lewis P, Perez E, Piktus A, et al. Retrieval-augmented generation for knowledge-intensive NLP tasks[C]//Advances in Neural Information Processing Systems. 2020, 33: 9459-9474.
+
+[30] Karpukhin V, Oguz B, Min S, et al. Dense passage retrieval for open-domain question answering[C]//Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing. ACL, 2020: 6769-6781.
+
+[31] Reimers N, Gurevych I. Sentence-BERT: Sentence embeddings using Siamese BERT-networks[C]//Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing. ACL, 2019: 3982-3992.
+
+[32] Johnson J, Douze M, Jégou H. Billion-scale similarity search with GPUs[J]. IEEE Transactions on Big Data, 2019, 7(3): 535-547.
+
+[33] Nogueira R, Cho K. Passage re-ranking with BERT[J]. arXiv preprint arXiv:1901.04085, 2019.
+
+[34] Gao L, Ma X, Lin J, et al. Precise zero-shot dense retrieval without relevance labels[C]//Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics. ACL, 2023: 1762-1777.
+
+[35] Jiang Z, Xu F F, Gao L, et al. Active retrieval augmented generation[C]//Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing. ACL, 2023: 7969-7992.
+
+[36] Asai A, Wu Z, Wang Y, et al. Self-RAG: Learning to retrieve, generate, and critique through self-reflection[C]//International Conference on Learning Representations. 2024.
+
+[37] Edge D, Trinh H, Cheng N, et al. From local to global: A graph RAG approach to query-focused summarization[J]. arXiv preprint arXiv:2404.16130, 2024.
+
+[38] Sarthi P, Abdullah S, Tuli A, et al. RAPTOR: Recursive abstractive processing for tree-organized retrieval[C]//International Conference on Learning Representations. 2024.
+
+[39] Vaswani A, Shazeer N, Parmar N, et al. Attention is all you need[C]//Advances in Neural Information Processing Systems. 2017, 30: 5998-6008.
+
+[40] Brown T B, Mann B, Ryder N, et al. Language models are few-shot learners[C]//Advances in Neural Information Processing Systems. 2020, 33: 1877-1901.
+
+[41] OpenAI. GPT-4 technical report[J]. arXiv preprint arXiv:2303.08774, 2023.
+
+[42] Gemini Team, Anil R, Borgeaud S, et al. Gemini: A family of highly capable multimodal models[J]. arXiv preprint arXiv:2312.11805, 2023.
+
+[43] Gemini Team, Georgiev P, Lei V I, et al. Gemini 1.5: Unlocking multimodal understanding across millions of tokens of context[J]. arXiv preprint arXiv:2403.05530, 2024.
+
+[44] Liu N F, Lin K, Hewitt J, et al. Lost in the middle: How language models use long contexts[J]. Transactions of the Association for Computational Linguistics, 2024, 12: 157-173.
+
+[45] Li J, Li D, Savarese S, et al. BLIP-2: Bootstrapping language-image pre-training with frozen image encoders and large language models[C]//Proceedings of the 40th International Conference on Machine Learning. PMLR, 2023, 202: 19730-19742.
+
+[46] Radford A, Kim J W, Hallacy C, et al. Learning transferable visual models from natural language supervision[C]//Proceedings of the 38th International Conference on Machine Learning. PMLR, 2021, 139: 8748-8763.
+
+[47] Packer C, Wooders S, Lin K, et al. MemGPT: Towards LLMs as operating systems[J]. arXiv preprint arXiv:2310.08560, 2023.
+
+[48] Wang W, Dong L, Cheng H, et al. Augmenting language models with long-term memory[C]//Advances in Neural Information Processing Systems. 2023, 36.
+
+[49] Chen H, Pasunuru R, Weston J, et al. Walking down the memory maze: Beyond context limit through interactive reading[J]. arXiv preprint arXiv:2310.05029, 2023.
+
+[50] Park J S, O’Brien J, Cai C J, et al. Generative agents: Interactive simulacra of human behavior[C]//Proceedings of the 36th Annual ACM Symposium on User Interface Software and Technology. ACM, 2023: 1-22.
+
+[51] Meng K, Bau D, Andonian A, et al. Locating and editing factual associations in GPT[C]//Advances in Neural Information Processing Systems. 2022, 35: 17359-17372.
+
+[52] Meng K, Sen Sharma A, Andonian A, et al. Mass-editing memory in a transformer[C]//International Conference on Learning Representations. 2023.
+
+[53] Mitchell E, Lin C, Bosselut A, et al. Fast model editing at scale[C]//International Conference on Learning Representations. 2022.
+
+[54] Mitchell E, Lin C, Bosselut A, et al. Memory-based model editing at scale[C]//Proceedings of the 39th International Conference on Machine Learning. PMLR, 2022, 162: 15817-15831.
+
+[55] Christiano P F, Leike J, Brown T, et al. Deep reinforcement learning from human preferences[C]//Advances in Neural Information Processing Systems. 2017, 30: 4299-4307.
+
+[56] Grauman K, Westbury A, Byrne E, et al. Ego4D: Around the world in 3,000 hours of egocentric video[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. IEEE, 2022: 18973-18990.
+
+[57] Datta S, Dharur S, Cartillier V, et al. Episodic memory question answering[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. IEEE, 2022: 19097-19106.
+
+[58] Bärmann L, Waibel A. Where did I leave my keys? Episodic-memory-based question answering on egocentric videos[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops. IEEE, 2022.
+
+[59] Mangalam K, Akshulakov R, Malik J. EgoSchema: A diagnostic benchmark for very long-form video language understanding[C]//Advances in Neural Information Processing Systems. 2023, 36.
+
+[60] Wang X, Zhang Y, Zohar O, et al. VideoAgent: Long-form video understanding with large language model as agent[C]//European Conference on Computer Vision. Cham: Springer, 2024: 58-76.
