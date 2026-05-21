@@ -31,7 +31,7 @@
     \nwpu_if_bachelor:TF
       { \noindent }
       { \indent }
-    \nwpu@chs@funding\par\cleardoublepage
+    \nwpu@chs@funding\par
   }
 
 \NewDocumentEnvironment{keywords}{}
@@ -89,7 +89,7 @@
     \nwpu_if_bachelor:TF
       { \noindent }
       { \noindent }
-    \nwpu@eng@funding\par\cleardoublepage
+    \nwpu@eng@funding\par
   }
 
 \NewDocumentEnvironment{engkeywords}{}
