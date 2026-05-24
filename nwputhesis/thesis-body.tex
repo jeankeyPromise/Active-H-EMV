@@ -39,6 +39,7 @@
 }
 
 % 参考文献
+\nocite{*}
 \printbibliography
 
 % 附录（研究生在致谢之前）
@@ -52,8 +53,8 @@
 % 毕业设计小结（仅本科）
 \ifbachelor{\input{content/thesis/undergraduate/designsummary}}{}
 
-% 附录（仅本科，在致谢之后）
-\ifbachelor{\input{content/thesis/undergraduate/appendix}}{}
+% 附录（仅本科，在致谢之后）——本文不需要附录
+% \ifbachelor{\input{content/thesis/undergraduate/appendix}}{}
 
 % 参加科研情况（仅硕博）
 \ifgraduate{\input{content/thesis/graduate/accomplishments}}{}
